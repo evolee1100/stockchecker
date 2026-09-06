@@ -1,4 +1,7 @@
-# 這兩個是產生出來的大檔，每天都會變，不進版控
+# 每次執行都重新產生的檔案，不進版控
+# （workflow 在雲端跑 fetch.py 時會重新產生，部署時才複製到網站目錄）
+data/data.js
+data/data.json
 snapshot.html
 artifact.html
 logs/
