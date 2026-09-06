@@ -768,7 +768,9 @@ ${feed(s.filings, '沒有抓到公告')}</div>
   tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
     ev.stopPropagation();                    // 別讓點擊冒泡去收合這一列
     chartRange = b.dataset.d;
-    tr.querySelectorAll('.rng').forEach(x => x.classList.toggle('on', x === b));
+    // 用按鈕自己的父層來切換高亮，不能用 tr——手機版會把 .dbox 搬進面板，
+    // 搬走之後 tr.querySelectorAll('.rng') 會是空的，高亮就不會跟著動
+    b.parentNode.querySelectorAll('.rng').forEach(x => x.classList.toggle('on', x === b));
     draw();
   });
   return tr;
