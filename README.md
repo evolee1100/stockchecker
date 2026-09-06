@@ -11,12 +11,33 @@ python3 fetch.py     # 抓最新資料
 
 `index.html` 也可以直接雙擊開啟（資料同時寫成 `data/data.js`，所以 file:// 也讀得到）。
 
-## 設定每天自動更新
+## 在手機上看（人不在電腦旁）
+
+網頁掛在 GitHub Pages，**每天由 GitHub 在雲端自動更新，不需要你的 Mac 開機**：
+
+> https://rootedfutures3.github.io/stockchecker/
+
+排程寫在 `.github/workflows/daily.yml`，每週一到週五 18:30（馬來西亞時間，馬股 5pm 收盤後）跑一次：
+抓價量 → 抓基本面 → 抓新聞 → 把快照存回 repo → 重新部署網頁。
+
+想立刻更新一次不用等排程：
+
+```bash
+gh workflow run daily.yml --repo rootedfutures3/stockchecker
+```
+
+或在 GitHub 網頁的 Actions 分頁按 **Run workflow**。
+
+## 設定每天自動更新（本機，選用）
+
+上面的雲端排程已經夠用了。如果你還想讓 Mac 自己也留一份本機資料：
 
 ```bash
 ./install_daily.sh          # 每天 18:30（馬股 5pm 收盤後）
 ./install_daily.sh 20 00    # 或改成每天 20:00
 ```
+
+（Mac 關機或睡眠時這個不會跑，所以出門在外請看上面的 GitHub Pages 網址。）
 
 ## 檔案說明
 
