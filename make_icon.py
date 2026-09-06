@@ -13,6 +13,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 GREEN = (6, 112, 63)          # 比介面的綠再深一點，小尺寸才壓得住
 LINE = (255, 255, 255)
 FILL = (255, 255, 255, 46)    # 線下的淡填色
+DOT = (240, 180, 20)          # 端點用金色：跟線不同色，縮到 20px 才不會糊成一團，
+                              # 同時呼應介面上「最愛」那顆星
 
 # 走勢線的形狀：先震盪後拉升，最後一段回檔再創高——像真的股價。
 # 起點刻意設在 x=0（被圓角切掉），這樣線下的填色左邊會齊到圖示邊緣，
@@ -47,7 +49,7 @@ def draw_icon(size, radius_ratio=0.225, pad=0.0):
     # 端點圓點——跟網頁圖表上標最新價的那顆一致
     r = int(S * 0.066)
     cx, cy = pts[-1]
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=LINE)
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=DOT)
 
     return img.resize((size, size), Image.LANCZOS)
 
@@ -60,7 +62,7 @@ def svg():
   <polygon points="{pts} {lx:.1f},512 0,512" fill="#fff" fill-opacity=".2"/>
   <polyline points="{pts}" fill="none" stroke="#fff" stroke-width="24"
             stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="{lx:.1f}" cy="{ly:.1f}" r="34" fill="#fff"/>
+  <circle cx="{lx:.1f}" cy="{ly:.1f}" r="34" fill="#f0b414"/>
 </svg>
 '''.format(pts=pts, lx=last[0] * 512, ly=last[1] * 512)
 

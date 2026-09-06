@@ -164,15 +164,29 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .rng.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
 .rmeta{font-size:11px;color:var(--ink-3);margin:0 0 14px;font-variant-numeric:tabular-nums}
 
+/* 重點報導 */
+.dg{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0 4px}
+.dg-h{padding:9px 13px 8px;background:var(--tint);border-bottom:1px solid var(--line);
+      font-size:11px;font-weight:600;color:var(--ink-2);letter-spacing:.05em}
+.dg-r{display:flex;gap:11px;padding:9px 13px;border-bottom:1px solid var(--hair)}
+.dg-r:last-child{border-bottom:none}
+.dg-k{flex:none;width:34px;font-size:11px;color:var(--ink-3);padding-top:1px}
+.dg-v{flex:1;min-width:0;font-size:12.5px;line-height:1.65}
+
 /* 新聞 */
 .news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 @media(max-width:700px){ .news{grid-template-columns:1fr;gap:18px} }
 .news h4{font-size:10.5px;font-weight:600;color:var(--ink-3);text-transform:uppercase;
          letter-spacing:.09em;margin:0 0 8px;display:flex;align-items:center;gap:8px}
-.lang{font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;
-      color:var(--ink-3);border:1px solid var(--line);background:#fff;
-      border-radius:99px;padding:1px 8px;cursor:pointer}
-.lang:hover{color:var(--ink);border-color:#d4d9e0}
+/* 資料來源語言：兩顆按鈕，看得出目前在哪個模式 */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.seg button{font:inherit;font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;
+            color:var(--ink-3);background:#fff;border:none;padding:2px 10px;cursor:pointer;
+            line-height:1.6}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button:hover{color:var(--ink);background:var(--tint)}
+.seg button.on{background:var(--ink);color:#fff}
+.seg button.on:hover{background:var(--ink);color:#fff}
 .item{padding:7px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .it{display:block;font-size:12.5px;line-height:1.45;color:inherit;text-decoration:none}
@@ -323,11 +337,14 @@ code{color:var(--ink-2)}
   .bi .bw{font-size:15.5px}
   .bi .by{font-size:13.5px}
   .bi .bn{font-size:13px}
+  .dg-h{font-size:13px}
+  .dg-k{font-size:13px;width:40px}
+  .dg-v{font-size:15px}
   .news h4{font-size:12.5px}
   .it{font-size:15px}
   .im{font-size:12.5px}
   .orig{font-size:12px;padding:2px 9px}
-  .lang{font-size:12px;padding:2px 10px}
+  .seg button{font-size:12px;padding:3px 13px}
   .none{font-size:14px}
 
   .calc h4{font-size:14.5px}
@@ -626,6 +643,11 @@ function detailRow(s){
   tr.innerHTML = `<td colspan="${COLS.length}"><div class="dbox">
     <div class="dnote">${s.note||''}${s.market_time?' · 最後成交 '+s.market_time:''}</div>
     <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
+    ${(s.digest && s.digest.length) ? `<div class="dg">
+      <div class="dg-h">重點報導</div>
+      ${s.digest.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div>
+        <div class="dg-v">${v}</div></div>`).join('')}
+    </div>` : ''}
     <div class="ranges">${RANGES.map(r=>
       `<span class="rng ${r.d===chartRange?'on':''}" data-d="${r.d}">${r.t}</span>`).join('')}</div>
     <div class="chartslot"></div>
@@ -634,9 +656,13 @@ function detailRow(s){
     ).join('')}</div>
     ${s.calculator ? calculator(s) : ''}
     <div class="news">
-      <div><h4>媒體報導 <span class="lang" data-lang="en">原文</span></h4>
+      <div><h4>媒體報導 <span class="seg">
+        <button type="button" class="on" data-l="zh">中文</button>
+        <button type="button" data-l="en">原文</button></span></h4>
 ${feed(s.articles, '近三個月沒有相關報導')}</div>
-      <div><h4>Bursa 公告 <span class="lang" data-lang="en">原文</span></h4>
+      <div><h4>Bursa 公告 <span class="seg">
+        <button type="button" class="on" data-l="zh">中文</button>
+        <button type="button" data-l="en">原文</button></span></h4>
 ${feed(s.filings, '沒有抓到公告')}</div>
     </div>
   </div></td>`;
@@ -706,15 +732,16 @@ ${feed(s.filings, '沒有抓到公告')}</div>
     svg.addEventListener('click',        e => e.stopPropagation());
   };
 
-  // 「原文 / 中文」切換：翻譯是機器翻的，遇到專有名詞或金融術語想核對時用得上
-  tr.querySelectorAll('.lang').forEach(btn => btn.onclick = ev => {
-    ev.stopPropagation();
-    const toEn = btn.dataset.lang === 'en';
-    btn.dataset.lang = toEn ? 'zh' : 'en';
-    btn.textContent = toEn ? '中文' : '原文';
-    btn.closest('div').querySelectorAll('.item').forEach(it => {
-      const v = toEn ? it.dataset.en : it.dataset.zh;
-      if(v) it.querySelector('.it').textContent = v;
+  // 「中文 / 原文」兩顆按鈕：機器翻譯遇到金融術語會有偏差，要能一眼看出目前在哪個模式
+  tr.querySelectorAll('.seg').forEach(seg => {
+    seg.querySelectorAll('button').forEach(btn => btn.onclick = ev => {
+      ev.stopPropagation();
+      const en = btn.dataset.l === 'en';
+      seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+      seg.closest('div').querySelectorAll('.item').forEach(it => {
+        const v = en ? it.dataset.en : it.dataset.zh;
+        if(v) it.querySelector('.it').textContent = v;
+      });
     });
   });
 

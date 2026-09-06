@@ -15,6 +15,7 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 
 import analyze
+import digest
 import fundamentals
 import news
 import palm
@@ -299,6 +300,9 @@ def main():
     except Exception as exc:  # noqa: BLE001
         print("  ✗ 棕櫚油: {}".format(exc))
         errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
+
+    for st in stocks:
+        st["digest"] = digest.build(st)
 
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())
     print("\n重點 {} 條：".format(len(highlights)))
