@@ -15,7 +15,7 @@ python3 fetch.py     # 抓最新資料
 
 網頁掛在 GitHub Pages，**每天由 GitHub 在雲端自動更新，不需要你的 Mac 開機**：
 
-> https://rootedfutures3.github.io/stockchecker/
+> https://evolee1100.github.io/stockchecker/
 
 排程寫在 `.github/workflows/daily.yml`，每週一到週五 18:30（馬來西亞時間，馬股 5pm 收盤後）跑一次：
 抓價量 → 抓基本面 → 抓新聞 → 把快照存回 repo → 重新部署網頁。
@@ -23,7 +23,7 @@ python3 fetch.py     # 抓最新資料
 想立刻更新一次不用等排程：
 
 ```bash
-gh workflow run daily.yml --repo rootedfutures3/stockchecker
+gh workflow run daily.yml --repo evolee1100/stockchecker
 ```
 
 或在 GitHub 網頁的 Actions 分頁按 **Run workflow**。
