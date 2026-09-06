@@ -37,17 +37,36 @@ header{display:flex;align-items:center;gap:9px;margin-bottom:24px}
 .logo{border-radius:6px;flex:none}
 h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 .stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right}
-.reload{display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer;
-        font:inherit;font-size:13px;font-weight:500;line-height:1;
+.reload{display:inline-flex;align-items:center;gap:8px;flex:none;cursor:pointer;
+        font:inherit;font-size:17px;font-weight:500;line-height:1;
         color:var(--ink-2);background:#fff;border:1px solid var(--line);
-        border-radius:9px;padding:8px 13px}
-.reload svg{width:17px;height:17px;flex:none}
+        border-radius:4px;padding:11px 17px}      /* 長方形，不是膠囊 */
+.reload svg{width:22px;height:22px;flex:none}
 .reload:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
 .reload:active{transform:translateY(1px)}
 .reload.busy svg{animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* 更新完成的通知：5 秒後自己消失 */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:80;
+       display:flex;align-items:center;gap:11px;white-space:nowrap;
+       max-width:calc(100vw - 28px);
+       background:var(--ink);color:#fff;border-radius:9px;padding:12px 18px;
+       box-shadow:0 8px 26px rgba(16,24,40,.26);
+       opacity:0;pointer-events:none;transition:opacity .22s,transform .22s}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.toast svg{width:19px;height:19px;flex:none}
+.toast .tt{font-size:14px;font-weight:600;line-height:1.3}
+.toast .ts{font-size:12px;line-height:1.3;color:rgba(255,255,255,.7);
+           font-variant-numeric:tabular-nums;margin-top:2px}
+@media(max-width:700px){
+  .toast{padding:14px 20px;bottom:22px;gap:12px}
+  .toast svg{width:22px;height:22px}
+  .toast .tt{font-size:16px}
+  .toast .ts{font-size:13.5px}
+}
+
 /* 今日重點 */
 .brief{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:26px}
 .brief-h{display:flex;align-items:baseline;gap:9px;padding:11px 14px 10px;
@@ -317,8 +336,8 @@ code{color:var(--ink-2)}
   h1{font-size:20.5px;white-space:nowrap}
   .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:1px}
   /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
-  .reload{order:2;margin-left:auto;font-size:15px;padding:11px 17px;gap:8px;border-radius:11px}
-  .reload svg{width:21px;height:21px}
+  .reload{order:2;margin-left:auto;font-size:19px;padding:14px 22px;gap:10px;border-radius:5px}
+  .reload svg{width:27px;height:27px}
   tr.group td{font-size:13px}
   tr.row td.c-name{font-size:17.5px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
@@ -403,6 +422,8 @@ code{color:var(--ink-2)}
     收盤價，非即時報價。僅為資訊整理，不構成投資建議。
   </footer>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <div class="sheet" id="sheet">
   <div class="sheet-in">
@@ -996,12 +1017,39 @@ document.addEventListener('click', e => {
 
 /* 主畫面 App 沒有網址列，沒辦法下拉強制重載，所以自己提供一顆。
    帶上時間戳繞過快取——不然按了也是拿到同一份舊資料。 */
+const TICK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+  stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+
+function toast(title, sub = '', ms = 5000){
+  const el = document.getElementById('toast');
+  el.innerHTML = TICK + `<div><div class="tt">${title}</div>` +
+                 (sub ? `<div class="ts">${sub}</div>` : '') + '</div>';
+  el.classList.add('on');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('on'), ms);   // 5 秒後自己消失
+}
+
 document.getElementById('reload').onclick = ev => {
   ev.currentTarget.classList.add('busy');    // 重載有延遲，先轉起來讓人知道按到了
+  // 把重載前的資料時間存起來，回來後比對就知道伺服器是不是真的有新資料
+  try { sessionStorage.setItem('reload_from', D.updated_at || ''); } catch(e) {}
   const u = new URL(location.href);
   u.searchParams.set('t', Date.now());
   location.replace(u.toString());
 };
+
+// 重載回來後才報告結果——沒有新資料就照實說，不要假裝更新了
+(() => {
+  let prev = null;
+  try {
+    prev = sessionStorage.getItem('reload_from');
+    sessionStorage.removeItem('reload_from');
+  } catch(e) {}
+  if(prev === null) return;
+  const now = (D.updated_at || '').replace(' (MYT)', '');
+  toast(prev && prev !== now ? '已更新到最新資料' : '已經是最新資料',
+        '資料時間 ' + now);
+})();
 
 render();
 
