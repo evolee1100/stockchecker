@@ -112,7 +112,7 @@ def build(stock):
             rows.append("{}：{}".format(x.get("date", ""), body[:130] +
                                        ("…" if len(body) > 130 else "")))
         out.append(("公告", " ".join(rows)))
-    elif s.get("filings"):
+    elif s.get("filings") and s.get("sector") != "AI 美股":
         out.append(("公告", "最近 {} 則公告都沒有可抓取的內文，標題見下方清單。"
                     .format(len(s["filings"]))))
 

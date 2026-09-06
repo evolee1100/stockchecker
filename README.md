@@ -101,11 +101,27 @@ gh workflow run daily.yml --repo evolee1100/stockchecker
 
 | 檔案 | 用途 |
 |---|---|
-| `watchlist.json` | **要增減股票就改這個**。每檔需要 `symbol`（Yahoo 代碼，Bursa 為 `代碼.KL`）與 `sa`（stockanalysis 的英文代號，用來抓基本面）|
+| `watchlist.json` | **要增減股票就改這個**。每檔需要 `symbol`（Yahoo 代碼，Bursa 為 `代碼.KL`）與 `sa`（stockanalysis 代號）。美股的 `sa` 要加 `us:` 前綴（例：`us:NVDA`）——馬股在 `/quote/klse/`、美股在 `/stocks/`，路徑不同 |
 | `fetch.py` | 抓價量、算漲跌幅與訊號，寫出 `data/data.json` 與 `data/data.js` |
 | X、P/B、ROE、殖利率、派息率、分析師目標價 |
 | `index.html` | 儀表板本體（單一檔案，無外部相依）|
 | `data/history/` | 每天一份快照，之後可以回頭比對 |
+
+## 追蹤範圍（46 檔）
+
+| 分類 | 檔數 | 內容 |
+|---|---|---|
+| 大盤 | 1 | FBM KLCI |
+| 銀行 | 11 | 馬股全部上市銀行 |
+| REIT | 5 | Sentral、IGB、Pavilion、Axis、KLCCP |
+| 油棕 | 1 | MPOB 官方 CPO 牌價 |
+| AI 馬股 | 10 | 資料中心（YTL Power、Gamuda、SunCon、TIME、Mah Sing）、半導體（Inari、ViTrox、Frontken、MPI）、軟體（Zetrix AI）|
+| AI 美股 | 8 | NVIDIA、Broadcom、AMD、台積電 ADR、Microsoft、Alphabet、Palantir、Arm |
+| 國際 | 9 | 那斯達克、費半、標普 500、台灣加權、恒生、日經、海峽時報、**美債 10 年期殖利率**、**美元兌馬幣** |
+| 其他 | 1 | MRCB |
+
+後兩個國際項目是刻意放的：**美債殖利率**上升時 REIT 這類高息資產相對沒吸引力，
+**馬幣匯率**直接影響外資進出。兩者都是解釋馬股走勢時最常用到的外部變數。
 
 ## 資料來源
 

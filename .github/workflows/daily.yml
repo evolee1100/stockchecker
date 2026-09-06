@@ -31,7 +31,7 @@ jobs:
           python-version: '3.12'
 
       - name: 抓取股價、基本面與新聞
-        run: python3 fetch.py
+        run: python3 -u fetch.py     # -u 讓進度即時顯示在 Actions 的 log
 
       - name: 把每日快照存回 repo
         run: |

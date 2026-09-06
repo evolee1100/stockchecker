@@ -11,7 +11,16 @@ import ssl
 import urllib.request
 
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
-BASE = "https://stockanalysis.com/quote/klse/{t}/{page}__data.json"
+# 馬股在 /quote/klse/<代號>/，美股在 /stocks/<代號>/。
+# watchlist 用 "us:NVDA" 這種前綴指定市場，沒前綴就當馬股。
+BASE_KLSE = "https://stockanalysis.com/quote/klse/{t}/{page}__data.json"
+BASE_US = "https://stockanalysis.com/stocks/{t}/{page}__data.json"
+
+
+def _url(ticker, page):
+    if ticker.lower().startswith("us:"):
+        return BASE_US.format(t=ticker[3:], page=page)
+    return BASE_KLSE.format(t=ticker, page=page)
 
 
 def _resolve(arr, idx, depth=0):
@@ -27,8 +36,7 @@ def _resolve(arr, idx, depth=0):
 
 
 def _get(ticker, page=""):
-    url = BASE.format(t=ticker, page=page)
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    req = urllib.request.Request(_url(ticker, page), headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=25, context=ssl.create_default_context()) as r:
         raw = json.loads(r.read().decode("utf-8"))
     out = []

@@ -139,6 +139,7 @@ def fetch_one(stock):
         "note": stock.get("note", ""),
         "sector": stock.get("sector", "其他"),
         "is_index": bool(stock.get("is_index")),
+        "unit": stock.get("unit", ""),
         "fundamentals": fund,
         "articles": feed["articles"],
         "filings": feed["filings"],
@@ -275,37 +276,40 @@ def main():
     with open(os.path.join(HERE, "watchlist.json"), encoding="utf-8") as fh:
         cfg = json.load(fh)
 
+    total = len(cfg["stocks"])
+    print("開始抓取 {} 檔\n".format(total), flush=True)
+
     stocks, errors = [], []
-    for stock in cfg["stocks"]:
+    for i, stock in enumerate(cfg["stocks"], 1):
         try:
             s = fetch_one(stock)
             s["flags"] = flags(s)
             stocks.append(s)
             f = s.get("fundamentals") or {}
-            print("  ✓ {:11s} {:20.20s} {:>9} {:+7.2f}%  PB={:>5s} ROE={:>7s} 殖利率={:>7s}  新聞 {}/公告 {}".format(
-                s["symbol"], s["name"], s["price"], s["change_pct_1d"] or 0,
+            print("  [{:2d}/{}] ✓ {:11s} {:18.18s} {:>9} {:+7.2f}%  PB={:>5s} ROE={:>7s} 息={:>7s}  新聞{}/公告{}".format(
+                i, total, s["symbol"], s["name"], s["price"], s["change_pct_1d"] or 0,
                 f.get("pb_ratio", "-"), f.get("roe", "-"), f.get("div_yield", "-"),
-                len(s["articles"]), len(s["filings"])))
+                len(s["articles"]), len(s["filings"])), flush=True)
             time.sleep(0.4)  # 對資料來源客氣一點
         except Exception as exc:  # noqa: BLE001
-            print("  ✗ {}: {}".format(stock["symbol"], exc))
+            print("  [{:2d}/{}] ✗ {}: {}".format(i, total, stock["symbol"], exc), flush=True)
             errors.append({"symbol": stock["symbol"], "error": str(exc)})
 
     try:
         po = palm_oil()
         po["flags"] = flags(po)
         stocks.append(po)
-        print("  ✓ {:11s} {:20.20s} {:>9} {:+7.2f}%  30日均價 {}".format(
+        print("  [--/{}] ✓ {:11s} {:18.18s} {:>9} {:+7.2f}%  30日均價 {}".format(total,
             po["symbol"], po["name"], po["price"], po["change_pct_1d"] or 0, po["avg30"]))
     except Exception as exc:  # noqa: BLE001
-        print("  ✗ 棕櫚油: {}".format(exc))
+        print("  [--/{}] ✗ 棕櫚油: {}".format(total, exc), flush=True)
         errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
 
     for st in stocks:
         st["digest"] = digest.build(st)
 
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())
-    print("\n重點 {} 條：".format(len(highlights)))
+    print("\n重點 {} 條：".format(len(highlights)), flush=True)
     for h in highlights[:5]:
         print("  [{}] {} — {}".format(h["level"], h["name"], h["what"]))
 

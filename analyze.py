@@ -47,8 +47,9 @@ def _days_to(iso, today):
 
 
 def analyse(stocks, today):
-    index = next((s for s in stocks if s.get("is_index")), None)
-    mkt = index.get("change_pct_1d") if index else None
+    # 比較基準是馬股大盤，不是任何一個國際指數
+    bench = next((s for s in stocks if s.get("sector") == "大盤"), None)
+    mkt = bench.get("change_pct_1d") if bench else None
     out = []
 
     def add(level, stock, what, why=""):
@@ -56,6 +57,26 @@ def analyse(stocks, today):
                     "sector": stock.get("sector", ""), "what": what, "why": why})
 
     for s in stocks:
+        # ---- 國際指數：只看波動幅度，門檻比個股低（指數本來就不太動）----
+        if s.get("sector") == "國際":
+            d1 = s.get("change_pct_1d")
+            if d1 is None:
+                continue
+            u = s.get("unit", "")
+            if s["symbol"] == "^TNX" and abs(d1) >= 2:
+                add("warn" if d1 > 0 else "good", s,
+                    "美債殖利率 {:+.2f}% 至 {:.2f}{}".format(d1, s["price"], u),
+                    "殖利率上升時，REIT 這類靠配息的資產相對沒吸引力，資金容易流出；下降則相反。")
+            elif s["symbol"] == "MYR=X" and abs(d1) >= 1:
+                add("warn" if d1 > 0 else "info", s,
+                    "馬幣{} {:+.2f}%".format("走貶" if d1 > 0 else "走升", d1),
+                    "USD/MYR 上升代表馬幣貶值。貶值不利外資留在馬股，也推高進口成本。")
+            elif abs(d1) >= 1.5:
+                add("critical" if d1 <= -2.5 else ("warn" if d1 < 0 else "info"), s,
+                    "{:+.2f}%".format(d1),
+                    "國際指數單日波動超過 1.5% 不常見，隔日馬股開盤通常會反映。")
+            continue
+
         if s.get("is_index"):
             continue
         f = s.get("fundamentals") or {}
@@ -78,8 +99,9 @@ def analyse(stocks, today):
         elif d1 is not None and abs(d1) >= 2:
             add("warn", s, "單日{} {:+.2f}%".format("下跌" if d1 < 0 else "上漲", d1), "")
 
-        # 相對大盤：個股自己跌不稀奇，跑輸大盤才是個股問題
-        if d1 is not None and mkt is not None:
+        # 相對大盤：個股自己跌不稀奇，跑輸大盤才是個股問題。
+        # 只對馬股有意義——拿美股跟 KLCI 比是沒有意義的。
+        if d1 is not None and mkt is not None and s.get("sector") != "AI 美股":
             gap = d1 - mkt
             if abs(gap) >= 2:
                 add("warn" if gap < 0 else "info", s,

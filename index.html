@@ -599,7 +599,7 @@ function toggleFav(sym){
   try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch(e) {}
 }
 
-const ORDER = ['大盤','銀行','REIT','油棕','其他'];
+const ORDER = ['大盤','銀行','REIT','油棕','AI 馬股','AI 美股','國際','其他'];
 // 區間用交易日數估：一個月約 21 個交易日
 const RANGES = [{t:'1個月',d:21},{t:'3個月',d:63},{t:'半年',d:126},{t:'1年',d:0}];
 let sortKey = null, sortDir = 1, openSym = null, chartRange = 126;

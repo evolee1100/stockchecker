@@ -145,6 +145,240 @@
       "name": "MRCB",
       "sector": "其他",
       "note": "Sentral REIT 保薦人"
+    },
+    {
+      "symbol": "^IXIC",
+      "sa": null,
+      "q": "Nasdaq",
+      "name": "那斯達克綜合指數",
+      "sector": "國際",
+      "note": "美股科技股指標，全球風險偏好的風向球",
+      "is_index": true
+    },
+    {
+      "symbol": "^SOX",
+      "sa": null,
+      "q": "semiconductor index",
+      "name": "費城半導體指數",
+      "sector": "國際",
+      "note": "半導體景氣指標，跟台股連動最深",
+      "is_index": true
+    },
+    {
+      "symbol": "^GSPC",
+      "sa": null,
+      "q": "S&P 500",
+      "name": "標普 500",
+      "sector": "國際",
+      "note": "美股大盤",
+      "is_index": true
+    },
+    {
+      "symbol": "^TWII",
+      "sa": null,
+      "q": "Taiwan stock market",
+      "name": "台灣加權指數",
+      "sector": "國際",
+      "note": "台股大盤",
+      "is_index": true
+    },
+    {
+      "symbol": "^HSI",
+      "sa": null,
+      "q": "Hang Seng Index",
+      "name": "恒生指數",
+      "sector": "國際",
+      "note": "港股大盤",
+      "is_index": true
+    },
+    {
+      "symbol": "^N225",
+      "sa": null,
+      "q": "Nikkei",
+      "name": "日經 225",
+      "sector": "國際",
+      "note": "日股大盤",
+      "is_index": true
+    },
+    {
+      "symbol": "^STI",
+      "sa": null,
+      "q": "Straits Times Index",
+      "name": "新加坡海峽時報指數",
+      "sector": "國際",
+      "note": "區域同儕，外資常拿來跟馬股比較",
+      "is_index": true
+    },
+    {
+      "symbol": "^TNX",
+      "sa": null,
+      "q": "US 10-year Treasury yield",
+      "name": "美債 10 年期殖利率",
+      "sector": "國際",
+      "note": "REIT 估值的關鍵對照：它上升，高息資產就相對沒吸引力",
+      "is_index": true,
+      "unit": "%"
+    },
+    {
+      "symbol": "MYR=X",
+      "sa": null,
+      "q": "ringgit exchange rate",
+      "name": "美元兌馬幣",
+      "sector": "國際",
+      "note": "匯率直接影響外資進出與進口成本",
+      "is_index": true
+    },
+    {
+      "symbol": "NVDA",
+      "sa": "us:NVDA",
+      "q": "NVIDIA",
+      "name": "NVIDIA",
+      "sector": "AI 美股",
+      "note": "AI 晶片龍頭，整個 AI 資本支出的風向球",
+      "unit": "USD"
+    },
+    {
+      "symbol": "AVGO",
+      "sa": "us:AVGO",
+      "q": "Broadcom",
+      "name": "Broadcom 博通",
+      "sector": "AI 美股",
+      "note": "客製化 AI 晶片與網路交換器",
+      "unit": "USD"
+    },
+    {
+      "symbol": "AMD",
+      "sa": "us:AMD",
+      "q": "AMD",
+      "name": "AMD 超微",
+      "sector": "AI 美股",
+      "note": "AI 晶片第二供應商",
+      "unit": "USD"
+    },
+    {
+      "symbol": "TSM",
+      "sa": "us:TSM",
+      "q": "台積電",
+      "name": "台積電 ADR",
+      "sector": "AI 美股",
+      "note": "先進製程獨佔，台股權重最大",
+      "unit": "USD"
+    },
+    {
+      "symbol": "MSFT",
+      "sa": "us:MSFT",
+      "q": "Microsoft",
+      "name": "Microsoft 微軟",
+      "sector": "AI 美股",
+      "note": "Azure 雲端與 OpenAI 最大股東",
+      "unit": "USD"
+    },
+    {
+      "symbol": "GOOGL",
+      "sa": "us:GOOGL",
+      "q": "Alphabet",
+      "name": "Alphabet 谷歌",
+      "sector": "AI 美股",
+      "note": "自研 TPU 與 Gemini",
+      "unit": "USD"
+    },
+    {
+      "symbol": "PLTR",
+      "sa": "us:PLTR",
+      "q": "Palantir",
+      "name": "Palantir",
+      "sector": "AI 美股",
+      "note": "AI 應用軟體，估值最極端的一檔",
+      "unit": "USD"
+    },
+    {
+      "symbol": "ARM",
+      "sa": "us:ARM",
+      "q": "Arm",
+      "name": "Arm Holdings",
+      "sector": "AI 美股",
+      "note": "晶片架構授權",
+      "unit": "USD"
+    },
+    {
+      "symbol": "6742.KL",
+      "sa": "YTLPOWR",
+      "q": "YTL Power",
+      "name": "YTL Power",
+      "sector": "AI 馬股",
+      "note": "馬股最大 AI 資料中心概念股"
+    },
+    {
+      "symbol": "5398.KL",
+      "sa": "GAMUDA",
+      "q": "Gamuda",
+      "name": "Gamuda",
+      "sector": "AI 馬股",
+      "note": "資料中心工程總包"
+    },
+    {
+      "symbol": "5263.KL",
+      "sa": "SUNCON",
+      "q": "Sunway Construction",
+      "name": "Sunway Construction",
+      "sector": "AI 馬股",
+      "note": "資料中心建商"
+    },
+    {
+      "symbol": "0138.KL",
+      "sa": "ZETRIX",
+      "q": "Zetrix AI",
+      "name": "Zetrix AI（原 MyEG）",
+      "sector": "AI 馬股",
+      "note": "政府數位服務轉型 AI 與區塊鏈"
+    },
+    {
+      "symbol": "0166.KL",
+      "sa": "INARI",
+      "q": "Inari Amertron",
+      "name": "Inari Amertron",
+      "sector": "AI 馬股",
+      "note": "半導體封測，射頻與光通訊"
+    },
+    {
+      "symbol": "0097.KL",
+      "sa": "VITROX",
+      "q": "ViTrox",
+      "name": "ViTrox",
+      "sector": "AI 馬股",
+      "note": "半導體檢測設備"
+    },
+    {
+      "symbol": "0128.KL",
+      "sa": "FRONTKN",
+      "q": "Frontken",
+      "name": "Frontken",
+      "sector": "AI 馬股",
+      "note": "半導體設備清洗服務"
+    },
+    {
+      "symbol": "3867.KL",
+      "sa": "MPI",
+      "q": "MPI 馬太平洋",
+      "name": "MPI 馬太平洋",
+      "sector": "AI 馬股",
+      "note": "半導體封測"
+    },
+    {
+      "symbol": "5031.KL",
+      "sa": "TIMECOM",
+      "q": "TIME dotCom",
+      "name": "TIME dotCom",
+      "sector": "AI 馬股",
+      "note": "資料中心光纖骨幹"
+    },
+    {
+      "symbol": "8583.KL",
+      "sa": "MAHSING",
+      "q": "Mah Sing",
+      "name": "Mah Sing",
+      "sector": "AI 馬股",
+      "note": "土地轉作資料中心"
     }
   ]
 }
