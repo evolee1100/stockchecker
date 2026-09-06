@@ -158,6 +158,92 @@ def fetch_one(stock):
     }
 
 
+def palm_oil():
+    """棕櫚油期貨，換算成馬幣。
+
+    Bursa 的 FCPO（馬幣計價）沒有可用的免費來源——官網和幾個轉載站都擋機器人，
+    所以改用 CME 的美元合約 CPO=F 乘上 USD/MYR 匯率。這是換算值不是 FCPO 結算價，
+    介面上會標明。另外 CPO=F 的 meta.regularMarketPrice 是 2024 年的死資料，
+    只能取每日序列的最後一筆。
+    """
+    cpo = http_json(CHART_URL.format(sym=urllib.parse.quote("CPO=F")))["chart"]["result"][0]
+    fx = http_json(CHART_URL.format(sym="MYR%3DX"))["chart"]["result"][0]
+
+    def to_map(res):
+        out = {}
+        for i, t in enumerate(res["timestamp"]):
+            c = res["indicators"]["quote"][0]["close"][i]
+            if c is not None:
+                out[datetime.fromtimestamp(t, MYT).strftime("%Y-%m-%d")] = c
+        return out
+
+    usd, rate = to_map(cpo), to_map(fx)
+    fx_dates = sorted(rate)
+
+    series, last_rate = [], None
+    for d in sorted(usd):
+        # 匯率若當天沒有報價，就沿用最近一個交易日的
+        avail = [x for x in fx_dates if x <= d]
+        if avail:
+            last_rate = rate[avail[-1]]
+        if last_rate is None:
+            continue
+        series.append({"date": d, "close": round(usd[d] * last_rate, 2),
+                       "volume": 0, "high": None, "low": None})
+
+    if not series:
+        raise RuntimeError("棕櫚油資料是空的")
+
+    closes = [p["close"] for p in series]
+    last = closes[-1]
+
+    def back(n):
+        return closes[-1 - n] if len(closes) > n else None
+
+    # 使用者要的：每日價格加總 ÷ 30
+    window = closes[-30:]
+    avg30 = round(sum(window) / len(window), 2)
+
+    feed = news.fetch({"q": "crude palm oil Malaysia", "symbol": "CPO=F"})
+    for a in feed["articles"]:
+        a["title_zh"] = translate.text_zh(a["title"])
+
+    return {
+        "symbol": "CPO=F",
+        "sa": None,
+        "name": "棕櫚油期貨",
+        "note": "CME 美元合約 CPO=F 乘上 USD/MYR 匯率換算，非 Bursa FCPO 結算價",
+        "sector": "油棕",
+        "is_index": False,
+        "unit": "RM/噸",
+        "calculator": True,
+        "fundamentals": {},
+        "articles": feed["articles"],
+        "filings": [],
+        "currency": "MYR",
+        "price": last,
+        "prev_close": back(1),
+        "change_pct_1d": pct(last, back(1)),
+        "change_pct_5d": pct(last, back(5)),
+        "change_pct_1m": pct(last, back(21)),
+        "change_pct_3m": pct(last, back(63)),
+        "change_pct_1y": pct(last, closes[0]),
+        "day_high": None, "day_low": None,
+        "volume": 0, "avg_volume_20d": None, "volume_ratio": None,
+        "high_52w": round(max(closes[-252:]), 2),
+        "low_52w": round(min(closes[-252:]), 2),
+        "off_52w_high": pct(last, max(closes[-252:])),
+        "at_52w_low": False,
+        "ttm_dividend": 0, "yield_pct": None, "dividends": [],
+        "avg30": avg30,
+        "avg30_days": len(window),
+        "usd_price": round(usd[sorted(usd)[-1]], 2),
+        "fx_rate": round(last_rate, 4),
+        "market_time": series[-1]["date"],
+        "series": series,
+    }
+
+
 def flags(s):
     """自動標出值得注意的訊號，讓你一眼看到「今天有事」。"""
     out = []
@@ -222,6 +308,16 @@ def main():
         except Exception as exc:  # noqa: BLE001
             print("  ✗ {}: {}".format(stock["symbol"], exc))
             errors.append({"symbol": stock["symbol"], "error": str(exc)})
+
+    try:
+        po = palm_oil()
+        po["flags"] = flags(po)
+        stocks.append(po)
+        print("  ✓ {:11s} {:20.20s} {:>9} {:+7.2f}%  30日均價 {}".format(
+            po["symbol"], po["name"], po["price"], po["change_pct_1d"] or 0, po["avg30"]))
+    except Exception as exc:  # noqa: BLE001
+        print("  ✗ 棕櫚油: {}".format(exc))
+        errors.append({"symbol": "CPO=F", "error": str(exc)})
 
     payload = {
         "title": cfg.get("title", "股票追蹤"),

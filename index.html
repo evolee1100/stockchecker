@@ -80,6 +80,32 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .chart .axis{fill:var(--ink-3);font-size:10px;font-variant-numeric:tabular-nums}
 .chart .last{font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums}
 .chart .cross{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:2 3}
+/* 跟著游標的價格標籤 */
+.tip{position:absolute;pointer-events:none;z-index:3;
+     transform:translate(-50%,calc(-100% - 9px));
+     background:var(--ink);color:#fff;font-size:11px;line-height:1.35;
+     padding:4px 8px;border-radius:6px;white-space:nowrap;
+     font-variant-numeric:tabular-nums;opacity:0;transition:opacity .09s}
+.tip.on{opacity:1}
+.tip b{font-weight:600}
+.tip:after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;
+           border:4px solid transparent;border-top-color:var(--ink)}
+
+/* 月價試算 */
+.calc{margin-top:18px;padding:14px 15px;background:#fff;
+      border:1px solid var(--line);border-radius:9px}
+.calc h4{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--ink)}
+.calc .cnote{font-size:11px;color:var(--ink-3);margin:0 0 11px;line-height:1.65}
+.crow{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:14px}
+.crow .op{color:var(--ink-3)}
+.ci{width:96px;padding:6px 9px;font:inherit;font-size:13.5px;
+    font-variant-numeric:tabular-nums;text-align:right;
+    border:1px solid var(--line);border-radius:6px;background:var(--tint);color:var(--ink)}
+.ci:focus{outline:none;border-color:var(--ink);background:#fff}
+.cout{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.clab{font-size:10.5px;color:var(--ink-3);width:100%;display:flex;gap:7px}
+.clab span{width:96px;text-align:right}
+.clab span:last-child{width:auto}
 .readout{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;
          font-size:11.5px;font-variant-numeric:tabular-nums;margin:5px 0 14px}
 .readout .pt{color:var(--ink);font-weight:600}
@@ -183,8 +209,10 @@ const num = v => { if(v==null) return null;
   const n = parseFloat(String(v).replace(/[%,]/g,'')); return isNaN(n)?null:n; };
 const cls = v => v==null ? 'flat' : v>0 ? 'up' : v<0 ? 'down' : 'flat';
 const pc  = v => v==null ? '—' : (v>0?'+':'') + v.toFixed(2) + '%';
-const px  = (v,i) => v==null ? '—' : i ? v.toLocaleString(undefined,{maximumFractionDigits:0})
-                                       : v.toFixed(Math.abs(v)<1 ? 3 : 2);
+const px  = (v,i) => v==null ? '—'
+  : Math.abs(v) >= 1000 ? v.toLocaleString(undefined,{maximumFractionDigits:0})
+  : i ? v.toLocaleString(undefined,{maximumFractionDigits:2})
+  : v.toFixed(Math.abs(v) < 1 ? 3 : 2);
 
 function spark(series, w, h, big){
   const p = series.map(x=>x.close);
@@ -197,6 +225,60 @@ function spark(series, w, h, big){
           stroke-linejoin="round" stroke-linecap="round"/></svg>`;
 }
 
+
+
+/* ---------- 月價試算 ----------
+   使用者的算法：30 日均價 × 30 ÷ 自訂係數。
+   三個欄位都可以改，係數會記在瀏覽器裡，下次打開還在。 */
+const CALC_KEY = 'palm_divisor';
+
+function calculator(s){
+  const saved = (() => { try { return localStorage.getItem(CALC_KEY); } catch(e) { return null; } })();
+  return `<div class="calc" data-calc>
+    <h4>月價試算</h4>
+    <p class="cnote">預設帶入 30 日均價 <b>${px(s.avg30)}</b>（近 ${s.avg30_days} 個交易日收盤加總 ÷ ${s.avg30_days}）。
+       三個欄位都可以改，會即時重算。</p>
+    <div class="crow">
+      <input class="ci" data-k="a" value="${s.avg30}" inputmode="decimal">
+      <span class="op">×</span>
+      <input class="ci" data-k="b" value="30" inputmode="decimal">
+      <span class="op">÷</span>
+      <input class="ci" data-k="c" value="${saved || '18.6'}" inputmode="decimal">
+      <span class="op">=</span>
+      <span class="cout"></span>
+    </div>
+    <div class="clab"><span>均價</span><span></span><span>天數</span><span></span><span>係數</span></div>
+  </div>`;
+}
+
+function wireCalculator(root){
+  const box = root.querySelector('[data-calc]');
+  if(!box) return;
+  const get = k => parseFloat(box.querySelector(`[data-k="${k}"]`).value);
+  const out = box.querySelector('.cout');
+  const run = () => {
+    const a = get('a'), b = get('b'), c = get('c');
+    if(!isFinite(a) || !isFinite(b) || !isFinite(c) || c === 0){
+      out.textContent = '—';
+      out.className = 'cout flat';
+      return;
+    }
+    out.textContent = 'RM ' + (a * b / c).toLocaleString(undefined,
+      {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    out.className = 'cout';
+  };
+  box.querySelectorAll('.ci').forEach(el => {
+    el.addEventListener('input', () => {
+      if(el.dataset.k === 'c'){
+        try { localStorage.setItem(CALC_KEY, el.value); } catch(e) {}
+      }
+      run();
+    });
+    el.addEventListener('click', e => e.stopPropagation());   // 別收合這一列
+  });
+  box.addEventListener('click', e => e.stopPropagation());
+  run();
+}
 
 /* ---------- 有刻度的價格圖 ----------
    小縮圖不需要刻度，但展開後的圖要能回答「多少錢、在什麼價位」，
@@ -281,7 +363,7 @@ const COLS = [
       return bits.join(' · '); }},
 ];
 
-const ORDER = ['大盤','銀行','REIT','其他'];
+const ORDER = ['大盤','銀行','REIT','油棕','其他'];
 // 區間用交易日數估：一個月約 21 個交易日
 const RANGES = [{t:'1個月',d:21},{t:'3個月',d:63},{t:'半年',d:126},{t:'1年',d:0}];
 let sortKey = null, sortDir = 1, openSym = null, chartRange = 126;
@@ -319,6 +401,7 @@ function detailRow(s){
     <div class="dgrid">${cells.map(([k,v])=>
       `<div><div class="k">${k}</div><div class="v ${COLORED.includes(k)?cls(num(v)):''}">${v}</div></div>`
     ).join('')}</div>
+    ${s.calculator ? calculator(s) : ''}
     <div class="news">
       <div><h4>媒體報導 <span class="lang" data-lang="en">原文</span></h4>
 ${feed(s.articles, '近三個月沒有相關報導')}</div>
@@ -342,6 +425,9 @@ ${feed(s.filings, '沒有抓到公告')}</div>
 
     const host = slot.querySelector('.chart');
     const {X, Y, P, pw, svg} = priceChart(host, seg, s.is_index);
+    const tip = document.createElement('div');
+    tip.className = 'tip';
+    host.appendChild(tip);
     const out   = slot.querySelector('.readout .pt');
     const cross = svg.querySelector('.cross');
     const hov   = svg.querySelector('.hov');
@@ -352,6 +438,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
       out.innerHTML = `最新 ${d.date} · <b>${px(d.close, s.is_index)}</b>`;
       cross.style.display = 'none';
       hov.style.display = 'none';
+      tip.classList.remove('on');
     };
     base();
 
@@ -372,6 +459,13 @@ ${feed(s.filings, '沒有抓到公告')}</div>
       hov.setAttribute('cx', cx);
       hov.setAttribute('cy', Y(d.close));
       hov.style.display = '';
+
+      // 標籤跟著游標，貼在資料點正上方；靠近邊緣時往內收，不要被切掉
+      tip.innerHTML = `<b>${px(d.close, s.is_index)}</b>${s.unit ? ' ' + s.unit : ''}<br>${d.date}`;
+      tip.classList.add('on');
+      const half = tip.offsetWidth / 2;
+      tip.style.left = Math.max(half + 2, Math.min(host.clientWidth - half - 2, cx)) + 'px';
+      tip.style.top  = Y(d.close) + 'px';
     };
 
     svg.addEventListener('pointermove',  e => { e.stopPropagation(); track(e.clientX); });
@@ -394,6 +488,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
   });
 
   tr._redraw = draw;                         // 由 render() 在插進 DOM 後呼叫（那時才量得到寬度）
+  wireCalculator(tr);
   tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
     ev.stopPropagation();                    // 別讓點擊冒泡去收合這一列
     chartRange = +b.dataset.d;

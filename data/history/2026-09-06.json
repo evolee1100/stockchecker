@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-09-06 14:08:18 (MYT)",
+ "updated_at": "2026-09-06 14:19:53 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
@@ -1299,6 +1299,43 @@
      "text": "派息率 107%（高於盈餘）"
     }
    ]
+  },
+  {
+   "symbol": "CPO=F",
+   "sa": null,
+   "name": "棕櫚油期貨",
+   "note": "CME 美元合約 CPO=F 乘上 USD/MYR 匯率換算，非 Bursa FCPO 結算價",
+   "sector": "油棕",
+   "is_index": false,
+   "unit": "RM/噸",
+   "calculator": true,
+   "fundamentals": {},
+   "currency": "MYR",
+   "price": 4987.11,
+   "prev_close": 4964.11,
+   "change_pct_1d": 0.46,
+   "change_pct_5d": 5.04,
+   "change_pct_1m": 5.87,
+   "change_pct_3m": 9.37,
+   "change_pct_1y": 10.95,
+   "day_high": null,
+   "day_low": null,
+   "volume": 0,
+   "avg_volume_20d": null,
+   "volume_ratio": null,
+   "high_52w": 5011.34,
+   "low_52w": 3989.13,
+   "off_52w_high": -0.48,
+   "at_52w_low": false,
+   "ttm_dividend": 0,
+   "yield_pct": null,
+   "dividends": [],
+   "avg30": 4752.02,
+   "avg30_days": 30,
+   "usd_price": 1234.25,
+   "fx_rate": 4.0406,
+   "market_time": "2026-09-04",
+   "flags": []
   }
  ]
 }
