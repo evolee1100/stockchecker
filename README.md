@@ -56,6 +56,20 @@ gh workflow run daily.yml --repo evolee1100/stockchecker
 - **媒體報導** — Google News RSS（The Edge、The Star、NST、Bernama、EdgeProp⋯）
 - **官方公告** — klsescreener 轉載的 Bursa 公告（財報、派息、股權變動）
 
+## 翻譯
+
+英文資訊會轉成繁體中文，分三層處理：
+
+1. **規則表** — Bursa 公告標題是套版的，用正規表示式對照翻譯，比機器翻譯準且不會失敗
+2. **機器翻譯** — 新聞標題是自由文字，Google 為主、MyMemory 備援
+3. **保留原文** — 兩者都失敗就顯示英文，不會出現半截或亂碼
+
+公司名與金融縮寫（OPR、NIM、DPU、EPF⋯）在送去翻譯前會換成佔位符保護，翻完還原；
+**還原失敗就整句退回英文**。翻譯結果快取在 `data/translations.json` 並進版控，
+所以每天只需要翻新增的標題。翻譯失敗不寫進快取，下次更新會再試一次。
+
+網頁上每個區塊標題旁有「原文」按鈕可以切回英文核對。
+
 Yahoo 的 `quoteSummary` / `v7/quote` 端點現在需要認證，抓不到基本面，所以基本面走第二個來源。若該來源失效，價量仍會正常更新，只是基本面欄位會空著。
 
 ## 儀表板會自動標出的訊號

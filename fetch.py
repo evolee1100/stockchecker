@@ -16,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 
 import fundamentals
 import news
+import translate
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(HERE, "data")
@@ -106,6 +107,19 @@ def fetch_one(stock):
         fund = fundamentals.fetch(stock["sa"])
 
     feed = news.fetch(stock)
+
+    # 英文資訊統一轉成中文；翻不出來的保留原文，兩邊都留著讓網頁可以切換
+    for a in feed["articles"]:
+        a["title_zh"] = translate.text_zh(a["title"])
+    for f in feed["filings"]:
+        f["title_zh"] = translate.filing_title(f["title"])
+        f["source_zh"] = translate.category(f["source"])
+
+    if fund.get("analyst_rating"):
+        fund["analyst_rating_zh"] = translate.rating(fund["analyst_rating"])
+    for k in ("ex_div_date", "earnings_date"):
+        if fund.get(k):
+            fund[k] = translate.date_zh(fund[k])
 
     return {
         "symbol": sym,
@@ -215,6 +229,8 @@ def main():
         "stocks": stocks,
         "errors": errors,
     }
+
+    translate.save_cache()          # 把這輪新翻的句子寫回快取，明天就不用再翻
 
     os.makedirs(DATA_DIR, exist_ok=True)
     out = os.path.join(DATA_DIR, "data.json")

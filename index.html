@@ -96,7 +96,11 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 @media(max-width:700px){ .news{grid-template-columns:1fr;gap:18px} }
 .news h4{font-size:10.5px;font-weight:600;color:var(--ink-3);text-transform:uppercase;
-         letter-spacing:.09em;margin:0 0 8px}
+         letter-spacing:.09em;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.lang{font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;
+      color:var(--ink-3);border:1px solid var(--line);background:#fff;
+      border-radius:99px;padding:1px 8px;cursor:pointer}
+.lang:hover{color:var(--ink);border-color:#d4d9e0}
 .item{display:block;text-decoration:none;color:inherit;padding:7px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
 .item:hover .it{color:#0b57d0;text-decoration:underline}
@@ -292,14 +296,16 @@ function detailRow(s){
     ['量能倍數', s.volume_ratio ? s.volume_ratio+'x' : '—'],
     ['市值', f.market_cap], ['P/E', f.pe_ratio], ['每股淨值', f.bvps], ['EPS', f.eps], ['ROA', f.roa],
     ['每股派息', f.dps], ['派息率', f.payout_ratio], ['除息日', f.ex_div_date],
-    ['下次財報', f.earnings_date], ['分析師', f.analyst_rating], ['目標價', f.analyst_target],
+    ['下次財報', f.earnings_date], ['分析師', f.analyst_rating_zh || f.analyst_rating], ['目標價', f.analyst_target],
   ].filter(([,v]) => v!=null && v!=='' && v!=='—');
   const COLORED = ['5 日','3 個月','1 年','距高點'];
 
   const feed = (list, empty) => list && list.length
-    ? list.map(n => `<a class="item" href="${n.url}" target="_blank" rel="noopener">
-        <div class="it">${n.title}</div>
-        <div class="im">${[n.source, n.when].filter(Boolean).join(' · ')}</div></a>`).join('')
+    ? list.map(n => `<a class="item" href="${n.url}" target="_blank" rel="noopener"
+         title="${(n.title||'').replace(/"/g,'&quot;')}">
+        <div class="it" data-zh="${(n.title_zh||n.title).replace(/"/g,'&quot;')}"
+                        data-en="${(n.title||'').replace(/"/g,'&quot;')}">${n.title_zh || n.title}</div>
+        <div class="im">${[n.source_zh || n.source, n.when].filter(Boolean).join(' · ')}</div></a>`).join('')
     : `<div class="none">${empty}</div>`;
 
   const tr = document.createElement('tr');
@@ -314,8 +320,10 @@ function detailRow(s){
       `<div><div class="k">${k}</div><div class="v ${COLORED.includes(k)?cls(num(v)):''}">${v}</div></div>`
     ).join('')}</div>
     <div class="news">
-      <div><h4>媒體報導</h4>${feed(s.articles, '近三個月沒有相關報導')}</div>
-      <div><h4>Bursa 公告</h4>${feed(s.filings, '沒有抓到公告')}</div>
+      <div><h4>媒體報導 <span class="lang" data-lang="en">原文</span></h4>
+${feed(s.articles, '近三個月沒有相關報導')}</div>
+      <div><h4>Bursa 公告 <span class="lang" data-lang="en">原文</span></h4>
+${feed(s.filings, '沒有抓到公告')}</div>
     </div>
   </div></td>`;
 
@@ -372,6 +380,18 @@ function detailRow(s){
     svg.addEventListener('touchend',     base);
     svg.addEventListener('click',        e => e.stopPropagation());
   };
+
+  // 「原文 / 中文」切換：翻譯是機器翻的，遇到專有名詞或金融術語想核對時用得上
+  tr.querySelectorAll('.lang').forEach(btn => btn.onclick = ev => {
+    ev.stopPropagation();
+    const toEn = btn.dataset.lang === 'en';
+    btn.dataset.lang = toEn ? 'zh' : 'en';
+    btn.textContent = toEn ? '中文' : '原文';
+    btn.closest('div').querySelectorAll('.it').forEach(el => {
+      const v = toEn ? el.dataset.en : el.dataset.zh;
+      if(v) el.textContent = v;
+    });
+  });
 
   tr._redraw = draw;                         // 由 render() 在插進 DOM 後呼叫（那時才量得到寬度）
   tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
