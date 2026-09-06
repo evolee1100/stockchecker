@@ -37,6 +37,10 @@ header{display:flex;align-items:center;gap:9px;margin-bottom:24px}
 .logo{border-radius:6px;flex:none}
 h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 .stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right}
+.reload{font:inherit;font-size:15px;line-height:1;color:var(--ink-3);background:#fff;
+        border:1px solid var(--line);border-radius:8px;padding:5px 9px;cursor:pointer;flex:none}
+.reload:hover{color:var(--ink);border-color:#d4d9e0}
+.reload:active{background:var(--tint)}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 /* 今日重點 */
@@ -306,7 +310,8 @@ code{color:var(--ink-2)}
   /* 字放大後標題和時間戳擠在同一行會折行，讓時間戳自己佔一行 */
   header{flex-wrap:wrap;margin-bottom:20px}
   h1{font-size:20.5px;white-space:nowrap}
-  .stamp{font-size:13px;flex-basis:100%;margin-left:0;text-align:left;margin-top:1px}
+  .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:1px}
+  .reload{margin-left:auto;font-size:17px;padding:7px 12px}
   tr.group td{font-size:13px}
   tr.row td.c-name{font-size:17.5px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
@@ -375,6 +380,7 @@ code{color:var(--ink-2)}
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
     <span class="stamp" id="updated"></span>
+    <button class="reload" type="button" id="reload" title="重新載入最新資料">↻</button>
   </header>
 
   <div id="brief"></div>
@@ -600,15 +606,24 @@ function toggleFav(sym){
 }
 
 const ORDER = ['大盤','銀行','REIT','油棕','AI 馬股','AI 美股','國際','其他'];
-// 區間用交易日數估：一個月約 21 個交易日
-const RANGES = [{t:'1個月',d:21},{t:'3個月',d:63},{t:'半年',d:126},{t:'1年',d:0}];
-let sortKey = null, sortDir = 1, openSym = null, chartRange = 126;
+// 短區間用日線（一個月約 21 個交易日），長區間切到週線——
+// 五年的日線資料量太大，週線 260 點看趨勢也夠。
+const RANGES = [
+  {t:'1個月', d:21,  w:false},
+  {t:'3個月', d:63,  w:false},
+  {t:'半年',  d:126, w:false},
+  {t:'1年',   d:0,   w:false},
+  {t:'3年',   d:156, w:true},
+  {t:'5年',   d:0,   w:true},
+];
+let sortKey = null, sortDir = 1, openSym = null, chartRange = '半年';
 
 function detailRow(s){
   const f = s.fundamentals || {};
   const cells = [
     ['前收', px(s.prev_close,s.is_index)], ['當日高', px(s.day_high,s.is_index)], ['當日低', px(s.day_low,s.is_index)],
     ['5 日', pc(s.change_pct_5d)], ['3 個月', pc(s.change_pct_3m)], ['1 年', pc(s.change_pct_1y)],
+    ['3 年', pc(s.change_pct_3y)], ['5 年', pc(s.change_pct_5y)],
     ['52週高', px(s.high_52w,s.is_index)], ['52週低', px(s.low_52w,s.is_index)], ['距高點', pc(s.off_52w_high)],
     ['成交量', s.volume ? s.volume.toLocaleString() : '—'],
     ['量能倍數', s.volume_ratio ? s.volume_ratio+'x' : '—'],
@@ -648,8 +663,8 @@ function detailRow(s){
       ${s.digest.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div>
         <div class="dg-v">${v}</div></div>`).join('')}
     </div>` : ''}
-    <div class="ranges">${RANGES.map(r=>
-      `<span class="rng ${r.d===chartRange?'on':''}" data-d="${r.d}">${r.t}</span>`).join('')}</div>
+    <div class="ranges">${RANGES.filter(r => !r.w || (s.series_w || []).length > 30)
+      .map(r => `<span class="rng ${r.t===chartRange?'on':''}" data-d="${r.t}">${r.t}</span>`).join('')}</div>
     <div class="chartslot"></div>
     <div class="dgrid">${cells.map(([k,v])=>
       `<div><div class="k">${k}</div><div class="v ${COLORED.includes(k)?cls(num(v)):''}">${v}</div></div>`
@@ -669,15 +684,18 @@ ${feed(s.filings, '沒有抓到公告')}</div>
 
   const slot = tr.querySelector('.chartslot');
   const draw = () => {
-    const cut = RANGES.find(r=>r.d===chartRange).d;
-    const seg = cut ? s.series.slice(-cut) : s.series;
+    let r = RANGES.find(x => x.t === chartRange);
+    if(!r || (r.w && (s.series_w || []).length <= 30)) r = RANGES[2];   // 沒週線就退回半年
+    const src = r.w ? s.series_w : s.series;
+    const seg = r.d ? src.slice(-r.d) : src;
     const chg = (seg[seg.length-1].close / seg[0].close - 1) * 100;
 
     slot.innerHTML = `<div class="chart"></div>
       <div class="readout">
         <span class="pt"></span>
         <span class="rg">區間 ${seg[0].date} → ${seg[seg.length-1].date} ·
-          ${seg.length} 個交易日 · <span class="${cls(chg)}">${pc(chg)}</span></span>
+          ${seg.length} ${r.w ? '週' : '個交易日'} ·
+          <span class="${cls(chg)}">${pc(chg)}</span>${r.w ? '（週線）' : ''}</span>
       </div>`;
 
     const host = slot.querySelector('.chart');
@@ -749,7 +767,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
   wireCalculator(tr);
   tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
     ev.stopPropagation();                    // 別讓點擊冒泡去收合這一列
-    chartRange = +b.dataset.d;
+    chartRange = b.dataset.d;
     tr.querySelectorAll('.rng').forEach(x => x.classList.toggle('on', x === b));
     draw();
   });
@@ -962,6 +980,14 @@ document.addEventListener('click', e => {
   e.stopPropagation();
   showOriginal(btn.closest('.item'));
 });
+
+/* 主畫面 App 沒有網址列，沒辦法下拉強制重載，所以自己提供一顆。
+   帶上時間戳繞過快取——不然按了也是拿到同一份舊資料。 */
+document.getElementById('reload').onclick = () => {
+  const u = new URL(location.href);
+  u.searchParams.set('t', Date.now());
+  location.replace(u.toString());
+};
 
 render();
 

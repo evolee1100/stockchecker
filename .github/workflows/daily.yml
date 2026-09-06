@@ -45,6 +45,11 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html manifest.webmanifest _site/
+          # 把建置時間戳進 data.js 的網址。固定網址會被瀏覽器快取住，
+          # 從主畫面開啟的 App 尤其頑固——加了版本號才會真的去拿新資料。
+          V=$(date -u +%Y%m%d%H%M%S)
+          sed -i "s#src=\"data/data.js\"#src=\"data/data.js?v=$V\"#" _site/index.html
+          grep -o 'data/data.js?v=[0-9]*' _site/index.html
           cp icon.svg icon-192.png icon-512.png apple-touch-icon.png \
              favicon-32.png favicon-16.png _site/
           cp -r data _site/

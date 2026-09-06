@@ -30,6 +30,12 @@ CHART_URL = (
     "https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
     "?range=1y&interval=1d&events=div"
 )
+# 五年份另外抓週線。五年的日線 x 46 檔會讓 data.js 膨脹到 4-5MB，
+# 手機載入太慢；週線只有 260 點，長區間看趨勢也夠了。
+CHART_URL_5Y = (
+    "https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
+    "?range=5y&interval=1wk"
+)
 
 
 def http_json(url, tries=3):
@@ -105,6 +111,21 @@ def fetch_one(stock):
     hi52 = meta.get("fiftyTwoWeekHigh")
     lo52 = meta.get("fiftyTwoWeekLow")
 
+    # 五年週線，長區間用
+    weekly = []
+    try:
+        wraw = http_json(CHART_URL_5Y.format(sym=urllib.parse.quote(sym)), tries=2)
+        wres = wraw["chart"]["result"][0]
+        wq = wres["indicators"]["quote"][0]
+        for i, t in enumerate(wres["timestamp"]):
+            c = wq["close"][i]
+            if c is None:
+                continue
+            weekly.append({"date": datetime.fromtimestamp(t, MYT).strftime("%Y-%m-%d"),
+                           "close": round(c, 4)})
+    except Exception:
+        pass
+
     fund = {}
     if stock.get("sa"):
         fund = fundamentals.fetch(stock["sa"])
@@ -166,7 +187,10 @@ def fetch_one(stock):
         "market_time": datetime.fromtimestamp(
             meta["regularMarketTime"], MYT
         ).strftime("%Y-%m-%d %H:%M"),
-        "series": series,  # 完整一年，網頁上可自由切區間
+        "change_pct_3y": pct(last, weekly[-157]["close"]) if len(weekly) > 157 else None,
+        "change_pct_5y": pct(last, weekly[0]["close"]) if weekly else None,
+        "series": series,        # 完整一年日線
+        "series_w": weekly,      # 五年週線
     }
 
 
