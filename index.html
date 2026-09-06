@@ -37,10 +37,15 @@ header{display:flex;align-items:center;gap:9px;margin-bottom:24px}
 .logo{border-radius:6px;flex:none}
 h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 .stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right}
-.reload{font:inherit;font-size:15px;line-height:1;color:var(--ink-3);background:#fff;
-        border:1px solid var(--line);border-radius:8px;padding:5px 9px;cursor:pointer;flex:none}
-.reload:hover{color:var(--ink);border-color:#d4d9e0}
-.reload:active{background:var(--tint)}
+.reload{display:inline-flex;align-items:center;gap:6px;flex:none;cursor:pointer;
+        font:inherit;font-size:13px;font-weight:500;line-height:1;
+        color:var(--ink-2);background:#fff;border:1px solid var(--line);
+        border-radius:9px;padding:8px 13px}
+.reload svg{width:17px;height:17px;flex:none}
+.reload:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
+.reload:active{transform:translateY(1px)}
+.reload.busy svg{animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 /* 今日重點 */
@@ -311,7 +316,9 @@ code{color:var(--ink-2)}
   header{flex-wrap:wrap;margin-bottom:20px}
   h1{font-size:20.5px;white-space:nowrap}
   .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:1px}
-  .reload{margin-left:auto;font-size:17px;padding:7px 12px}
+  /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
+  .reload{order:2;margin-left:auto;font-size:15px;padding:11px 17px;gap:8px;border-radius:11px}
+  .reload svg{width:21px;height:21px}
   tr.group td{font-size:13px}
   tr.row td.c-name{font-size:17.5px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
@@ -380,7 +387,11 @@ code{color:var(--ink-2)}
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
     <span class="stamp" id="updated"></span>
-    <button class="reload" type="button" id="reload" title="重新載入最新資料">↻</button>
+    <button class="reload" type="button" id="reload" title="重新載入最新資料">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/>
+      </svg><span>更新</span></button>
   </header>
 
   <div id="brief"></div>
@@ -985,7 +996,8 @@ document.addEventListener('click', e => {
 
 /* 主畫面 App 沒有網址列，沒辦法下拉強制重載，所以自己提供一顆。
    帶上時間戳繞過快取——不然按了也是拿到同一份舊資料。 */
-document.getElementById('reload').onclick = () => {
+document.getElementById('reload').onclick = ev => {
+  ev.currentTarget.classList.add('busy');    // 重載有延遲，先轉起來讓人知道按到了
   const u = new URL(location.href);
   u.searchParams.set('t', Date.now());
   location.replace(u.toString());
