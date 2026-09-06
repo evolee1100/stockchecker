@@ -274,7 +274,7 @@ code{color:var(--ink-2)}
 <div class="ovl" id="ovl">
   <div class="dlg" role="dialog" aria-modal="true" aria-label="原文">
     <h5>原文 <button class="x" type="button" aria-label="關閉">&times;</button></h5>
-    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH'}</div><div class="en" id="ovl-en"></div></div>
+    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH 原文'}</div><div class="en" id="ovl-en"></div></div>
     <div class="dsec"><div class="k">中譯（機器翻譯）</div><div class="zh" id="ovl-zh"></div></div>
     <div class="dfoot"><span id="ovl-src"></span>
       <a id="ovl-url" href="#" target="_blank" rel="noopener">開啟原文網頁 →</a></div>
@@ -692,9 +692,9 @@ function showOriginal(item){
     <h5>${bodyZh ? '公告全文' : '原文對照'} <button class="x" type="button" aria-label="關閉">&times;</button></h5>
     <div class="dsec"><div class="k">${bodyZh ? '標題' : '中譯（機器翻譯）'}</div>
       <div class="${bodyZh ? 'zh' : 'en'}" style="font-weight:600">${esc(d.zh)}</div></div>
-    ${bodyZh ? `<div class="dsec"><div class="k">內文（機器翻譯）</div>
+    ${bodyZh ? `<div class="dsec"><div class="k">${bodyEn ? '內文（機器翻譯）' : '內文（重點整理）'}</div>
       <div class="zh" id="ovl-body">${esc(bodyZh).replace(/\n/g,'<br>')}</div></div>` : ''}
-    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH'}</div>
+    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH 原文'}</div>
       <div class="en" style="font-size:13px">${esc(d.en)}</div>
       ${bodyEn ? `<div class="en" style="font-size:12.5px;color:var(--ink-2);margin-top:7px">${esc(bodyEn).replace(/\n/g,'<br>')}</div>` : ''}</div>
     <div class="dfoot"><span>${esc(d.src || '')}</span>
