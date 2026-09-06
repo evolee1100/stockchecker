@@ -14,6 +14,7 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
+import analyze
 import fundamentals
 import news
 import palm
@@ -299,10 +300,16 @@ def main():
         print("  ✗ 棕櫚油: {}".format(exc))
         errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
 
+    highlights = analyze.analyse(stocks, datetime.now(MYT).date())
+    print("\n重點 {} 條：".format(len(highlights)))
+    for h in highlights[:5]:
+        print("  [{}] {} — {}".format(h["level"], h["name"], h["what"]))
+
     payload = {
         "title": cfg.get("title", "股票追蹤"),
         "updated_at": datetime.now(MYT).strftime("%Y-%m-%d %H:%M:%S (MYT)"),
         "stocks": stocks,
+        "highlights": highlights,
         "errors": errors,
     }
 
