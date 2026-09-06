@@ -16,6 +16,7 @@ from datetime import datetime, timedelta, timezone
 
 import fundamentals
 import news
+import palm
 import translate
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -167,40 +168,14 @@ def fetch_one(stock):
 
 
 def palm_oil():
-    """棕櫚油期貨，換算成馬幣。
+    """棕櫚油：用 MPOB 官方每日牌價（RM/噸）。
 
-    Bursa 的 FCPO（馬幣計價）沒有可用的免費來源——官網和幾個轉載站都擋機器人，
-    所以改用 CME 的美元合約 CPO=F 乘上 USD/MYR 匯率。這是換算值不是 FCPO 結算價，
-    介面上會標明。另外 CPO=F 的 meta.regularMarketPrice 是 2024 年的死資料，
-    只能取每日序列的最後一筆。
+    先前是拿 CME 的美元合約 CPO=F 乘匯率換算，那是估算值。
+    MPOB 是馬來西亞棕油局的官方牌價，才是收購商和小園主實際參照的價格。
     """
-    cpo = http_json(CHART_URL.format(sym=urllib.parse.quote("CPO=F")))["chart"]["result"][0]
-    fx = http_json(CHART_URL.format(sym="MYR%3DX"))["chart"]["result"][0]
-
-    def to_map(res):
-        out = {}
-        for i, t in enumerate(res["timestamp"]):
-            c = res["indicators"]["quote"][0]["close"][i]
-            if c is not None:
-                out[datetime.fromtimestamp(t, MYT).strftime("%Y-%m-%d")] = c
-        return out
-
-    usd, rate = to_map(cpo), to_map(fx)
-    fx_dates = sorted(rate)
-
-    series, last_rate = [], None
-    for d in sorted(usd):
-        # 匯率若當天沒有報價，就沿用最近一個交易日的
-        avail = [x for x in fx_dates if x <= d]
-        if avail:
-            last_rate = rate[avail[-1]]
-        if last_rate is None:
-            continue
-        series.append({"date": d, "close": round(usd[d] * last_rate, 2),
-                       "volume": 0, "high": None, "low": None})
-
+    series = palm.daily_prices("6M")
     if not series:
-        raise RuntimeError("棕櫚油資料是空的")
+        raise RuntimeError("MPOB 沒有回傳價格")
 
     closes = [p["close"] for p in series]
     last = closes[-1]
@@ -208,19 +183,18 @@ def palm_oil():
     def back(n):
         return closes[-1 - n] if len(closes) > n else None
 
-    # 使用者要的：每日價格加總 ÷ 30
     window = closes[-30:]
     avg30 = round(sum(window) / len(window), 2)
 
-    feed = news.fetch({"q": "crude palm oil Malaysia", "symbol": "CPO=F"})
+    feed = news.fetch({"q": "crude palm oil Malaysia", "symbol": "CPO"})
     for a in feed["articles"]:
         a["title_zh"] = translate.text_zh(a["title"])
 
     return {
-        "symbol": "CPO=F",
+        "symbol": "MPOB-CPO",
         "sa": None,
-        "name": "棕櫚油期貨",
-        "note": "CME 美元合約 CPO=F 乘上 USD/MYR 匯率換算，非 Bursa FCPO 結算價",
+        "name": "毛棕櫚油 CPO",
+        "note": "MPOB 官方每日馬來西亞毛棕櫚油牌價",
         "sector": "油棕",
         "is_index": False,
         "unit": "RM/噸",
@@ -235,18 +209,16 @@ def palm_oil():
         "change_pct_5d": pct(last, back(5)),
         "change_pct_1m": pct(last, back(21)),
         "change_pct_3m": pct(last, back(63)),
-        "change_pct_1y": pct(last, closes[0]),
+        "change_pct_1y": None,
         "day_high": None, "day_low": None,
         "volume": 0, "avg_volume_20d": None, "volume_ratio": None,
-        "high_52w": round(max(closes[-252:]), 2),
-        "low_52w": round(min(closes[-252:]), 2),
-        "off_52w_high": pct(last, max(closes[-252:])),
+        "high_52w": round(max(closes), 2),
+        "low_52w": round(min(closes), 2),
+        "off_52w_high": pct(last, max(closes)),
         "at_52w_low": False,
         "ttm_dividend": 0, "yield_pct": None, "dividends": [],
         "avg30": avg30,
         "avg30_days": len(window),
-        "usd_price": round(usd[sorted(usd)[-1]], 2),
-        "fx_rate": round(last_rate, 4),
         "market_time": series[-1]["date"],
         "series": series,
     }
@@ -325,7 +297,7 @@ def main():
             po["symbol"], po["name"], po["price"], po["change_pct_1d"] or 0, po["avg30"]))
     except Exception as exc:  # noqa: BLE001
         print("  ✗ 棕櫚油: {}".format(exc))
-        errors.append({"symbol": "CPO=F", "error": str(exc)})
+        errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
 
     payload = {
         "title": cfg.get("title", "股票追蹤"),

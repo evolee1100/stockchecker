@@ -121,7 +121,14 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .cout{font-size:17px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 .clab{font-size:10.5px;color:var(--ink-3);width:100%;display:flex;gap:7px}
 .clab span{width:96px;text-align:right}
+.clab span.w-s{width:66px}
 .clab span:last-child{width:auto}
+.ci-s{width:66px}
+.cunit{font-size:12px;font-weight:500;color:var(--ink-3)}
+.cbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.cb{font:inherit;font-size:11px;color:var(--ink-2);background:var(--tint);cursor:pointer;
+    border:1px solid var(--line);border-radius:99px;padding:3px 11px;line-height:1.6}
+.cb:hover{color:var(--ink);border-color:#d4d9e0;background:#fff}
 .readout{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;
          font-size:11.5px;font-variant-numeric:tabular-nums;margin:5px 0 14px}
 .readout .pt{color:var(--ink);font-weight:600}
@@ -323,54 +330,60 @@ function spark(series, w, h, big){
 
 
 
-/* ---------- 月價試算 ----------
-   使用者的算法：30 日均價 × 30 ÷ 自訂係數。
-   三個欄位都可以改，係數會記在瀏覽器裡，下次打開還在。 */
-const CALC_KEY = 'palm_divisor';
+/* ---------- 鮮果串（FFB / TBS）收購價試算 ----------
+   小園主拿到的鮮果串價 = 毛棕櫚油（CPO）價 x 收購商給的出油率（OER）。
+   CPO 價用 MPOB 官方牌價，出油率由使用者自己填（收購商會給）。 */
+const OER_KEY = 'palm_oer';
 
 function calculator(s){
-  const saved = (() => { try { return localStorage.getItem(CALC_KEY); } catch(e) { return null; } })();
-  return `<div class="calc" data-calc>
-    <h4>月價試算</h4>
-    <p class="cnote">預設帶入 30 日均價 <b>${px(s.avg30)}</b>（近 ${s.avg30_days} 個交易日收盤加總 ÷ ${s.avg30_days}）。
-       三個欄位都可以改，會即時重算。</p>
+  const saved = (() => { try { return localStorage.getItem(OER_KEY); } catch(e) { return null; } })();
+  return `<div class="calc" data-calc data-avg="${s.avg30}" data-today="${s.price}">
+    <h4>鮮果串（FFB）收購價試算</h4>
+    <p class="cnote">鮮果串價 = 毛棕櫚油價 × 出油率。CPO 價預設帶入
+       <b>${s.avg30_days} 日均價 RM ${Number(s.avg30).toLocaleString()}</b>
+       （MPOB 官方牌價每日加總 ÷ ${s.avg30_days}）。</p>
     <div class="crow">
-      <input class="ci" data-k="a" value="${s.avg30}" inputmode="decimal">
+      <input class="ci" data-k="cpo" value="${s.avg30}" inputmode="decimal">
       <span class="op">×</span>
-      <input class="ci" data-k="b" value="30" inputmode="decimal">
-      <span class="op">÷</span>
-      <input class="ci" data-k="c" value="${saved || '18.6'}" inputmode="decimal">
+      <input class="ci ci-s" data-k="oer" value="${saved || '18.75'}" inputmode="decimal">
+      <span class="op">%</span>
       <span class="op">=</span>
       <span class="cout"></span>
     </div>
-    <div class="clab"><span>均價</span><span></span><span>天數</span><span></span><span>係數</span></div>
+    <div class="clab"><span>CPO 價 RM/噸</span><span></span><span class="w-s">出油率</span></div>
+    <div class="cbtns">
+      <button class="cb" type="button" data-use="avg">用 ${s.avg30_days} 日均價</button>
+      <button class="cb" type="button" data-use="today">用當日價 ${Number(s.price).toLocaleString()}</button>
+    </div>
   </div>`;
 }
 
 function wireCalculator(root){
   const box = root.querySelector('[data-calc]');
   if(!box) return;
-  const get = k => parseFloat(box.querySelector(`[data-k="${k}"]`).value);
+  const cpo = box.querySelector('[data-k="cpo"]');
+  const oer = box.querySelector('[data-k="oer"]');
   const out = box.querySelector('.cout');
+
   const run = () => {
-    const a = get('a'), b = get('b'), c = get('c');
-    if(!isFinite(a) || !isFinite(b) || !isFinite(c) || c === 0){
-      out.textContent = '—';
-      out.className = 'cout flat';
-      return;
-    }
-    out.textContent = 'RM ' + (a * b / c).toLocaleString(undefined,
-      {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    out.className = 'cout';
+    const a = parseFloat(cpo.value), b = parseFloat(oer.value);
+    if(!isFinite(a) || !isFinite(b)){ out.textContent = '—'; return; }
+    out.innerHTML = 'RM ' + (a * b / 100).toLocaleString(undefined,
+      {minimumFractionDigits: 2, maximumFractionDigits: 2}) +
+      ' <span class="cunit">/噸</span>';
   };
-  box.querySelectorAll('.ci').forEach(el => {
+
+  [cpo, oer].forEach(el => {
     el.addEventListener('input', () => {
-      if(el.dataset.k === 'c'){
-        try { localStorage.setItem(CALC_KEY, el.value); } catch(e) {}
-      }
+      if(el === oer){ try { localStorage.setItem(OER_KEY, el.value); } catch(e) {} }
       run();
     });
-    el.addEventListener('click', e => e.stopPropagation());   // 別收合這一列
+    el.addEventListener('click', e => e.stopPropagation());
+  });
+  box.querySelectorAll('.cb').forEach(b => b.onclick = ev => {
+    ev.stopPropagation();
+    cpo.value = b.dataset.use === 'avg' ? box.dataset.avg : box.dataset.today;
+    run();
   });
   box.addEventListener('click', e => e.stopPropagation());
   run();
