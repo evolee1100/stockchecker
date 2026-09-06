@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>馬股每日追蹤</title>
+<style>
+/* 淺色 · 極簡：一個表格搞定，只用髮絲線分隔，不用卡片和陰影 */
+:root{
+  --bg:#fff;
+  --line:#e8eaee;
+  --hair:#f1f3f5;
+  --ink:#16191d;
+  --ink-2:#6b737e;
+  --ink-3:#a3aab4;
+  --up:#0a7a45;
+  --down:#c2261f;
+  --flat:#a3aab4;
+  --tint:#f7f8fa;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:34px 22px 70px}
+
+header{display:flex;align-items:baseline;gap:12px;margin-bottom:26px}
+h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
+.stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto}
+
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--hair)}
+th:first-child,td:first-child{text-align:left;padding-left:0}
+th:last-child,td:last-child{padding-right:0}
+thead th{
+  font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.03em;
+  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;padding-bottom:8px;
+}
+thead th:hover{color:var(--ink)}
+th .a{opacity:.35;font-size:8.5px;margin-left:2px}
+td{font-variant-numeric:tabular-nums}
+
+/* 分類標題列 */
+tr.group td{
+  padding:22px 0 7px;border-bottom:1px solid var(--line);
+  font-size:10.5px;font-weight:600;color:var(--ink-3);
+  text-transform:uppercase;letter-spacing:.1em;text-align:left;
+}
+tr.group:first-child td{padding-top:8px}
+
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--tint)}
+tr.row.on td{background:var(--tint)}
+.name{font-weight:550}
+.sym{color:var(--ink-3);font-size:10.5px;font-weight:400;margin-left:7px}
+.up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
+.spark{display:block;width:74px;height:22px;margin-left:auto}
+.dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-left:7px;vertical-align:middle}
+.dot.bad{background:var(--down)} .dot.warn{background:#d99100}
+
+/* 展開列 */
+tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line);
+             white-space:normal;text-align:left}
+.dbox{padding:16px 0 20px}
+.dnote{font-size:11.5px;color:var(--ink-2);margin:0 0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 14px}
+.chip{font-size:10.5px;padding:2.5px 9px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+.chip.bad{color:var(--down);border-color:#f2cfcd}
+.chip.good{color:var(--up);border-color:#c9e6d8}
+.chip.warn{color:#8a5c00;border-color:#eeddb6}
+.bigchart{display:block;width:100%;height:130px}
+/* 圖表區間切換 */
+.ranges{display:flex;gap:4px;margin:2px 0 10px}
+.rng{font-size:11px;padding:3px 11px;border-radius:99px;border:1px solid var(--line);
+     background:#fff;color:var(--ink-2);cursor:pointer;line-height:1.5}
+.rng:hover{color:var(--ink);border-color:#d4d9e0}
+.rng.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+.rmeta{font-size:11px;color:var(--ink-3);margin:0 0 14px;font-variant-numeric:tabular-nums}
+
+/* 新聞 */
+.news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:700px){ .news{grid-template-columns:1fr;gap:18px} }
+.news h4{font-size:10.5px;font-weight:600;color:var(--ink-3);text-transform:uppercase;
+         letter-spacing:.09em;margin:0 0 8px}
+.item{display:block;text-decoration:none;color:inherit;padding:7px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:none}
+.item:hover .it{color:#0b57d0;text-decoration:underline}
+.it{font-size:12.5px;line-height:1.45}
+.im{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.none{font-size:11.5px;color:var(--ink-3);padding:7px 0}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:14px 18px}
+.dgrid .k{font-size:10.5px;color:var(--ink-3)}
+.dgrid .v{font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:1px}
+
+footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+       color:var(--ink-3);font-size:11px;line-height:1.9}
+code{color:var(--ink-2)}
+/* meta 欄只給手機用 */
+.c-meta{display:none}
+
+/* ---------- 手機版：不捲表格，改成兩行式列表 ----------
+   name  ┊ 走勢 ┊ 股價
+   P/B·ROE·息 ┊    ┊ 今日%                                        */
+@media(max-width:700px){
+  .wrap{padding:22px 15px 56px}
+  .scroll{overflow:visible}
+  table,tbody{display:block;width:100%}
+  thead{display:none}
+  tr.group{display:block}
+  tr.group td{display:block;padding:20px 0 6px}
+
+  tr.row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 62px auto;
+    grid-template-areas:"nm tr pr" "mt tr ch";
+    align-items:center;
+    column-gap:11px;row-gap:2px;
+    padding:11px 0;border-bottom:1px solid var(--hair);
+  }
+  tr.row td{display:block;border:none;padding:0;background:none !important}
+  /* 注意：這些一定要用 tr.row 開頭，否則權重輸給上面的 `tr.row td`，display:none 不會生效 */
+  tr.row td.c-name {grid-area:nm;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+  tr.row td.c-meta {grid-area:mt;display:block;font-size:11px;color:var(--ink-3);
+                    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  tr.row td.c-trend{grid-area:tr;align-self:center}
+  tr.row td.c-trend .spark{width:62px;height:26px}
+  tr.row td.c-price{grid-area:pr;text-align:right;font-size:15px;font-weight:600}
+  tr.row td.c-d1   {grid-area:ch;text-align:right;font-size:12px}
+  tr.row td.c-m1,
+  tr.row td.c-pb,
+  tr.row td.c-roe,
+  tr.row td.c-yld  {display:none}
+
+  tr.detail{display:block}
+  tr.detail td{display:block}
+  .dbox{padding:12px 0 18px}
+  .dgrid{grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:12px 14px}
+  .bigchart{height:150px}
+  .chips{gap:4px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="title">馬股每日追蹤</h1>
+    <span class="stamp" id="updated"></span>
+  </header>
+
+  <div class="scroll"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+
+  <footer>
+    每天更新 <code>python3 fetch.py</code> · 自動化 <code>./install_daily.sh</code> · 改追蹤清單 <code>watchlist.json</code><br>
+    收盤價，非即時報價。僅為資訊整理，不構成投資建議。
+  </footer>
+</div>
+
+<script src="data/data.js"></script>
+<script>
+const D = window.STOCK_DATA;
+const $ = s => document.querySelector(s);
+
+const num = v => { if(v==null) return null;
+  const n = parseFloat(String(v).replace(/[%,]/g,'')); return isNaN(n)?null:n; };
+const cls = v => v==null ? 'flat' : v>0 ? 'up' : v<0 ? 'down' : 'flat';
+const pc  = v => v==null ? '—' : (v>0?'+':'') + v.toFixed(2) + '%';
+const px  = (v,i) => v==null ? '—' : i ? v.toLocaleString(undefined,{maximumFractionDigits:0})
+                                       : v.toFixed(Math.abs(v)<1 ? 3 : 2);
+
+function spark(series, w, h, big){
+  const p = series.map(x=>x.close);
+  if(p.length<2) return '';
+  const lo=Math.min(...p), hi=Math.max(...p), span=(hi-lo)||1;
+  const d = p.map((v,i)=>`${i?'L':'M'}${(i/(p.length-1)*w).toFixed(1)} ${(h-(v-lo)/span*(h-3)-1.5).toFixed(1)}`).join(' ');
+  const col = p[p.length-1] >= p[0] ? 'var(--up)' : 'var(--down)';
+  return `<svg class="${big?'bigchart':'spark'}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="${big?1.6:1.3}"
+          stroke-linejoin="round" stroke-linecap="round"/></svg>`;
+}
+
+/* 欄位：只留真正每天會看的 */
+const COLS = [
+  {k:'name', t:'',  cell:s=>{
+      const bad = (s.flags||[]).find(f=>f.level==='bad');
+      const warn = (s.flags||[]).find(f=>f.level==='warn');
+      const dot = bad ? '<span class="dot bad"></span>' : warn ? '<span class="dot warn"></span>' : '';
+      return `<span class="name">${s.name}</span><span class="sym">${s.symbol}</span>${dot}`; },
+     sort:s=>s.name, dir:1},
+  {k:'trend',t:'走勢·半年', cell:s=>spark(s.series.slice(-126),74,22,false), sort:s=>s.change_pct_1m},
+  {k:'price',t:'股價',   cell:s=>px(s.price,s.is_index), sort:s=>s.price},
+  {k:'d1',   t:'今日',   cell:s=>`<span class="${cls(s.change_pct_1d)}">${pc(s.change_pct_1d)}</span>`, sort:s=>s.change_pct_1d},
+  {k:'m1',   t:'1個月',  cell:s=>`<span class="${cls(s.change_pct_1m)}">${pc(s.change_pct_1m)}</span>`, sort:s=>s.change_pct_1m},
+  {k:'pb',   t:'P/B',    cell:s=>s.fundamentals.pb_ratio || '—',  sort:s=>num(s.fundamentals.pb_ratio), dir:1},
+  {k:'roe',  t:'ROE',    cell:s=>s.fundamentals.roe || '—',       sort:s=>num(s.fundamentals.roe)},
+  {k:'yld',  t:'殖利率', cell:s=>s.fundamentals.div_yield || '—', sort:s=>num(s.fundamentals.div_yield)},
+  // 只在手機版顯示：把 P/B、ROE、殖利率併成一行，省掉橫向捲動
+  {k:'meta', t:'', nosort:true, cell:s=>{
+      const f = s.fundamentals || {};
+      const bits = [];
+      if(f.pb_ratio)  bits.push('P/B ' + f.pb_ratio);
+      if(f.roe)       bits.push('ROE ' + f.roe);
+      if(f.div_yield) bits.push('息 ' + f.div_yield);
+      if(!bits.length) bits.push('1個月 ' + pc(s.change_pct_1m));
+      return bits.join(' · '); }},
+];
+
+const ORDER = ['大盤','銀行','REIT','其他'];
+// 區間用交易日數估：一個月約 21 個交易日
+const RANGES = [{t:'1個月',d:21},{t:'3個月',d:63},{t:'半年',d:126},{t:'1年',d:0}];
+let sortKey = null, sortDir = 1, openSym = null, chartRange = 126;
+
+function detailRow(s){
+  const f = s.fundamentals || {};
+  const cells = [
+    ['前收', px(s.prev_close,s.is_index)], ['當日高', px(s.day_high,s.is_index)], ['當日低', px(s.day_low,s.is_index)],
+    ['5 日', pc(s.change_pct_5d)], ['3 個月', pc(s.change_pct_3m)], ['1 年', pc(s.change_pct_1y)],
+    ['52週高', px(s.high_52w,s.is_index)], ['52週低', px(s.low_52w,s.is_index)], ['距高點', pc(s.off_52w_high)],
+    ['成交量', s.volume ? s.volume.toLocaleString() : '—'],
+    ['量能倍數', s.volume_ratio ? s.volume_ratio+'x' : '—'],
+    ['市值', f.market_cap], ['P/E', f.pe_ratio], ['每股淨值', f.bvps], ['EPS', f.eps], ['ROA', f.roa],
+    ['每股派息', f.dps], ['派息率', f.payout_ratio], ['除息日', f.ex_div_date],
+    ['下次財報', f.earnings_date], ['分析師', f.analyst_rating], ['目標價', f.analyst_target],
+  ].filter(([,v]) => v!=null && v!=='' && v!=='—');
+  const COLORED = ['5 日','3 個月','1 年','距高點'];
+
+  const feed = (list, empty) => list && list.length
+    ? list.map(n => `<a class="item" href="${n.url}" target="_blank" rel="noopener">
+        <div class="it">${n.title}</div>
+        <div class="im">${[n.source, n.when].filter(Boolean).join(' · ')}</div></a>`).join('')
+    : `<div class="none">${empty}</div>`;
+
+  const tr = document.createElement('tr');
+  tr.className = 'detail';
+  tr.innerHTML = `<td colspan="${COLS.length}"><div class="dbox">
+    <div class="dnote">${s.note||''}${s.market_time?' · 最後成交 '+s.market_time:''}</div>
+    <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
+    <div class="ranges">${RANGES.map(r=>
+      `<span class="rng ${r.d===chartRange?'on':''}" data-d="${r.d}">${r.t}</span>`).join('')}</div>
+    <div class="chartslot"></div>
+    <div class="dgrid">${cells.map(([k,v])=>
+      `<div><div class="k">${k}</div><div class="v ${COLORED.includes(k)?cls(num(v)):''}">${v}</div></div>`
+    ).join('')}</div>
+    <div class="news">
+      <div><h4>媒體報導</h4>${feed(s.articles, '近三個月沒有相關報導')}</div>
+      <div><h4>Bursa 公告</h4>${feed(s.filings, '沒有抓到公告')}</div>
+    </div>
+  </div></td>`;
+
+  const slot = tr.querySelector('.chartslot');
+  const draw = () => {
+    const cut = RANGES.find(r=>r.d===chartRange).d;
+    const seg = cut ? s.series.slice(-cut) : s.series;
+    const a = seg[0].close, b = seg[seg.length-1].close;
+    const chg = (b/a - 1) * 100;
+    slot.innerHTML = spark(seg, 900, 130, true) +
+      `<div class="rmeta">${seg[0].date} → ${seg[seg.length-1].date} ·
+        ${seg.length} 個交易日 ·
+        <span class="${cls(chg)}">${pc(chg)}</span></div>`;
+  };
+  draw();
+  tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
+    ev.stopPropagation();                    // 別讓點擊冒泡去收合這一列
+    chartRange = +b.dataset.d;
+    tr.querySelectorAll('.rng').forEach(x => x.classList.toggle('on', x === b));
+    draw();
+  });
+  return tr;
+}
+
+function render(){
+  $('#title').textContent = D.title;
+  $('#updated').textContent = D.updated_at;
+
+  $('#head').innerHTML = '<tr>' + COLS.map(c =>
+    `<th data-k="${c.k}" class="c-${c.k}">${c.t}<span class="a">${
+      sortKey===c.k ? (sortDir>0?'▲':'▼') : (c.t?'⇅':'')}</span></th>`).join('') + '</tr>';
+  $('#head').querySelectorAll('th').forEach(th => th.onclick = () => {
+    const c = COLS.find(x=>x.k===th.dataset.k);
+    if(c.nosort) return;
+    if(sortKey===c.k) sortDir = -sortDir; else { sortKey = c.k; sortDir = c.dir || -1; }
+    render();
+  });
+
+  const body = $('#body'); body.innerHTML = '';
+  ORDER.forEach(sec => {
+    let list = D.stocks.filter(s=>s.sector===sec);
+    if(!list.length) return;
+
+    if(sortKey){
+      const g = COLS.find(c=>c.k===sortKey).sort;
+      list = [...list].sort((a,b)=>{
+        const av=g(a), bv=g(b);
+        if(av==null) return 1; if(bv==null) return -1;
+        return typeof av === 'string' ? sortDir*av.localeCompare(bv,'zh-Hant') : sortDir*(av-bv);
+      });
+    }
+
+    const gr = document.createElement('tr');
+    gr.className = 'group';
+    gr.innerHTML = `<td colspan="${COLS.length}">${sec}</td>`;
+    body.appendChild(gr);
+
+    list.forEach(s => {
+      const tr = document.createElement('tr');
+      tr.className = 'row' + (openSym===s.symbol ? ' on' : '');
+      tr.innerHTML = COLS.map(c=>`<td class="c-${c.k}">${c.cell(s)}</td>`).join('');
+      tr.onclick = () => { openSym = openSym===s.symbol ? null : s.symbol; render(); };
+      body.appendChild(tr);
+      if(openSym===s.symbol) body.appendChild(detailRow(s));
+    });
+  });
+}
+render();
+</script>
+</body>
+</html>

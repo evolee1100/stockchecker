@@ -1,0 +1,150 @@
+{
+  "title": "馬股每日追蹤",
+  "stocks": [
+    {
+      "symbol": "^KLSE",
+      "sa": null,
+      "q": "Bursa Malaysia",
+      "name": "FBM KLCI",
+      "sector": "大盤",
+      "note": "馬股綜合指數",
+      "is_index": true
+    },
+    {
+      "symbol": "1155.KL",
+      "sa": "MAYBANK",
+      "q": "Maybank",
+      "name": "Maybank 馬來亞銀行",
+      "sector": "銀行",
+      "note": "馬國最大銀行"
+    },
+    {
+      "symbol": "1295.KL",
+      "sa": "PBBANK",
+      "q": "Public Bank Berhad",
+      "name": "Public Bank 大眾銀行",
+      "sector": "銀行",
+      "note": "資產品質最佳"
+    },
+    {
+      "symbol": "1023.KL",
+      "sa": "CIMB",
+      "q": "CIMB Group",
+      "name": "CIMB Group",
+      "sector": "銀行",
+      "note": "區域布局最廣"
+    },
+    {
+      "symbol": "5819.KL",
+      "sa": "HLBANK",
+      "q": "Hong Leong Bank",
+      "name": "Hong Leong Bank 豐隆銀行",
+      "sector": "銀行",
+      "note": "持有成都銀行股權"
+    },
+    {
+      "symbol": "1066.KL",
+      "sa": "RHBBANK",
+      "q": "RHB Bank",
+      "name": "RHB Bank 興業銀行",
+      "sector": "銀行",
+      "note": "高股息"
+    },
+    {
+      "symbol": "1082.KL",
+      "sa": "HLFG",
+      "q": "Hong Leong Financial Group",
+      "name": "Hong Leong Fin Group",
+      "sector": "銀行",
+      "note": "豐隆銀行控股母公司"
+    },
+    {
+      "symbol": "1015.KL",
+      "sa": "AMBANK",
+      "q": "AmBank",
+      "name": "AMMB (AmBank) 大馬銀行",
+      "sector": "銀行",
+      "note": "中型銀行"
+    },
+    {
+      "symbol": "2488.KL",
+      "sa": "ABMB",
+      "q": "Alliance Bank Malaysia",
+      "name": "Alliance Bank 安聯銀行",
+      "sector": "銀行",
+      "note": "中小企業放款為主"
+    },
+    {
+      "symbol": "5258.KL",
+      "sa": "BIMB",
+      "q": "Bank Islam",
+      "name": "Bank Islam 伊斯蘭銀行",
+      "sector": "銀行",
+      "note": "純伊斯蘭銀行"
+    },
+    {
+      "symbol": "5185.KL",
+      "sa": "AFFIN",
+      "q": "Affin Bank",
+      "name": "Affin Bank 艾芬銀行",
+      "sector": "銀行",
+      "note": "砂拉越州政府為大股東"
+    },
+    {
+      "symbol": "1171.KL",
+      "sa": "MBSB",
+      "q": "MBSB",
+      "name": "MBSB Bank",
+      "sector": "銀行",
+      "note": "最小型，前身為建屋信貸"
+    },
+    {
+      "symbol": "5123.KL",
+      "sa": "SENTRAL",
+      "q": "Sentral REIT",
+      "name": "Sentral REIT",
+      "sector": "REIT",
+      "note": "辦公樓 REIT"
+    },
+    {
+      "symbol": "5227.KL",
+      "sa": "IGBREIT",
+      "q": "IGB REIT",
+      "name": "IGB REIT",
+      "sector": "REIT",
+      "note": "零售 (Mid Valley)"
+    },
+    {
+      "symbol": "5212.KL",
+      "sa": "PAVREIT",
+      "q": "Pavilion REIT",
+      "name": "Pavilion REIT",
+      "sector": "REIT",
+      "note": "零售 (Pavilion KL)"
+    },
+    {
+      "symbol": "5106.KL",
+      "sa": "AXREIT",
+      "q": "Axis REIT",
+      "name": "Axis REIT",
+      "sector": "REIT",
+      "note": "工業 / 物流"
+    },
+    {
+      "symbol": "5235SS.KL",
+      "sa": "KLCC",
+      "q": "KLCCP Stapled",
+      "name": "KLCCP Stapled",
+      "sector": "REIT",
+      "note": "雙峰塔綜合體"
+    },
+    {
+      "symbol": "1651.KL",
+      "sa": "MRCB",
+      "q": "MRCB",
+      "name": "MRCB",
+      "sector": "其他",
+      "note": "Sentral REIT 保薦人"
+    }
+  ]
+}

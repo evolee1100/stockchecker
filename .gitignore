@@ -1,0 +1,7 @@
+# 這兩個是產生出來的大檔，每天都會變，不進版控
+snapshot.html
+artifact.html
+logs/
+__pycache__/
+*.pyc
+.DS_Store

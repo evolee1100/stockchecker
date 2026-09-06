@@ -1,0 +1,53 @@
+name: 每日更新股價
+
+on:
+  schedule:
+    # 10:30 UTC = 18:30 馬來西亞時間，馬股 5pm 收盤後。週一到週五。
+    - cron: '30 10 * * 1-5'
+  workflow_dispatch:        # 也可以在 GitHub 網頁上手動按一下就跑
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 抓取股價、基本面與新聞
+        run: python3 fetch.py
+
+      - name: 把每日快照存回 repo
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "資料更新 $(date -u +'%Y-%m-%d')"
+          git push || echo "沒有變更可推送"
+
+      - name: 組出網站檔案
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r data _site/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
