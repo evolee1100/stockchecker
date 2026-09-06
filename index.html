@@ -48,6 +48,23 @@ h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* 分頁：46 檔擠一頁太長，依用途切開 */
+.tabs{display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+      margin:0 0 20px;padding-bottom:3px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;font:inherit;font-size:13px;font-weight:500;line-height:1.6;
+     color:var(--ink-2);background:#fff;border:1px solid var(--line);
+     border-radius:4px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+.tab .n{opacity:.55;margin-left:5px;font-size:11.5px;font-variant-numeric:tabular-nums}
+.tab.on .n{opacity:.6}
+@media(max-width:700px){
+  .tabs{margin:0 -15px 20px;padding:0 15px 4px}
+  .tab{font-size:15px;padding:9px 17px}
+  .tab .n{font-size:13px}
+}
+
 /* 更新完成的通知：5 秒後自己消失 */
 .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);z-index:80;
        display:flex;align-items:center;gap:11px;white-space:nowrap;
@@ -413,6 +430,7 @@ code{color:var(--ink-2)}
       </svg><span>更新</span></button>
   </header>
 
+  <div class="tabs" id="tabs"></div>
   <div id="brief"></div>
 
   <div class="scroll"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
@@ -638,6 +656,21 @@ function toggleFav(sym){
 }
 
 const ORDER = ['大盤','銀行','REIT','油棕','AI 馬股','AI 美股','國際','其他'];
+
+/* 分頁：把相關的分類併在一起，一次只看一組 */
+const TABS = [
+  {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
+  {t:'指數', secs:['大盤','國際']},
+  {t:'銀行', secs:['銀行']},
+  {t:'REIT', secs:['REIT']},
+  {t:'AI',   secs:['AI 馬股','AI 美股']},
+  {t:'油棕', secs:['油棕','其他']},
+  {t:'全部', secs:ORDER},
+];
+const TAB_KEY = 'tab';
+let activeTab = (() => {
+  try { return localStorage.getItem(TAB_KEY) || ''; } catch(e) { return ''; }
+})();
 // 短區間用日線（一個月約 21 個交易日），長區間切到週線——
 // 五年的日線資料量太大，週線 260 點看趨勢也夠。
 const RANGES = [
@@ -869,14 +902,40 @@ function render(){
 
   const body = $('#body'); body.innerHTML = '';
 
-  // 最愛照加入順序排在最前面，其餘分類照原順序，並排除已被釘選的
-  const groups = [];
   const pinned = favs.map(sym => D.stocks.find(s => s.symbol === sym)).filter(Boolean);
-  if(pinned.length) groups.push(['最愛', pinned]);
-  ORDER.forEach(sec => {
-    const list = D.stocks.filter(s => s.sector === sec && !isFav(s.symbol));
-    if(list.length) groups.push([sec, list]);
+
+  // 分頁列：沒有最愛就不顯示那一頁
+  const tabs = TABS.filter(t => t.t !== '最愛' || pinned.length);
+  if(!tabs.some(t => t.t === activeTab)) activeTab = pinned.length ? '最愛' : '銀行';
+  const countOf = t => t.secs === null ? pinned.length
+                     : D.stocks.filter(s => t.secs.includes(s.sector)).length;
+  $('#tabs').innerHTML = tabs.map(t =>
+    `<button class="tab ${t.t===activeTab?'on':''}" type="button" data-t="${t.t}">${t.t}<span class="n">${countOf(t)}</span></button>`).join('');
+  $('#tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => {
+    activeTab = b.dataset.t;
+    try { localStorage.setItem(TAB_KEY, activeTab); } catch(e) {}
+    openSym = null;
+    render();
+    scrollTo({top: 0, behavior: 'smooth'});
   });
+
+  const tab = tabs.find(t => t.t === activeTab);
+  const groups = [];
+  if(tab.secs === null){
+    groups.push(['最愛', pinned]);
+  } else if(activeTab === '全部'){
+    // 只有「全部」需要把最愛釘到最上面；其他分頁本來就已經聚焦了
+    if(pinned.length) groups.push(['最愛', pinned]);
+    ORDER.forEach(sec => {
+      const list = D.stocks.filter(s => s.sector === sec && !isFav(s.symbol));
+      if(list.length) groups.push([sec, list]);
+    });
+  } else {
+    tab.secs.forEach(sec => {
+      const list = D.stocks.filter(s => s.sector === sec);
+      if(list.length) groups.push([sec, list]);
+    });
+  }
 
   groups.forEach(([sec, group]) => {
     let list = group;
