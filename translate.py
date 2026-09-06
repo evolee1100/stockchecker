@@ -264,6 +264,42 @@ def text_zh(text, delay=0.35):
     return t
 
 
+def paragraph_zh(text, chunk=450):
+    """長文分段翻譯。
+
+    切塊上限 450 字元是被 MyMemory 逼出來的——它免費版單次查詢上限 500 bytes，
+    超過直接回錯誤。Google 沒這個限制，但它是會限流的那個，所以以最嚴的為準。
+    切在句號處，不切在半句中間。
+    """
+    t = (text or "").strip()
+    if not t or not re.search(r"[A-Za-z]{3}", t):
+        return t
+
+    cache = _load_cache()
+    if t in cache:
+        return cache[t]
+
+    parts, buf = [], ""
+    for sentence in re.split(r"(?<=[.!?])\s+", t):
+        if len(buf) + len(sentence) > chunk and buf:
+            parts.append(buf.strip())
+            buf = ""
+        buf += sentence + " "
+    if buf.strip():
+        parts.append(buf.strip())
+
+    out = []
+    for part in parts:
+        zh = text_zh(part)
+        if zh == part:              # 這一段沒翻成功，整篇放棄比半中半英好
+            return t
+        out.append(zh)
+
+    joined = "".join(out)
+    cache[t] = joined
+    return joined
+
+
 if __name__ == "__main__":
     import sys
     for line in sys.argv[1:]:

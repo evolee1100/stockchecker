@@ -150,6 +150,120 @@ def bursa_announcements(code, limit=6):
     return out
 
 
+TXN = {"acquired": "增持", "disposed": "減持", "transferred": "轉讓",
+       "others": "其他", "sale of shares": "賣出股份", "purchase of shares": "買入股份"}
+
+
+def _plain_lines(page):
+    t = re.sub(r"<script.*?</script>", " ", page, flags=re.S)
+    t = re.sub(r"<style.*?</style>", " ", t, flags=re.S)
+    t = re.sub(r"<br\s*/?>|</p>|</div>|</td>|</tr>", "\n", t, flags=re.I)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = htmlmod.unescape(re.sub(r"[ \t]+", " ", t))
+    return [l.strip() for l in t.split("\n") if l.strip()]
+
+
+def _shareholding_summary(page):
+    """持股變動公告是表格式的（四個欄位名，接著四個值）。
+
+    這種公告硬丟去機器翻譯只會得到一堆零碎的欄位名，不如直接解析成一句話。
+    準確、不用 API、也不會被限流。
+    """
+    lines = _plain_lines(page)
+
+    def after(label, offset=1):
+        for i, l in enumerate(lines):
+            if l.lower() == label.lower() and i + offset < len(lines):
+                return lines[i + offset].strip()
+        return ""
+
+    # 四個標題連在一起，值也連在一起，所以值的位移是 +4
+    try:
+        i = [k for k, l in enumerate(lines) if l == "Date of change"][0]
+    except IndexError:
+        return ""
+    if i + 7 >= len(lines):
+        return ""
+
+    date, qty, txn, nature = lines[i + 4], lines[i + 5], lines[i + 6], lines[i + 7]
+    if not re.match(r"^\d", qty.replace(",", "")):
+        return ""
+
+    holder = after("Name of registered holder") or after("Name")
+    total = after("Total no of securities after change")
+    pct = after("Direct (%)")
+
+    act = TXN.get(txn.strip().lower(), txn.strip())
+    direct = "直接持股" if "direct" in nature.lower() else "間接持股"
+
+    parts = ["{} 於 {} {} {} 股（{}）。".format(
+        holder.title() if holder.isupper() else holder,
+        _date_zh(date), act, qty, direct)]
+    if total:
+        tail = "變動後持有 {} 股".format(total)
+        if pct:
+            tail += "，佔 {}%".format(pct)
+        parts.append(tail + "。")
+    reason = after("Circumstances by reason of which change has occurred")
+    if reason and len(reason) < 80:
+        parts.append("原因：{}。".format(TXN.get(reason.lower(), reason)))
+    return " ".join(parts)
+
+
+def _date_zh(text):
+    m = re.match(r"^(\d{1,2})\s+([A-Z][a-z]{2})\s+(\d{4})$", (text or "").strip())
+    if m and m.group(2) in MONTHS:
+        return "{}-{:02d}-{:02d}".format(m.group(3), MONTHS[m.group(2)], int(m.group(1)))
+    return text
+
+
+def announcement_body(url, limit=900):
+    """抓 Bursa 公告內文。
+
+    回傳 (原文, 已是中文的摘要)。持股變動類公告走規則解析，直接產出中文摘要，
+    不必經過翻譯 API；其他公告抓英文全文，交給呼叫端去翻。
+
+    媒體報導沒有對應做法——Google News 把真實網址藏在 JS 後面，
+    馬國幾家主要媒體也沒有可用的 RSS，所以報導只有標題。
+    """
+    try:
+        page = _fetch(url)
+    except Exception:
+        return "", ""
+
+    zh = _shareholding_summary(page)
+    if zh:
+        return "", zh
+
+    m = re.search(r'<div[^>]*class="[^"]*\bcontent\b[^"]*"[^>]*>(.*?)</div>\s*</div>', page, re.S)
+    if not m:
+        return "", ""
+
+    t = re.sub(r"<script.*?</script>", " ", m.group(1), flags=re.S)
+    t = re.sub(r"<style.*?</style>", " ", t, flags=re.S)
+    t = re.sub(r"<br\s*/?>|</p>|</div>|</tr>", "\n", t, flags=re.I)
+    t = re.sub(r"<[^>]+>", " ", t)
+    t = htmlmod.unescape(t)
+    t = re.sub(r"[ \t]+", " ", t)
+    t = re.sub(r"\n\s*\n+", "\n", t).strip()
+
+    # 頁面右側的 metadata 會混進內容區，遇到這些標記就截斷
+    for marker in ("Announcement Info", "Reference Number", "Attachments",
+                   "View original announcement", "Announcement Details"):
+        i = t.find(marker)
+        if i > 60:
+            t = t[:i].strip()
+
+    if len(t) < 40:
+        return "", ""
+
+    if len(t) > limit:
+        cut = t[:limit]
+        dot = max(cut.rfind(". "), cut.rfind("\n"))
+        t = (cut[:dot + 1] if dot > limit * 0.5 else cut).strip() + " …"
+    return t, ""
+
+
 def fetch(stock):
     """回傳 {'articles': [...], 'filings': [...]}"""
     query = stock.get("q") or re.sub(r"[^\w\s&().-]", " ", stock.get("name", "")).strip()

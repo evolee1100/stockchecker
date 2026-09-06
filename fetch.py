@@ -111,9 +111,17 @@ def fetch_one(stock):
     # 英文資訊統一轉成中文；翻不出來的保留原文，兩邊都留著讓網頁可以切換
     for a in feed["articles"]:
         a["title_zh"] = translate.text_zh(a["title"])
-    for f in feed["filings"]:
+    for i, f in enumerate(feed["filings"]):
         f["title_zh"] = translate.filing_title(f["title"])
         f["source_zh"] = translate.category(f["source"])
+        # 只抓最近 3 則的內文：翻譯有成本，舊公告點開連結看就好
+        if i < 3:
+            body_en, body_zh = news.announcement_body(f["url"])
+            if body_zh:                      # 持股變動類：規則解析出來的中文摘要
+                f["body_zh"] = body_zh
+            elif body_en:
+                f["body"] = body_en
+                f["body_zh"] = translate.paragraph_zh(body_en)
 
     if fund.get("analyst_rating"):
         fund["analyst_rating_zh"] = translate.rating(fund["analyst_rating"])

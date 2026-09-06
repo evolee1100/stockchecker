@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>馬股每日追蹤</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-title" content="馬股追蹤">
 <style>
 /* 淺色 · 極簡：一個表格搞定，只用髮絲線分隔，不用卡片和陰影 */
 :root{
@@ -27,9 +33,10 @@ body{
 }
 .wrap{max-width:940px;margin:0 auto;padding:34px 22px 70px}
 
-header{display:flex;align-items:baseline;gap:12px;margin-bottom:26px}
+header{display:flex;align-items:center;gap:9px;margin-bottom:24px}
+.logo{border-radius:6px;flex:none}
 h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
-.stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto}
+.stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;width:100%;font-size:13.5px}
@@ -127,11 +134,60 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
       color:var(--ink-3);border:1px solid var(--line);background:#fff;
       border-radius:99px;padding:1px 8px;cursor:pointer}
 .lang:hover{color:var(--ink);border-color:#d4d9e0}
-.item{display:block;text-decoration:none;color:inherit;padding:7px 0;border-bottom:1px solid var(--line)}
+.item{padding:7px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:none}
-.item:hover .it{color:#0b57d0;text-decoration:underline}
-.it{font-size:12.5px;line-height:1.45}
-.im{font-size:10.5px;color:var(--ink-3);margin-top:2px}
+.it{display:block;font-size:12.5px;line-height:1.45;color:inherit;text-decoration:none}
+.it:hover{color:#0b57d0;text-decoration:underline}
+.im{font-size:10.5px;color:var(--ink-3);margin-top:3px;display:flex;align-items:center;gap:7px}
+.orig{font:inherit;font-size:10px;color:var(--ink-3);background:#fff;cursor:pointer;
+      border:1px solid var(--line);border-radius:99px;padding:1px 7px;line-height:1.5}
+.orig:hover{color:var(--ink);border-color:#d4d9e0}
+
+/* 原文彈出視窗 */
+.ovl{position:fixed;inset:0;z-index:60;display:none;padding:20px;
+     align-items:center;justify-content:center;background:rgba(14,18,23,.42)}
+.ovl.on{display:flex}
+.dlg{background:#fff;border-radius:13px;width:100%;max-width:580px;max-height:82vh;
+     overflow:auto;padding:20px 22px 18px;box-shadow:0 16px 48px rgba(16,24,40,.24)}
+.dlg h5{margin:0 0 14px;font-size:10.5px;font-weight:600;color:var(--ink-3);
+        text-transform:uppercase;letter-spacing:.09em;
+        display:flex;align-items:center;justify-content:space-between}
+.dlg .x{font-size:20px;line-height:1;color:var(--ink-3);background:none;border:none;
+        cursor:pointer;padding:0 2px}
+.dlg .x:hover{color:var(--ink)}
+.dsec{margin-bottom:15px}
+.dsec .k{font-size:10px;color:var(--ink-3);letter-spacing:.06em;margin-bottom:4px}
+.dsec .en{font-size:15px;line-height:1.5;color:var(--ink)}
+.dsec .zh{font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.dfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+       border-top:1px solid var(--line);padding-top:12px;font-size:11.5px;color:var(--ink-3)}
+.dfoot a{color:#0b57d0;text-decoration:none;font-weight:500}
+.dfoot a:hover{text-decoration:underline}
+@media(max-width:700px){
+  .ovl{padding:0;align-items:flex-end}
+  .dlg{max-width:none;border-radius:14px 14px 0 0;max-height:88vh;padding:18px 18px 22px}
+}
+
+/* ---------- 手機版的個股面板 ----------
+   手機上把詳細資料塞在列表中間，會把下面的股票推到很遠，看完要捲很久才找得回原位。
+   改成從底部滑上來的全螢幕面板，關掉就回到原本的位置。 */
+.sheet{position:fixed;inset:0;z-index:55;display:none;background:rgba(14,18,23,.4)}
+.sheet.on{display:block}
+.sheet-in{position:absolute;left:0;right:0;bottom:0;top:34px;background:#fff;
+          border-radius:15px 15px 0 0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+          box-shadow:0 -6px 30px rgba(16,24,40,.2)}
+.sheet-bar{position:sticky;top:0;z-index:2;background:#fff;
+           border-bottom:1px solid var(--line);padding:13px 16px 11px;
+           display:flex;align-items:flex-start;gap:12px}
+.sheet-bar .t{flex:1;min-width:0}
+.sheet-bar .nm{font-size:15px;font-weight:600;line-height:1.3}
+.sheet-bar .sy{font-size:10.5px;color:var(--ink-3);margin-top:1px}
+.sheet-bar .pr{font-size:19px;font-weight:650;font-variant-numeric:tabular-nums;text-align:right;line-height:1.2}
+.sheet-bar .ch{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+.sheet-bar .x{font-size:24px;line-height:.8;color:var(--ink-3);background:none;
+              border:none;cursor:pointer;padding:2px 0 2px 6px}
+.sheet-body{padding:0 16px 40px}
+.sheet-body .dbox{padding:14px 0 0}
 .none{font-size:11.5px;color:var(--ink-3);padding:7px 0}
 .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:14px 18px}
 .dgrid .k{font-size:10.5px;color:var(--ink-3)}
@@ -152,25 +208,28 @@ code{color:var(--ink-2)}
   table,tbody{display:block;width:100%}
   thead{display:none}
   tr.group{display:block}
-  tr.group td{display:block;padding:20px 0 6px}
+  tr.group td{display:block;padding:24px 0 7px;font-size:11px}
 
   tr.row{
     display:grid;
-    grid-template-columns:minmax(0,1fr) 62px auto;
+    grid-template-columns:minmax(0,1fr) 66px auto;
     grid-template-areas:"nm tr pr" "mt tr ch";
     align-items:center;
-    column-gap:11px;row-gap:2px;
-    padding:11px 0;border-bottom:1px solid var(--hair);
+    column-gap:12px;row-gap:3px;
+    padding:14px 0;                      /* 點擊區至少 56px 高，手指按得準 */
+    border-bottom:1px solid var(--hair);
+    -webkit-tap-highlight-color:rgba(6,112,63,.07);
   }
+  tr.row:active td{opacity:.55}
   tr.row td{display:block;border:none;padding:0;background:none !important}
   /* 注意：這些一定要用 tr.row 開頭，否則權重輸給上面的 `tr.row td`，display:none 不會生效 */
-  tr.row td.c-name {grid-area:nm;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+  tr.row td.c-name {grid-area:nm;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14.5px}
   tr.row td.c-meta {grid-area:mt;display:block;font-size:11px;color:var(--ink-3);
                     overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   tr.row td.c-trend{grid-area:tr;align-self:center}
-  tr.row td.c-trend .spark{width:62px;height:26px}
-  tr.row td.c-price{grid-area:pr;text-align:right;font-size:15px;font-weight:600}
-  tr.row td.c-d1   {grid-area:ch;text-align:right;font-size:12px}
+  tr.row td.c-trend .spark{width:66px;height:28px}
+  tr.row td.c-price{grid-area:pr;text-align:right;font-size:16px;font-weight:650}
+  tr.row td.c-d1   {grid-area:ch;text-align:right;font-size:12.5px;font-weight:600}
   tr.row td.c-m1,
   tr.row td.c-pb,
   tr.row td.c-roe,
@@ -188,6 +247,7 @@ code{color:var(--ink-2)}
 <body>
 <div class="wrap">
   <header>
+    <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
     <span class="stamp" id="updated"></span>
   </header>
@@ -198,6 +258,27 @@ code{color:var(--ink-2)}
     每天更新 <code>python3 fetch.py</code> · 自動化 <code>./install_daily.sh</code> · 改追蹤清單 <code>watchlist.json</code><br>
     收盤價，非即時報價。僅為資訊整理，不構成投資建議。
   </footer>
+</div>
+
+<div class="sheet" id="sheet">
+  <div class="sheet-in">
+    <div class="sheet-bar">
+      <div class="t"><div class="nm" id="sh-name"></div><div class="sy" id="sh-sym"></div></div>
+      <div><div class="pr" id="sh-price"></div><div class="ch" id="sh-chg"></div></div>
+      <button class="x" type="button" id="sh-x" aria-label="關閉">&times;</button>
+    </div>
+    <div class="sheet-body" id="sh-body"></div>
+  </div>
+</div>
+
+<div class="ovl" id="ovl">
+  <div class="dlg" role="dialog" aria-modal="true" aria-label="原文">
+    <h5>原文 <button class="x" type="button" aria-label="關閉">&times;</button></h5>
+    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH'}</div><div class="en" id="ovl-en"></div></div>
+    <div class="dsec"><div class="k">中譯（機器翻譯）</div><div class="zh" id="ovl-zh"></div></div>
+    <div class="dfoot"><span id="ovl-src"></span>
+      <a id="ovl-url" href="#" target="_blank" rel="noopener">開啟原文網頁 →</a></div>
+  </div>
 </div>
 
 <script src="data/data.js"></script>
@@ -382,12 +463,24 @@ function detailRow(s){
   ].filter(([,v]) => v!=null && v!=='' && v!=='—');
   const COLORED = ['5 日','3 個月','1 年','距高點'];
 
+  const esc = t => (t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   const feed = (list, empty) => list && list.length
-    ? list.map(n => `<a class="item" href="${n.url}" target="_blank" rel="noopener"
-         title="${(n.title||'').replace(/"/g,'&quot;')}">
-        <div class="it" data-zh="${(n.title_zh||n.title).replace(/"/g,'&quot;')}"
-                        data-en="${(n.title||'').replace(/"/g,'&quot;')}">${n.title_zh || n.title}</div>
-        <div class="im">${[n.source_zh || n.source, n.when].filter(Boolean).join(' · ')}</div></a>`).join('')
+    ? list.map(n => {
+        const zh = n.title_zh || n.title, en = n.title || '';
+        const translated = zh !== en;
+        const hasBody = !!(n.body_zh || n.body);
+        return `<div class="item"
+             data-zh="${esc(zh)}" data-en="${esc(en)}"
+             data-src="${esc([n.source_zh || n.source, n.when].filter(Boolean).join(' · '))}"
+             data-url="${esc(n.url)}"
+             data-body-en="${esc(n.body || '')}"
+             data-body-zh="${esc(n.body_zh || '')}">
+          <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${zh}</a>
+          <div class="im">${[n.source_zh || n.source, n.when].filter(Boolean).join(' · ')}
+            ${(translated || hasBody) ? `<button class="orig" type="button">${hasBody ? '讀全文' : '原文'}</button>` : ''}</div>
+        </div>`;
+      }).join('')
     : `<div class="none">${empty}</div>`;
 
   const tr = document.createElement('tr');
@@ -481,9 +574,9 @@ ${feed(s.filings, '沒有抓到公告')}</div>
     const toEn = btn.dataset.lang === 'en';
     btn.dataset.lang = toEn ? 'zh' : 'en';
     btn.textContent = toEn ? '中文' : '原文';
-    btn.closest('div').querySelectorAll('.it').forEach(el => {
-      const v = toEn ? el.dataset.en : el.dataset.zh;
-      if(v) el.textContent = v;
+    btn.closest('div').querySelectorAll('.item').forEach(it => {
+      const v = toEn ? it.dataset.en : it.dataset.zh;
+      if(v) it.querySelector('.it').textContent = v;
     });
   });
 
@@ -535,9 +628,13 @@ function render(){
       const tr = document.createElement('tr');
       tr.className = 'row' + (openSym===s.symbol ? ' on' : '');
       tr.innerHTML = COLS.map(c=>`<td class="c-${c.k}">${c.cell(s)}</td>`).join('');
-      tr.onclick = () => { openSym = openSym===s.symbol ? null : s.symbol; render(); };
+      tr.onclick = () => {
+        if(isMobile()){ openSheet(s); return; }
+        openSym = openSym === s.symbol ? null : s.symbol;
+        render();
+      };
       body.appendChild(tr);
-      if(openSym===s.symbol){
+      if(openSym === s.symbol && !isMobile()){
         const d = detailRow(s);
         body.appendChild(d);
         d._redraw();                         // 插入後才畫圖，這樣量得到實際寬度
@@ -545,6 +642,88 @@ function render(){
     });
   });
 }
+/* ---------- 原文彈出視窗 ----------
+   機器翻譯遇到金融術語一定會有偏差，要能隨時叫出原文對照。
+   用彈窗而不是 title 提示，因為手機沒有 hover。 */
+const isMobile = () => matchMedia('(max-width:700px)').matches;
+
+/* ---------- 手機的個股面板 ---------- */
+const sheet = document.getElementById('sheet');
+
+function openSheet(s){
+  document.getElementById('sh-name').textContent = s.name;
+  document.getElementById('sh-sym').textContent  = s.symbol + (s.unit ? ' · ' + s.unit : '');
+  document.getElementById('sh-price').textContent = px(s.price, s.is_index);
+  const chg = document.getElementById('sh-chg');
+  chg.textContent = pc(s.change_pct_1d);
+  chg.className = 'ch ' + cls(s.change_pct_1d);
+
+  const host = document.getElementById('sh-body');
+  host.innerHTML = '';
+  const row = detailRow(s);                    // 沿用同一份內容，不另外維護一套
+  host.appendChild(row.querySelector('.dbox'));
+  sheet.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  row._redraw();
+  wireCalculator(host);
+}
+
+function closeSheet(){
+  sheet.classList.remove('on');
+  document.body.style.overflow = '';
+}
+document.getElementById('sh-x').onclick = closeSheet;
+sheet.addEventListener('click', e => { if(e.target === sheet) closeSheet(); });
+
+const ovl = document.getElementById('ovl');
+
+function showOriginal(item){
+  const d = item.dataset;
+  const dlg = ovl.querySelector('.dlg');
+  let bodyZh = d.bodyZh || '';
+  const bodyEn = d.bodyEn || '';
+  // 翻譯失敗時 body_zh 會等於原文，那就別重複顯示，也別謊稱是「機器翻譯」
+  const failed = bodyZh && bodyEn && bodyZh === bodyEn;
+  if(failed) bodyZh = '';
+
+  // 有全文就以中譯全文為主，原文標題放後面對照；
+  // 媒體報導抓不到全文（Google News 把真實網址藏起來了），就只顯示標題對照。
+  dlg.innerHTML = `
+    <h5>${bodyZh ? '公告全文' : '原文對照'} <button class="x" type="button" aria-label="關閉">&times;</button></h5>
+    <div class="dsec"><div class="k">${bodyZh ? '標題' : '中譯（機器翻譯）'}</div>
+      <div class="${bodyZh ? 'zh' : 'en'}" style="font-weight:600">${esc(d.zh)}</div></div>
+    ${bodyZh ? `<div class="dsec"><div class="k">內文（機器翻譯）</div>
+      <div class="zh" id="ovl-body">${esc(bodyZh).replace(/\n/g,'<br>')}</div></div>` : ''}
+    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH'}</div>
+      <div class="en" style="font-size:13px">${esc(d.en)}</div>
+      ${bodyEn ? `<div class="en" style="font-size:12.5px;color:var(--ink-2);margin-top:7px">${esc(bodyEn).replace(/\n/g,'<br>')}</div>` : ''}</div>
+    <div class="dfoot"><span>${esc(d.src || '')}</span>
+      ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">開啟來源網頁 →</a>` : ''}</div>`;
+  ovl.classList.add('on');
+}
+
+function esc(t){
+  return (t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                  .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+const closeOverlay = () => ovl.classList.remove('on');
+
+ovl.addEventListener('click', e => { if(e.target === ovl || e.target.classList.contains('x')) closeOverlay(); });
+addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  if(ovl.classList.contains('on')) closeOverlay();   // 先關上層的原文彈窗
+  else closeSheet();
+});
+
+// 事件委派：新聞是動態產生的，綁在 document 上就不用每次重綁
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.orig');
+  if(!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  showOriginal(btn.closest('.item'));
+});
+
 render();
 
 let rt;

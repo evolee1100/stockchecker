@@ -1,0 +1,14 @@
+{
+  "name": "馬股每日追蹤",
+  "short_name": "馬股追蹤",
+  "description": "馬來西亞銀行股、REIT 與棕櫚油期貨的每日追蹤",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#06703f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

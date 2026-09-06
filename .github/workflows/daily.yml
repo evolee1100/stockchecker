@@ -42,7 +42,9 @@ jobs:
       - name: 組出網站檔案
         run: |
           mkdir -p _site
-          cp index.html _site/
+          cp index.html manifest.webmanifest _site/
+          cp icon.svg icon-192.png icon-512.png apple-touch-icon.png \
+             favicon-32.png favicon-16.png _site/
           cp -r data _site/
 
       - uses: actions/configure-pages@v5
