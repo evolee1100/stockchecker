@@ -19,7 +19,8 @@
   --hair:#f1f3f5;
   --ink:#16191d;
   --ink-2:#6b737e;
-  --ink-3:#a3aab4;
+  --ink-3:#98a0ab;   /* 只用於標籤、單位這類不需要細讀的字 */
+  --read:#5a626d;    /* 說明文字專用：白底對比 6.2:1，遠高於 AA 的 4.5:1 */
   --up:#0a7a45;
   --down:#c2261f;
   --flat:#a3aab4;
@@ -122,7 +123,7 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 .brief-h .tog{margin-left:auto;font:inherit;font-size:11px;color:var(--ink-3);
               background:none;border:none;cursor:pointer;padding:0}
 .brief-h .tog:hover{color:var(--ink)}
-.bi{display:flex;gap:10px;padding:11px 14px;border-bottom:1px solid var(--hair);cursor:pointer}
+.bi{display:flex;gap:11px;padding:13px 14px;border-bottom:1px solid var(--hair);cursor:pointer}
 .bi:last-child{border-bottom:none}
 .bi:hover{background:var(--tint)}
 .bi .bar{width:3px;border-radius:2px;flex:none;background:var(--ink-3)}
@@ -131,9 +132,9 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 .bi.good .bar{background:var(--up)}
 .bi.info .bar{background:#7aa7e8}
 .bi .bt{flex:1;min-width:0}
-.bi .bw{font-size:13px;line-height:1.45}
+.bi .bw{font-size:13.5px;line-height:1.5}
 .bi .bw b{font-weight:600}
-.bi .by{font-size:11.5px;color:var(--ink-3);line-height:1.55;margin-top:2px}
+.bi .by{font-size:12.5px;color:var(--read);line-height:1.6;margin-top:4px}
 .bi .bn{font-size:11px;color:var(--ink-3);white-space:nowrap;margin-left:auto;padding-left:8px}
 
 table{border-collapse:collapse;width:100%;font-size:13.5px}
@@ -179,7 +180,7 @@ thead th.c-fav{padding-left:0;padding-right:6px;cursor:default}
 tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line);
              white-space:normal;text-align:left}
 .dbox{padding:16px 0 20px}
-.dnote{font-size:11.5px;color:var(--ink-2);margin:0 0 12px}
+.dnote{font-size:12px;color:var(--read);margin:0 0 12px;line-height:1.6}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 14px}
 .chip{font-size:10.5px;padding:2.5px 9px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
 .chip.bad{color:var(--down);border-color:#f2cfcd}
@@ -208,7 +209,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .calc{margin-top:18px;padding:14px 15px;background:#fff;
       border:1px solid var(--line);border-radius:9px}
 .calc h4{margin:0 0 3px;font-size:12px;font-weight:600;color:var(--ink)}
-.calc .cnote{font-size:11px;color:var(--ink-3);margin:0 0 11px;line-height:1.65}
+.calc .cnote{font-size:11.5px;color:var(--read);margin:0 0 11px;line-height:1.7}
 .crow{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:14px}
 .crow .op{color:var(--ink-3)}
 .ci{width:96px;padding:6px 9px;font:inherit;font-size:13.5px;
@@ -229,7 +230,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .readout{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;
          font-size:11.5px;font-variant-numeric:tabular-nums;margin:5px 0 14px}
 .readout .pt{color:var(--ink);font-weight:600}
-.readout .rg{color:var(--ink-3)}
+.readout .rg{color:var(--read)}
 /* 圖表區間切換 */
 .ranges{display:flex;gap:4px;margin:2px 0 10px}
 .rng{font-size:11px;padding:3px 11px;border-radius:99px;border:1px solid var(--line);
@@ -245,7 +246,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .dg-r{display:flex;gap:11px;padding:9px 13px;border-bottom:1px solid var(--hair)}
 .dg-r:last-child{border-bottom:none}
 .dg-k{flex:none;width:34px;font-size:11px;color:var(--ink-3);padding-top:1px}
-.dg-v{flex:1;min-width:0;font-size:12.5px;line-height:1.65}
+.dg-v{flex:1;min-width:0;font-size:12.5px;line-height:1.7;color:var(--read)}
 
 /* 新聞 */
 .news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -265,7 +266,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .item:last-child{border-bottom:none}
 .it{display:block;font-size:12.5px;line-height:1.45;color:inherit;text-decoration:none}
 .it:hover{color:#0b57d0;text-decoration:underline}
-.im{font-size:10.5px;color:var(--ink-3);margin-top:3px;display:flex;align-items:center;gap:7px}
+.im{font-size:11px;color:var(--read);margin-top:4px;display:flex;align-items:center;gap:7px}
 .orig{font:inherit;font-size:10px;color:var(--ink-3);background:#fff;cursor:pointer;
       border:1px solid var(--line);border-radius:99px;padding:1px 7px;line-height:1.5}
 .orig:hover{color:var(--ink);border-color:#d4d9e0}
@@ -316,7 +317,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
               border:none;cursor:pointer;padding:2px 0 2px 6px}
 .sheet-body{padding:0 16px 40px}
 .sheet-body .dbox{padding:14px 0 0}
-.none{font-size:11.5px;color:var(--ink-3);padding:7px 0}
+.none{font-size:12px;color:var(--read);padding:7px 0}
 .dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:14px 18px}
 .dgrid .k{font-size:10.5px;color:var(--ink-3)}
 .dgrid .v{font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:1px}
@@ -411,15 +412,15 @@ code{color:var(--ink-2)}
 
   .brief-h b{font-size:17.5px}
   .brief-h span,.brief-h .tog{font-size:13px}
-  .bi .bw{font-size:15.5px}
-  .bi .by{font-size:13.5px}
+  .bi .bw{font-size:16px;line-height:1.5}
+  .bi .by{font-size:14.5px;line-height:1.65}
   .bi .bn{font-size:13px}
   .dg-h{font-size:13px}
   .dg-k{font-size:13px;width:40px}
-  .dg-v{font-size:15px}
+  .dg-v{font-size:15px;line-height:1.75}
   .news h4{font-size:12.5px}
   .it{font-size:15px}
-  .im{font-size:12.5px}
+  .im{font-size:13px}
   .orig{font-size:12px;padding:2px 9px}
   .seg button{font-size:12px;padding:3px 13px}
   .none{font-size:14px}
