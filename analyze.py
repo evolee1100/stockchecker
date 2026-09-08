@@ -67,10 +67,14 @@ def analyse(stocks, today):
                 add("warn" if d1 > 0 else "good", s,
                     "美債殖利率 {:+.2f}% 至 {:.2f}{}".format(d1, s["price"], u),
                     "殖利率上升時，REIT 這類靠配息的資產相對沒吸引力，資金容易流出；下降則相反。")
-            elif s["symbol"] == "MYR=X" and abs(d1) >= 1:
+            elif s["symbol"].endswith("MYR=X") or s["symbol"] == "MYR=X":
+                if abs(d1) < 1:
+                    continue
+                other = "美元" if s["symbol"] == "MYR=X" else "新幣"
                 add("warn" if d1 > 0 else "info", s,
-                    "馬幣{} {:+.2f}%".format("走貶" if d1 > 0 else "走升", d1),
-                    "USD/MYR 上升代表馬幣貶值。貶值不利外資留在馬股，也推高進口成本。")
+                    "馬幣兌{}{} {:+.2f}%".format(other, "走貶" if d1 > 0 else "走升", d1),
+                    "數字上升代表馬幣相對{}貶值。貶值不利外資留在馬股，也推高進口成本。"
+                    .format(other))
             elif abs(d1) >= 1.5:
                 add("critical" if d1 <= -2.5 else ("warn" if d1 < 0 else "info"), s,
                     "{:+.2f}%".format(d1),

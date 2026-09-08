@@ -13,8 +13,10 @@ data = open(os.path.join(HERE, "data", "data.js"), encoding="utf-8").read()
 import re
 import sys
 
-out = html.replace('<script src="data/data.js"></script>',
-                   "<script>\n" + data + "</script>")
+# index.html 現在是用 fetch 抓資料（避開瀏覽器快取），沒有 script 標籤可以取代。
+# 單一檔案版本要把資料直接內嵌，掛在主程式之前讓它跳過 fetch。
+out = html.replace("<script>\nlet D = window.STOCK_DATA",
+                   "<script>\n" + data + "</script>\n<script>\nlet D = window.STOCK_DATA")
 path = os.path.join(HERE, "snapshot.html")
 open(path, "w", encoding="utf-8").write(out)
 print("已產生 {} （{:.0f} KB，單一檔案可直接開）".format(path, len(out) / 1024))

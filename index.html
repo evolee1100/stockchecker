@@ -33,10 +33,17 @@ body{
 }
 .wrap{max-width:940px;margin:0 auto;padding:34px 22px 70px}
 
-header{display:flex;align-items:center;gap:9px;margin-bottom:24px}
-.logo{border-radius:6px;flex:none}
-h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
-.stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right}
+/* 報頭：中文標題走襯線，跟下面全是無襯線的數據拉開層次。
+   用系統內建的宋體/明體（iOS 有 Songti TC、macOS 有 Songti SC），
+   不下載網頁字型——CJK 字型檔動輒好幾 MB，手機讀取會拖很久。 */
+header{display:flex;align-items:center;gap:11px;
+       padding-bottom:15px;margin-bottom:0;border-bottom:1px solid var(--ink)}
+.logo{border-radius:7px;flex:none}
+h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15;
+   font-family:"Songti TC","Songti SC","Noto Serif TC","Source Han Serif TC",
+               "PingFang TC",serif}
+.stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right;
+       font-variant-numeric:tabular-nums}
 .reload{display:inline-flex;align-items:center;gap:8px;flex:none;cursor:pointer;
         font:inherit;font-size:17px;font-weight:500;line-height:1;
         color:var(--ink-2);background:#fff;border:1px solid var(--line);
@@ -48,6 +55,27 @@ h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* 市場脈搏：進來第一眼就看到的四個數字。
+   不用卡片，用垂直細線分隔，像報紙的行情欄。 */
+.pulse{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;
+       border-bottom:1px solid var(--line);margin-bottom:22px;scrollbar-width:none}
+.pulse::-webkit-scrollbar{display:none}
+.pu{flex:1;min-width:88px;padding:13px 14px 14px;border-left:1px solid var(--hair);cursor:pointer}
+.pu:first-child{border-left:none;padding-left:0}
+.pu:hover{background:var(--tint)}
+.pu .k{font-size:10.5px;color:var(--ink-3);white-space:nowrap;letter-spacing:.02em}
+.pu .v{font-size:19px;font-weight:650;font-variant-numeric:tabular-nums;
+       letter-spacing:-.02em;line-height:1.2;margin-top:5px}
+.pu .c{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+@media(max-width:700px){
+  .pulse{margin:0 -15px 20px;padding:0 15px}
+  .pu{min-width:104px;padding:14px 15px 15px}
+  .pu:first-child{padding-left:0}
+  .pu .k{font-size:12px}
+  .pu .v{font-size:22px}
+  .pu .c{font-size:13px}
+}
+
 /* 分頁：46 檔擠一頁太長，依用途切開 */
 .tabs{display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;
       margin:0 0 20px;padding-bottom:3px;scrollbar-width:none}
@@ -88,7 +116,8 @@ h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
 .brief{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:26px}
 .brief-h{display:flex;align-items:baseline;gap:9px;padding:11px 14px 10px;
          background:var(--tint);border-bottom:1px solid var(--line)}
-.brief-h b{font-size:12.5px;font-weight:600}
+.brief-h b{font-size:15px;font-weight:600;letter-spacing:.06em;
+           font-family:"Songti TC","Songti SC","Noto Serif TC","PingFang TC",serif}
 .brief-h span{font-size:11px;color:var(--ink-3)}
 .brief-h .tog{margin-left:auto;font:inherit;font-size:11px;color:var(--ink-3);
               background:none;border:none;cursor:pointer;padding:0}
@@ -112,18 +141,18 @@ th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px so
 th:first-child,td:first-child{text-align:left;padding-left:0}
 th:last-child,td:last-child{padding-right:0}
 thead th{
-  font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.03em;
-  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;padding-bottom:8px;
+  font-size:10.5px;font-weight:600;color:var(--ink-3);letter-spacing:.07em;
+  border-bottom:1px solid var(--line);cursor:pointer;user-select:none;padding-bottom:9px;
 }
 thead th:hover{color:var(--ink)}
 th .a{opacity:.35;font-size:8.5px;margin-left:2px}
-td{font-variant-numeric:tabular-nums}
+td{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
 /* 分類標題列 */
 tr.group td{
-  padding:22px 0 7px;border-bottom:1px solid var(--line);
-  font-size:10.5px;font-weight:600;color:var(--ink-3);
-  text-transform:uppercase;letter-spacing:.1em;text-align:left;
+  padding:26px 0 8px;border-bottom:1px solid var(--ink);
+  font-size:11.5px;font-weight:650;color:var(--ink);
+  letter-spacing:.14em;text-align:left;
 }
 tr.group:first-child td{padding-top:8px}
 
@@ -139,7 +168,7 @@ tr.row.on td{background:var(--tint)}
 .star.on{color:#e8a80c}
 tr.row td.c-fav{width:1px;padding-left:0;padding-right:6px}
 thead th.c-fav{padding-left:0;padding-right:6px;cursor:default}
-.name{font-weight:550}
+.name{font-weight:550;letter-spacing:-.005em}
 .sym{color:var(--ink-3);font-size:10.5px;font-weight:400;margin-left:7px}
 .up{color:var(--up)} .down{color:var(--down)} .flat{color:var(--flat)}
 .spark{display:block;width:74px;height:22px;margin-left:auto}
@@ -349,9 +378,9 @@ code{color:var(--ink-2)}
      版面本身用固定 px（表格欄寬要精準），所以不是改根字級，
      而是把手機上看得到的每一處字級各自 x1.2。集中在這裡方便日後再調。 */
   /* 字放大後標題和時間戳擠在同一行會折行，讓時間戳自己佔一行 */
-  header{flex-wrap:wrap;margin-bottom:20px}
-  h1{font-size:20.5px;white-space:nowrap}
-  .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:1px}
+  header{flex-wrap:wrap;padding-bottom:13px}
+  h1{font-size:28px;white-space:nowrap}
+  .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:9px}
   /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
   .reload{order:2;margin-left:auto;font-size:19px;padding:14px 22px;gap:10px;border-radius:5px}
   .reload svg{width:27px;height:27px}
@@ -380,7 +409,7 @@ code{color:var(--ink-2)}
   .chart .last{font-size:12.5px}
   .tip{font-size:13px}
 
-  .brief-h b{font-size:15px}
+  .brief-h b{font-size:17.5px}
   .brief-h span,.brief-h .tog{font-size:13px}
   .bi .bw{font-size:15.5px}
   .bi .by{font-size:13.5px}
@@ -430,6 +459,7 @@ code{color:var(--ink-2)}
       </svg><span>更新</span></button>
   </header>
 
+  <div class="pulse" id="pulse"></div>
   <div class="tabs" id="tabs"></div>
   <div id="brief"></div>
 
@@ -465,9 +495,8 @@ code{color:var(--ink-2)}
   </div>
 </div>
 
-<script src="data/data.js"></script>
 <script>
-const D = window.STOCK_DATA;
+let D = window.STOCK_DATA || null;   // snapshot.html 會把資料直接內嵌，那就不用再抓
 const $ = s => document.querySelector(s);
 
 const num = v => { if(v==null) return null;
@@ -885,7 +914,32 @@ function renderBrief(){
   });
 }
 
+/* ---------- 市場脈搏 ----------
+   挑四個最能代表「今天外面發生什麼事」的數字：
+   馬股大盤、棕櫚油（收入來源）、兩個匯率。點一下直接開那一檔。 */
+const PULSE = ['^KLSE', 'MPOB-CPO', 'MYR=X', 'SGDMYR=X'];
+
+function renderPulse(){
+  const host = $('#pulse');
+  const items = PULSE.map(sym => D.stocks.find(s => s.symbol === sym)).filter(Boolean);
+  if(!items.length){ host.innerHTML = ''; return; }
+
+  host.innerHTML = items.map(s => `<div class="pu" data-go="${s.symbol}">
+      <div class="k">${s.name}</div>
+      <div class="v">${px(s.price, s.is_index)}</div>
+      <div class="c ${cls(s.change_pct_1d)}">${pc(s.change_pct_1d)}</div>
+    </div>`).join('');
+
+  host.querySelectorAll('.pu').forEach(el => el.onclick = () => {
+    const s = D.stocks.find(x => x.symbol === el.dataset.go);
+    if(!s) return;
+    if(isMobile()){ openSheet(s); return; }
+    activeTab = '全部'; openSym = s.symbol; render();
+  });
+}
+
 function render(){
+  renderPulse();
   renderBrief();
   $('#title').textContent = D.title;
   $('#updated').textContent = D.updated_at;
@@ -1076,29 +1130,39 @@ document.addEventListener('click', e => {
 
 /* 主畫面 App 沒有網址列，沒辦法下拉強制重載，所以自己提供一顆。
    帶上時間戳繞過快取——不然按了也是拿到同一份舊資料。 */
-const TICK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
-  stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
-
-function toast(title, sub = '', ms = 5000){
-  const el = document.getElementById('toast');
-  el.innerHTML = TICK + `<div><div class="tt">${title}</div>` +
-                 (sub ? `<div class="ts">${sub}</div>` : '') + '</div>';
-  el.classList.add('on');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('on'), ms);   // 5 秒後自己消失
-}
-
 document.getElementById('reload').onclick = ev => {
   ev.currentTarget.classList.add('busy');    // 重載有延遲，先轉起來讓人知道按到了
-  // 把重載前的資料時間存起來，回來後比對就知道伺服器是不是真的有新資料
-  try { sessionStorage.setItem('reload_from', D.updated_at || ''); } catch(e) {}
+  try { sessionStorage.setItem('reload_from', (D && D.updated_at) || ''); } catch(e) {}
   const u = new URL(location.href);
   u.searchParams.set('t', Date.now());
   location.replace(u.toString());
 };
 
-// 重載回來後才報告結果——沒有新資料就照實說，不要假裝更新了
-(() => {
+/* ---------- 載入資料 ----------
+   用 fetch 而不是 <script src>：固定網址的 script 會被瀏覽器快取住，
+   而且一旦快取條目建立，之後就算伺服器改送 no-store 它也不會回頭問，
+   於是出現「資料明明更新了、畫面卻是舊的」。fetch 可以明確指定不用快取。 */
+async function loadData(){
+  const res = await fetch('data/data.js?t=' + Date.now(), {cache: 'no-store'});
+  const txt = await res.text();
+  return JSON.parse(txt.slice(txt.indexOf('{'), txt.lastIndexOf(';')));
+}
+
+async function boot(){
+  if(!D){
+    try {
+      D = await loadData();
+    } catch (e) {
+      document.getElementById('brief').innerHTML =
+        '<div class="brief"><div class="bi bad"><div class="bar"></div>' +
+        '<div class="bt"><div class="bw">資料載入失敗</div>' +
+        '<div class="by">' + e + '</div></div></div></div>';
+      return;
+    }
+  }
+  render();
+
+  // 重載回來後才報告結果——沒有新資料就照實說，不要假裝更新了
   let prev = null;
   try {
     prev = sessionStorage.getItem('reload_from');
@@ -1108,9 +1172,8 @@ document.getElementById('reload').onclick = ev => {
   const now = (D.updated_at || '').replace(' (MYT)', '');
   toast(prev && prev !== now ? '已更新到最新資料' : '已經是最新資料',
         '資料時間 ' + now);
-})();
-
-render();
+}
+boot();
 
 let rt;
 addEventListener('resize', () => {
