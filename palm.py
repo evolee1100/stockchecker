@@ -46,8 +46,7 @@ def _parse(page):
         if not m or m.group(1) not in MONTHS:
             continue
         iso = "{}-{:02d}-{:02d}".format(m.group(3), MONTHS[m.group(1)], int(m.group(2)))
-        out.append({"date": iso, "close": round(v, 2), "volume": 0,
-                    "high": None, "low": None})
+        out.append({"date": iso, "close": round(v, 2)})
     out.sort(key=lambda x: x["date"])
     return out
 

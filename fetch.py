@@ -52,6 +52,13 @@ def http_json(url, tries=3):
     raise RuntimeError("抓取失敗 {}: {}".format(url, last))
 
 
+def _round(v):
+    """依數量級取合理精度。指數存成 26506.9902 這種四位小數沒有意義，
+    而 RM0.655 這種又不能少於三位。"""
+    a = abs(v)
+    return round(v, 2 if a >= 100 else (3 if a >= 1 else 4))
+
+
 def pct(now, then):
     if now is None or then is None or then == 0:
         return None
@@ -122,7 +129,7 @@ def fetch_one(stock):
             if c is None:
                 continue
             weekly.append({"date": datetime.fromtimestamp(t, MYT).strftime("%Y-%m-%d"),
-                           "close": round(c, 4)})
+                           "close": _round(c)})
     except Exception:
         pass
 
@@ -199,7 +206,9 @@ def fetch_one(stock):
         ).strftime("%Y-%m-%d %H:%M"),
         "change_pct_3y": pct(last, weekly[-157]["close"]) if len(weekly) > 157 else None,
         "change_pct_5y": pct(last, weekly[0]["close"]) if weekly else None,
-        "series": series,        # 完整一年日線
+        # 只留網頁真的會用到的欄位。volume/high/low 是算均量與量能倍數用的，
+        # 算完就不需要逐點保留——11,632 個點各帶三個多餘欄位，佔了資料檔一半以上。
+        "series": [{"date": p["date"], "close": _round(p["close"])} for p in series],
         "series_w": weekly,      # 五年週線
     }
 
