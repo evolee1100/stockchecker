@@ -45,11 +45,11 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
                "PingFang TC",serif}
 .stamp{font-size:11.5px;color:var(--ink-3);margin-left:auto;text-align:right;
        font-variant-numeric:tabular-nums}
-.reload{display:inline-flex;align-items:center;gap:8px;flex:none;cursor:pointer;
+.reload{display:inline-flex;align-items:center;gap:9px;flex:none;cursor:pointer;
         font:inherit;font-size:17px;font-weight:500;line-height:1;
         color:var(--ink-2);background:#fff;border:1px solid var(--line);
-        border-radius:4px;padding:11px 17px}      /* 長方形，不是膠囊 */
-.reload svg{width:22px;height:22px;flex:none}
+        border-radius:4px;padding:12px 19px}      /* 長方形，不是膠囊 */
+.reload svg{width:24px;height:24px;flex:none}
 .reload:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
 .reload:active{transform:translateY(1px)}
 .reload.busy svg{animation:spin .7s linear infinite}
@@ -72,9 +72,9 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
   .pulse{margin:0 -15px 20px;padding:0 15px}
   .pu{min-width:104px;padding:14px 15px 15px}
   .pu:first-child{padding-left:0}
-  .pu .k{font-size:12px}
-  .pu .v{font-size:22px}
-  .pu .c{font-size:13px}
+  .pu .k{font-size:14.4px}
+  .pu .v{font-size:26.4px}
+  .pu .c{font-size:15.6px}
 }
 
 /* 分頁：46 檔擠一頁太長，依用途切開 */
@@ -83,15 +83,15 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 .tabs::-webkit-scrollbar{display:none}
 .tab{flex:none;font:inherit;font-size:13px;font-weight:500;line-height:1.6;
      color:var(--ink-2);background:#fff;border:1px solid var(--line);
-     border-radius:4px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+     border-radius:4px;padding:8px 15px;cursor:pointer;white-space:nowrap}
 .tab:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
 .tab.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
 .tab .n{opacity:.55;margin-left:5px;font-size:11.5px;font-variant-numeric:tabular-nums}
 .tab.on .n{opacity:.6}
 @media(max-width:700px){
   .tabs{margin:0 -15px 20px;padding:0 15px 4px}
-  .tab{font-size:15px;padding:9px 17px}
-  .tab .n{font-size:13px}
+  .tab{font-size:18px;padding:10px 19px}
+  .tab .n{font-size:15.6px}
 }
 
 /* 更新完成的通知：5 秒後自己消失 */
@@ -109,8 +109,8 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 @media(max-width:700px){
   .toast{padding:14px 20px;bottom:22px;gap:12px}
   .toast svg{width:22px;height:22px}
-  .toast .tt{font-size:16px}
-  .toast .ts{font-size:13.5px}
+  .toast .tt{font-size:19.2px}
+  .toast .ts{font-size:16.2px}
 }
 
 /* 今日重點 */
@@ -225,7 +225,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .cunit{font-size:12px;font-weight:500;color:var(--ink-3)}
 .cbtns{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
 .cb{font:inherit;font-size:11px;color:var(--ink-2);background:var(--tint);cursor:pointer;
-    border:1px solid var(--line);border-radius:99px;padding:3px 11px;line-height:1.6}
+    border:1px solid var(--line);border-radius:99px;padding:4px 12px;line-height:1.6}
 .cb:hover{color:var(--ink);border-color:#d4d9e0;background:#fff}
 .readout{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;
          font-size:11.5px;font-variant-numeric:tabular-nums;margin:5px 0 14px}
@@ -233,7 +233,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .readout .rg{color:var(--read)}
 /* 圖表區間切換 */
 .ranges{display:flex;gap:4px;margin:2px 0 10px}
-.rng{font-size:11px;padding:3px 11px;border-radius:99px;border:1px solid var(--line);
+.rng{font-size:11px;padding:4px 12px;border-radius:99px;border:1px solid var(--line);
      background:#fff;color:var(--ink-2);cursor:pointer;line-height:1.5}
 .rng:hover{color:var(--ink);border-color:#d4d9e0}
 .rng.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
@@ -341,7 +341,7 @@ code{color:var(--ink-2)}
   table,tbody{display:block;width:100%}
   thead{display:none}
   tr.group{display:block}
-  tr.group td{display:block;padding:24px 0 7px;font-size:11px}
+  tr.group td{display:block;padding:24px 0 7px;font-size:13.2px}
 
   tr.row{
     display:grid;
@@ -357,16 +357,16 @@ code{color:var(--ink-2)}
   tr.row td{display:block;border:none;padding:0;background:none !important}
   /* 注意：這些一定要用 tr.row 開頭，否則權重輸給上面的 `tr.row td`，display:none 不會生效 */
   tr.row td.c-fav  {grid-area:fv;align-self:center}
-  tr.row td.c-name {grid-area:nm;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14.5px}
-  tr.row td.c-meta {grid-area:mt;display:block;font-size:11px;color:var(--ink-3);
+  tr.row td.c-name {grid-area:nm;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:17.4px}
+  tr.row td.c-meta {grid-area:mt;display:block;font-size:13.2px;color:var(--ink-3);
                     overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   tr.row td.c-trend{grid-area:tr;align-self:center}
   tr.row td.c-trend .spark{width:54px;height:26px}
   /* 手指的點擊區至少 44px 高，視覺上還是那顆小星星 */
   .star{padding:13px 9px 13px 0;margin:-13px -9px -13px 0}
   .star svg{width:17px;height:17px}
-  tr.row td.c-price{grid-area:pr;text-align:right;font-size:16px;font-weight:650}
-  tr.row td.c-d1   {grid-area:ch;text-align:right;font-size:12.5px;font-weight:600}
+  tr.row td.c-price{grid-area:pr;text-align:right;font-size:19.2px;font-weight:650}
+  tr.row td.c-d1   {grid-area:ch;text-align:right;font-size:15px;font-weight:600}
   tr.row td.c-m1,
   tr.row td.c-pb,
   tr.row td.c-roe,
@@ -384,70 +384,70 @@ code{color:var(--ink-2)}
      而是把手機上看得到的每一處字級各自 x1.2。集中在這裡方便日後再調。 */
   /* 字放大後標題和時間戳擠在同一行會折行，讓時間戳自己佔一行 */
   header{flex-wrap:wrap;padding-bottom:13px}
-  h1{font-size:28px;white-space:nowrap}
-  .stamp{font-size:13px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:9px}
+  h1{font-size:33.6px;white-space:nowrap}
+  .stamp{font-size:15.6px;order:3;flex-basis:100%;margin-left:0;text-align:left;margin-top:9px}
   /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
-  .reload{order:2;margin-left:auto;font-size:19px;padding:14px 22px;gap:10px;border-radius:5px}
-  .reload svg{width:27px;height:27px}
-  tr.group td{font-size:13px}
-  tr.row td.c-name{font-size:17.5px}
+  .reload{order:2;margin-left:auto;font-size:22.8px;padding:15px 24px;gap:10px;border-radius:5px}
+  .reload svg{width:30px;height:30px}
+  tr.group td{font-size:15.6px}
+  tr.row td.c-name{font-size:21px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
   tr.row td.c-name .sym{display:none}
   tr.row td.c-name .dot{margin-left:5px}
-  tr.row td.c-meta{font-size:13px}
-  tr.row td.c-price{font-size:19px}
-  tr.row td.c-d1{font-size:15px}
-  .sym{font-size:12.5px}
+  tr.row td.c-meta{font-size:15.6px}
+  tr.row td.c-price{font-size:22.8px}
+  tr.row td.c-d1{font-size:18px}
+  .sym{font-size:15px}
 
-  .sheet-bar .nm{font-size:18px}
-  .sheet-bar .sy{font-size:12.5px}
-  .sheet-bar .pr{font-size:23px}
-  .sheet-bar .ch{font-size:14.5px}
+  .sheet-bar .nm{font-size:21.6px}
+  .sheet-bar .sy{font-size:15px}
+  .sheet-bar .pr{font-size:27.6px}
+  .sheet-bar .ch{font-size:17.4px}
 
-  .dnote{font-size:14px}
-  .chip{font-size:12.5px;padding:3px 9px}
-  .rng{font-size:13px;padding:4px 13px}
-  .rmeta{font-size:13px}
-  .dgrid .k{font-size:12.5px}
-  .dgrid .v{font-size:16px}
-  .chart .axis{font-size:12px}
-  .chart .last{font-size:12.5px}
-  .tip{font-size:13px}
+  .dnote{font-size:16.8px}
+  .chip{font-size:15px;padding:3px 9px}
+  .rng{font-size:15.6px;padding:5px 15px}
+  .rmeta{font-size:15.6px}
+  .dgrid .k{font-size:15px}
+  .dgrid .v{font-size:19.2px}
+  .chart .axis{font-size:14.4px}
+  .chart .last{font-size:15px}
+  .tip{font-size:15.6px}
 
-  .brief-h b{font-size:17.5px}
-  .brief-h span,.brief-h .tog{font-size:13px}
-  .bi .bw{font-size:16px;line-height:1.5}
-  .bi .by{font-size:14.5px;line-height:1.65}
-  .bi .bn{font-size:13px}
-  .dg-h{font-size:13px}
-  .dg-k{font-size:13px;width:40px}
-  .dg-v{font-size:15px;line-height:1.75}
-  .news h4{font-size:12.5px}
-  .it{font-size:15px}
-  .im{font-size:13px}
-  .orig{font-size:12px;padding:2px 9px}
-  .seg button{font-size:12px;padding:3px 13px}
-  .none{font-size:14px}
+  .brief-h b{font-size:21px}
+  .brief-h span,.brief-h .tog{font-size:15.6px}
+  .bi .bw{font-size:19.2px;line-height:1.5}
+  .bi .by{font-size:17.4px;line-height:1.65}
+  .bi .bn{font-size:15.6px}
+  .dg-h{font-size:15.6px}
+  .dg-k{font-size:15.6px;width:40px}
+  .dg-v{font-size:18px;line-height:1.75}
+  .news h4{font-size:15px}
+  .it{font-size:18px}
+  .im{font-size:15.6px}
+  .orig{font-size:14.4px;padding:3px 11px}
+  .seg button{font-size:14.4px;padding:4px 15px}
+  .none{font-size:16.8px}
 
-  .calc h4{font-size:14.5px}
-  .calc .cnote{font-size:13px}
-  .crow{font-size:17px}
-  .ci{font-size:16px;width:112px}
+  .calc h4{font-size:17.4px}
+  .calc .cnote{font-size:15.6px}
+  .crow{font-size:20.4px}
+  .ci{font-size:19.2px;width:112px}
   .ci-s{width:78px}
-  .clab{font-size:12.5px}
+  .clab{font-size:15px}
   .clab span{width:112px}
   .clab span.w-s{width:78px}
-  .cout{font-size:20.5px}
-  .cunit{font-size:14.5px}
-  .cb{font-size:13px}
+  .cout{font-size:24.6px}
+  .cunit{font-size:17.4px}
+  .cb{font-size:15.6px}
 
-  .dlg h5{font-size:12.5px}
-  .dsec .k{font-size:12px}
-  .dsec .en{font-size:18px}
-  .dsec .zh{font-size:16px;line-height:1.75}
-  .dfoot{font-size:14px}
-  footer{font-size:13px}
-  code{font-size:13px}
+  .dlg h5{font-size:15px}
+  .dsec .k{font-size:14.4px}
+  .dsec .en{font-size:21.6px}
+  .dsec .zh{font-size:19.2px;line-height:1.75}
+  .dfoot{font-size:16.8px}
+  footer{font-size:15.6px}
+  code{font-size:15.6px}
 }
 </style>
 </head>
