@@ -286,7 +286,11 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .dsec{margin-bottom:15px}
 .dsec .k{font-size:10px;color:var(--ink-3);letter-spacing:.06em;margin-bottom:4px}
 .dsec .en{font-size:15px;line-height:1.5;color:var(--ink)}
-.dsec .zh{font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.dsec .zh{font-size:13.5px;line-height:1.7;color:var(--ink)}
+.tload{color:var(--read)}
+.tload:after{content:"";animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+.tfail{color:var(--down)}
 .dfoot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
        border-top:1px solid var(--line);padding-top:12px;font-size:11.5px;color:var(--ink-3)}
 .dfoot a{color:#0b57d0;text-decoration:none;font-weight:500}
@@ -440,7 +444,7 @@ code{color:var(--ink-2)}
   .dlg h5{font-size:12.5px}
   .dsec .k{font-size:12px}
   .dsec .en{font-size:18px}
-  .dsec .zh{font-size:16px}
+  .dsec .zh{font-size:16px;line-height:1.75}
   .dfoot{font-size:14px}
   footer{font-size:13px}
   code{font-size:13px}
@@ -738,7 +742,7 @@ function detailRow(s){
         return `<div class="item"
              data-zh="${esc(zh)}" data-en="${esc(en)}"
              data-src="${esc([n.source_zh || n.source, n.when].filter(Boolean).join(' · '))}"
-             data-url="${esc(n.url)}"
+             data-url="${esc(n.source_url || n.url)}"
              data-body-en="${esc(n.body || '')}"
              data-body-zh="${esc(n.body_zh || '')}">
           <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${zh}</a>
@@ -1034,6 +1038,78 @@ function render(){
     });
   });
 }
+
+/* ---------- 點開才翻的內文翻譯 ----------
+   批次在伺服器翻不可行：免費 API 在上百篇的量級會直接限流
+   （實測 106 篇只成功 16 篇）。改成使用者點開哪篇才翻哪篇，
+   用他自己的瀏覽器去打 API，翻完存在本機，再開就是即時的。 */
+
+// 這些翻了會出錯，先換成佔位符保護（Bursa Malaysia 曾被翻成「馬來西亞交易所」）
+const KEEP = ['Sentral REIT','IGB REIT','Pavilion REIT','Axis REIT','KLCCP',
+  'Bursa Malaysia','Bank Negara','FBM KLCI','Maybank','CIMB','Public Bank',
+  'Hong Leong','RHB','AmBank','AMMB','Alliance Bank','Bank Islam','Affin',
+  'MBSB','MRCB','YTL','Gamuda','Sunway','Zetrix','Inari','ViTrox','Frontken',
+  'TIME dotCom','Mah Sing','NVIDIA','Broadcom','Palantir','Nasdaq',
+  'OPR','DPU','NPI','EPS','ROE','NIM','EPF','KWAP','REIT','REITs','GDP','RM'];
+
+const TR_KEY = 'tr_cache';
+function trCache(){
+  try { return JSON.parse(localStorage.getItem(TR_KEY)) || {}; } catch(e) { return {}; }
+}
+function trSave(c){
+  try {
+    const keys = Object.keys(c);
+    if(keys.length > 120) keys.slice(0, keys.length - 120).forEach(k => delete c[k]);
+    localStorage.setItem(TR_KEY, JSON.stringify(c));
+  } catch(e) {}
+}
+const trKey = t => t.length + '|' + t.slice(0, 60) + '|' + t.slice(-30);
+
+function chunk(text, size = 450){
+  const out = [];
+  let buf = '';
+  for(const sen of text.split(/(?<=[.!?])\s+/)){
+    if(buf.length + sen.length > size && buf){ out.push(buf.trim()); buf = ''; }
+    buf += sen + ' ';
+  }
+  if(buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+async function gtranslate(part){
+  const marks = [];
+  let held = part;
+  for(const term of [...KEEP].sort((a, b) => b.length - a.length)){
+    const re = new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+    if(!re.test(held)) continue;
+    const tok = 'ZZ' + marks.length + 'ZZ';
+    held = held.replace(re, tok);
+    marks.push(term);
+  }
+  const url = 'https://translate.googleapis.com/translate_a/single' +
+              '?client=gtx&sl=en&tl=zh-TW&dt=t&q=' + encodeURIComponent(held);
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
+  const data = await res.json();
+  let zh = (data[0] || []).map(x => x[0]).filter(Boolean).join('');
+  // 佔位符必須原封不動回來，否則寧可放棄這一段
+  if(!marks.every((_, i) => zh.includes('ZZ' + i + 'ZZ'))) throw new Error('專有名詞還原失敗');
+  marks.forEach((term, i) => { zh = zh.split('ZZ' + i + 'ZZ').join(term); });
+  return zh.replace(/([，。、；：！？（）])\s+/g, '$1').trim();
+}
+
+async function translateBody(text){
+  const cache = trCache(), key = trKey(text);
+  if(cache[key]) return cache[key];
+  const parts = chunk(text);
+  const out = [];
+  for(const p of parts) out.push(await gtranslate(p));
+  const zh = out.join('');
+  cache[key] = zh;
+  trSave(cache);
+  return zh;
+}
+
 /* ---------- 原文彈出視窗 ----------
    機器翻譯遇到金融術語一定會有偏差，要能隨時叫出原文對照。
    用彈窗而不是 title 提示，因為手機沒有 hover。 */
@@ -1085,26 +1161,36 @@ const ovl = document.getElementById('ovl');
 function showOriginal(item){
   const d = item.dataset;
   const dlg = ovl.querySelector('.dlg');
-  let bodyZh = d.bodyZh || '';
   const bodyEn = d.bodyEn || '';
-  // 翻譯失敗時 body_zh 會等於原文，那就別重複顯示，也別謊稱是「機器翻譯」
-  const failed = bodyZh && bodyEn && bodyZh === bodyEn;
-  if(failed) bodyZh = '';
+  let bodyZh = d.bodyZh || '';
+  if(bodyZh && bodyEn && bodyZh === bodyEn) bodyZh = '';   // 伺服器沒翻成功
 
-  // 有全文就以中譯全文為主，原文標題放後面對照；
-  // 媒體報導抓不到全文（Google News 把真實網址藏起來了），就只顯示標題對照。
+  const needs = !bodyZh && bodyEn;                          // 要在瀏覽器現翻
   dlg.innerHTML = `
-    <h5>${bodyZh ? '公告全文' : '原文對照'} <button class="x" type="button" aria-label="關閉">&times;</button></h5>
-    <div class="dsec"><div class="k">${bodyZh ? '標題' : '中譯（機器翻譯）'}</div>
-      <div class="${bodyZh ? 'zh' : 'en'}" style="font-weight:600">${esc(d.zh)}</div></div>
-    ${bodyZh ? `<div class="dsec"><div class="k">${bodyEn ? '內文（機器翻譯）' : '內文（重點整理）'}</div>
-      <div class="zh" id="ovl-body">${esc(bodyZh).replace(/\n/g,'<br>')}</div></div>` : ''}
-    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH 原文'}</div>
+    <h5>${bodyEn || bodyZh ? '全文' : '原文對照'}
+      <button class="x" type="button" aria-label="關閉">&times;</button></h5>
+    <div class="dsec"><div class="k">標題</div>
+      <div class="zh" style="font-weight:600">${esc(d.zh)}</div></div>
+    ${(bodyZh || needs) ? `<div class="dsec"><div class="k">內文（機器翻譯）</div>
+      <div class="zh" id="ovl-body">${bodyZh ? esc(bodyZh).replace(/\n/g, '<br>')
+        : '<span class="tload">翻譯中⋯</span>'}</div></div>` : ''}
+    <div class="dsec"><div class="k">ENGLISH</div>
       <div class="en" style="font-size:13px">${esc(d.en)}</div>
-      ${bodyEn ? `<div class="en" style="font-size:12.5px;color:var(--ink-2);margin-top:7px">${esc(bodyEn).replace(/\n/g,'<br>')}</div>` : ''}</div>
+      ${bodyEn ? `<div class="en" style="font-size:12.5px;color:var(--read);margin-top:7px">
+        ${esc(bodyEn).replace(/\n/g, '<br>')}</div>` : ''}</div>
     <div class="dfoot"><span>${esc(d.src || '')}</span>
       ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">開啟來源網頁 →</a>` : ''}</div>`;
   ovl.classList.add('on');
+
+  if(needs){
+    const slot = dlg.querySelector('#ovl-body');
+    translateBody(bodyEn)
+      .then(zh => { slot.innerHTML = esc(zh).replace(/\n/g, '<br>'); })
+      .catch(e => {
+        slot.innerHTML = '<span class="tfail">翻譯失敗（' + esc(e.message) +
+          '）。下方有英文原文。</span>';
+      });
+  }
 }
 
 function esc(t){

@@ -10,6 +10,8 @@
 """
 
 import html as htmlmod
+import json
+import os
 import re
 import ssl
 import urllib.parse
@@ -262,6 +264,159 @@ def announcement_body(url, limit=900):
         dot = max(cut.rfind(". "), cut.rfind("\n"))
         t = (cut[:dot + 1] if dot > limit * 0.5 else cut).strip() + " …"
     return t, ""
+
+
+# ---------------------------------------------------------------- 媒體內文
+URL_CACHE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                              "data", "url_cache.json")
+_url_cache = None
+
+# 網站自己的固定文字，不是文章內容
+CHROME = (
+    "stay signed in", "click on the points", "subscribe", "sign up", "log in",
+    "cookie", "newsletter", "all rights reserved", "follow us", "download the",
+    "copyright", "terms of use", "privacy policy", "advertisement",
+    "preferred source", "home highlight", "read also", "read more",
+    "sign in to", "register now", "share this", "已訂閱", "請登入",
+)
+
+# 馬國媒體的內文幾乎都以地名開頭（KUALA LUMPUR (Aug 27): ...）。
+# 找到它就把前面的網站樣板全部切掉——那段前綴不只難看，
+# 還會讓翻譯引擎失去上下文，整段跟著崩掉。
+DATELINE = re.compile(
+    r"\b(KUALA LUMPUR|PETALING JAYA|PUTRAJAYA|GEORGE TOWN|JOHOR BAHRU|KUCHING|"
+    r"KOTA KINABALU|SINGAPORE|HONG KONG|NEW YORK|LONDON|TOKYO|SHANGHAI|JAKARTA)"
+    r"\b\s*(\([^)]{2,30}\))?\s*:")
+
+
+def _load_url_cache():
+    global _url_cache
+    if _url_cache is None:
+        try:
+            with open(URL_CACHE_PATH, encoding="utf-8") as fh:
+                _url_cache = json.load(fh)
+        except Exception:
+            _url_cache = {}
+    return _url_cache
+
+
+def save_url_cache():
+    if _url_cache is None:
+        return
+    os.makedirs(os.path.dirname(URL_CACHE_PATH), exist_ok=True)
+    with open(URL_CACHE_PATH, "w", encoding="utf-8") as fh:
+        json.dump(_url_cache, fh, ensure_ascii=False, indent=0, sort_keys=True)
+
+
+def resolve_google_url(url):
+    """把 Google News 的轉址網址換成發布商的真實網址。
+
+    Google 把真實網址藏在 JS 後面，要先從文章頁抓簽章與時間戳，
+    再打它內部的 batchexecute RPC 才拿得到。回應是
+    )]}' 開頭、內層又是 JSON 字串的格式，網址在 garturlres 後面。
+    """
+    if "news.google.com" not in url:
+        return url
+
+    cache = _load_url_cache()
+    if url in cache:
+        return cache[url]
+
+    try:
+        aid = url.split("/articles/")[1].split("?")[0]
+        page = _fetch(url)
+        sig = re.search(r'data-n-a-sg="([^"]+)"', page)
+        ts = re.search(r'data-n-a-ts="([^"]+)"', page)
+        if not (sig and ts):
+            return url
+
+        inner = json.dumps(["garturlreq",
+                            [["X", "X", ["X", "X"], None, None, 1, 1, "MY:en", None,
+                              1, None, None, None, None, None, 0, 1],
+                             "X", "X", 1, [1, 1, 1], 1, 1, None, 0, 0, None, 0],
+                            aid, int(ts.group(1)), sig.group(1)])
+        payload = json.dumps([[["Fbv4je", inner, None, "generic"]]])
+        req = urllib.request.Request(
+            "https://news.google.com/_/DotsSplashUi/data/batchexecute",
+            data=urllib.parse.urlencode({"f.req": payload}).encode(),
+            headers={"User-Agent": UA,
+                     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"})
+        with urllib.request.urlopen(req, timeout=25,
+                                    context=ssl.create_default_context()) as r:
+            out = r.read().decode("utf-8", "replace")
+
+        m = re.search(r'garturlres\\?",\\?"(https?://[^"\\]+)', out)
+        real = m.group(1) if m else url
+    except Exception:
+        real = url
+
+    cache[url] = real
+    return real
+
+
+def article_body(url, limit=900):
+    """抓媒體報導的內文。回傳純文字，抓不到就回空字串。"""
+    if "news.google.com" in url:
+        return ""
+    try:
+        page = _fetch(url)
+    except Exception:
+        return ""
+
+    # 有結構化資料就用它，最乾淨
+    for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>',
+                            page, re.S):
+        if "articleBody" not in block:
+            continue
+        m = re.search(r'"articleBody"\s*:\s*"((?:[^"\\]|\\.)*)"', block)
+        if m:
+            try:
+                t = m.group(1).encode().decode("unicode_escape")
+            except Exception:
+                t = m.group(1)
+            t = re.sub(r"\s+", " ", htmlmod.unescape(t)).strip()
+            if len(t) > 150:
+                return _trim(_strip_chrome(t), limit)
+
+    # 否則退回抓段落。注意順序：先合併再切樣板，不能逐段丟。
+    # 有些網站會把樣板和導言塞在同一個 <p>，整段丟掉會連第一句正文一起丟。
+    paras = []
+    for raw in re.findall(r"<p[^>]*>(.*?)</p>", page, re.S):
+        t = re.sub(r"\s+", " ", htmlmod.unescape(re.sub(r"<[^>]+>", " ", raw))).strip()
+        if len(t) < 40:
+            continue
+        # 只丟「整段都是樣板」的短段落
+        if len(t) < 160 and any(k in t.lower() for k in CHROME):
+            continue
+        paras.append(t)
+    return _trim(_strip_chrome(" ".join(paras)), limit) if paras else ""
+
+
+def _strip_chrome(t):
+    """切掉開頭的網站樣板，從真正的內文開始。
+
+    馬國媒體的導言幾乎都以地名開頭，找到地名就從那裡起算；
+    找不到就退而求其次，切掉開頭已知的樣板片語。
+    """
+    m = DATELINE.search(t[:600])
+    if m:
+        return t[m.start():].strip()
+    low = t.lower()
+    for k in CHROME:
+        i = low.find(k)
+        if 0 <= i < 200:
+            nxt = t.find(". ", i)
+            if 0 < nxt < 400:
+                return t[nxt + 2:].strip()
+    return t
+
+
+def _trim(t, limit):
+    if len(t) <= limit:
+        return t
+    cut = t[:limit]
+    dot = cut.rfind(". ")
+    return (cut[:dot + 1] if dot > limit * 0.5 else cut).strip() + " …"
 
 
 def fetch(stock):

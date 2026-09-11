@@ -133,8 +133,18 @@ def fetch_one(stock):
     feed = news.fetch(stock)
 
     # 英文資訊統一轉成中文；翻不出來的保留原文，兩邊都留著讓網頁可以切換
-    for a in feed["articles"]:
+    for i, a in enumerate(feed["articles"]):
         a["title_zh"] = translate.text_zh(a["title"])
+        # 只取前 3 則的內文：解析網址要打兩次請求，加上抓文與翻譯成本不低，
+        # 舊聞點連結看就好
+        if i < 3:
+            real = news.resolve_google_url(a["url"])
+            if real != a["url"]:
+                a["source_url"] = real
+            body = news.article_body(real)
+            if body:
+                a["body"] = body
+                a["body_zh"] = translate.paragraph_zh(body)
     for i, f in enumerate(feed["filings"]):
         f["title_zh"] = translate.filing_title(f["title"])
         f["source_zh"] = translate.category(f["source"])
@@ -214,8 +224,18 @@ def palm_oil():
     avg30 = round(sum(window) / len(window), 2)
 
     feed = news.fetch({"q": "crude palm oil Malaysia", "symbol": "CPO"})
-    for a in feed["articles"]:
+    for i, a in enumerate(feed["articles"]):
         a["title_zh"] = translate.text_zh(a["title"])
+        # 只取前 3 則的內文：解析網址要打兩次請求，加上抓文與翻譯成本不低，
+        # 舊聞點連結看就好
+        if i < 3:
+            real = news.resolve_google_url(a["url"])
+            if real != a["url"]:
+                a["source_url"] = real
+            body = news.article_body(real)
+            if body:
+                a["body"] = body
+                a["body_zh"] = translate.paragraph_zh(body)
 
     return {
         "symbol": "MPOB-CPO",
@@ -345,6 +365,7 @@ def main():
         "errors": errors,
     }
 
+    news.save_url_cache()           # 解析過的網址存起來，隔天不用重算
     translate.save_cache()          # 把這輪新翻的句子寫回快取，明天就不用再翻
 
     os.makedirs(DATA_DIR, exist_ok=True)
