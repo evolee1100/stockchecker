@@ -326,9 +326,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .dgrid .k{font-size:10.5px;color:var(--ink-3)}
 .dgrid .v{font-size:13.5px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:1px}
 
-footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
-       color:var(--ink-3);font-size:11px;line-height:1.9}
-code{color:var(--ink-2)}
+
 /* meta 欄只給手機用 */
 .c-meta{display:none}
 
@@ -446,7 +444,6 @@ code{color:var(--ink-2)}
   .dsec .en{font-size:21.6px}
   .dsec .zh{font-size:19.2px;line-height:1.75}
   .dfoot{font-size:16.8px}
-  footer{font-size:15.6px}
   code{font-size:15.6px}
 }
 </style>
@@ -456,7 +453,7 @@ code{color:var(--ink-2)}
   <header>
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
-    <span class="stamp" id="updated"></span>
+    <span class="stamp" id="updated" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"></span>
     <button class="reload" type="button" id="reload" title="重新載入最新資料">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -470,10 +467,7 @@ code{color:var(--ink-2)}
 
   <div class="scroll"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
 
-  <footer>
-    每天更新 <code>python3 fetch.py</code> · 自動化 <code>./install_daily.sh</code> · 改追蹤清單 <code>watchlist.json</code><br>
-    收盤價，非即時報價。僅為資訊整理，不構成投資建議。
-  </footer>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -689,16 +683,18 @@ function toggleFav(sym){
   try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch(e) {}
 }
 
-const ORDER = ['大盤','銀行','REIT','REIT 相關','油棕','AI 馬股','AI 美股','國際','其他'];
+const ORDER = ['大盤','銀行','REIT','油棕','其他','AI 馬股','AI 美股','國際'];
 
 /* 分頁：把相關的分類併在一起，一次只看一組 */
 const TABS = [
   {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
   {t:'指數', secs:['大盤','國際']},
   {t:'銀行', secs:['銀行']},
-  {t:'REIT', secs:['REIT','REIT 相關']},   // 保薦人與 REIT 放一起才看得出關聯
+  {t:'REIT', secs:['REIT']},
   {t:'AI',   secs:['AI 馬股','AI 美股']},
-  {t:'油棕', secs:['油棕']},
+  // MRCB 跟棕櫚油沒有業務關聯，是使用者指定放這裡的；
+  // 它在分頁內有自己的「其他」小標題，不會被誤讀成油棕相關
+  {t:'油棕', secs:['油棕','其他']},
   {t:'全部', secs:ORDER},
 ];
 const TAB_KEY = 'tab';
