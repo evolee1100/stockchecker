@@ -689,16 +689,16 @@ function toggleFav(sym){
   try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch(e) {}
 }
 
-const ORDER = ['大盤','銀行','REIT','油棕','AI 馬股','AI 美股','國際','其他'];
+const ORDER = ['大盤','銀行','REIT','REIT 相關','油棕','AI 馬股','AI 美股','國際','其他'];
 
 /* 分頁：把相關的分類併在一起，一次只看一組 */
 const TABS = [
   {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
   {t:'指數', secs:['大盤','國際']},
   {t:'銀行', secs:['銀行']},
-  {t:'REIT', secs:['REIT']},
+  {t:'REIT', secs:['REIT','REIT 相關']},   // 保薦人與 REIT 放一起才看得出關聯
   {t:'AI',   secs:['AI 馬股','AI 美股']},
-  {t:'油棕', secs:['油棕','其他']},
+  {t:'油棕', secs:['油棕']},
   {t:'全部', secs:ORDER},
 ];
 const TAB_KEY = 'tab';
