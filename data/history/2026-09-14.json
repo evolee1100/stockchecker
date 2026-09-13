@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-09-14 03:38:56 (MYT)",
+ "updated_at": "2026-09-14 06:40:10 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
@@ -1091,7 +1091,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、業績（The Star、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在併購、評等（The Star、The Edge Malaysia、NST）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -2228,7 +2228,7 @@
     ],
     [
      "公告",
-     "2026-09-11：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fund Board 於 2026-09-08 減持 276,900 股（直接持股）。 變動後持有 1,479,175,695 股，佔 12.2… 2026-09-11：Amanahraya Trustees Berhad - Amanah Saham Bumiputera 於 2026-09-09 減持 813,900 股（直接持股）。 變動後持有 3,452,484,200 股，佔 28.543%。 原因：賣出股份。"
+     "2026-09-11：Amanahraya Trustees Berhad - Amanah Saham Bumiputera 於 2026-09-09 減持 813,900 股（直接持股）。 變動後持有 3,452,484,200 股，佔 28.543%。 原因：賣出股份。 2026-09-11：除非另有說明，否則本文使用的所有縮寫均與本公司於二零二六年八月三日及二零二六年九月八日有關收購事項的公告所界定者具有相同涵義。Maybank IB謹代表董事會宣佈，收購事項已於今日完成。本公告日期為2026年9月11日。"
     ],
     [
      "報導",
@@ -3418,16 +3418,6 @@
     "analyst_rating": "Buy",
     "analyst_target": "8.89 (+14.12%)",
     "beta": "0.14",
-    "pb_ratio": "1.17",
-    "ptbv_ratio": "1.35",
-    "ps_ratio": "3.99",
-    "peg_ratio": "2.16",
-    "book_value": "71.68B",
-    "bvps": "6.50",
-    "roe": "11.14%",
-    "roa": "1.02%",
-    "dividend_growth": "-14.44%",
-    "earnings_yield": "9.33%",
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
@@ -4516,12 +4506,7 @@
      "close": 7.79
     }
    ],
-   "flags": [
-    {
-     "level": "good",
-     "text": "ROE 11.1%"
-    }
-   ],
+   "flags": [],
    "digest": [
     [
      "價格",
@@ -4537,7 +4522,7 @@
     ],
     [
      "數字",
-     "P/B 1.17、P/E 10.71、ROE 11.14%、殖利率 6.00%、派息率 55.07%、每股淨值 6.50、分析師目標價 8.89 (+14.12%)。"
+     "P/E 10.71、殖利率 6.00%、派息率 55.07%、分析師目標價 8.89 (+14.12%)。"
     ],
     [
      "留意",
@@ -4560,7 +4545,7 @@
     "eps": "2.20",
     "dps": "1.10",
     "div_yield": "4.61%",
-    "payout_ratio": "44.59%",
+    "payout_ratio": "44.34%",
     "ex_div_date": "2026-03-13",
     "earnings_date": "2026-11-27",
     "analyst_rating": "Buy",
@@ -5686,7 +5671,7 @@
     ],
     [
      "數字",
-     "P/B 1.13、P/E 10.50、ROE 11.18%、殖利率 4.61%、派息率 44.59%、每股淨值 20.38、分析師目標價 26.77 (+15.99%)。"
+     "P/B 1.13、P/E 10.50、ROE 11.18%、殖利率 4.61%、派息率 44.34%、每股淨值 20.38、分析師目標價 26.77 (+15.99%)。"
     ],
     [
      "留意",
@@ -7971,7 +7956,7 @@
     ],
     [
      "公告",
-     "2026-08-27：Hong Leong Financial Group Berhad董事會欣然宣佈截至2026年6月30日止財政年度的最終單層股息為每股57.0仙。我們將於適當時候告知上述末期單層股息的應享日期及派付日期。本公告日期為2026年8月27日。 2026-07-27：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fund Board 於 2026-07-22 減持 260,000 股（直接持股）。 變動後持有 74,891,974 股，佔 6.526%。…"
+     "2026-07-27：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fund Board 於 2026-07-22 減持 260,000 股（直接持股）。 變動後持有 74,891,974 股，佔 6.526%。…"
     ],
     [
      "報導",
@@ -8002,7 +7987,7 @@
     "eps": "0.64",
     "dps": "0.35",
     "div_yield": "5.07%",
-    "payout_ratio": "55.02%",
+    "payout_ratio": "86.49%",
     "ex_div_date": "2026-06-15",
     "earnings_date": "2026-11-16",
     "analyst_rating": "Buy",
@@ -9124,7 +9109,7 @@
     ],
     [
      "數字",
-     "P/B 1.02、P/E 10.41、ROE 10.03%、殖利率 5.07%、派息率 55.02%、每股淨值 6.48、分析師目標價 7.45 (+12.54%)。"
+     "P/B 1.02、P/E 10.41、ROE 10.03%、殖利率 5.07%、派息率 86.49%、每股淨值 6.48、分析師目標價 7.45 (+12.54%)。"
     ],
     [
      "留意",
@@ -11437,17 +11422,6 @@
    "is_index": false,
    "unit": "",
    "fundamentals": {
-    "market_cap": "5.34B",
-    "pe_ratio": "9.79",
-    "forward_pe": "9.00",
-    "eps": "0.21",
-    "dps": "0.09",
-    "div_yield": "4.20%",
-    "ex_div_date": "2026-05-11",
-    "earnings_date": "2026-11-13",
-    "analyst_rating": "Hold",
-    "analyst_target": "2.46 (+21.18%)",
-    "beta": "-0.01",
     "pb_ratio": "0.43",
     "ptbv_ratio": "0.46",
     "ps_ratio": "2.18",
@@ -11456,8 +11430,7 @@
     "bvps": "4.71",
     "roe": "4.40%",
     "roa": "0.43%",
-    "earnings_yield": "10.02%",
-    "analyst_rating_zh": "中立"
+    "earnings_yield": "10.02%"
    },
    "currency": "MYR",
    "price": 2.03,
@@ -12566,11 +12539,11 @@
     ],
     [
      "數字",
-     "P/B 0.43、P/E 9.79、ROE 4.40%、殖利率 4.20%、每股淨值 4.71、分析師目標價 2.46 (+21.18%)。"
+     "P/B 0.43、ROE 4.40%、每股淨值 4.71。"
     ],
     [
      "留意",
-     "ROE 僅 4.4%，賺錢效率偏低；下次財報 2026-11-13。"
+     "ROE 僅 4.4%，賺錢效率偏低。"
     ]
    ]
   },
@@ -13755,17 +13728,6 @@
     "analyst_rating": "Buy",
     "analyst_target": "0.83 (+24.81%)",
     "beta": "0.15",
-    "pb_ratio": "0.58",
-    "ptbv_ratio": "0.58",
-    "ps_ratio": "4.00",
-    "book_value": "1.37B",
-    "bvps": "1.15",
-    "roe": "4.26%",
-    "roa": "3.11%",
-    "debt_equity": "0.86",
-    "dividend_growth": "-2.38%",
-    "dividend_growth_years": "1",
-    "earnings_yield": "7.39%",
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
@@ -14856,14 +14818,6 @@
      "text": "距 52 週高點 -18.4%"
     },
     {
-     "level": "good",
-     "text": "P/B 0.58（低於帳面淨值）"
-    },
-    {
-     "level": "warn",
-     "text": "ROE 偏低 4.3%"
-    },
-    {
      "level": "warn",
      "text": "派息率 125%（高於盈餘）"
     },
@@ -14879,19 +14833,19 @@
     ],
     [
      "公告",
-     "2026-08-07：2026年1月1日至2026年6月30日期間的中期總收入分配為每單位3.17仙（其中，應稅收入為每單位2.93仙，免稅收入為每單位0.24仙）請注意以下事項：1)自2026年8月20日起，上述公司的證券將以「除外-收入」進行交易和報價 2）最後提交日期：202… 2026-08-06：吉隆坡，2026年8月6日：Sentral REIT Management Sdn Bhd （「SRM」），Sentral REIT的管理人，希望宣佈Sentral REIT在2026年1月1日至2026年6月30日（「2026年上半年」）的六個月期間的實現收…"
+     "2026-08-06：吉隆坡，2026年8月6日：Sentral REIT Management Sdn Bhd （「SRM」），Sentral REIT的管理人，希望宣佈Sentral REIT在2026年1月1日至2026年6月30日（「2026年上半年」）的六個月期間的實現收…"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息（The Star、klsescreener、BusinessToday Malaysia、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息（The Star、The Edge Malaysia、klsescreener、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 0.58、P/E 13.52、ROE 4.26%、殖利率 9.04%、派息率 125.06%、每股淨值 1.15、分析師目標價 0.83 (+24.81%)。"
+     "P/E 13.52、殖利率 9.04%、派息率 125.06%、分析師目標價 0.83 (+24.81%)。"
     ],
     [
      "留意",
-     "派息率 125%，高於當年盈餘；ROE 僅 4.3%，賺錢效率偏低；下次財報 2026-11-06。"
+     "派息率 125%，高於當年盈餘；下次財報 2026-11-06。"
     ]
    ]
   },
@@ -18373,18 +18327,6 @@
    "is_index": false,
    "unit": "",
    "fundamentals": {
-    "market_cap": "15.33B",
-    "pe_ratio": "11.91",
-    "forward_pe": "17.30",
-    "eps": "0.71",
-    "dps": "0.47",
-    "div_yield": "5.52%",
-    "payout_ratio": "24.88%",
-    "ex_div_date": "2026-09-09",
-    "earnings_date": "2026-08-26",
-    "analyst_rating": "Hold",
-    "analyst_target": "9.23 (+8.72%)",
-    "beta": "0.12",
     "pb_ratio": "1.09",
     "ptbv_ratio": "1.09",
     "ps_ratio": "8.69",
@@ -18396,8 +18338,7 @@
     "debt_equity": "0.31",
     "dividend_growth": "5.59%",
     "dividend_growth_years": "4",
-    "earnings_yield": "8.40%",
-    "analyst_rating_zh": "中立"
+    "earnings_yield": "8.40%"
    },
    "currency": "MYR",
    "price": 8.49,
@@ -19510,15 +19451,11 @@
     ],
     [
      "報導",
-     "近三個月 5 則，主題集中在業績、派息（NST、The Edge Malaysia、DayakDaily、klsescreener）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息（NST、The Edge Malaysia、DayakDaily、klsescreener）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 1.09、P/E 11.91、ROE 9.31%、殖利率 5.52%、派息率 24.88%、每股淨值 7.77、分析師目標價 9.23 (+8.72%)。"
-    ],
-    [
-     "留意",
-     "下次財報 2026-08-26。"
+     "P/B 1.09、ROE 9.31%、每股淨值 7.77。"
     ]
    ]
   },
@@ -25034,7 +24971,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息、併購、評等（taipeitimes、天下雜誌、The Edge Malaysia、finance.biggo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在派息、併購、評等（Taipei Times、天下雜誌、The Edge Malaysia、finance.biggo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -27222,7 +27159,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（The Star、NST、Nikkei Asia、klsescreener）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Star、NST、Nikkei Asia、klsescreener）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -31606,7 +31543,7 @@
     ],
     [
      "報導",
-     "近三個月 3 則（The Edge Malaysia、e.vnexpress.net、The Independent Singapore News）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 3 則（The Edge Malaysia、VnExpress International、The Independent Singapore News）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -32752,7 +32689,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（CNBC、The Economist、nvidia、Nokia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運（CNBC、The Economist、NVIDIA、Nokia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -32773,14 +32710,6 @@
    "is_index": false,
    "unit": "USD",
    "fundamentals": {
-    "market_cap": "1.73T",
-    "pe_ratio": "46.21",
-    "forward_pe": "20.91",
-    "eps": "7.83",
-    "earnings_date": "2026-09-02",
-    "analyst_rating": "Strong Buy",
-    "analyst_target": "533.41 (+47.36%)",
-    "beta": "1.46",
     "pb_ratio": "17.34",
     "ps_ratio": "19.39",
     "peg_ratio": "0.38",
@@ -32791,8 +32720,7 @@
     "debt_equity": "0.60",
     "dividend_growth": "10.17%",
     "dividend_growth_years": "15",
-    "earnings_yield": "2.21%",
-    "analyst_rating_zh": "強力買進"
+    "earnings_yield": "2.21%"
    },
    "currency": "USD",
    "price": 361.99,
@@ -33901,15 +33829,11 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、業績（The Star、Samsung Global Newsroom、The Edge Malaysia、Yahoo Finance）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在評等（The Star、Samsung Global Newsroom、The Edge Malaysia、Moomoo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 17.34、P/E 46.21、ROE 44.25%、每股淨值 20.88、分析師目標價 533.41 (+47.36%)。"
-    ],
-    [
-     "留意",
-     "下次財報 2026-09-02。"
+     "P/B 17.34、ROE 44.25%、每股淨值 20.88。"
     ]
    ]
   },
@@ -36173,7 +36097,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（taipeitimes）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運（Taipei Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -37323,7 +37247,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（Microsoft Source、ESG Today、Windows Blog、Aker Solutions）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（Microsoft Source、ESG Today、Windows Blog、akersolutions）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -39607,7 +39531,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、業績（The Star、Free Malaysia Today、InfoWorld、aljazeera）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在評等、業績（The Star、Free Malaysia Today、InfoWorld、Al Jazeera）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -39636,16 +39560,6 @@
     "analyst_rating": "Buy",
     "analyst_target": "289.21 (+9.22%)",
     "beta": "3.89",
-    "pb_ratio": "32.77",
-    "ptbv_ratio": "41.65",
-    "ps_ratio": "54.85",
-    "peg_ratio": "2.79",
-    "book_value": "8.63B",
-    "bvps": "8.08",
-    "roe": "13.35%",
-    "roa": "5.41%",
-    "debt_equity": "0.06",
-    "earnings_yield": "0.37%",
     "analyst_rating_zh": "買進"
    },
    "currency": "USD",
@@ -40313,10 +40227,6 @@
     {
      "level": "good",
      "text": "單日 +4.17%"
-    },
-    {
-     "level": "good",
-     "text": "ROE 13.3%"
     }
    ],
    "digest": [
@@ -40326,11 +40236,11 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、業績（The Edge Malaysia、BusinessToday Malaysia、malaymail、The Star）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運、業績（The Edge Malaysia、BusinessToday Malaysia、Malay Mail、The Star）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 32.77、P/E 270.28、ROE 13.35%、每股淨值 8.08、分析師目標價 289.21 (+9.22%)。"
+     "P/E 270.28、分析師目標價 289.21 (+9.22%)。"
     ],
     [
      "留意",
@@ -42603,10 +42513,6 @@
     [
      "價格",
      "2026-09-11 收 4.82、單日 -1.83%。一個月 +6.64%，三個月 +11.32%。距 52 週高點 5.76 還有 16.3%。"
-    ],
-    [
-     "公告",
-     "2026-09-11：Citigroup Nominees (Tempatan) Sdn Bhd - EPF BOARD-IC 於 2026-09-08 增持 1,863,500 股（直接持股）。 變動後持有 1,325,010,872 股，佔 21.93%。 原因：1. Acqu… 2026-09-10：Citigroup Nominees (Tempatan) Sdn Bhd - EPF BOARD-IC 於 2026-09-07 增持 1,000,000 股（直接持股）。 變動後持有 1,323,080,972 股，佔 21.9%。 原因：Acquisit…"
     ],
     [
      "報導",
@@ -48382,11 +48288,11 @@
     ],
     [
      "公告",
-     "2026-09-11：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fund Board-Ic 於 2026-09-08 增持 15,000 股（直接持股）。 變動後持有 376,743,997 股，佔 20.7… 2026-09-11：EASTSPRING INVESTMENTS BERHAD's MANAGED FUNDS 於 2026-09-08 增持 47,000 股（間接持股）。 變動後持有 92,793,000 股，佔 Indirect/deemed interest (units…"
+     "2026-09-11：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fund Board-Ic 於 2026-09-08 增持 15,000 股（直接持股）。 變動後持有 376,743,997 股，佔 20.7… 2026-09-10：Citigroup Nominees (Tempatan) Sdn Bhd Employees Provident Fd Bd (Rhb Inv) 於 2026-09-07 減持 1,000,000 股（直接持股）。 變動後持有 377,728,997 股，佔…"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（The Star、The Edge Malaysia、NST、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績（The Star、The Edge Malaysia、BusinessToday Malaysia、klsescreener）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -49547,17 +49453,6 @@
    "is_index": false,
    "unit": "",
    "fundamentals": {
-    "market_cap": "10.76B",
-    "pe_ratio": "23.17",
-    "forward_pe": "20.18",
-    "eps": "0.25",
-    "dps": "0.49",
-    "div_yield": "8.12%",
-    "ex_div_date": "2026-09-11",
-    "earnings_date": "2026-11-25",
-    "analyst_rating": "Buy",
-    "analyst_target": "6.39 (+9.79%)",
-    "beta": "0.12",
     "pb_ratio": "3.61",
     "ptbv_ratio": "3.78",
     "ps_ratio": "5.81",
@@ -49568,8 +49463,7 @@
     "roa": "8.64%",
     "debt_equity": "0.08",
     "dividend_growth_years": "1",
-    "earnings_yield": "4.32%",
-    "analyst_rating_zh": "買進"
+    "earnings_yield": "4.32%"
    },
    "currency": "MYR",
    "price": 5.82,
@@ -50682,11 +50576,7 @@
     ],
     [
      "數字",
-     "P/B 3.61、P/E 23.17、ROE 14.43%、殖利率 8.12%、每股淨值 1.62、分析師目標價 6.39 (+9.79%)。"
-    ],
-    [
-     "留意",
-     "下次財報 2026-11-25。"
+     "P/B 3.61、ROE 14.43%、每股淨值 1.62。"
     ]
    ]
   },
@@ -50711,18 +50601,6 @@
     "analyst_rating": "Strong Buy",
     "analyst_target": "1.56 (+48.57%)",
     "beta": "0.50",
-    "pb_ratio": "0.66",
-    "ptbv_ratio": "0.66",
-    "ps_ratio": "1.07",
-    "peg_ratio": "0.33",
-    "book_value": "4.09B",
-    "bvps": "1.59",
-    "roe": "6.84%",
-    "roa": "3.71%",
-    "debt_equity": "0.64",
-    "dividend_growth": "11.11%",
-    "dividend_growth_years": "4",
-    "earnings_yield": "9.99%",
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
@@ -51807,14 +51685,6 @@
     {
      "level": "warn",
      "text": "距 52 週高點 -15.3%"
-    },
-    {
-     "level": "good",
-     "text": "P/B 0.66（低於帳面淨值）"
-    },
-    {
-     "level": "warn",
-     "text": "ROE 偏低 6.8%"
     }
    ],
    "digest": [
@@ -51832,11 +51702,11 @@
     ],
     [
      "數字",
-     "P/B 0.66、P/E 10.01、ROE 6.84%、殖利率 4.43%、派息率 47.66%、每股淨值 1.59、分析師目標價 1.56 (+48.57%)。"
+     "P/E 10.01、殖利率 4.43%、派息率 47.66%、分析師目標價 1.56 (+48.57%)。"
     ],
     [
      "留意",
-     "ROE 僅 6.8%，賺錢效率偏低；下次財報 2026-08-28。"
+     "下次財報 2026-08-28。"
     ]
    ]
   },
