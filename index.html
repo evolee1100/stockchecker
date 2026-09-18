@@ -446,6 +446,42 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .dfoot{font-size:16.8px}
   code{font-size:15.6px}
 }
+
+/* ---------- iPhone 版面修正 ----------
+   實機截圖（iOS 27、iPhone 寬 393pt）看到四個問題：
+   1. 標題放大後，更新鈕被擠到自己一整行，浪費整列高度
+   2. 市場脈搏第 4 項被切掉——其實能左右滑，但畫面上看不出來
+   3. 分頁同上，「REIT」只露出一半
+   4. 股票名稱靠右（bug）：加了最愛星星後星星成了第一欄，
+      「第一欄靠左」的規則套到星星上，名稱變第二欄繼承了靠右
+   手機上不該把東西藏在看不出來的滑動後面，改成全部攤開。 */
+@media(max-width:700px){
+  /* 1. 報頭：第一列 圖示＋標題，第二列 時間戳｜更新鈕 */
+  header{flex-wrap:wrap;row-gap:12px}
+  header .logo{order:0}
+  header h1{order:1;flex:1 1 calc(100% - 40px)}
+  header .stamp{order:2;flex:1 1 auto;flex-basis:auto;margin:0;align-self:center;text-align:left}
+  header .reload{order:3;margin-left:auto}
+
+  /* 2. 市場脈搏：2x2 格，四個數字全部看得到 */
+  .pulse{display:grid;grid-template-columns:1fr 1fr;overflow:visible;margin:0 0 20px;padding:0}
+  .pu{min-width:0;padding:13px 0 14px;border-left:none;border-top:1px solid var(--hair)}
+  .pu:nth-child(odd){padding-right:13px;border-right:1px solid var(--hair)}
+  .pu:nth-child(even){padding-left:15px}
+  .pu:nth-child(-n+2){border-top:none}
+  .pu:first-child{padding-left:0}
+  .pu .k{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* 3. 分頁：4 欄等寬排成兩列，七個全部看得到。
+        單純換行會排成 3+3+1，「全部」孤零零一行很難看 */
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;
+        overflow:visible;margin:0 0 20px;padding:0}
+  .tab{padding:10px 4px;text-align:center;min-width:0}
+  .tab .n{margin-left:3px}
+
+  /* 4. 名稱與小字靠左 */
+  tr.row td.c-name, tr.row td.c-meta{text-align:left}
+}
 </style>
 </head>
 <body>
