@@ -178,6 +178,7 @@ def fetch_one(stock):
         "sector": stock.get("sector", "其他"),
         "is_index": bool(stock.get("is_index")),
         "unit": stock.get("unit", ""),
+        "dp": stock.get("dp"),          # 指定小數位，穩定幣需要看到第 4 位
         "fundamentals": fund,
         "articles": feed["articles"],
         "filings": feed["filings"],
@@ -358,7 +359,12 @@ def main():
         print("  [--/{}] ✗ 棕櫚油: {}".format(total, exc), flush=True)
         errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
 
+    # 加密與美股報的是美元，換算成馬幣才是使用者實際會用到的數字
+    fx = next((x["price"] for x in stocks if x["symbol"] == "MYR=X"), None)
     for st in stocks:
+        if fx and st.get("unit") == "USD" and st.get("price"):
+            st["myr"] = round(st["price"] * fx, 2)
+            st["myr_rate"] = fx
         st["digest"] = digest.build(st)
 
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())

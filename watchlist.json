@@ -238,6 +238,27 @@
       "is_index": true
     },
     {
+      "symbol": "BTC-USD",
+      "sa": null,
+      "q": "Bitcoin",
+      "name": "比特幣 BTC",
+      "sector": "加密",
+      "note": "24 小時交易，週末也開盤。單日波動 3% 以上是常態",
+      "is_index": true,
+      "unit": "USD"
+    },
+    {
+      "symbol": "USDT-USD",
+      "sa": null,
+      "q": "Tether stablecoin",
+      "name": "泰達幣 USDT",
+      "sector": "加密",
+      "note": "錨定 1 美元的穩定幣。看的不是漲跌，是有沒有脫鉤",
+      "is_index": true,
+      "unit": "USD",
+      "dp": 4
+    },
+    {
       "symbol": "NVDA",
       "sa": "us:NVDA",
       "q": "NVIDIA",

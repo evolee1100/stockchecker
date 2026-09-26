@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-09-26 08:46:55 (MYT)",
+ "updated_at": "2026-09-26 12:09:02 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
@@ -9,30 +9,31 @@
    "sector": "大盤",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 1672.3101,
-   "prev_close": 1676.4301,
-   "change_pct_1d": -0.25,
-   "change_pct_5d": -0.15,
-   "change_pct_1m": -3.7,
-   "change_pct_3m": -0.58,
-   "change_pct_1y": 4.62,
+   "price": 1671.62,
+   "prev_close": 1672.3101,
+   "change_pct_1d": -0.04,
+   "change_pct_5d": 0.36,
+   "change_pct_1m": -3.73,
+   "change_pct_3m": 0.47,
+   "change_pct_1y": 4.58,
    "day_high": 1675.47,
    "day_low": 1666.99,
-   "volume": 230817500,
-   "avg_volume_20d": 247566365,
-   "volume_ratio": 0.93,
+   "volume": 174864300,
+   "avg_volume_20d": 251255405,
+   "volume_ratio": 0.7,
    "high_52w": 1771.25,
    "low_52w": 1595.32,
-   "off_52w_high": -5.59,
+   "off_52w_high": -5.62,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-25 16:59",
-   "change_pct_3y": 18.03,
-   "change_pct_5y": 9.7,
+   "change_pct_3y": 17.98,
+   "change_pct_5y": 9.65,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -1076,7 +1077,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 1672.31
+     "close": 1671.62
     },
     {
      "date": "2026-09-25",
@@ -1087,11 +1088,11 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 1,672、單日 -0.25%。一個月 -3.70%，三個月 -0.58%。"
+     "2026-09-25 收 1,672、單日 -0.04%。一個月 -3.73%，三個月 +0.47%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等（The Star、Malay Mail、NST、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Star、Malay Mail、NST、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -1103,6 +1104,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "123.61B",
     "pe_ratio": "11.80",
@@ -1110,9 +1112,9 @@
     "eps": "0.87",
     "dps": "0.63",
     "div_yield": "6.16%",
-    "payout_ratio": "72.71%",
+    "payout_ratio": "73.88%",
     "ex_div_date": "2026-09-23",
-    "earnings_date": "2026-08-27",
+    "earnings_date": "2026-11-26",
     "analyst_rating": "Buy",
     "analyst_target": "11.86 (+16.05%)",
     "beta": "0.11",
@@ -1143,7 +1145,7 @@
    "avg_volume_20d": 17404205,
    "volume_ratio": 0.29,
    "high_52w": 12.42,
-   "low_52w": 9.79,
+   "low_52w": 9.83,
    "off_52w_high": -17.71,
    "at_52w_low": false,
    "ttm_dividend": 0.64,
@@ -2240,11 +2242,11 @@
     ],
     [
      "數字",
-     "P/B 1.28、P/E 11.80、ROE 11.14%、殖利率 6.16%、派息率 72.71%、每股淨值 7.69、分析師目標價 11.86 (+16.05%)。"
+     "P/B 1.28、P/E 11.80、ROE 11.14%、殖利率 6.16%、派息率 73.88%、每股淨值 7.69、分析師目標價 11.86 (+16.05%)。"
     ],
     [
      "留意",
-     "下次財報 2026-08-27。"
+     "下次財報 2026-11-26。"
     ]
    ]
   },
@@ -2256,6 +2258,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "93.17B",
     "pe_ratio": "12.71",
@@ -3385,7 +3388,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、併購、派息（BusinessToday Malaysia、says、Sarawak Tribune、Yahoo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在評等、併購（BusinessToday Malaysia、says、WorldFirst、Sarawak Tribune）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -3405,6 +3408,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "85.40B",
     "pe_ratio": "10.86",
@@ -4557,6 +4561,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "47.45B",
     "pe_ratio": "10.53",
@@ -4564,7 +4569,7 @@
     "eps": "2.20",
     "dps": "1.10",
     "div_yield": "4.75%",
-    "payout_ratio": "44.34%",
+    "payout_ratio": "50.05%",
     "ex_div_date": "2026-10-07",
     "earnings_date": "2026-11-27",
     "analyst_rating": "Buy",
@@ -4597,7 +4602,7 @@
    "avg_volume_20d": 690455,
    "volume_ratio": 1.05,
    "high_52w": 25.8,
-   "low_52w": 20.14,
+   "low_52w": 20.26,
    "off_52w_high": -10.31,
    "at_52w_low": false,
    "ttm_dividend": 0.98,
@@ -5682,11 +5687,11 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、業績、派息（The Star、The Edge Malaysia、finance.yahoo、NST）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運、業績、派息（The Star、The Edge Malaysia、Yahoo Finance、NST）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 1.14、P/E 10.53、ROE 11.18%、殖利率 4.75%、派息率 44.34%、每股淨值 20.38、分析師目標價 26.89 (+16.21%)。"
+     "P/B 1.14、P/E 10.53、ROE 11.18%、殖利率 4.75%、派息率 50.05%、每股淨值 20.38、分析師目標價 26.89 (+16.21%)。"
     ],
     [
      "留意",
@@ -5702,6 +5707,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "34.00B",
     "pe_ratio": "9.81",
@@ -5742,7 +5748,7 @@
    "avg_volume_20d": 11610770,
    "volume_ratio": 0.25,
    "high_52w": 8.94,
-   "low_52w": 6.5,
+   "low_52w": 6.56,
    "off_52w_high": -12.86,
    "at_52w_low": false,
    "ttm_dividend": 0.5,
@@ -6827,7 +6833,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息、人事（The Star、The Edge Malaysia、NST、The Malaysian Reserve）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息、人事（The Star、The Edge Malaysia、NST、Asian Banking & Finance）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -6847,6 +6853,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "21.23B",
     "pe_ratio": "6.18",
@@ -7995,6 +8002,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "21.77B",
     "pe_ratio": "10.33",
@@ -8035,7 +8043,7 @@
    "avg_volume_20d": 4891460,
    "volume_ratio": 0.66,
    "high_52w": 7.37,
-   "low_52w": 5.55,
+   "low_52w": 5.61,
    "off_52w_high": -10.85,
    "at_52w_low": false,
    "ttm_dividend": 0.35,
@@ -9111,11 +9119,11 @@
     ],
     [
      "公告",
-     "2026-09-21：我們指的是日期為2026年6月8日、2026年7月2日和2026年7月28日的有關建議收購的公告（「公告」）。除另有界定外，本公告所載定義適用於本公告。公司謹此宣布，在今天召開的 AmFIRST REIT 股東特別大會上獲得 AmFIRST REIT 單位持有…"
+     "2026-09-21：茲提述日期為2026年6月8日、2026年7月2日及2026年7月28日有關建議收購事項的公告（「公告」）。除另有定義外，本公告所載定義適用。本公司謹此宣佈，在AmFIRST REIT單位持有人於今日召開的AmFIRST REIT股東特別大會上批準出售該物業後…"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運、併購（The Star、NST、Bernama、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、營運、併購（The Star、NST、bernama、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -9135,6 +9143,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "8.29B",
     "pe_ratio": "9.42",
@@ -9174,7 +9183,7 @@
    "avg_volume_20d": 1438165,
    "volume_ratio": 1.19,
    "high_52w": 5.59,
-   "low_52w": 4.27,
+   "low_52w": 4.31,
    "off_52w_high": -14.31,
    "at_52w_low": false,
    "ttm_dividend": 0.1911,
@@ -10279,6 +10288,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "4.69B",
     "pe_ratio": "8.40",
@@ -11411,7 +11421,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事（The Edge Malaysia、NST、The Star、mifc）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在人事、業績（The Edge Malaysia、The Star、NST、mifc）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -11431,6 +11441,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "5.37B",
     "pe_ratio": "9.84",
@@ -12557,7 +12568,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運、評等（The Star、ram、NST、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、營運、評等（The Star、ram、The Edge Malaysia、NST）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -12577,6 +12588,7 @@
    "sector": "銀行",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "4.56B",
     "pe_ratio": "26.28",
@@ -13737,6 +13749,7 @@
    "sector": "REIT",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "783.05M",
     "pe_ratio": "13.32",
@@ -14894,6 +14907,7 @@
    "sector": "REIT",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "11.99B",
     "pe_ratio": "14.72",
@@ -16048,6 +16062,7 @@
    "sector": "REIT",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "6.13B",
     "pe_ratio": "12.44",
@@ -17198,6 +17213,7 @@
    "sector": "REIT",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "3.60B",
     "pe_ratio": "12.59",
@@ -18355,6 +18371,7 @@
    "sector": "REIT",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "15.07B",
     "pe_ratio": "11.71",
@@ -19489,7 +19506,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息（NST、The Edge Malaysia、AD HOC NEWS、Free Malaysia Today）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息（NST、The Edge Malaysia、BusinessToday Malaysia、Free Malaysia Today）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -19509,6 +19526,7 @@
    "sector": "其他",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "1.30B",
     "pe_ratio": "31.18",
@@ -19546,9 +19564,9 @@
    "volume": 3985400,
    "avg_volume_20d": 7822010,
    "volume_ratio": 0.51,
-   "high_52w": 0.55,
+   "high_52w": 0.54,
    "low_52w": 0.26,
-   "off_52w_high": -47.27,
+   "off_52w_high": -46.3,
    "at_52w_low": false,
    "ttm_dividend": 0.01,
    "yield_pct": 3.45,
@@ -20614,7 +20632,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -47.3%"
+     "text": "距 52 週高點 -46.3%"
     },
     {
      "level": "good",
@@ -20632,7 +20650,7 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 0.290、單日 +0.00%。一個月 -9.38%，三個月 -9.38%。距 52 週高點 0.550 還有 47.3%。"
+     "2026-09-25 收 0.290、單日 +0.00%。一個月 -9.38%，三個月 -9.38%。距 52 週高點 0.540 還有 46.3%。"
     ],
     [
      "公告",
@@ -20660,9 +20678,10 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 27068.7168,
+   "price": 27068.7207,
    "prev_close": 26939.3691,
    "change_pct_1d": 0.48,
    "change_pct_5d": 2.06,
@@ -20671,9 +20690,9 @@
    "change_pct_1y": 20.39,
    "day_high": 27122.764,
    "day_low": 26876.271,
-   "volume": 6299972000,
+   "volume": 7275260000,
    "avg_volume_20d": 8186889000,
-   "volume_ratio": 0.77,
+   "volume_ratio": 0.89,
    "high_52w": 27288.79,
    "low_52w": 20690.25,
    "off_52w_high": -0.81,
@@ -21727,7 +21746,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 26939.37
+     "close": 27068.72
     },
     {
      "date": "2026-09-26",
@@ -21742,7 +21761,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運（The Star、The Edge Malaysia、Nasdaq、stonex）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績（The Star、The Edge Malaysia、Nasdaq、stonex）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -21754,9 +21773,10 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 12668.9287,
+   "price": 12668.9297,
    "prev_close": 12492.54,
    "change_pct_1d": 1.41,
    "change_pct_5d": 6.27,
@@ -22821,7 +22841,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 12492.54
+     "close": 12668.93
     },
     {
      "date": "2026-09-26",
@@ -22836,7 +22856,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（Moomoo、The Edge Malaysia、businesstimes.sg、finance.biggo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績（Moomoo、The Edge Malaysia、The Business Times、finance.biggo）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -22848,6 +22868,7 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "USD",
    "price": 7743.4102,
@@ -22859,9 +22880,9 @@
    "change_pct_1y": 16.55,
    "day_high": 7752.07,
    "day_low": 7693.08,
-   "volume": 2644756000,
+   "volume": 4499180000,
    "avg_volume_20d": 5091879000,
-   "volume_ratio": 0.52,
+   "volume_ratio": 0.88,
    "high_52w": 7816.7,
    "low_52w": 6316.91,
    "off_52w_high": -0.94,
@@ -23915,7 +23936,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 7704.13
+     "close": 7743.41
     },
     {
      "date": "2026-09-26",
@@ -23930,7 +23951,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（The Star、The Edge Malaysia、finance.yahoo、goldmansachs）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Star、The Edge Malaysia、Yahoo Finance、Goldman Sachs）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -23942,6 +23963,7 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "TWD",
    "price": 48024.6016,
@@ -23957,7 +23979,7 @@
    "avg_volume_20d": 4590010,
    "volume_ratio": 0.77,
    "high_52w": 48601.53,
-   "low_52w": 25469.04,
+   "low_52w": 25738.31,
    "off_52w_high": -1.19,
    "at_52w_low": false,
    "ttm_dividend": 0,
@@ -25012,7 +25034,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息（focustaiwan.tw、Taipei Times、天下雜誌、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在派息（Focus Taiwan、Taipei Times、天下雜誌、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -25024,30 +25046,31 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "HKD",
-   "price": 24761.1309,
-   "prev_close": 24834.1191,
-   "change_pct_1d": -0.29,
-   "change_pct_5d": 0.64,
-   "change_pct_1m": -3.48,
-   "change_pct_3m": 9.22,
-   "change_pct_1y": -6.51,
+   "price": 24510.0898,
+   "prev_close": 24761.1309,
+   "change_pct_1d": -1.01,
+   "change_pct_5d": -0.97,
+   "change_pct_1m": -4.13,
+   "change_pct_3m": 6.44,
+   "change_pct_1y": -7.46,
    "day_high": 24537.14,
    "day_low": 24275.56,
-   "volume": 1927300000,
-   "avg_volume_20d": 2821780000,
-   "volume_ratio": 0.68,
+   "volume": 1343800000,
+   "avg_volume_20d": 2787075000,
+   "volume_ratio": 0.48,
    "high_52w": 28056.1,
    "low_52w": 22518.0,
-   "off_52w_high": -11.74,
+   "off_52w_high": -12.64,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-25 16:08",
-   "change_pct_3y": 41.61,
-   "change_pct_5y": 0.75,
+   "change_pct_3y": 40.17,
+   "change_pct_5y": -0.27,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -26091,7 +26114,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 24761.13
+     "close": 24510.09
     },
     {
      "date": "2026-09-25",
@@ -26102,7 +26125,7 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 24,761、單日 -0.29%。一個月 -3.48%，三個月 +9.22%。"
+     "2026-09-25 收 24,510、單日 -1.01%。一個月 -4.13%，三個月 +6.44%。"
     ],
     [
      "報導",
@@ -26118,30 +26141,31 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "JPY",
-   "price": 65513.9883,
-   "prev_close": 65018.9492,
-   "change_pct_1d": 0.76,
-   "change_pct_5d": 3.18,
-   "change_pct_1m": -0.76,
-   "change_pct_3m": -9.45,
-   "change_pct_1y": 43.18,
+   "price": 66364.2031,
+   "prev_close": 65513.9883,
+   "change_pct_1d": 1.3,
+   "change_pct_5d": 4.54,
+   "change_pct_1m": 1.28,
+   "change_pct_3m": -4.91,
+   "change_pct_1y": 45.04,
    "day_high": 66410.27,
    "day_low": 65639.62,
-   "volume": 175000000,
-   "avg_volume_20d": 149880000,
-   "volume_ratio": 1.17,
+   "volume": 148900000,
+   "avg_volume_20d": 152220000,
+   "volume_ratio": 0.98,
    "high_52w": 72831.73,
    "low_52w": 44357.65,
-   "off_52w_high": -10.05,
+   "off_52w_high": -8.88,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-25 14:45",
-   "change_pct_3y": 111.37,
-   "change_pct_5y": 127.71,
+   "change_pct_3y": 114.11,
+   "change_pct_5y": 130.66,
    "series_w": [
     {
      "date": "2021-09-26",
@@ -27185,7 +27209,7 @@
     },
     {
      "date": "2026-09-20",
-     "close": 65513.99
+     "close": 66364.2
     },
     {
      "date": "2026-09-25",
@@ -27196,11 +27220,11 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 65,514、單日 +0.76%。一個月 -0.76%，三個月 -9.45%。"
+     "2026-09-25 收 66,364、單日 +1.30%。一個月 +1.28%，三個月 -4.91%。"
     ],
     [
      "報導",
-     "近三個月 6 則（The Star、NST、Nikkei Asia、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Star、NST、The Edge Malaysia、The Business Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -27212,30 +27236,31 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "SGD",
-   "price": 5683.3701,
-   "prev_close": 5709.9102,
-   "change_pct_1d": -0.46,
-   "change_pct_5d": 0.4,
-   "change_pct_1m": -0.67,
-   "change_pct_3m": 9.47,
-   "change_pct_1y": 32.98,
+   "price": 5711.1201,
+   "prev_close": 5683.3701,
+   "change_pct_1d": 0.49,
+   "change_pct_5d": 0.97,
+   "change_pct_1m": 0.48,
+   "change_pct_3m": 9.64,
+   "change_pct_1y": 33.63,
    "day_high": 5716.53,
    "day_low": 5665.35,
-   "volume": 275535500,
-   "avg_volume_20d": 291903665,
-   "volume_ratio": 0.94,
+   "volume": 236832600,
+   "avg_volume_20d": 291798750,
+   "volume_ratio": 0.81,
    "high_52w": 5828.5,
    "low_52w": 4264.99,
-   "off_52w_high": -2.49,
+   "off_52w_high": -2.01,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-25 17:20",
-   "change_pct_3y": 79.04,
-   "change_pct_5y": 86.27,
+   "change_pct_3y": 79.91,
+   "change_pct_5y": 87.18,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -28279,7 +28304,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 5683.37
+     "close": 5711.12
     },
     {
      "date": "2026-09-25",
@@ -28290,11 +28315,11 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 5,683、單日 -0.46%。一個月 -0.67%，三個月 +9.47%。"
+     "2026-09-25 收 5,711、單日 +0.49%。一個月 +0.48%，三個月 +9.64%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（The Straits Times、businesstimes.sg、The Star、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績（The Straits Times、The Business Times、The Star、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -28306,6 +28331,7 @@
    "sector": "國際",
    "is_index": true,
    "unit": "%",
+   "dp": null,
    "fundamentals": {},
    "currency": "USD",
    "price": 5.184,
@@ -29373,7 +29399,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 5.162
+     "close": 5.184
     },
     {
      "date": "2026-09-26",
@@ -29388,7 +29414,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（WSJ、Reuters、BusinessToday Malaysia、Financial Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在政策（WSJ、cnbc、BusinessToday Malaysia、Financial Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -29400,30 +29426,31 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 4.07,
+   "price": 4.0715,
    "prev_close": 4.0828,
-   "change_pct_1d": -0.31,
-   "change_pct_5d": -0.27,
-   "change_pct_1m": 0.99,
-   "change_pct_3m": -0.3,
-   "change_pct_1y": -3.21,
-   "day_high": 4.084,
-   "day_low": 4.064,
+   "change_pct_1d": -0.28,
+   "change_pct_5d": -0.24,
+   "change_pct_1m": 1.02,
+   "change_pct_3m": -0.26,
+   "change_pct_1y": -3.17,
+   "day_high": 4.0715,
+   "day_low": 4.0715,
    "volume": 0,
    "avg_volume_20d": null,
    "volume_ratio": null,
    "high_52w": 4.23,
    "low_52w": 3.8805,
-   "off_52w_high": -3.78,
+   "off_52w_high": -3.75,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-09-26 06:59",
-   "change_pct_3y": -13.86,
-   "change_pct_5y": -2.63,
+   "market_time": "2026-09-26 11:30",
+   "change_pct_3y": -13.83,
+   "change_pct_5y": -2.6,
    "series_w": [
     {
      "date": "2021-09-20",
@@ -30475,18 +30502,18 @@
     },
     {
      "date": "2026-09-26",
-     "close": 4.07
+     "close": 4.071
     }
    ],
    "flags": [],
    "digest": [
     [
      "價格",
-     "2026-09-26 收 4.07、單日 -0.31%。一個月 +0.99%，三個月 -0.30%。"
+     "2026-09-26 收 4.07、單日 -0.28%。一個月 +1.02%，三個月 -0.26%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（The Star、BusinessToday Malaysia、Traders Union、e.vnexpress.net）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運（The Star、BusinessToday Malaysia、Traders Union、VnExpress International）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -30498,6 +30525,7 @@
    "sector": "國際",
    "is_index": true,
    "unit": "",
+   "dp": null,
    "fundamentals": {},
    "currency": "MYR",
    "price": 3.1884,
@@ -31584,7 +31612,2214 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（The Star、e.vnexpress.net、NST、businesstimes.sg）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在政策（The Star、VnExpress International、NST、The Business Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+    ]
+   ]
+  },
+  {
+   "symbol": "BTC-USD",
+   "sa": null,
+   "name": "比特幣 BTC",
+   "note": "24 小時交易，週末也開盤。單日波動 3% 以上是常態",
+   "sector": "加密",
+   "is_index": true,
+   "unit": "USD",
+   "dp": null,
+   "fundamentals": {},
+   "currency": "USD",
+   "price": 83984.8125,
+   "prev_close": 84379.0625,
+   "change_pct_1d": -0.47,
+   "change_pct_5d": 3.5,
+   "change_pct_1m": 5.41,
+   "change_pct_3m": 31.02,
+   "change_pct_1y": -23.45,
+   "day_high": 84118.32,
+   "day_low": 83799.75,
+   "volume": 32465178624,
+   "avg_volume_20d": 30221660535,
+   "volume_ratio": 1.07,
+   "high_52w": 126198.07,
+   "low_52w": 57747.766,
+   "off_52w_high": -33.45,
+   "at_52w_low": false,
+   "ttm_dividend": 0,
+   "yield_pct": null,
+   "dividends": [],
+   "market_time": "2026-09-26 12:05",
+   "change_pct_3y": 200.64,
+   "change_pct_5y": 94.37,
+   "series_w": [
+    {
+     "date": "2021-09-20",
+     "close": 43208.54
+    },
+    {
+     "date": "2021-09-27",
+     "close": 48199.95
+    },
+    {
+     "date": "2021-10-04",
+     "close": 54771.58
+    },
+    {
+     "date": "2021-10-11",
+     "close": 61553.62
+    },
+    {
+     "date": "2021-10-18",
+     "close": 60930.84
+    },
+    {
+     "date": "2021-10-25",
+     "close": 61318.96
+    },
+    {
+     "date": "2021-11-01",
+     "close": 63326.99
+    },
+    {
+     "date": "2021-11-08",
+     "close": 65466.84
+    },
+    {
+     "date": "2021-11-15",
+     "close": 58730.48
+    },
+    {
+     "date": "2021-11-22",
+     "close": 57248.46
+    },
+    {
+     "date": "2021-11-29",
+     "close": 49368.85
+    },
+    {
+     "date": "2021-12-06",
+     "close": 50098.34
+    },
+    {
+     "date": "2021-12-13",
+     "close": 46707.02
+    },
+    {
+     "date": "2021-12-20",
+     "close": 50809.52
+    },
+    {
+     "date": "2021-12-27",
+     "close": 47345.22
+    },
+    {
+     "date": "2022-01-03",
+     "close": 41911.6
+    },
+    {
+     "date": "2022-01-10",
+     "close": 43113.88
+    },
+    {
+     "date": "2022-01-17",
+     "close": 36276.8
+    },
+    {
+     "date": "2022-01-24",
+     "close": 37917.6
+    },
+    {
+     "date": "2022-01-31",
+     "close": 42412.43
+    },
+    {
+     "date": "2022-02-07",
+     "close": 42197.52
+    },
+    {
+     "date": "2022-02-14",
+     "close": 38431.38
+    },
+    {
+     "date": "2022-02-21",
+     "close": 37709.79
+    },
+    {
+     "date": "2022-02-28",
+     "close": 38419.98
+    },
+    {
+     "date": "2022-03-07",
+     "close": 37849.66
+    },
+    {
+     "date": "2022-03-14",
+     "close": 41247.82
+    },
+    {
+     "date": "2022-03-21",
+     "close": 46820.49
+    },
+    {
+     "date": "2022-03-28",
+     "close": 46453.57
+    },
+    {
+     "date": "2022-04-04",
+     "close": 42207.67
+    },
+    {
+     "date": "2022-04-11",
+     "close": 39716.95
+    },
+    {
+     "date": "2022-04-18",
+     "close": 39469.29
+    },
+    {
+     "date": "2022-04-25",
+     "close": 38469.09
+    },
+    {
+     "date": "2022-05-02",
+     "close": 34059.27
+    },
+    {
+     "date": "2022-05-09",
+     "close": 31305.11
+    },
+    {
+     "date": "2022-05-16",
+     "close": 30323.72
+    },
+    {
+     "date": "2022-05-23",
+     "close": 29445.96
+    },
+    {
+     "date": "2022-05-30",
+     "close": 29906.66
+    },
+    {
+     "date": "2022-06-06",
+     "close": 26762.65
+    },
+    {
+     "date": "2022-06-13",
+     "close": 20553.27
+    },
+    {
+     "date": "2022-06-20",
+     "close": 21027.29
+    },
+    {
+     "date": "2022-06-27",
+     "close": 19297.08
+    },
+    {
+     "date": "2022-07-04",
+     "close": 20860.45
+    },
+    {
+     "date": "2022-07-11",
+     "close": 20779.34
+    },
+    {
+     "date": "2022-07-18",
+     "close": 22609.16
+    },
+    {
+     "date": "2022-07-25",
+     "close": 23336.9
+    },
+    {
+     "date": "2022-08-01",
+     "close": 23175.89
+    },
+    {
+     "date": "2022-08-08",
+     "close": 24319.33
+    },
+    {
+     "date": "2022-08-15",
+     "close": 21534.12
+    },
+    {
+     "date": "2022-08-22",
+     "close": 19616.81
+    },
+    {
+     "date": "2022-08-29",
+     "close": 19986.71
+    },
+    {
+     "date": "2022-09-05",
+     "close": 21769.26
+    },
+    {
+     "date": "2022-09-12",
+     "close": 19419.51
+    },
+    {
+     "date": "2022-09-19",
+     "close": 18802.1
+    },
+    {
+     "date": "2022-09-26",
+     "close": 19044.11
+    },
+    {
+     "date": "2022-10-03",
+     "close": 19446.43
+    },
+    {
+     "date": "2022-10-10",
+     "close": 19268.09
+    },
+    {
+     "date": "2022-10-17",
+     "close": 19567.01
+    },
+    {
+     "date": "2022-10-24",
+     "close": 20635.6
+    },
+    {
+     "date": "2022-10-31",
+     "close": 20926.49
+    },
+    {
+     "date": "2022-11-07",
+     "close": 16353.37
+    },
+    {
+     "date": "2022-11-14",
+     "close": 16291.83
+    },
+    {
+     "date": "2022-11-21",
+     "close": 16444.63
+    },
+    {
+     "date": "2022-11-28",
+     "close": 17130.49
+    },
+    {
+     "date": "2022-12-05",
+     "close": 17104.19
+    },
+    {
+     "date": "2022-12-12",
+     "close": 16757.98
+    },
+    {
+     "date": "2022-12-19",
+     "close": 16841.99
+    },
+    {
+     "date": "2022-12-26",
+     "close": 16625.08
+    },
+    {
+     "date": "2023-01-02",
+     "close": 17091.14
+    },
+    {
+     "date": "2023-01-09",
+     "close": 20880.8
+    },
+    {
+     "date": "2023-01-16",
+     "close": 22720.42
+    },
+    {
+     "date": "2023-01-23",
+     "close": 23774.57
+    },
+    {
+     "date": "2023-01-30",
+     "close": 22955.67
+    },
+    {
+     "date": "2023-02-06",
+     "close": 21788.2
+    },
+    {
+     "date": "2023-02-13",
+     "close": 24327.64
+    },
+    {
+     "date": "2023-02-20",
+     "close": 23561.21
+    },
+    {
+     "date": "2023-02-27",
+     "close": 22435.51
+    },
+    {
+     "date": "2023-03-06",
+     "close": 22163.95
+    },
+    {
+     "date": "2023-03-13",
+     "close": 28038.68
+    },
+    {
+     "date": "2023-03-20",
+     "close": 27994.33
+    },
+    {
+     "date": "2023-03-27",
+     "close": 28199.31
+    },
+    {
+     "date": "2023-04-03",
+     "close": 28333.05
+    },
+    {
+     "date": "2023-04-10",
+     "close": 30315.36
+    },
+    {
+     "date": "2023-04-17",
+     "close": 27591.38
+    },
+    {
+     "date": "2023-04-24",
+     "close": 29268.81
+    },
+    {
+     "date": "2023-05-01",
+     "close": 28454.98
+    },
+    {
+     "date": "2023-05-08",
+     "close": 26930.64
+    },
+    {
+     "date": "2023-05-15",
+     "close": 26753.83
+    },
+    {
+     "date": "2023-05-22",
+     "close": 28085.65
+    },
+    {
+     "date": "2023-05-29",
+     "close": 27119.07
+    },
+    {
+     "date": "2023-06-05",
+     "close": 25940.17
+    },
+    {
+     "date": "2023-06-12",
+     "close": 26336.21
+    },
+    {
+     "date": "2023-06-19",
+     "close": 30480.26
+    },
+    {
+     "date": "2023-06-26",
+     "close": 30620.77
+    },
+    {
+     "date": "2023-07-03",
+     "close": 30171.23
+    },
+    {
+     "date": "2023-07-10",
+     "close": 30249.13
+    },
+    {
+     "date": "2023-07-17",
+     "close": 30084.54
+    },
+    {
+     "date": "2023-07-24",
+     "close": 29275.31
+    },
+    {
+     "date": "2023-07-31",
+     "close": 29041.86
+    },
+    {
+     "date": "2023-08-07",
+     "close": 29282.91
+    },
+    {
+     "date": "2023-08-14",
+     "close": 26189.58
+    },
+    {
+     "date": "2023-08-21",
+     "close": 26089.69
+    },
+    {
+     "date": "2023-08-28",
+     "close": 25969.57
+    },
+    {
+     "date": "2023-09-04",
+     "close": 25832.23
+    },
+    {
+     "date": "2023-09-11",
+     "close": 26534.19
+    },
+    {
+     "date": "2023-09-18",
+     "close": 26256.83
+    },
+    {
+     "date": "2023-09-25",
+     "close": 27983.75
+    },
+    {
+     "date": "2023-10-02",
+     "close": 27935.09
+    },
+    {
+     "date": "2023-10-09",
+     "close": 27159.65
+    },
+    {
+     "date": "2023-10-16",
+     "close": 29993.9
+    },
+    {
+     "date": "2023-10-23",
+     "close": 34538.48
+    },
+    {
+     "date": "2023-10-30",
+     "close": 35049.36
+    },
+    {
+     "date": "2023-11-06",
+     "close": 37054.52
+    },
+    {
+     "date": "2023-11-13",
+     "close": 37386.55
+    },
+    {
+     "date": "2023-11-20",
+     "close": 37479.12
+    },
+    {
+     "date": "2023-11-27",
+     "close": 39978.39
+    },
+    {
+     "date": "2023-12-04",
+     "close": 43779.7
+    },
+    {
+     "date": "2023-12-11",
+     "close": 41364.66
+    },
+    {
+     "date": "2023-12-18",
+     "close": 43016.12
+    },
+    {
+     "date": "2023-12-25",
+     "close": 42265.19
+    },
+    {
+     "date": "2024-01-01",
+     "close": 43943.1
+    },
+    {
+     "date": "2024-01-08",
+     "close": 41796.27
+    },
+    {
+     "date": "2024-01-15",
+     "close": 41545.79
+    },
+    {
+     "date": "2024-01-22",
+     "close": 42035.59
+    },
+    {
+     "date": "2024-01-29",
+     "close": 42583.58
+    },
+    {
+     "date": "2024-02-05",
+     "close": 48293.92
+    },
+    {
+     "date": "2024-02-12",
+     "close": 52122.55
+    },
+    {
+     "date": "2024-02-19",
+     "close": 51733.24
+    },
+    {
+     "date": "2024-02-26",
+     "close": 63167.37
+    },
+    {
+     "date": "2024-03-04",
+     "close": 69019.79
+    },
+    {
+     "date": "2024-03-11",
+     "close": 68390.62
+    },
+    {
+     "date": "2024-03-18",
+     "close": 67234.17
+    },
+    {
+     "date": "2024-03-25",
+     "close": 71333.65
+    },
+    {
+     "date": "2024-04-01",
+     "close": 69362.55
+    },
+    {
+     "date": "2024-04-08",
+     "close": 65738.73
+    },
+    {
+     "date": "2024-04-15",
+     "close": 64926.64
+    },
+    {
+     "date": "2024-04-22",
+     "close": 63113.23
+    },
+    {
+     "date": "2024-04-29",
+     "close": 64031.13
+    },
+    {
+     "date": "2024-05-06",
+     "close": 61448.39
+    },
+    {
+     "date": "2024-05-13",
+     "close": 66278.37
+    },
+    {
+     "date": "2024-05-20",
+     "close": 68518.09
+    },
+    {
+     "date": "2024-05-27",
+     "close": 67751.6
+    },
+    {
+     "date": "2024-06-03",
+     "close": 69647.99
+    },
+    {
+     "date": "2024-06-10",
+     "close": 66639.05
+    },
+    {
+     "date": "2024-06-17",
+     "close": 63180.8
+    },
+    {
+     "date": "2024-06-24",
+     "close": 62678.29
+    },
+    {
+     "date": "2024-07-01",
+     "close": 55849.11
+    },
+    {
+     "date": "2024-07-08",
+     "close": 60787.79
+    },
+    {
+     "date": "2024-07-15",
+     "close": 68154.52
+    },
+    {
+     "date": "2024-07-22",
+     "close": 68255.87
+    },
+    {
+     "date": "2024-07-29",
+     "close": 58116.98
+    },
+    {
+     "date": "2024-08-05",
+     "close": 58719.48
+    },
+    {
+     "date": "2024-08-12",
+     "close": 58483.96
+    },
+    {
+     "date": "2024-08-19",
+     "close": 64333.54
+    },
+    {
+     "date": "2024-08-26",
+     "close": 57325.49
+    },
+    {
+     "date": "2024-09-02",
+     "close": 54841.57
+    },
+    {
+     "date": "2024-09-09",
+     "close": 59182.84
+    },
+    {
+     "date": "2024-09-16",
+     "close": 63648.71
+    },
+    {
+     "date": "2024-09-23",
+     "close": 65635.3
+    },
+    {
+     "date": "2024-09-30",
+     "close": 62818.95
+    },
+    {
+     "date": "2024-10-07",
+     "close": 62851.38
+    },
+    {
+     "date": "2024-10-14",
+     "close": 69001.7
+    },
+    {
+     "date": "2024-10-21",
+     "close": 67929.3
+    },
+    {
+     "date": "2024-10-28",
+     "close": 68741.12
+    },
+    {
+     "date": "2024-11-04",
+     "close": 80474.19
+    },
+    {
+     "date": "2024-11-11",
+     "close": 89845.85
+    },
+    {
+     "date": "2024-11-18",
+     "close": 98013.82
+    },
+    {
+     "date": "2024-11-25",
+     "close": 97279.79
+    },
+    {
+     "date": "2024-12-02",
+     "close": 101236.02
+    },
+    {
+     "date": "2024-12-09",
+     "close": 104298.7
+    },
+    {
+     "date": "2024-12-16",
+     "close": 95104.94
+    },
+    {
+     "date": "2024-12-23",
+     "close": 93530.23
+    },
+    {
+     "date": "2024-12-30",
+     "close": 98314.96
+    },
+    {
+     "date": "2025-01-06",
+     "close": 94488.44
+    },
+    {
+     "date": "2025-01-13",
+     "close": 101089.61
+    },
+    {
+     "date": "2025-01-20",
+     "close": 102682.5
+    },
+    {
+     "date": "2025-01-27",
+     "close": 97688.98
+    },
+    {
+     "date": "2025-02-03",
+     "close": 96500.09
+    },
+    {
+     "date": "2025-02-10",
+     "close": 96175.03
+    },
+    {
+     "date": "2025-02-17",
+     "close": 96273.92
+    },
+    {
+     "date": "2025-02-24",
+     "close": 94248.35
+    },
+    {
+     "date": "2025-03-03",
+     "close": 80601.04
+    },
+    {
+     "date": "2025-03-10",
+     "close": 82579.69
+    },
+    {
+     "date": "2025-03-17",
+     "close": 86054.38
+    },
+    {
+     "date": "2025-03-24",
+     "close": 82334.52
+    },
+    {
+     "date": "2025-03-31",
+     "close": 78214.48
+    },
+    {
+     "date": "2025-04-07",
+     "close": 83684.98
+    },
+    {
+     "date": "2025-04-14",
+     "close": 85174.3
+    },
+    {
+     "date": "2025-04-21",
+     "close": 93754.84
+    },
+    {
+     "date": "2025-04-28",
+     "close": 94315.98
+    },
+    {
+     "date": "2025-05-05",
+     "close": 104106.36
+    },
+    {
+     "date": "2025-05-12",
+     "close": 106446.01
+    },
+    {
+     "date": "2025-05-19",
+     "close": 109035.39
+    },
+    {
+     "date": "2025-05-26",
+     "close": 105652.1
+    },
+    {
+     "date": "2025-06-02",
+     "close": 105793.65
+    },
+    {
+     "date": "2025-06-09",
+     "close": 105552.02
+    },
+    {
+     "date": "2025-06-16",
+     "close": 100987.14
+    },
+    {
+     "date": "2025-06-23",
+     "close": 108385.57
+    },
+    {
+     "date": "2025-06-30",
+     "close": 109232.07
+    },
+    {
+     "date": "2025-07-07",
+     "close": 119116.12
+    },
+    {
+     "date": "2025-07-14",
+     "close": 117300.79
+    },
+    {
+     "date": "2025-07-21",
+     "close": 119448.49
+    },
+    {
+     "date": "2025-07-28",
+     "close": 114217.67
+    },
+    {
+     "date": "2025-08-04",
+     "close": 119306.76
+    },
+    {
+     "date": "2025-08-11",
+     "close": 117453.06
+    },
+    {
+     "date": "2025-08-18",
+     "close": 113458.43
+    },
+    {
+     "date": "2025-08-25",
+     "close": 108236.71
+    },
+    {
+     "date": "2025-09-01",
+     "close": 111167.62
+    },
+    {
+     "date": "2025-09-08",
+     "close": 115407.66
+    },
+    {
+     "date": "2025-09-15",
+     "close": 115306.09
+    },
+    {
+     "date": "2025-09-22",
+     "close": 112122.64
+    },
+    {
+     "date": "2025-09-29",
+     "close": 123513.48
+    },
+    {
+     "date": "2025-10-06",
+     "close": 115169.77
+    },
+    {
+     "date": "2025-10-13",
+     "close": 108666.71
+    },
+    {
+     "date": "2025-10-20",
+     "close": 114472.45
+    },
+    {
+     "date": "2025-10-27",
+     "close": 110639.62
+    },
+    {
+     "date": "2025-11-03",
+     "close": 104719.64
+    },
+    {
+     "date": "2025-11-10",
+     "close": 94177.08
+    },
+    {
+     "date": "2025-11-17",
+     "close": 86805.01
+    },
+    {
+     "date": "2025-11-24",
+     "close": 90394.31
+    },
+    {
+     "date": "2025-12-01",
+     "close": 90405.64
+    },
+    {
+     "date": "2025-12-08",
+     "close": 88175.18
+    },
+    {
+     "date": "2025-12-15",
+     "close": 88621.75
+    },
+    {
+     "date": "2025-12-22",
+     "close": 87835.84
+    },
+    {
+     "date": "2025-12-29",
+     "close": 91413.49
+    },
+    {
+     "date": "2026-01-05",
+     "close": 90827.46
+    },
+    {
+     "date": "2026-01-12",
+     "close": 93634.43
+    },
+    {
+     "date": "2026-01-19",
+     "close": 86572.22
+    },
+    {
+     "date": "2026-01-26",
+     "close": 76974.45
+    },
+    {
+     "date": "2026-02-02",
+     "close": 70264.73
+    },
+    {
+     "date": "2026-02-09",
+     "close": 68788.19
+    },
+    {
+     "date": "2026-02-16",
+     "close": 67659.39
+    },
+    {
+     "date": "2026-02-23",
+     "close": 65738.1
+    },
+    {
+     "date": "2026-03-02",
+     "close": 65969.78
+    },
+    {
+     "date": "2026-03-09",
+     "close": 72789.91
+    },
+    {
+     "date": "2026-03-16",
+     "close": 67845.21
+    },
+    {
+     "date": "2026-03-23",
+     "close": 65954.92
+    },
+    {
+     "date": "2026-03-30",
+     "close": 68981.9
+    },
+    {
+     "date": "2026-04-06",
+     "close": 70753.41
+    },
+    {
+     "date": "2026-04-13",
+     "close": 73856.35
+    },
+    {
+     "date": "2026-04-20",
+     "close": 78657.54
+    },
+    {
+     "date": "2026-04-27",
+     "close": 78538.23
+    },
+    {
+     "date": "2026-05-04",
+     "close": 82138.93
+    },
+    {
+     "date": "2026-05-11",
+     "close": 77429.35
+    },
+    {
+     "date": "2026-05-18",
+     "close": 76981.12
+    },
+    {
+     "date": "2026-05-25",
+     "close": 73579.69
+    },
+    {
+     "date": "2026-06-01",
+     "close": 63239.52
+    },
+    {
+     "date": "2026-06-08",
+     "close": 65710.4
+    },
+    {
+     "date": "2026-06-15",
+     "close": 63237.54
+    },
+    {
+     "date": "2026-06-22",
+     "close": 59532.34
+    },
+    {
+     "date": "2026-06-29",
+     "close": 63547.88
+    },
+    {
+     "date": "2026-07-06",
+     "close": 63758.22
+    },
+    {
+     "date": "2026-07-13",
+     "close": 64690.8
+    },
+    {
+     "date": "2026-07-20",
+     "close": 65340.3
+    },
+    {
+     "date": "2026-07-27",
+     "close": 63482.0
+    },
+    {
+     "date": "2026-08-03",
+     "close": 64844.89
+    },
+    {
+     "date": "2026-08-10",
+     "close": 62818.65
+    },
+    {
+     "date": "2026-08-17",
+     "close": 77755.27
+    },
+    {
+     "date": "2026-08-24",
+     "close": 77667.57
+    },
+    {
+     "date": "2026-08-31",
+     "close": 80350.05
+    },
+    {
+     "date": "2026-09-07",
+     "close": 76838.16
+    },
+    {
+     "date": "2026-09-14",
+     "close": 81142.61
+    },
+    {
+     "date": "2026-09-21",
+     "close": 84379.06
+    },
+    {
+     "date": "2026-09-26",
+     "close": 83984.8
+    }
+   ],
+   "flags": [
+    {
+     "level": "warn",
+     "text": "距 52 週高點 -33.5%"
+    }
+   ],
+   "myr": 341944.16,
+   "myr_rate": 4.0715,
+   "digest": [
+    [
+     "價格",
+     "2026-09-26 收 83,985 USD、單日 -0.47%。一個月 +5.41%，三個月 +31.02%。換算馬幣約 RM 341,944.16（匯率 4.0715）。"
+    ],
+    [
+     "報導",
+     "近三個月 6 則（The Edge Malaysia、cnbc、stonex、Morningstar）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+    ]
+   ]
+  },
+  {
+   "symbol": "USDT-USD",
+   "sa": null,
+   "name": "泰達幣 USDT",
+   "note": "錨定 1 美元的穩定幣。看的不是漲跌，是有沒有脫鉤",
+   "sector": "加密",
+   "is_index": true,
+   "unit": "USD",
+   "dp": 4,
+   "fundamentals": {},
+   "currency": "USD",
+   "price": 0.9998,
+   "prev_close": 0.9997,
+   "change_pct_1d": 0.01,
+   "change_pct_5d": 0.0,
+   "change_pct_1m": -0.04,
+   "change_pct_3m": 0.07,
+   "change_pct_1y": -0.07,
+   "day_high": 0.99991333,
+   "day_low": 0.9996959,
+   "volume": 79440592896,
+   "avg_volume_20d": 72195611345,
+   "volume_ratio": 1.1,
+   "high_52w": 1.007512,
+   "low_52w": 0.989577,
+   "off_52w_high": -0.77,
+   "at_52w_low": false,
+   "ttm_dividend": 0,
+   "yield_pct": null,
+   "dividends": [],
+   "market_time": "2026-09-26 12:05",
+   "change_pct_3y": -0.02,
+   "change_pct_5y": -0.12,
+   "series_w": [
+    {
+     "date": "2021-09-20",
+     "close": 1.001
+    },
+    {
+     "date": "2021-09-27",
+     "close": 1.0
+    },
+    {
+     "date": "2021-10-04",
+     "close": 1.001
+    },
+    {
+     "date": "2021-10-11",
+     "close": 1.0
+    },
+    {
+     "date": "2021-10-18",
+     "close": 1.0
+    },
+    {
+     "date": "2021-10-25",
+     "close": 1.0
+    },
+    {
+     "date": "2021-11-01",
+     "close": 1.002
+    },
+    {
+     "date": "2021-11-08",
+     "close": 1.0
+    },
+    {
+     "date": "2021-11-15",
+     "close": 1.001
+    },
+    {
+     "date": "2021-11-22",
+     "close": 1.0
+    },
+    {
+     "date": "2021-11-29",
+     "close": 1.001
+    },
+    {
+     "date": "2021-12-06",
+     "close": 1.001
+    },
+    {
+     "date": "2021-12-13",
+     "close": 1.0
+    },
+    {
+     "date": "2021-12-20",
+     "close": 1.0
+    },
+    {
+     "date": "2021-12-27",
+     "close": 1.0
+    },
+    {
+     "date": "2022-01-03",
+     "close": 1.0
+    },
+    {
+     "date": "2022-01-10",
+     "close": 1.0
+    },
+    {
+     "date": "2022-01-17",
+     "close": 1.0
+    },
+    {
+     "date": "2022-01-24",
+     "close": 1.0
+    },
+    {
+     "date": "2022-01-31",
+     "close": 1.001
+    },
+    {
+     "date": "2022-02-07",
+     "close": 1.0
+    },
+    {
+     "date": "2022-02-14",
+     "close": 1.0
+    },
+    {
+     "date": "2022-02-21",
+     "close": 1.0
+    },
+    {
+     "date": "2022-02-28",
+     "close": 1.0
+    },
+    {
+     "date": "2022-03-07",
+     "close": 1.0
+    },
+    {
+     "date": "2022-03-14",
+     "close": 1.0
+    },
+    {
+     "date": "2022-03-21",
+     "close": 1.0
+    },
+    {
+     "date": "2022-03-28",
+     "close": 1.0
+    },
+    {
+     "date": "2022-04-04",
+     "close": 1.0
+    },
+    {
+     "date": "2022-04-11",
+     "close": 1.0
+    },
+    {
+     "date": "2022-04-18",
+     "close": 1.0
+    },
+    {
+     "date": "2022-04-25",
+     "close": 1.0
+    },
+    {
+     "date": "2022-05-02",
+     "close": 0.9999
+    },
+    {
+     "date": "2022-05-09",
+     "close": 0.9991
+    },
+    {
+     "date": "2022-05-16",
+     "close": 0.9991
+    },
+    {
+     "date": "2022-05-23",
+     "close": 0.9992
+    },
+    {
+     "date": "2022-05-30",
+     "close": 0.9993
+    },
+    {
+     "date": "2022-06-06",
+     "close": 0.9991
+    },
+    {
+     "date": "2022-06-13",
+     "close": 0.999
+    },
+    {
+     "date": "2022-06-20",
+     "close": 0.9994
+    },
+    {
+     "date": "2022-06-27",
+     "close": 0.9991
+    },
+    {
+     "date": "2022-07-04",
+     "close": 0.9995
+    },
+    {
+     "date": "2022-07-11",
+     "close": 0.9997
+    },
+    {
+     "date": "2022-07-18",
+     "close": 1.0
+    },
+    {
+     "date": "2022-07-25",
+     "close": 1.0
+    },
+    {
+     "date": "2022-08-01",
+     "close": 1.0
+    },
+    {
+     "date": "2022-08-08",
+     "close": 1.0
+    },
+    {
+     "date": "2022-08-15",
+     "close": 1.0
+    },
+    {
+     "date": "2022-08-22",
+     "close": 1.0
+    },
+    {
+     "date": "2022-08-29",
+     "close": 1.0
+    },
+    {
+     "date": "2022-09-05",
+     "close": 1.0
+    },
+    {
+     "date": "2022-09-12",
+     "close": 1.0
+    },
+    {
+     "date": "2022-09-19",
+     "close": 1.0
+    },
+    {
+     "date": "2022-09-26",
+     "close": 1.0
+    },
+    {
+     "date": "2022-10-03",
+     "close": 1.0
+    },
+    {
+     "date": "2022-10-10",
+     "close": 1.0
+    },
+    {
+     "date": "2022-10-17",
+     "close": 1.0
+    },
+    {
+     "date": "2022-10-24",
+     "close": 1.0
+    },
+    {
+     "date": "2022-10-31",
+     "close": 1.0
+    },
+    {
+     "date": "2022-11-07",
+     "close": 0.9988
+    },
+    {
+     "date": "2022-11-14",
+     "close": 0.999
+    },
+    {
+     "date": "2022-11-21",
+     "close": 0.9996
+    },
+    {
+     "date": "2022-11-28",
+     "close": 1.0
+    },
+    {
+     "date": "2022-12-05",
+     "close": 1.0
+    },
+    {
+     "date": "2022-12-12",
+     "close": 1.0
+    },
+    {
+     "date": "2022-12-19",
+     "close": 0.9999
+    },
+    {
+     "date": "2022-12-26",
+     "close": 0.9997
+    },
+    {
+     "date": "2023-01-02",
+     "close": 1.0
+    },
+    {
+     "date": "2023-01-09",
+     "close": 1.0
+    },
+    {
+     "date": "2023-01-16",
+     "close": 1.0
+    },
+    {
+     "date": "2023-01-23",
+     "close": 1.0
+    },
+    {
+     "date": "2023-01-30",
+     "close": 1.0
+    },
+    {
+     "date": "2023-02-06",
+     "close": 1.0
+    },
+    {
+     "date": "2023-02-13",
+     "close": 1.0
+    },
+    {
+     "date": "2023-02-20",
+     "close": 1.0
+    },
+    {
+     "date": "2023-02-27",
+     "close": 1.0
+    },
+    {
+     "date": "2023-03-06",
+     "close": 1.007
+    },
+    {
+     "date": "2023-03-13",
+     "close": 1.003
+    },
+    {
+     "date": "2023-03-20",
+     "close": 1.001
+    },
+    {
+     "date": "2023-03-27",
+     "close": 1.0
+    },
+    {
+     "date": "2023-04-03",
+     "close": 1.0
+    },
+    {
+     "date": "2023-04-10",
+     "close": 1.001
+    },
+    {
+     "date": "2023-04-17",
+     "close": 1.0
+    },
+    {
+     "date": "2023-04-24",
+     "close": 1.0
+    },
+    {
+     "date": "2023-05-01",
+     "close": 1.002
+    },
+    {
+     "date": "2023-05-08",
+     "close": 1.001
+    },
+    {
+     "date": "2023-05-15",
+     "close": 1.0
+    },
+    {
+     "date": "2023-05-22",
+     "close": 1.0
+    },
+    {
+     "date": "2023-05-29",
+     "close": 1.0
+    },
+    {
+     "date": "2023-06-05",
+     "close": 1.0
+    },
+    {
+     "date": "2023-06-12",
+     "close": 0.9998
+    },
+    {
+     "date": "2023-06-19",
+     "close": 1.0
+    },
+    {
+     "date": "2023-06-26",
+     "close": 1.0
+    },
+    {
+     "date": "2023-07-03",
+     "close": 1.0
+    },
+    {
+     "date": "2023-07-10",
+     "close": 1.001
+    },
+    {
+     "date": "2023-07-17",
+     "close": 0.9999
+    },
+    {
+     "date": "2023-07-24",
+     "close": 0.9999
+    },
+    {
+     "date": "2023-07-31",
+     "close": 0.9984
+    },
+    {
+     "date": "2023-08-07",
+     "close": 0.9992
+    },
+    {
+     "date": "2023-08-14",
+     "close": 1.0
+    },
+    {
+     "date": "2023-08-21",
+     "close": 0.9995
+    },
+    {
+     "date": "2023-08-28",
+     "close": 1.0
+    },
+    {
+     "date": "2023-09-04",
+     "close": 0.9996
+    },
+    {
+     "date": "2023-09-11",
+     "close": 1.0
+    },
+    {
+     "date": "2023-09-18",
+     "close": 1.0
+    },
+    {
+     "date": "2023-09-25",
+     "close": 0.9999
+    },
+    {
+     "date": "2023-10-02",
+     "close": 1.0
+    },
+    {
+     "date": "2023-10-09",
+     "close": 1.0
+    },
+    {
+     "date": "2023-10-16",
+     "close": 1.0
+    },
+    {
+     "date": "2023-10-23",
+     "close": 1.0
+    },
+    {
+     "date": "2023-10-30",
+     "close": 1.001
+    },
+    {
+     "date": "2023-11-06",
+     "close": 1.0
+    },
+    {
+     "date": "2023-11-13",
+     "close": 1.0
+    },
+    {
+     "date": "2023-11-20",
+     "close": 1.0
+    },
+    {
+     "date": "2023-11-27",
+     "close": 1.0
+    },
+    {
+     "date": "2023-12-04",
+     "close": 1.0
+    },
+    {
+     "date": "2023-12-11",
+     "close": 0.9999
+    },
+    {
+     "date": "2023-12-18",
+     "close": 1.001
+    },
+    {
+     "date": "2023-12-25",
+     "close": 0.9997
+    },
+    {
+     "date": "2024-01-01",
+     "close": 1.001
+    },
+    {
+     "date": "2024-01-08",
+     "close": 0.9995
+    },
+    {
+     "date": "2024-01-15",
+     "close": 0.9994
+    },
+    {
+     "date": "2024-01-22",
+     "close": 1.0
+    },
+    {
+     "date": "2024-01-29",
+     "close": 0.9997
+    },
+    {
+     "date": "2024-02-05",
+     "close": 1.0
+    },
+    {
+     "date": "2024-02-12",
+     "close": 1.0
+    },
+    {
+     "date": "2024-02-19",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-02-26",
+     "close": 1.0
+    },
+    {
+     "date": "2024-03-04",
+     "close": 1.001
+    },
+    {
+     "date": "2024-03-11",
+     "close": 0.9994
+    },
+    {
+     "date": "2024-03-18",
+     "close": 1.0
+    },
+    {
+     "date": "2024-03-25",
+     "close": 1.0
+    },
+    {
+     "date": "2024-04-01",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-04-08",
+     "close": 1.001
+    },
+    {
+     "date": "2024-04-15",
+     "close": 1.0
+    },
+    {
+     "date": "2024-04-22",
+     "close": 0.9997
+    },
+    {
+     "date": "2024-04-29",
+     "close": 1.0
+    },
+    {
+     "date": "2024-05-06",
+     "close": 0.9996
+    },
+    {
+     "date": "2024-05-13",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-05-20",
+     "close": 0.9995
+    },
+    {
+     "date": "2024-05-27",
+     "close": 0.9994
+    },
+    {
+     "date": "2024-06-03",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-06-10",
+     "close": 0.9993
+    },
+    {
+     "date": "2024-06-17",
+     "close": 0.9993
+    },
+    {
+     "date": "2024-06-24",
+     "close": 0.9984
+    },
+    {
+     "date": "2024-07-01",
+     "close": 0.9998
+    },
+    {
+     "date": "2024-07-08",
+     "close": 1.0
+    },
+    {
+     "date": "2024-07-15",
+     "close": 1.0
+    },
+    {
+     "date": "2024-07-22",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-07-29",
+     "close": 0.9997
+    },
+    {
+     "date": "2024-08-05",
+     "close": 1.0
+    },
+    {
+     "date": "2024-08-12",
+     "close": 1.001
+    },
+    {
+     "date": "2024-08-19",
+     "close": 1.001
+    },
+    {
+     "date": "2024-08-26",
+     "close": 1.0
+    },
+    {
+     "date": "2024-09-02",
+     "close": 0.9999
+    },
+    {
+     "date": "2024-09-09",
+     "close": 1.0
+    },
+    {
+     "date": "2024-09-16",
+     "close": 1.0
+    },
+    {
+     "date": "2024-09-23",
+     "close": 1.0
+    },
+    {
+     "date": "2024-09-30",
+     "close": 0.9998
+    },
+    {
+     "date": "2024-10-07",
+     "close": 0.9996
+    },
+    {
+     "date": "2024-10-14",
+     "close": 0.9997
+    },
+    {
+     "date": "2024-10-21",
+     "close": 0.9987
+    },
+    {
+     "date": "2024-10-28",
+     "close": 0.9996
+    },
+    {
+     "date": "2024-11-04",
+     "close": 1.001
+    },
+    {
+     "date": "2024-11-11",
+     "close": 1.0
+    },
+    {
+     "date": "2024-11-18",
+     "close": 1.001
+    },
+    {
+     "date": "2024-11-25",
+     "close": 1.001
+    },
+    {
+     "date": "2024-12-02",
+     "close": 1.001
+    },
+    {
+     "date": "2024-12-09",
+     "close": 0.9994
+    },
+    {
+     "date": "2024-12-16",
+     "close": 0.9991
+    },
+    {
+     "date": "2024-12-23",
+     "close": 0.9981
+    },
+    {
+     "date": "2024-12-30",
+     "close": 0.9999
+    },
+    {
+     "date": "2025-01-06",
+     "close": 0.9995
+    },
+    {
+     "date": "2025-01-13",
+     "close": 0.999
+    },
+    {
+     "date": "2025-01-20",
+     "close": 0.9997
+    },
+    {
+     "date": "2025-01-27",
+     "close": 0.9998
+    },
+    {
+     "date": "2025-02-03",
+     "close": 1.0
+    },
+    {
+     "date": "2025-02-10",
+     "close": 1.0
+    },
+    {
+     "date": "2025-02-17",
+     "close": 1.0
+    },
+    {
+     "date": "2025-02-24",
+     "close": 1.0
+    },
+    {
+     "date": "2025-03-03",
+     "close": 0.9997
+    },
+    {
+     "date": "2025-03-10",
+     "close": 1.0
+    },
+    {
+     "date": "2025-03-17",
+     "close": 1.0
+    },
+    {
+     "date": "2025-03-24",
+     "close": 0.9999
+    },
+    {
+     "date": "2025-03-31",
+     "close": 0.9993
+    },
+    {
+     "date": "2025-04-07",
+     "close": 0.9997
+    },
+    {
+     "date": "2025-04-14",
+     "close": 0.9999
+    },
+    {
+     "date": "2025-04-21",
+     "close": 1.0
+    },
+    {
+     "date": "2025-04-28",
+     "close": 1.0
+    },
+    {
+     "date": "2025-05-05",
+     "close": 1.0
+    },
+    {
+     "date": "2025-05-12",
+     "close": 1.0
+    },
+    {
+     "date": "2025-05-19",
+     "close": 1.0
+    },
+    {
+     "date": "2025-05-26",
+     "close": 1.0
+    },
+    {
+     "date": "2025-06-02",
+     "close": 1.0
+    },
+    {
+     "date": "2025-06-09",
+     "close": 1.0
+    },
+    {
+     "date": "2025-06-16",
+     "close": 1.0
+    },
+    {
+     "date": "2025-06-23",
+     "close": 1.0
+    },
+    {
+     "date": "2025-06-30",
+     "close": 1.0
+    },
+    {
+     "date": "2025-07-07",
+     "close": 1.0
+    },
+    {
+     "date": "2025-07-14",
+     "close": 1.0
+    },
+    {
+     "date": "2025-07-21",
+     "close": 1.0
+    },
+    {
+     "date": "2025-07-28",
+     "close": 1.0
+    },
+    {
+     "date": "2025-08-04",
+     "close": 1.0
+    },
+    {
+     "date": "2025-08-11",
+     "close": 1.001
+    },
+    {
+     "date": "2025-08-18",
+     "close": 0.9999
+    },
+    {
+     "date": "2025-08-25",
+     "close": 1.0
+    },
+    {
+     "date": "2025-09-01",
+     "close": 1.0
+    },
+    {
+     "date": "2025-09-08",
+     "close": 1.001
+    },
+    {
+     "date": "2025-09-15",
+     "close": 1.0
+    },
+    {
+     "date": "2025-09-22",
+     "close": 1.0
+    },
+    {
+     "date": "2025-09-29",
+     "close": 1.0
+    },
+    {
+     "date": "2025-10-06",
+     "close": 1.001
+    },
+    {
+     "date": "2025-10-13",
+     "close": 1.0
+    },
+    {
+     "date": "2025-10-20",
+     "close": 1.0
+    },
+    {
+     "date": "2025-10-27",
+     "close": 1.0
+    },
+    {
+     "date": "2025-11-03",
+     "close": 1.0
+    },
+    {
+     "date": "2025-11-10",
+     "close": 0.9993
+    },
+    {
+     "date": "2025-11-17",
+     "close": 0.9997
+    },
+    {
+     "date": "2025-11-24",
+     "close": 1.0
+    },
+    {
+     "date": "2025-12-01",
+     "close": 1.0
+    },
+    {
+     "date": "2025-12-08",
+     "close": 1.0
+    },
+    {
+     "date": "2025-12-15",
+     "close": 0.9997
+    },
+    {
+     "date": "2025-12-22",
+     "close": 0.9993
+    },
+    {
+     "date": "2025-12-29",
+     "close": 0.9995
+    },
+    {
+     "date": "2026-01-05",
+     "close": 0.9986
+    },
+    {
+     "date": "2026-01-12",
+     "close": 0.9996
+    },
+    {
+     "date": "2026-01-19",
+     "close": 0.9989
+    },
+    {
+     "date": "2026-01-26",
+     "close": 0.9991
+    },
+    {
+     "date": "2026-02-02",
+     "close": 0.9995
+    },
+    {
+     "date": "2026-02-09",
+     "close": 0.9996
+    },
+    {
+     "date": "2026-02-16",
+     "close": 0.9995
+    },
+    {
+     "date": "2026-02-23",
+     "close": 1.0
+    },
+    {
+     "date": "2026-03-02",
+     "close": 0.9999
+    },
+    {
+     "date": "2026-03-09",
+     "close": 1.0
+    },
+    {
+     "date": "2026-03-16",
+     "close": 0.9999
+    },
+    {
+     "date": "2026-03-23",
+     "close": 0.9992
+    },
+    {
+     "date": "2026-03-30",
+     "close": 0.9996
+    },
+    {
+     "date": "2026-04-06",
+     "close": 1.0
+    },
+    {
+     "date": "2026-04-13",
+     "close": 1.0
+    },
+    {
+     "date": "2026-04-20",
+     "close": 1.0
+    },
+    {
+     "date": "2026-04-27",
+     "close": 0.9998
+    },
+    {
+     "date": "2026-05-04",
+     "close": 0.9999
+    },
+    {
+     "date": "2026-05-11",
+     "close": 0.9994
+    },
+    {
+     "date": "2026-05-18",
+     "close": 0.9987
+    },
+    {
+     "date": "2026-05-25",
+     "close": 0.9986
+    },
+    {
+     "date": "2026-06-01",
+     "close": 0.9996
+    },
+    {
+     "date": "2026-06-08",
+     "close": 0.9994
+    },
+    {
+     "date": "2026-06-15",
+     "close": 0.9988
+    },
+    {
+     "date": "2026-06-22",
+     "close": 0.9984
+    },
+    {
+     "date": "2026-06-29",
+     "close": 0.9992
+    },
+    {
+     "date": "2026-07-06",
+     "close": 0.9994
+    },
+    {
+     "date": "2026-07-13",
+     "close": 0.9992
+    },
+    {
+     "date": "2026-07-20",
+     "close": 0.9992
+    },
+    {
+     "date": "2026-07-27",
+     "close": 0.9989
+    },
+    {
+     "date": "2026-08-03",
+     "close": 0.9993
+    },
+    {
+     "date": "2026-08-10",
+     "close": 0.9989
+    },
+    {
+     "date": "2026-08-17",
+     "close": 1.0
+    },
+    {
+     "date": "2026-08-24",
+     "close": 0.9999
+    },
+    {
+     "date": "2026-08-31",
+     "close": 1.0
+    },
+    {
+     "date": "2026-09-07",
+     "close": 0.9997
+    },
+    {
+     "date": "2026-09-14",
+     "close": 0.9998
+    },
+    {
+     "date": "2026-09-21",
+     "close": 0.9997
+    },
+    {
+     "date": "2026-09-26",
+     "close": 0.9998
+    }
+   ],
+   "flags": [],
+   "myr": 4.07,
+   "myr_rate": 4.0715,
+   "digest": [
+    [
+     "價格",
+     "2026-09-26 收 0.9998 USD、單日 +0.01%。一個月 -0.04%，三個月 +0.07%。換算馬幣約 RM 4.07（匯率 4.0715）。"
+    ],
+    [
+     "報導",
+     "近三個月 6 則，主題集中在營運、併購、評等（The Japan Times、CNA、ledgerinsights、International Consortium of Investigative Journalists - ICIJ）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ]
    ]
   },
@@ -31596,6 +33831,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "5.43T",
     "pe_ratio": "28.46",
@@ -31620,21 +33856,21 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 224.58,
-   "prev_close": 225.51,
-   "change_pct_1d": -0.41,
-   "change_pct_5d": 2.39,
-   "change_pct_1m": 5.41,
-   "change_pct_3m": 14.73,
-   "change_pct_1y": 26.03,
+   "price": 225.07,
+   "prev_close": 224.58,
+   "change_pct_1d": 0.22,
+   "change_pct_5d": 1.26,
+   "change_pct_1m": 7.35,
+   "change_pct_3m": 16.9,
+   "change_pct_1y": 26.31,
    "day_high": 226.94,
    "day_low": 223.133,
-   "volume": 77469900,
-   "avg_volume_20d": 131637115,
-   "volume_ratio": 0.59,
+   "volume": 89808400,
+   "avg_volume_20d": 126515610,
+   "volume_ratio": 0.71,
    "high_52w": 236.54,
    "low_52w": 164.27,
-   "off_52w_high": -5.06,
+   "off_52w_high": -4.85,
    "at_52w_low": false,
    "ttm_dividend": 0.52,
    "yield_pct": 0.23,
@@ -31657,8 +33893,8 @@
     }
    ],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 390.76,
-   "change_pct_5y": 982.73,
+   "change_pct_3y": 391.83,
+   "change_pct_5y": 985.09,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -32702,7 +34938,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 224.58
+     "close": 225.07
     },
     {
      "date": "2026-09-26",
@@ -32719,14 +34955,16 @@
      "text": "2026-09-10 除息 0.25"
     }
    ],
+   "myr": 916.37,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 224.58 USD、單日 -0.41%。一個月 +5.41%，其中 2026-09-10 除息 0.25 佔約 0.1 個百分點，不是實際下跌，三個月 +14.73%。距 52 週高點 236.54 還有 5.1%。"
+     "2026-09-26 收 225.07 USD、單日 +0.22%。一個月 +7.35%，其中 2026-09-10 除息 0.25 佔約 0.1 個百分點，不是實際下跌，三個月 +16.90%。換算馬幣約 RM 916.37（匯率 4.0715）。距 52 週高點 236.54 還有 4.8%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、併購（The Star、The Edge Malaysia、NVIDIA Blog、Nokia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在營運、併購（The Star、The Edge Malaysia、NVIDIA、nokia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -32746,6 +34984,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "1.68T",
     "pe_ratio": "45.03",
@@ -32769,21 +35008,21 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 350.36,
-   "prev_close": 354.99,
-   "change_pct_1d": -1.3,
-   "change_pct_5d": 0.88,
-   "change_pct_1m": -1.79,
-   "change_pct_3m": -7.53,
-   "change_pct_1y": 4.73,
+   "price": 352.81,
+   "prev_close": 350.36,
+   "change_pct_1d": 0.7,
+   "change_pct_5d": -1.34,
+   "change_pct_1m": -0.78,
+   "change_pct_3m": -3.35,
+   "change_pct_1y": 5.46,
    "day_high": 354.43,
    "day_low": 349.43,
-   "volume": 20930400,
-   "avg_volume_20d": 27568140,
-   "volume_ratio": 0.76,
+   "volume": 16220900,
+   "avg_volume_20d": 27654845,
+   "volume_ratio": 0.59,
    "high_52w": 495.0,
    "low_52w": 289.96,
-   "off_52w_high": -29.22,
+   "off_52w_high": -28.73,
    "at_52w_low": false,
    "ttm_dividend": 2.6,
    "yield_pct": 0.74,
@@ -32806,8 +35045,8 @@
     }
    ],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 314.5,
-   "change_pct_5y": 618.91,
+   "change_pct_3y": 317.4,
+   "change_pct_5y": 623.94,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -33851,7 +36090,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 350.36
+     "close": 352.81
     },
     {
      "date": "2026-09-26",
@@ -33861,7 +36100,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -29.2%"
+     "text": "距 52 週高點 -28.7%"
     },
     {
      "level": "good",
@@ -33872,14 +36111,16 @@
      "text": "2026-09-21 除息 0.65"
     }
    ],
+   "myr": 1436.47,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 350.36 USD、單日 -1.30%。一個月 -1.79%，其中 2026-09-21 除息 0.65 佔約 0.2 個百分點，不是實際下跌，三個月 -7.53%。距 52 週高點 495.00 還有 29.2%。"
+     "2026-09-26 收 352.81 USD、單日 +0.70%。一個月 -0.78%，其中 2026-09-21 除息 0.65 佔約 0.2 個百分點，不是實際下跌，三個月 -3.35%。換算馬幣約 RM 1,436.47（匯率 4.0715）。距 52 週高點 495.00 還有 28.7%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（The Edge Malaysia、The Star、Samsung Global Newsroom、Financial Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Edge Malaysia、The Star、Samsung Global Newsroom、Financial Times）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -33899,6 +36140,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "1.03T",
     "pe_ratio": "160.95",
@@ -33906,7 +36148,7 @@
     "eps": "3.90",
     "earnings_date": "2026-11-03",
     "analyst_rating": "Strong Buy",
-    "analyst_target": "616.51 (-2.24%)",
+    "analyst_target": "618.51 (-1.92%)",
     "beta": "2.48",
     "pb_ratio": "15.31",
     "ptbv_ratio": "39.41",
@@ -33921,28 +36163,28 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 629.26,
-   "prev_close": 614.61,
-   "change_pct_1d": 2.38,
-   "change_pct_5d": 15.44,
-   "change_pct_1m": 31.32,
-   "change_pct_3m": 18.16,
-   "change_pct_1y": 294.62,
+   "price": 630.63,
+   "prev_close": 629.26,
+   "change_pct_1d": 0.22,
+   "change_pct_5d": 12.65,
+   "change_pct_1m": 31.13,
+   "change_pct_3m": 20.91,
+   "change_pct_1y": 295.48,
    "day_high": 638.95,
    "day_low": 625.52,
-   "volume": 25318900,
-   "avg_volume_20d": 21019245,
-   "volume_ratio": 1.2,
+   "volume": 17594900,
+   "avg_volume_20d": 21567785,
+   "volume_ratio": 0.82,
    "high_52w": 638.95,
-   "low_52w": 157.05,
-   "off_52w_high": -1.52,
+   "low_52w": 159.33,
+   "off_52w_high": -1.3,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 486.78,
-   "change_pct_5y": 514.21,
+   "change_pct_3y": 488.05,
+   "change_pct_5y": 515.55,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -34986,23 +37228,20 @@
     },
     {
      "date": "2026-09-21",
-     "close": 629.26
+     "close": 630.63
     },
     {
      "date": "2026-09-26",
      "close": 630.63
     }
    ],
-   "flags": [
-    {
-     "level": "good",
-     "text": "單日 +2.38%"
-    }
-   ],
+   "flags": [],
+   "myr": 2567.61,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 629.26 USD、單日 +2.38%。一個月 +31.32%，三個月 +18.16%。距 52 週高點 638.95 還有 1.5%。"
+     "2026-09-26 收 630.63 USD、單日 +0.22%。一個月 +31.13%，三個月 +20.91%。換算馬幣約 RM 2,567.61（匯率 4.0715）。距 52 週高點 638.95 還有 1.3%。"
     ],
     [
      "報導",
@@ -35010,7 +37249,7 @@
     ],
     [
      "數字",
-     "P/B 15.31、P/E 160.95、ROE 10.20%、每股淨值 41.19、分析師目標價 616.51 (-2.24%)。"
+     "P/B 15.31、P/E 160.95、ROE 10.20%、每股淨值 41.19、分析師目標價 618.51 (-1.92%)。"
     ],
     [
      "留意",
@@ -35026,6 +37265,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "2.02T",
     "pe_ratio": "28.93",
@@ -35049,24 +37289,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 451.15,
-   "prev_close": 446.57,
-   "change_pct_1d": 1.03,
-   "change_pct_5d": 4.86,
-   "change_pct_1m": 8.08,
-   "change_pct_3m": 3.72,
-   "change_pct_1y": 65.04,
+   "price": 450.61,
+   "prev_close": 451.15,
+   "change_pct_1d": -0.12,
+   "change_pct_5d": 3.67,
+   "change_pct_1m": 7.88,
+   "change_pct_3m": 4.22,
+   "change_pct_1y": 64.84,
    "day_high": 455.02,
    "day_low": 449.03,
-   "volume": 7720300,
-   "avg_volume_20d": 10036450,
+   "volume": 7751900,
+   "avg_volume_20d": 10050000,
    "volume_ratio": 0.77,
    "high_52w": 479.0,
    "low_52w": 266.82,
-   "off_52w_high": -5.81,
+   "off_52w_high": -5.93,
    "at_52w_low": false,
    "ttm_dividend": 3.853,
-   "yield_pct": 0.85,
+   "yield_pct": 0.86,
    "dividends": [
     {
      "date": "2025-12-11",
@@ -35086,8 +37326,8 @@
     }
    ],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 405.26,
-   "change_pct_5y": 304.4,
+   "change_pct_3y": 404.66,
+   "change_pct_5y": 303.92,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -36131,7 +38371,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 451.15
+     "close": 450.61
     },
     {
      "date": "2026-09-26",
@@ -36148,10 +38388,12 @@
      "text": "2026-09-16 除息 1.107"
     }
    ],
+   "myr": 1834.66,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 451.15 USD、單日 +1.03%。一個月 +8.08%，其中 2026-09-16 除息 1.107 佔約 0.2 個百分點，不是實際下跌，三個月 +3.72%。距 52 週高點 479.00 還有 5.8%。"
+     "2026-09-26 收 450.61 USD、單日 -0.12%。一個月 +7.88%，其中 2026-09-16 除息 1.107 佔約 0.2 個百分點，不是實際下跌，三個月 +4.22%。換算馬幣約 RM 1,834.66（匯率 4.0715）。距 52 週高點 479.00 還有 5.9%。"
     ],
     [
      "報導",
@@ -36175,6 +38417,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "3.83T",
     "pe_ratio": "28.76",
@@ -36199,24 +38442,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 497.93,
-   "prev_close": 500.59,
-   "change_pct_1d": -0.53,
-   "change_pct_5d": 0.04,
-   "change_pct_1m": 1.26,
-   "change_pct_3m": 41.12,
-   "change_pct_1y": -2.65,
+   "price": 516.17,
+   "prev_close": 497.93,
+   "change_pct_1d": 3.66,
+   "change_pct_5d": 4.53,
+   "change_pct_1m": 3.99,
+   "change_pct_3m": 38.39,
+   "change_pct_1y": 0.92,
    "day_high": 519.4,
    "day_low": 497.3,
-   "volume": 16657600,
-   "avg_volume_20d": 21543740,
-   "volume_ratio": 0.77,
+   "volume": 38154200,
+   "avg_volume_20d": 21338675,
+   "volume_ratio": 1.79,
    "high_52w": 553.72,
    "low_52w": 349.2,
-   "off_52w_high": -10.08,
+   "off_52w_high": -6.78,
    "at_52w_low": false,
    "ttm_dividend": 3.64,
-   "yield_pct": 0.73,
+   "yield_pct": 0.71,
    "dividends": [
     {
      "date": "2025-11-20",
@@ -36236,8 +38479,8 @@
     }
    ],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 52.15,
-   "change_pct_5y": 72.23,
+   "change_pct_3y": 57.72,
+   "change_pct_5y": 78.54,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -37281,7 +39524,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 497.93
+     "close": 516.17
     },
     {
      "date": "2026-09-26",
@@ -37291,17 +39534,23 @@
    "flags": [
     {
      "level": "good",
+     "text": "單日 +3.66%"
+    },
+    {
+     "level": "good",
      "text": "ROE 34.0%"
     }
    ],
+   "myr": 2101.59,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 497.93 USD、單日 -0.53%。一個月 +1.26%，三個月 +41.12%。距 52 週高點 553.72 還有 10.1%。"
+     "2026-09-26 收 516.17 USD、單日 +3.66%。一個月 +3.99%，三個月 +38.39%。換算馬幣約 RM 2,101.59（匯率 4.0715）。距 52 週高點 553.72 還有 6.8%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（The Official Microsoft Blog、Windows Blog、GSMArena、The Guardian）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Official Microsoft Blog、Windows Blog、Free Malaysia Today、GSMArena）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -37321,19 +39570,20 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "4.21T",
-    "pe_ratio": "17.18",
-    "forward_pe": "25.60",
+    "pe_ratio": "17.26",
+    "forward_pe": "25.72",
     "eps": "19.93",
     "earnings_date": "2026-10-28",
     "analyst_rating": "Strong Buy",
     "analyst_target": "429.46 (+24.87%)",
     "beta": "1.22",
-    "pb_ratio": "6.73",
+    "pb_ratio": "6.76",
     "ptbv_ratio": "7.57",
     "ps_ratio": "9.43",
-    "peg_ratio": "2.00",
+    "peg_ratio": "2.01",
     "book_value": "640.48B",
     "bvps": "50.90",
     "roe": "48.68%",
@@ -37345,21 +39595,21 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "USD",
-   "price": 342.36,
-   "prev_close": 337.83,
-   "change_pct_1d": 1.34,
-   "change_pct_5d": -1.43,
-   "change_pct_1m": -1.33,
-   "change_pct_3m": -0.39,
-   "change_pct_1y": 38.87,
+   "price": 343.92,
+   "prev_close": 342.36,
+   "change_pct_1d": 0.46,
+   "change_pct_5d": -1.61,
+   "change_pct_1m": 0.56,
+   "change_pct_3m": 1.94,
+   "change_pct_1y": 39.5,
    "day_high": 347.03,
    "day_low": 341.11,
-   "volume": 23777200,
-   "avg_volume_20d": 26814015,
-   "volume_ratio": 0.89,
+   "volume": 21854700,
+   "avg_volume_20d": 26981860,
+   "volume_ratio": 0.81,
    "high_52w": 408.61,
    "low_52w": 235.84,
-   "off_52w_high": -16.21,
+   "off_52w_high": -15.83,
    "at_52w_low": false,
    "ttm_dividend": 0.86,
    "yield_pct": 0.25,
@@ -37382,8 +39632,8 @@
     }
    ],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 148.84,
-   "change_pct_5y": 150.74,
+   "change_pct_3y": 149.98,
+   "change_pct_5y": 151.88,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -38427,7 +40677,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 342.36
+     "close": 343.92
     },
     {
      "date": "2026-09-26",
@@ -38437,7 +40687,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -16.2%"
+     "text": "距 52 週高點 -15.8%"
     },
     {
      "level": "good",
@@ -38448,18 +40698,20 @@
      "text": "2026-09-04 除息 0.22"
     }
    ],
+   "myr": 1400.27,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 342.36 USD、單日 +1.34%。一個月 -1.33%，其中 2026-09-04 除息 0.22 佔約 0.1 個百分點，不是實際下跌，三個月 -0.39%。距 52 週高點 408.61 還有 16.2%。"
+     "2026-09-26 收 343.92 USD、單日 +0.46%。一個月 +0.56%，其中 2026-09-04 除息 0.22 佔約 0.1 個百分點，不是實際下跌，三個月 +1.94%。換算馬幣約 RM 1,400.27（匯率 4.0715）。距 52 週高點 408.61 還有 15.8%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、業績、人事（The Star、The Edge Malaysia、blog.google、Bloomberg）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、人事、併購（The Star、blog.google、The Edge Malaysia、Bloomberg）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 6.73、P/E 17.18、ROE 48.68%、每股淨值 50.90、分析師目標價 429.46 (+24.87%)。"
+     "P/B 6.76、P/E 17.26、ROE 48.68%、每股淨值 50.90、分析師目標價 429.46 (+24.87%)。"
     ],
     [
      "留意",
@@ -38475,19 +40727,20 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "455.79B",
-    "pe_ratio": "164.71",
-    "forward_pe": "101.54",
+    "pe_ratio": "162.22",
+    "forward_pe": "100.00",
     "eps": "1.17",
     "earnings_date": "2026-11-02",
     "analyst_rating": "Buy",
     "analyst_target": "195.57 (+3.11%)",
     "beta": "1.62",
-    "pb_ratio": "47.35",
-    "ptbv_ratio": "46.80",
-    "ps_ratio": "74.31",
-    "peg_ratio": "1.90",
+    "pb_ratio": "46.63",
+    "ptbv_ratio": "46.63",
+    "ps_ratio": "74.04",
+    "peg_ratio": "1.87",
     "book_value": "9.88B",
     "bvps": "4.07",
     "roe": "38.10%",
@@ -38497,28 +40750,28 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "USD",
-   "price": 192.59,
-   "prev_close": 191.79,
-   "change_pct_1d": 0.42,
-   "change_pct_5d": 9.28,
-   "change_pct_1m": 11.5,
-   "change_pct_3m": 79.54,
-   "change_pct_1y": 8.46,
+   "price": 189.67,
+   "prev_close": 192.59,
+   "change_pct_1d": -1.52,
+   "change_pct_5d": 6.77,
+   "change_pct_1m": 6.86,
+   "change_pct_3m": 67.95,
+   "change_pct_1y": 6.81,
    "day_high": 194.214,
    "day_low": 189.35,
-   "volume": 22675800,
-   "avg_volume_20d": 27771290,
-   "volume_ratio": 0.82,
+   "volume": 17779900,
+   "avg_volume_20d": 27508870,
+   "volume_ratio": 0.65,
    "high_52w": 207.52,
    "low_52w": 106.37,
-   "off_52w_high": -7.19,
+   "off_52w_high": -8.6,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 1059.48,
-   "change_pct_5y": 691.57,
+   "change_pct_3y": 1041.9,
+   "change_pct_5y": 679.57,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -39562,7 +41815,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 192.59
+     "close": 189.67
     },
     {
      "date": "2026-09-26",
@@ -39575,18 +41828,20 @@
      "text": "ROE 38.1%"
     }
    ],
+   "myr": 772.24,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 192.59 USD、單日 +0.42%。一個月 +11.50%，三個月 +79.54%。距 52 週高點 207.52 還有 7.2%。"
+     "2026-09-26 收 189.67 USD、單日 -1.52%。一個月 +6.86%，三個月 +67.95%。換算馬幣約 RM 772.24（匯率 4.0715）。距 52 週高點 207.52 還有 8.6%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（CNBC、finance.yahoo、pwc、Al Jazeera）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績（cnbc、Yahoo Finance、PwC、aljazeera）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 47.35、P/E 164.71、ROE 38.10%、每股淨值 4.07、分析師目標價 195.57 (+3.11%)。"
+     "P/B 46.63、P/E 162.22、ROE 38.10%、每股淨值 4.07、分析師目標價 195.57 (+3.11%)。"
     ],
     [
      "留意",
@@ -39602,6 +41857,7 @@
    "sector": "AI 美股",
    "is_index": false,
    "unit": "USD",
+   "dp": null,
    "fundamentals": {
     "market_cap": "331.45B",
     "pe_ratio": "317.48",
@@ -39624,28 +41880,28 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "USD",
-   "price": 306.34,
-   "prev_close": 332.56,
-   "change_pct_1d": -7.88,
-   "change_pct_5d": 15.64,
-   "change_pct_1m": 26.82,
-   "change_pct_3m": -11.9,
-   "change_pct_1y": 119.41,
+   "price": 310.32,
+   "prev_close": 306.34,
+   "change_pct_1d": 1.3,
+   "change_pct_5d": 12.59,
+   "change_pct_1m": 23.6,
+   "change_pct_3m": -7.16,
+   "change_pct_1y": 122.26,
    "day_high": 325.48,
    "day_low": 310.08,
-   "volume": 9559500,
-   "avg_volume_20d": 4919995,
-   "volume_ratio": 1.94,
+   "volume": 6994400,
+   "avg_volume_20d": 5193360,
+   "volume_ratio": 1.35,
    "high_52w": 452.7,
    "low_52w": 100.02,
-   "off_52w_high": -32.33,
+   "off_52w_high": -31.45,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
    "market_time": "2026-09-26 04:00",
-   "change_pct_3y": 466.46,
-   "change_pct_5y": 404.26,
+   "change_pct_3y": 473.82,
+   "change_pct_5y": 410.81,
    "series_w": [
     {
      "date": "2023-09-11",
@@ -40281,7 +42537,7 @@
     },
     {
      "date": "2026-09-21",
-     "close": 306.34
+     "close": 310.32
     },
     {
      "date": "2026-09-26",
@@ -40291,25 +42547,23 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -32.3%"
-    },
-    {
-     "level": "bad",
-     "text": "單日 -7.88%"
+     "text": "距 52 週高點 -31.4%"
     },
     {
      "level": "good",
      "text": "ROE 13.3%"
     }
    ],
+   "myr": 1263.47,
+   "myr_rate": 4.0715,
    "digest": [
     [
      "價格",
-     "2026-09-26 收 306.34 USD、單日 -7.88%、成交量是均量的 1.9 倍。一個月 +26.82%，三個月 -11.90%。距 52 週高點 452.70 還有 32.3%。"
+     "2026-09-26 收 310.32 USD、單日 +1.30%。一個月 +23.60%，三個月 -7.16%。換算馬幣約 RM 1,263.47（匯率 4.0715）。距 52 週高點 452.70 還有 31.4%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（The Edge Malaysia、Bernama、IBM Newsroom、Arm Newsroom）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則（The Edge Malaysia、bernama、IBM Newsroom、Arm Newsroom）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -40329,6 +42583,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "51.09B",
     "pe_ratio": "31.80",
@@ -41468,6 +43723,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "29.11B",
     "pe_ratio": "28.15",
@@ -41507,9 +43763,9 @@
    "volume": 31258300,
    "avg_volume_20d": 18257780,
    "volume_ratio": 1.71,
-   "high_52w": 5.66,
+   "high_52w": 5.63,
    "low_52w": 3.7,
-   "off_52w_high": -13.78,
+   "off_52w_high": -13.32,
    "at_52w_low": false,
    "ttm_dividend": 0.1,
    "yield_pct": 2.05,
@@ -42580,7 +44836,7 @@
    "digest": [
     [
      "價格",
-     "2026-09-25 收 4.88、單日 +0.83%。一個月 +10.16%，三個月 +16.19%。距 52 週高點 5.66 還有 13.8%。"
+     "2026-09-25 收 4.88、單日 +0.83%。一個月 +10.16%，三個月 +16.19%。距 52 週高點 5.63 還有 13.3%。"
     ],
     [
      "公告",
@@ -42608,6 +44864,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "10.32B",
     "pe_ratio": "24.25",
@@ -42615,7 +44872,7 @@
     "eps": "0.32",
     "dps": "0.45",
     "div_yield": "5.83%",
-    "payout_ratio": "203.04%",
+    "payout_ratio": "212.79%",
     "ex_div_date": "2026-09-14",
     "earnings_date": "2026-11-20",
     "analyst_rating": "Buy",
@@ -43739,7 +45996,7 @@
     },
     {
      "level": "warn",
-     "text": "派息率 203%（高於盈餘）"
+     "text": "派息率 213%（高於盈餘）"
     },
     {
      "level": "info",
@@ -43757,15 +46014,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息（The Edge Malaysia、The Star、NST、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息（The Star、The Edge Malaysia、NST、BusinessToday Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
-     "P/B 14.80、P/E 24.25、ROE 49.17%、殖利率 5.83%、派息率 203.04%、每股淨值 0.47、分析師目標價 9.13 (+17.5%)。"
+     "P/B 14.80、P/E 24.25、ROE 49.17%、殖利率 5.83%、派息率 212.79%、每股淨值 0.47、分析師目標價 9.13 (+17.5%)。"
     ],
     [
      "留意",
-     "派息率 203%，高於當年盈餘；下次財報 2026-11-20。"
+     "派息率 213%，高於當年盈餘；下次財報 2026-11-20。"
     ]
    ]
   },
@@ -43777,6 +46034,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "1.50B",
     "pe_ratio": "1.44",
@@ -44910,7 +47168,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息、併購、評等（The Edge Malaysia、The Star）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在派息、評等（The Star、The Edge Malaysia）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -44930,6 +47188,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "10.17B",
     "pe_ratio": "79.40",
@@ -46071,7 +48330,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等（The Star、The Edge Malaysia、BusinessToday Malaysia、The Malaysian Reserve）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在併購、評等（The Star、The Edge Malaysia、BusinessToday Malaysia、themalaysianreserve）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -46091,6 +48350,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "18.78B",
     "pe_ratio": "86.70",
@@ -47235,6 +49495,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "9.16B",
     "pe_ratio": "47.05",
@@ -48360,7 +50621,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、併購（The Star、The Edge Malaysia、NST、forbes）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、併購（The Star、The Edge Malaysia、NST、Forbes）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -48380,6 +50641,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "8.81B",
     "pe_ratio": "46.72",
@@ -48387,7 +50649,7 @@
     "eps": "0.95",
     "dps": "0.40",
     "div_yield": "0.91%",
-    "payout_ratio": "42.30%",
+    "payout_ratio": "42.31%",
     "ex_div_date": "2026-05-19",
     "earnings_date": "2026-11-20",
     "analyst_rating": "Hold",
@@ -49499,7 +51761,7 @@
     ],
     [
      "數字",
-     "P/B 3.34、P/E 46.72、ROE 9.76%、殖利率 0.91%、派息率 42.30%、每股淨值 11.09、分析師目標價 46.26 (+4.71%)。"
+     "P/B 3.34、P/E 46.72、ROE 9.76%、殖利率 0.91%、派息率 42.31%、每股淨值 11.09、分析師目標價 46.26 (+4.71%)。"
     ],
     [
      "留意",
@@ -49515,6 +51777,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "10.67B",
     "pe_ratio": "22.97",
@@ -50646,7 +52909,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息（The Star、The Edge Malaysia、digitalnewsasia、The Malaysian Reserve）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+     "近三個月 6 則，主題集中在業績、派息（The Star、The Edge Malaysia、Digital News Asia、themalaysianreserve）。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
     ],
     [
      "數字",
@@ -50666,6 +52929,7 @@
    "sector": "AI 馬股",
    "is_index": false,
    "unit": "",
+   "dp": null,
    "fundamentals": {
     "market_cap": "2.61B",
     "pe_ratio": "9.72",
@@ -51796,7 +54060,7 @@
     ],
     [
      "公告",
-     "2026-09-18：茲提述日期為二零二五年十二月十九日、二零二六年二月十六日、二零二六年三月十二日、二零二六年七月六日及二零二六年七月二十二日的公告，以及日期為二零二六年七月七日就建議收購土地致馬新股東的通函（「通函」）。除非另有說明，否則此處使用的所有縮寫均具有通函中定義的相同… 2026-09-15：豐隆投資銀行有限公司（「HLIB」）代表馬星集團董事會欣然宣布，MARC 評級有限公司已為馬星集團的 Sukuk Murabahah 計劃授予 AA-IS 最終評級，前景穩定。Sukuk Murabahah 計畫籌集的資金將由公司用於符合伊斯蘭教法的用途，其中…"
+     "2026-09-18：Reference is made to the announcements dated 19 December 2025, 16 February 2026, 12 March 2026, 6 July 2026 and 22 July 2026, and … 2026-09-15：豐隆投資銀行有限公司（「HLIB」）代表馬星集團董事會欣然宣布，MARC 評級有限公司已為馬星集團的 Sukuk Murabahah 計劃授予 AA-IS 最終評級，前景穩定。Sukuk Murabahah 計畫籌集的資金將由公司用於符合伊斯蘭教法的用途，其中…"
     ],
     [
      "報導",

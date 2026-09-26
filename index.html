@@ -481,6 +481,11 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 
   /* 4. 名稱與小字靠左 */
   tr.row td.c-name, tr.row td.c-meta{text-align:left}
+
+  /* 區間按鈕：六個等寬排一列。用 flex 換行時字會在按鈕內折成「1個/月」，
+     等寬格 + 不換行才排得整齊 */
+  .ranges{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+  .rng{font-size:13px;padding:7px 2px;text-align:center;white-space:nowrap;min-width:0}
 }
 </style>
 </head>
@@ -538,7 +543,9 @@ const num = v => { if(v==null) return null;
   const n = parseFloat(String(v).replace(/[%,]/g,'')); return isNaN(n)?null:n; };
 const cls = v => v==null ? 'flat' : v>0 ? 'up' : v<0 ? 'down' : 'flat';
 const pc  = v => v==null ? '—' : (v>0?'+':'') + v.toFixed(2) + '%';
-const px  = (v,i) => v==null ? '—'
+// dp 可以指定小數位：穩定幣要看到第 4 位，0.9998 用一般規則會變成 1.000
+const px  = (v,i,dp) => v==null ? '—'
+  : dp != null ? v.toFixed(dp)
   : Math.abs(v) >= 1000 ? v.toLocaleString(undefined,{maximumFractionDigits:0})
   : i ? v.toLocaleString(undefined,{maximumFractionDigits:2})
   : v.toFixed(Math.abs(v) < 1 ? 3 : 2);
@@ -688,7 +695,7 @@ const COLS = [
       return `<span class="name">${s.name}</span><span class="sym">${s.symbol}</span>${dot}`; },
      sort:s=>s.name, dir:1},
   {k:'trend',t:'走勢·半年', cell:s=>spark(s.series.slice(-126),74,22,false), sort:s=>s.change_pct_1m},
-  {k:'price',t:'股價',   cell:s=>px(s.price,s.is_index), sort:s=>s.price},
+  {k:'price',t:'股價',   cell:s=>px(s.price,s.is_index,s.dp), sort:s=>s.price},
   {k:'d1',   t:'今日',   cell:s=>`<span class="${cls(s.change_pct_1d)}">${pc(s.change_pct_1d)}</span>`, sort:s=>s.change_pct_1d},
   {k:'m1',   t:'1個月',  cell:s=>`<span class="${cls(s.change_pct_1m)}">${pc(s.change_pct_1m)}</span>`, sort:s=>s.change_pct_1m},
   {k:'pb',   t:'P/B',    cell:s=>s.fundamentals.pb_ratio || '—',  sort:s=>num(s.fundamentals.pb_ratio), dir:1},
@@ -719,12 +726,14 @@ function toggleFav(sym){
   try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); } catch(e) {}
 }
 
-const ORDER = ['大盤','銀行','REIT','油棕','其他','AI 馬股','AI 美股','國際'];
+const ORDER = ['大盤','銀行','REIT','油棕','其他','AI 馬股','AI 美股','國際','加密'];
 
 /* 分頁：把相關的分類併在一起，一次只看一組 */
 const TABS = [
   {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
-  {t:'指數', secs:['大盤','國際']},
+  // 指數這頁其實是「非個股的市場指標」——匯率、公債殖利率本來就不是指數，
+  // 加密同理，放一起比單開一個兩檔的分頁合理
+  {t:'指數', secs:['大盤','國際','加密']},
   {t:'銀行', secs:['銀行']},
   {t:'REIT', secs:['REIT']},
   {t:'AI',   secs:['AI 馬股','AI 美股']},
@@ -747,15 +756,15 @@ const RANGES = [
   {t:'3年',   d:156, w:true},
   {t:'5年',   d:0,   w:true},
 ];
-let sortKey = null, sortDir = 1, openSym = null, chartRange = '半年';
+let sortKey = null, sortDir = 1, openSym = null, chartRange = '1個月';
 
 function detailRow(s){
   const f = s.fundamentals || {};
   const cells = [
-    ['前收', px(s.prev_close,s.is_index)], ['當日高', px(s.day_high,s.is_index)], ['當日低', px(s.day_low,s.is_index)],
+    ['前收', px(s.prev_close,s.is_index,s.dp)], ['當日高', px(s.day_high,s.is_index,s.dp)], ['當日低', px(s.day_low,s.is_index,s.dp)],
     ['5 日', pc(s.change_pct_5d)], ['3 個月', pc(s.change_pct_3m)], ['1 年', pc(s.change_pct_1y)],
     ['3 年', pc(s.change_pct_3y)], ['5 年', pc(s.change_pct_5y)],
-    ['52週高', px(s.high_52w,s.is_index)], ['52週低', px(s.low_52w,s.is_index)], ['距高點', pc(s.off_52w_high)],
+    ['52週高', px(s.high_52w,s.is_index,s.dp)], ['52週低', px(s.low_52w,s.is_index,s.dp)], ['距高點', pc(s.off_52w_high)],
     ['成交量', s.volume ? s.volume.toLocaleString() : '—'],
     ['量能倍數', s.volume_ratio ? s.volume_ratio+'x' : '—'],
     ['市值', f.market_cap], ['P/E', f.pe_ratio], ['每股淨值', f.bvps], ['EPS', f.eps], ['ROA', f.roa],
@@ -816,7 +825,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
   const slot = tr.querySelector('.chartslot');
   const draw = () => {
     let r = RANGES.find(x => x.t === chartRange);
-    if(!r || (r.w && (s.series_w || []).length <= 30)) r = RANGES[2];   // 沒週線就退回半年
+    if(!r || (r.w && (s.series_w || []).length <= 30)) r = RANGES[0];   // 沒週線就退回 1 個月
     const src = r.w ? s.series_w : s.series;
     const seg = r.d ? src.slice(-r.d) : src;
     const chg = (seg[seg.length-1].close / seg[0].close - 1) * 100;
@@ -841,7 +850,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
     // 沒有指到任何一天時，顯示最新收盤
     const base = () => {
       const d = seg[seg.length - 1];
-      out.innerHTML = `最新 ${d.date} · <b>${px(d.close, s.is_index)}</b>`;
+      out.innerHTML = `最新 ${d.date} · <b>${px(d.close, s.is_index, s.dp)}</b>`;
       cross.style.display = 'none';
       hov.style.display = 'none';
       tip.classList.remove('on');
@@ -856,7 +865,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
                 Math.round((vx - P.l) / pw * (seg.length - 1))));
       const d = seg[i];
       const vs = (d.close / seg[0].close - 1) * 100;
-      out.innerHTML = `${d.date} · <b>${px(d.close, s.is_index)}</b>
+      out.innerHTML = `${d.date} · <b>${px(d.close, s.is_index, s.dp)}</b>
         <span class="${cls(vs)}">${pc(vs)}</span>`;
       const cx = X(i);
       cross.setAttribute('x1', cx);
@@ -867,7 +876,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
       hov.style.display = '';
 
       // 標籤跟著游標，貼在資料點正上方；靠近邊緣時往內收，不要被切掉
-      tip.innerHTML = `<b>${px(d.close, s.is_index)}</b>${s.unit ? ' ' + s.unit : ''}<br>${d.date}`;
+      tip.innerHTML = `<b>${px(d.close, s.is_index, s.dp)}</b>${s.unit ? ' ' + s.unit : ''}<br>${d.date}`;
       tip.classList.add('on');
       const half = tip.offsetWidth / 2;
       tip.style.left = Math.max(half + 2, Math.min(host.clientWidth - half - 2, cx)) + 'px';
@@ -963,7 +972,7 @@ function renderPulse(){
 
   host.innerHTML = items.map(s => `<div class="pu" data-go="${s.symbol}">
       <div class="k">${s.name}</div>
-      <div class="v">${px(s.price, s.is_index)}</div>
+      <div class="v">${px(s.price, s.is_index, s.dp)}</div>
       <div class="c ${cls(s.change_pct_1d)}">${pc(s.change_pct_1d)}</div>
     </div>`).join('');
 
@@ -1166,7 +1175,7 @@ function openSheet(s){
 
   document.getElementById('sh-name').textContent = s.name;
   document.getElementById('sh-sym').textContent  = s.symbol + (s.unit ? ' · ' + s.unit : '');
-  document.getElementById('sh-price').textContent = px(s.price, s.is_index);
+  document.getElementById('sh-price').textContent = px(s.price, s.is_index, s.dp);
   const chg = document.getElementById('sh-chg');
   chg.textContent = pc(s.change_pct_1d);
   chg.className = 'ch ' + cls(s.change_pct_1d);

@@ -38,9 +38,11 @@ def _fmt(v, digits=2):
     return "{:,.{d}f}".format(v, d=digits)
 
 
-def _price(v):
+def _price(v, dp=None):
     if v is None:
         return "—"
+    if dp is not None:
+        return _fmt(v, dp)
     return _fmt(v, 3 if abs(v) < 1 else (0 if abs(v) >= 1000 else 2))
 
 
@@ -73,7 +75,8 @@ def build(stock):
     out = []
 
     # ---------- 價格 ----------
-    bits = ["{} 收 {}{}".format(s.get("market_time", "")[:10], _price(s.get("price")), unit)]
+    bits = ["{} 收 {}{}".format(s.get("market_time", "")[:10],
+                                _price(s.get("price"), s.get("dp")), unit)]
     if s.get("change_pct_1d") is not None:
         bits.append("單日 {:+.2f}%".format(s["change_pct_1d"]))
     if s.get("at_52w_low"):
@@ -97,6 +100,8 @@ def build(stock):
         if s.get("change_pct_3m") is not None:
             line += "，三個月 {:+.2f}%".format(s["change_pct_3m"])
         line += "。"
+    if s.get("myr"):
+        line += "換算馬幣約 RM {:,.2f}（匯率 {:.4f}）。".format(s["myr"], s["myr_rate"])
     if s.get("off_52w_high") is not None and not s.get("is_index"):
         line += "距 52 週高點 {} 還有 {:.1f}%。".format(
             _price(s.get("high_52w")), abs(s["off_52w_high"]))
@@ -126,7 +131,9 @@ def build(stock):
             line += "，主題集中在{}".format("、".join(n for n, _ in th[:3]))
         if src:
             line += "（{}）".format("、".join(src[:4]))
-        line += "。標題見下方清單——媒體內文無法抓取，這裡只歸納主題。"
+        full = sum(1 for a in arts if a.get("body"))
+        line += ("。其中 {} 則可在站內讀全文中譯，其餘點連結看原文。".format(full)
+                 if full else "。標題見下方清單。")
         out.append(("報導", line))
 
     # ---------- 數字 ----------

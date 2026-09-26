@@ -57,6 +57,34 @@ def analyse(stocks, today):
                     "sector": stock.get("sector", ""), "what": what, "why": why})
 
     for s in stocks:
+        # ---- 加密：門檻要比股票高很多 ----
+        # 實測 BTC 近半年有 24% 的天數單日波動 ≥2%，用股票的門檻會天天跳提醒。
+        # USDT 是錨定 1 美元的穩定幣，漲跌沒有意義，要看的是脫鉤。
+        if s.get("sector") == "加密":
+            d1 = s.get("change_pct_1d")
+            price = s.get("price")
+            if s["symbol"].startswith("USDT"):
+                if price:
+                    gap = (price - 1) * 100
+                    if abs(gap) >= 0.5:
+                        add("critical" if abs(gap) >= 2 else "warn", s,
+                            "偏離 1 美元 {:+.2f}%（{:.4f}）".format(gap, price),
+                            "穩定幣的價格本來就該貼著 1 美元。偏離超過 0.5% 代表市場對它的"
+                            "兌付能力有疑慮，脫鉤時通常伴隨大量贖回。")
+                continue
+            if d1 is None:
+                continue
+            if abs(d1) >= 5:
+                add("critical" if d1 < 0 else "good", s,
+                    "單日{} {:+.2f}%".format("重挫" if d1 < 0 else "大漲", d1),
+                    "5% 以上的單日波動即使對加密貨幣也算大。")
+            elif abs(d1) >= 3:
+                add("warn" if d1 < 0 else "info", s, "單日 {:+.2f}%".format(d1), "")
+            if s.get("off_52w_high") is not None and s["off_52w_high"] <= -30:
+                add("warn", s, "距 52 週高點 {:.1f}%".format(s["off_52w_high"]),
+                    "距高點 {} 以上，通常代表已經進入較長的修正期。".format("三成"))
+            continue
+
         # ---- 國際指數：只看波動幅度，門檻比個股低（指數本來就不太動）----
         if s.get("sector") == "國際":
             d1 = s.get("change_pct_1d")
