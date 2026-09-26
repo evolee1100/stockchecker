@@ -136,6 +136,7 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 .bi .bw b{font-weight:600}
 .bi .by{font-size:12.5px;color:var(--read);line-height:1.6;margin-top:4px}
 .bi .bn{font-size:11px;color:var(--ink-3);white-space:nowrap;margin-left:auto;padding-left:8px}
+.bi .bwhen{font-size:11px;color:var(--ink-3);margin-top:4px;font-variant-numeric:tabular-nums}
 
 table{border-collapse:collapse;width:100%;font-size:13.5px}
 th,td{padding:11px 10px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--hair)}
@@ -417,6 +418,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .bi .bw{font-size:19.2px;line-height:1.5}
   .bi .by{font-size:17.4px;line-height:1.65}
   .bi .bn{font-size:15.6px}
+  .bi .bwhen{font-size:14.4px}
   .dg-h{font-size:15.6px}
   .dg-k{font-size:15.6px;width:40px}
   .dg-v{font-size:18px;line-height:1.75}
@@ -921,6 +923,16 @@ const BRIEF_KEY = 'brief_collapsed';
 /* ---------- 今日重點 ----------
    每次更新後由 analyze.py 用規則挑出來的，不是全部列出來。
    點一下跳到那一檔。 */
+// 把 2026-09-25 變成「9/25（五）」，並在是今天時直接說「今天」
+function fmtWhen(iso){
+  const parts = (iso || '').split('-').map(Number);
+  if(parts.length !== 3) return iso || '';
+  const [y, m, d] = parts;
+  const today = (D.updated_at || '').slice(0, 10);
+  const wd = '日一二三四五六'[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  return (iso === today ? '今天 ' : '') + `${m}/${d}（${wd}）`;
+}
+
 function renderBrief(){
   const host = $('#brief');
   const hl = D.highlights || [];
@@ -929,8 +941,11 @@ function renderBrief(){
   let collapsed = false;
   try { collapsed = localStorage.getItem(BRIEF_KEY) === '1'; } catch(e) {}
 
+  // 資料可能是前一個交易日的（週末、開盤前），所以標題不寫「今日」，
+  // 直接標出資料截止時間，每條再各自帶自己的日期
+  const cut = (D.updated_at || '').slice(0, 10);
   host.innerHTML = `<div class="brief">
-    <div class="brief-h"><b>今日重點</b><span>${hl.length} 條</span>
+    <div class="brief-h"><b>重點</b><span>${hl.length} 條 · 截至 ${cut}</span>
       <button class="tog" type="button">${collapsed ? '展開' : '收起'}</button></div>
     <div class="brief-list" ${collapsed ? 'hidden' : ''}>${hl.map(h => `
       <div class="bi ${h.level}" data-go="${h.symbol}">
@@ -938,6 +953,7 @@ function renderBrief(){
         <div class="bt">
           <div class="bw"><b>${h.name}</b> ${h.what}</div>
           ${h.why ? `<div class="by">${h.why}</div>` : ''}
+          ${h.when ? `<div class="bwhen">${fmtWhen(h.when)}${h.kind ? ' · ' + h.kind : ''}</div>` : ''}
         </div>
         <div class="bn">${h.sector}</div>
       </div>`).join('')}</div></div>`;
@@ -1015,8 +1031,9 @@ function render(){
     activeTab = b.dataset.t;
     try { localStorage.setItem(TAB_KEY, activeTab); } catch(e) {}
     openSym = null;
+    // 刻意不捲動。原本會捲回最上面，但使用者往往是看到一半才換分頁，
+    // 畫面突然跳走很惱人。切到較短的分頁時瀏覽器本來就會自己收斂位置。
     render();
-    scrollTo({top: 0, behavior: 'smooth'});
   });
 
   const tab = tabs.find(t => t.t === activeTab);

@@ -155,12 +155,17 @@ def fetch_one(stock):
     for i, f in enumerate(feed["filings"]):
         f["title_zh"] = translate.filing_title(f["title"])
         f["source_zh"] = translate.category(f["source"])
-        # 只抓最近 3 則的內文：翻譯有成本，舊公告點開連結看就好
-        if i < 3:
-            body_en, body_zh = news.announcement_body(f["url"])
-            if body_zh:                      # 持股變動類：規則解析出來的中文摘要
-                f["body_zh"] = body_zh
-            elif body_en:
+        # 持股變動類抓多一點（最多 8 則）：它靠規則解析、不送翻譯，成本低。
+        # 原本一律只抓 3 則，導致過半的異動股數解析不出來，加總系統性少算。
+        # 其他類型維持 3 則，因為要送去翻譯。
+        holding = any(k in (f.get("title_zh") or "") for k in ("持股變動", "權益變動"))
+        if i < (8 if holding else 3):
+            body_en, info = news.announcement_body(f["url"])
+            if isinstance(info, dict):       # 持股變動：規則解析出的結構化結果
+                f["body_zh"] = info["text"]
+                # key 用來去重：同一筆成交會被第138條與第219條各公告一次
+                f["move"] = {k: info[k] for k in ("key", "holder", "act", "shares", "pct")}
+            elif body_en and i < 3:
                 f["body"] = body_en
                 f["body_zh"] = translate.paragraph_zh(body_en)
 

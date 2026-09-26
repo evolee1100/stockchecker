@@ -166,7 +166,7 @@ def _plain_lines(page):
 
 
 def _shareholding_summary(page):
-    """持股變動公告是表格式的（四個欄位名，接著四個值）。
+    """持股變動公告是表格式的（四個欄位名，接著四個值）。回傳 dict 或 None。
 
     這種公告硬丟去機器翻譯只會得到一堆零碎的欄位名，不如直接解析成一句話。
     準確、不用 API、也不會被限流。
@@ -183,13 +183,13 @@ def _shareholding_summary(page):
     try:
         i = [k for k, l in enumerate(lines) if l == "Date of change"][0]
     except IndexError:
-        return ""
+        return None
     if i + 7 >= len(lines):
-        return ""
+        return None
 
     date, qty, txn, nature = lines[i + 4], lines[i + 5], lines[i + 6], lines[i + 7]
     if not re.match(r"^\d", qty.replace(",", "")):
-        return ""
+        return None
 
     holder = after("Name of registered holder") or after("Name")
     total = after("Total no of securities after change")
@@ -197,6 +197,13 @@ def _shareholding_summary(page):
 
     act = TXN.get(txn.strip().lower(), txn.strip())
     direct = "直接持股" if "direct" in nature.lower() else "間接持股"
+
+    # 同一筆成交會同時觸發第138條（大股東）與第219條（董事）兩份公告，
+    # 內容幾乎一樣。附上可比對的識別碼，讓上層能把重複的合成一筆。
+    # 交易日兩份的格式不同（2026-09-24 / 24/09/2026），所以不放進鍵裡。
+    key = "|".join([re.sub(r"[^a-z0-9]", "", (holder or "").lower())[:28],
+                    act, qty.replace(",", ""), (pct or "").strip()])
+    is_director = "219" in page[:200000] and "Director" in page[:200000]
 
     parts = ["{} 於 {} {} {} 股（{}）。".format(
         holder.title() if holder.isupper() else holder,
@@ -209,7 +216,8 @@ def _shareholding_summary(page):
     reason = after("Circumstances by reason of which change has occurred")
     if reason and len(reason) < 80:
         parts.append("原因：{}。".format(TXN.get(reason.lower(), reason)))
-    return " ".join(parts)
+    return {"text": " ".join(parts), "key": key, "holder": holder,
+            "act": act, "shares": qty.replace(",", ""), "pct": (pct or "").strip()}
 
 
 def _date_zh(text):
@@ -233,9 +241,9 @@ def announcement_body(url, limit=900):
     except Exception:
         return "", ""
 
-    zh = _shareholding_summary(page)
-    if zh:
-        return "", zh
+    info = _shareholding_summary(page)
+    if info:
+        return "", info
 
     m = re.search(r'<div[^>]*class="[^"]*\bcontent\b[^"]*"[^>]*>(.*?)</div>\s*</div>', page, re.S)
     if not m:
