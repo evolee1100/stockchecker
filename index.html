@@ -1391,12 +1391,21 @@ async function gtranslate(part){
     held = held.replace(re, tok);
     marks.push(term);
   }
-  const url = 'https://translate.googleapis.com/translate_a/single' +
-              '?client=gtx&sl=en&tl=zh-TW&dt=t&q=' + encodeURIComponent(held);
-  const res = await fetch(url);
-  if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
-  const data = await res.json();
-  let zh = (data[0] || []).map(x => x[0]).filter(Boolean).join('');
+  // 兩個 Google 入口輪流用：一個被限流（429）時另一個通常還能用
+  let zh = '';
+  try {
+    const res = await fetch('https://translate.googleapis.com/translate_a/single' +
+                            '?client=gtx&sl=en&tl=zh-TW&dt=t&q=' + encodeURIComponent(held));
+    if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
+    const data = await res.json();
+    zh = (data[0] || []).map(x => x[0]).filter(Boolean).join('');
+  } catch(e) {
+    const res = await fetch('https://clients5.google.com/translate_a/t?client=dict-chrome-ex' +
+                            '&sl=en&tl=zh-TW&q=' + encodeURIComponent(held));
+    if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
+    const data = await res.json();
+    zh = String(Array.isArray(data[0]) ? data[0][0] : data[0] || '');
+  }
   // 佔位符必須原封不動回來，否則寧可放棄這一段
   if(!marks.every((_, i) => zh.includes('ZZ' + i + 'ZZ'))) throw new Error('專有名詞還原失敗');
   marks.forEach((term, i) => { zh = zh.split('ZZ' + i + 'ZZ').join(term); });

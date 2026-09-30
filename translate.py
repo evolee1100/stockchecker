@@ -215,12 +215,37 @@ def _http(url):
 
 
 # 每輪各引擎成功／失敗次數，印在更新紀錄最後。
-# 雲端翻出「國外銷售」這種 MyMemory 等級的譯文時，要能看出是不是 Google 被限流了
+# 2026-09-30 靠這個才發現：雲端（GitHub 機房）呼叫 translate.googleapis.com
+# 151 次全部失敗，伺服器端的譯文其實全是 MyMemory 翻的（「Foreign Selling」→「國外銷售」）。
 STATS = {}
+_streak = {}               # 連續失敗次數；連續失敗太多次就不再叫這個引擎，省時間也省額度
 
 
-def _count(key):
+def _count(name, ok):
+    key = name if ok else name + " 失敗"
     STATS[key] = STATS.get(key, 0) + 1
+    _streak[name] = 0 if ok else _streak.get(name, 0) + 1
+
+
+def _google_dict(text):
+    """Google 的另一個入口（Chrome 字典擴充功能用的）。
+
+    translate.googleapis.com 被限流時，這個入口仍然可用，譯文品質一樣。
+    回傳格式是 ["譯文"]，有時是 [["譯文", "en"]]。
+    """
+    url = ("https://clients5.google.com/translate_a/t?client=dict-chrome-ex"
+           "&sl=en&tl=zh-TW&q=" + urllib.parse.quote(text))
+    try:
+        data = json.loads(_http(url))
+        first = data[0]
+        if isinstance(first, list):
+            first = first[0]
+        out = str(first).strip()
+    except Exception:
+        _count("Google", False)
+        raise
+    _count("Google", True)
+    return out
 
 
 def _google(text):
@@ -229,9 +254,9 @@ def _google(text):
     try:
         data = json.loads(_http(url))
     except Exception:
-        _count("Google 失敗")
+        _count("Google gtx", False)
         raise
-    _count("Google")
+    _count("Google gtx", True)
     out = "".join(seg[0] for seg in data[0] if seg and seg[0])
     return out.strip()
 
@@ -244,10 +269,18 @@ def _mymemory(text):
         if str(data.get("responseStatus")) != "200":
             raise RuntimeError(data.get("responseDetails", "mymemory failed"))
     except Exception:
-        _count("MyMemory 失敗")
+        _count("MyMemory", False)
         raise
-    _count("MyMemory")
+    _count("MyMemory", True)
     return (data["responseData"]["translatedText"] or "").strip()
+
+
+ENGINES = [("Google", _google_dict), ("Google gtx", _google), ("MyMemory", _mymemory)]
+
+
+def _engines():
+    """依序可用的翻譯引擎。連續失敗 8 次的就跳過（通常是整個被擋），不要每句都等它逾時。"""
+    return [fn for name, fn in ENGINES if _streak.get(name, 0) < 8]
 
 
 
@@ -315,7 +348,7 @@ def _machine(text):
         holder = re.sub(pat, token, holder, flags=re.I)
         protected.append(term)
 
-    for backend in (_google, _mymemory):
+    for backend in _engines():
         try:
             out = backend(holder)
         except Exception:
@@ -341,7 +374,7 @@ def _machine(text):
     # 改成只把慣用語直接換成中文、公司名不保護，再試一次。
     # 語序可能沒那麼好，但總比整句退回英文強。
     plain = _phrases(text)
-    for backend in (_google, _mymemory):
+    for backend in _engines():
         try:
             out = backend(plain)
         except Exception:
