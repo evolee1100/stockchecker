@@ -214,10 +214,24 @@ def _http(url):
         return r.read().decode("utf-8", "replace")
 
 
+# 每輪各引擎成功／失敗次數，印在更新紀錄最後。
+# 雲端翻出「國外銷售」這種 MyMemory 等級的譯文時，要能看出是不是 Google 被限流了
+STATS = {}
+
+
+def _count(key):
+    STATS[key] = STATS.get(key, 0) + 1
+
+
 def _google(text):
     url = ("https://translate.googleapis.com/translate_a/single"
            "?client=gtx&sl=en&tl=zh-TW&dt=t&q=" + urllib.parse.quote(text))
-    data = json.loads(_http(url))
+    try:
+        data = json.loads(_http(url))
+    except Exception:
+        _count("Google 失敗")
+        raise
+    _count("Google")
     out = "".join(seg[0] for seg in data[0] if seg and seg[0])
     return out.strip()
 
@@ -225,9 +239,14 @@ def _google(text):
 def _mymemory(text):
     url = ("https://api.mymemory.translated.net/get?langpair=en|zh-TW&q="
            + urllib.parse.quote(text))
-    data = json.loads(_http(url))
-    if str(data.get("responseStatus")) != "200":
-        raise RuntimeError(data.get("responseDetails", "mymemory failed"))
+    try:
+        data = json.loads(_http(url))
+        if str(data.get("responseStatus")) != "200":
+            raise RuntimeError(data.get("responseDetails", "mymemory failed"))
+    except Exception:
+        _count("MyMemory 失敗")
+        raise
+    _count("MyMemory")
     return (data["responseData"]["translatedText"] or "").strip()
 
 
@@ -238,6 +257,8 @@ POST = [
     (r"(外國|海外|外資)(投資者)?(的)?拋售(壓力)?", "外資賣壓"),
     (r"拋壓壓力|拋售壓力", "賣壓"),
     (r"逢低吸收", "逢低買盤"),
+    # 標題大寫的「Foreign Selling」會被當成「海外銷售」；股市新聞裡不會是這個意思
+    (r"(國外|海外|外國)銷售", "外資賣壓"),
     (r"馬來西亞證券交易所|大馬交易所", "馬交所"),
 ]
 

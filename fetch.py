@@ -435,6 +435,7 @@ def main():
 
     news.save_url_cache()           # 解析過的網址存起來，隔天不用重算
     translate.save_cache()          # 把這輪新翻的句子寫回快取，明天就不用再翻
+    print("翻譯引擎：{}".format(translate.STATS or "全部命中快取"), flush=True)
 
     os.makedirs(DATA_DIR, exist_ok=True)
     out = os.path.join(DATA_DIR, "data.json")

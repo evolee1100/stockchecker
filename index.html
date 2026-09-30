@@ -1347,7 +1347,7 @@ const PHRASES = [["what to expect on (Bursa Malaysia|Bursa|the market)", "\\1 �
   ([p, zh]) => [new RegExp('\\b' + p + '\\b', 'gi'), zh]);
 
 // 翻完之後中文換中文（跟 translate.POST 同一份）：「外國拋售壓力」→「外資賣壓」
-const POST = [["(外國|海外|外資)(投資者)?(的)?拋售(壓力)?", "外資賣壓"], ["拋壓壓力|拋售壓力", "賣壓"], ["逢低吸收", "逢低買盤"], ["馬來西亞證券交易所|大馬交易所", "馬交所"]].map(([p, zh]) => [new RegExp(p, 'g'), zh]);
+const POST = [["(外國|海外|外資)(投資者)?(的)?拋售(壓力)?", "外資賣壓"], ["拋壓壓力|拋售壓力", "賣壓"], ["逢低吸收", "逢低買盤"], ["(國外|海外|外國)銷售", "外資賣壓"], ["馬來西亞證券交易所|大馬交易所", "馬交所"]].map(([p, zh]) => [new RegExp(p, 'g'), zh]);
 
 const TR_KEY = 'tr_cache';
 function trCache(){
