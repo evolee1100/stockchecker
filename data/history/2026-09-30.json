@@ -1,9 +1,14 @@
 {
- "updated_at": "2026-09-30 18:46:01 (MYT)",
+ "updated_at": "2026-09-30 20:02:11 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
    "sa": null,
+   "zh": [
+    "马股",
+    "综指"
+   ],
+   "aliases": [],
    "name": "FBM KLCI",
    "note": "馬股綜合指數",
    "sector": "大盤",
@@ -1096,13 +1101,21 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（The Malaysian Reserve、Traders Union、BERNAMA - Malaysian National News Agency、The Star）。標題見下方清單。"
+     "近三個月 6 則，主題集中在併購、政策（The Star、The Malaysian Reserve、Traders Union、BERNAMA - Malaysian National News Agency）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "1155.KL",
    "sa": "MAYBANK",
+   "zh": [
+    "马银行",
+    "马来亚银行"
+   ],
+   "aliases": [
+    "Malayan Banking",
+    "Maybank"
+   ],
    "name": "Maybank 馬來亞銀行",
    "note": "馬國最大銀行",
    "sector": "銀行",
@@ -2261,6 +2274,13 @@
   {
    "symbol": "1295.KL",
    "sa": "PBBANK",
+   "zh": [
+    "大众银行"
+   ],
+   "aliases": [
+    "Public Bank",
+    "PBBank"
+   ],
    "name": "Public Bank 大眾銀行",
    "note": "資產品質最佳",
    "sector": "銀行",
@@ -3400,7 +3420,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、併購（TipRanks、BusinessToday Malaysia、Yahoo Finance UK、WorldFirst）。標題見下方清單。"
+     "近三個月 6 則，主題集中在評等、併購（tipranks、BusinessToday Malaysia、Yahoo Finance UK、WorldFirst）。標題見下方清單。"
     ],
     [
      "數字",
@@ -3415,6 +3435,13 @@
   {
    "symbol": "1023.KL",
    "sa": "CIMB",
+   "zh": [
+    "联昌集团",
+    "联昌"
+   ],
+   "aliases": [
+    "CIMB"
+   ],
    "name": "CIMB Group",
    "note": "區域布局最廣",
    "sector": "銀行",
@@ -4557,7 +4584,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息、業績（Khmer Times、The Star、Yahoo Finance、TipRanks）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在派息、業績（Khmer Times、The Star、Yahoo Finance、tipranks）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -4572,6 +4599,14 @@
   {
    "symbol": "5819.KL",
    "sa": "HLBANK",
+   "zh": [
+    "丰隆银行"
+   ],
+   "aliases": [
+    "Hong Leong Bank",
+    "HLBank",
+    "HLB"
+   ],
    "name": "Hong Leong Bank 豐隆銀行",
    "note": "持有成都銀行股權",
    "sector": "銀行",
@@ -5711,7 +5746,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、派息（Dealroom、KLSE Screener、The Malaysian Reserve、Newswav）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在營運、派息（Dealroom、klsescreener、The Malaysian Reserve、Newswav）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -5726,6 +5761,12 @@
   {
    "symbol": "1066.KL",
    "sa": "RHBBANK",
+   "zh": [
+    "兴业银行"
+   ],
+   "aliases": [
+    "RHB"
+   ],
    "name": "RHB Bank 興業銀行",
    "note": "高股息",
    "sector": "銀行",
@@ -6884,6 +6925,13 @@
   {
    "symbol": "1082.KL",
    "sa": "HLFG",
+   "zh": [
+    "丰隆金融"
+   ],
+   "aliases": [
+    "Hong Leong Financial",
+    "HLFG"
+   ],
    "name": "Hong Leong Fin Group",
    "note": "豐隆銀行控股母公司",
    "sector": "銀行",
@@ -8022,7 +8070,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息、業績（Vocal、BusinessToday Malaysia、NST、KLSE Screener）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在派息、業績（Vocal、BusinessToday Malaysia、NST、klsescreener）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -8037,6 +8085,13 @@
   {
    "symbol": "1015.KL",
    "sa": "AMBANK",
+   "zh": [
+    "大马银行"
+   ],
+   "aliases": [
+    "AMMB",
+    "AmBank"
+   ],
    "name": "AMMB (AmBank) 大馬銀行",
    "note": "中型銀行",
    "sector": "銀行",
@@ -9182,6 +9237,13 @@
   {
    "symbol": "2488.KL",
    "sa": "ABMB",
+   "zh": [
+    "安联银行"
+   ],
+   "aliases": [
+    "Alliance Bank",
+    "ABMB"
+   ],
    "name": "Alliance Bank 安聯銀行",
    "note": "中小企業放款為主",
    "sector": "銀行",
@@ -10335,6 +10397,14 @@
   {
    "symbol": "5258.KL",
    "sa": "BIMB",
+   "zh": [
+    "大马伊银",
+    "伊斯兰银行"
+   ],
+   "aliases": [
+    "Bank Islam",
+    "BIMB"
+   ],
    "name": "Bank Islam 伊斯蘭銀行",
    "note": "純伊斯蘭銀行",
    "sector": "銀行",
@@ -11492,6 +11562,13 @@
   {
    "symbol": "5185.KL",
    "sa": "AFFIN",
+   "zh": [
+    "艾芬银行",
+    "艾芬控股"
+   ],
+   "aliases": [
+    "Affin"
+   ],
    "name": "Affin Bank 艾芬銀行",
    "note": "砂拉越州政府為大股東",
    "sector": "銀行",
@@ -12628,7 +12705,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事（Free Malaysia Today、SME & Entrepreneurship Magazine、Borneo Post、The Star）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在人事（Free Malaysia Today、sme.asia、Borneo Post、The Star）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -12643,6 +12720,12 @@
   {
    "symbol": "1171.KL",
    "sa": "MBSB",
+   "zh": [
+    "MBSB"
+   ],
+   "aliases": [
+    "MBSB"
+   ],
    "name": "MBSB Bank",
    "note": "最小型，前身為建屋信貸",
    "sector": "銀行",
@@ -13793,7 +13876,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（TNGlobal、Newswav、SoyaCincau、The Edge Malaysia）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（technode.global、Newswav、SoyaCincau、The Edge Malaysia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -13808,6 +13891,13 @@
   {
    "symbol": "5123.KL",
    "sa": "SENTRAL",
+   "zh": [
+    "中环产托"
+   ],
+   "aliases": [
+    "Sentral REIT",
+    "Sentral"
+   ],
    "name": "Sentral REIT",
    "note": "辦公樓 REIT",
    "sector": "REIT",
@@ -13815,9 +13905,9 @@
    "unit": "",
    "dp": null,
    "fundamentals": {
-    "market_cap": "783.05M",
-    "pe_ratio": "13.32",
-    "forward_pe": "9.59",
+    "market_cap": "771.10M",
+    "pe_ratio": "13.12",
+    "forward_pe": "9.44",
     "eps": "0.05",
     "dps": "0.06",
     "div_yield": "9.54%",
@@ -13827,9 +13917,9 @@
     "analyst_rating": "Strong Buy",
     "analyst_target": "0.83 (+28.68%)",
     "beta": "0.15",
-    "pb_ratio": "0.57",
-    "ptbv_ratio": "0.57",
-    "ps_ratio": "3.94",
+    "pb_ratio": "0.56",
+    "ptbv_ratio": "0.56",
+    "ps_ratio": "3.88",
     "book_value": "1.37B",
     "bvps": "1.15",
     "roe": "4.26%",
@@ -13837,7 +13927,7 @@
     "debt_equity": "0.86",
     "dividend_growth": "-2.38%",
     "dividend_growth_years": "1",
-    "earnings_yield": "7.51%",
+    "earnings_yield": "7.62%",
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
@@ -14933,7 +15023,7 @@
     },
     {
      "level": "good",
-     "text": "P/B 0.57（低於帳面淨值）"
+     "text": "P/B 0.56（低於帳面淨值）"
     },
     {
      "level": "warn",
@@ -14959,7 +15049,7 @@
     ],
     [
      "數字",
-     "P/B 0.57、P/E 13.32、ROE 4.26%、殖利率 9.54%、派息率 125.06%、每股淨值 1.15、分析師目標價 0.83 (+28.68%)。"
+     "P/B 0.56、P/E 13.12、ROE 4.26%、殖利率 9.54%、派息率 125.06%、每股淨值 1.15、分析師目標價 0.83 (+28.68%)。"
     ],
     [
      "留意",
@@ -14970,6 +15060,12 @@
   {
    "symbol": "5227.KL",
    "sa": "IGBREIT",
+   "zh": [
+    "怡保花园产托"
+   ],
+   "aliases": [
+    "IGB REIT"
+   ],
    "name": "IGB REIT",
    "note": "零售 (Mid Valley)",
    "sector": "REIT",
@@ -16129,6 +16225,12 @@
   {
    "symbol": "5212.KL",
    "sa": "PAVREIT",
+   "zh": [
+    "柏威年产托"
+   ],
+   "aliases": [
+    "Pavilion REIT"
+   ],
    "name": "Pavilion REIT",
    "note": "零售 (Pavilion KL)",
    "sector": "REIT",
@@ -17269,7 +17371,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運（The Edge Malaysia、BusinessToday Malaysia、NST、KLSE Screener）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、營運（The Edge Malaysia、BusinessToday Malaysia、NST、klsescreener）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -17284,6 +17386,12 @@
   {
    "symbol": "5106.KL",
    "sa": "AXREIT",
+   "zh": [
+    "AXIS产托"
+   ],
+   "aliases": [
+    "Axis REIT"
+   ],
    "name": "Axis REIT",
    "note": "工業 / 物流",
    "sector": "REIT",
@@ -18442,6 +18550,13 @@
   {
    "symbol": "5235SS.KL",
    "sa": "KLCC",
+   "zh": [
+    "KLCC产托"
+   ],
+   "aliases": [
+    "KLCCP",
+    "KLCC"
+   ],
    "name": "KLCCP Stapled",
    "note": "雙峰塔綜合體",
    "sector": "REIT",
@@ -19601,6 +19716,13 @@
   {
    "symbol": "1651.KL",
    "sa": "MRCB",
+   "zh": [
+    "马资源"
+   ],
+   "aliases": [
+    "MRCB",
+    "Malaysian Resources Corp"
+   ],
    "name": "MRCB 馬資源",
    "note": "營建地產，Sentral REIT 的保薦人與大股東",
    "sector": "其他",
@@ -20757,6 +20879,8 @@
   {
    "symbol": "^IXIC",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "那斯達克綜合指數",
    "note": "美股科技股指標，全球風險偏好的風向球",
    "sector": "國際",
@@ -21849,13 +21973,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、業績、併購（FXEmpire、Barchart、MarketBeat、simplywall.st）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在評等、業績、併購（FXEmpire、Barchart、Investing UK、stocktitan.net）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "^SOX",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "費城半導體指數",
    "note": "半導體景氣指標，跟台股連動最深",
    "sector": "國際",
@@ -22948,13 +23074,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策、評等（finance.biggo、TradingKey、TradingView、Yahoo Finance）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策、評等（finance.biggo、TradingKey、TradingView、Yahoo Finance）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "^GSPC",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "標普 500",
    "note": "美股大盤",
    "sector": "國際",
@@ -24047,13 +24175,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（The Motley Fool、Trefis、FXEmpire、Yahoo Finance）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策、業績（BBN Times、The Motley Fool、Trefis、FXEmpire）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "^TWII",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "台灣加權指數",
    "note": "台股大盤",
    "sector": "國際",
@@ -25130,13 +25260,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則（finance.biggo、UA.NEWS、Focus Taiwan）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（finance.biggo、UA.NEWS、Focus Taiwan）。標題見下方清單。"
     ]
    ]
   },
   {
    "symbol": "^HSI",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "恒生指數",
    "note": "港股大盤",
    "sector": "國際",
@@ -26229,13 +26361,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則（finance.biggo、dimsumdaily.hk、The Standard (HK)、chinadailyhk）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（moomoo、finance.biggo、Dimsum Daily、The Standard (HK)）。標題見下方清單。"
     ]
    ]
   },
   {
    "symbol": "^N225",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "日經 225",
    "note": "日股大盤",
    "sector": "國際",
@@ -27328,13 +27462,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（GuruFocus、TradingView、dawn、NDTV Profit）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策（GuruFocus、TradingView、Dawn、NDTV Profit）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "^STI",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "新加坡海峽時報指數",
    "note": "區域同儕，外資常拿來跟馬股比較",
    "sector": "國際",
@@ -28427,13 +28563,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則（GuruFocus、The Business Times、Yahoo Finance Singapore、finimize）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（GuruFocus、businesstimes.sg、Yahoo Finance Singapore、Baystreet.ca）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "^TNX",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "美債 10 年期殖利率",
    "note": "REIT 估值的關鍵對照：它上升，高息資產就相對沒吸引力",
    "sector": "國際",
@@ -29526,13 +29664,15 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（finance.biggo、TradingView、Межа. Новини України.）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策、業績（finance.biggo、TradingView、Межа. Новини України.、The Eastern Herald）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "MYR=X",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "美元兌馬幣",
    "note": "匯率直接影響外資進出與進口成本",
    "sector": "國際",
@@ -30632,6 +30772,8 @@
   {
    "symbol": "SGDMYR=X",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "新幣兌馬幣",
    "note": "馬新兩地往來與跨境消費、匯款最直接的匯率",
    "sector": "國際",
@@ -30640,13 +30782,13 @@
    "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 3.1957,
+   "price": 3.1954,
    "prev_close": 3.1953,
-   "change_pct_1d": 0.01,
-   "change_pct_5d": 0.06,
-   "change_pct_1m": 0.85,
-   "change_pct_3m": 1.26,
-   "change_pct_1y": -2.15,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": 0.05,
+   "change_pct_1m": 0.84,
+   "change_pct_3m": 1.25,
+   "change_pct_1y": -2.16,
    "day_high": 3.1967,
    "day_low": 3.1891,
    "volume": 0,
@@ -30654,14 +30796,14 @@
    "volume_ratio": null,
    "high_52w": 3.2685,
    "low_52w": 3.0478,
-   "off_52w_high": -2.23,
+   "off_52w_high": -2.24,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-09-30 18:38",
-   "change_pct_3y": -7.13,
-   "change_pct_5y": 3.82,
+   "market_time": "2026-09-30 19:03",
+   "change_pct_3y": -7.14,
+   "change_pct_5y": 3.81,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -31713,24 +31855,28 @@
     },
     {
      "date": "2026-09-30",
-     "close": 3.196
+     "close": 3.195
     }
    ],
    "flags": [],
    "digest": [
     [
      "價格",
-     "2026-09-30 收 3.20、單日 +0.01%。一個月 +0.85%，三個月 +1.26%。"
+     "2026-09-30 收 3.20、單日 +0.00%。一個月 +0.84%，三個月 +1.25%。"
     ],
     [
      "報導",
-     "近三個月 5 則（The Business Times、NST、The Star、VnExpress International）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 5 則（businesstimes.sg、NST、The Star、VnExpress International）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "BTC-USD",
    "sa": null,
+   "zh": [
+    "比特币"
+   ],
+   "aliases": [],
    "name": "比特幣 BTC",
    "note": "24 小時交易，週末也開盤。單日波動 3% 以上是常態",
    "sector": "加密",
@@ -31739,28 +31885,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 83873.1406,
+   "price": 83822.8594,
    "prev_close": 83622.4297,
-   "change_pct_1d": 0.3,
-   "change_pct_5d": -0.19,
-   "change_pct_1m": 7.17,
-   "change_pct_3m": 31.24,
-   "change_pct_1y": -26.46,
-   "day_high": 83839.07,
+   "change_pct_1d": 0.24,
+   "change_pct_5d": -0.25,
+   "change_pct_1m": 7.11,
+   "change_pct_3m": 31.16,
+   "change_pct_1y": -26.51,
+   "day_high": 83919.016,
    "day_low": 82956.87,
-   "volume": 26602823680,
+   "volume": 26572984320,
    "avg_volume_20d": 30924394961,
    "volume_ratio": 0.86,
    "high_52w": 126198.07,
    "low_52w": 57747.766,
-   "off_52w_high": -33.54,
+   "off_52w_high": -33.58,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-09-30 18:42",
-   "change_pct_3y": 208.82,
-   "change_pct_5y": 74.01,
+   "market_time": "2026-09-30 19:58",
+   "change_pct_3y": 208.63,
+   "change_pct_5y": 73.91,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -32812,31 +32958,33 @@
     },
     {
      "date": "2026-09-30",
-     "close": 83873.14
+     "close": 83822.86
     }
    ],
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -33.5%"
+     "text": "距 52 週高點 -33.6%"
     }
    ],
-   "myr": 342093.38,
+   "myr": 341888.3,
    "myr_rate": 4.0787,
    "digest": [
     [
      "價格",
-     "2026-09-30 收 83,873 USD、單日 +0.30%。一個月 +7.17%，三個月 +31.24%。換算馬幣約 RM 342,093.38（匯率 4.0787）。"
+     "2026-09-30 收 83,823 USD、單日 +0.24%。一個月 +7.11%，三個月 +31.16%。換算馬幣約 RM 341,888.30（匯率 4.0787）。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等（Investing、finance.biggo、24/7 Wall St.、CoinDesk）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在評等（Investing、Forex Crunch、finance.biggo、The Crown Prosecution Service）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "USDT-USD",
    "sa": null,
+   "zh": [],
+   "aliases": [],
    "name": "泰達幣 USDT",
    "note": "錨定 1 美元的穩定幣。看的不是漲跌，是有沒有脫鉤",
    "sector": "加密",
@@ -32845,28 +32993,28 @@
    "dp": 4,
    "fundamentals": {},
    "currency": "USD",
-   "price": 0.9996,
+   "price": 0.9995,
    "prev_close": 0.9996,
-   "change_pct_1d": 0.0,
-   "change_pct_5d": -0.02,
-   "change_pct_1m": -0.01,
-   "change_pct_3m": 0.08,
-   "change_pct_1y": -0.05,
-   "day_high": 0.9996526,
+   "change_pct_1d": -0.01,
+   "change_pct_5d": -0.03,
+   "change_pct_1m": -0.02,
+   "change_pct_3m": 0.07,
+   "change_pct_1y": -0.06,
+   "day_high": 0.9997113,
    "day_low": 0.9994262,
-   "volume": 68463312896,
+   "volume": 68616777728,
    "avg_volume_20d": 73671733995,
    "volume_ratio": 0.93,
    "high_52w": 1.007512,
    "low_52w": 0.989577,
-   "off_52w_high": -0.79,
+   "off_52w_high": -0.8,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-09-30 18:42",
-   "change_pct_3y": -0.04,
-   "change_pct_5y": -0.04,
+   "market_time": "2026-09-30 19:58",
+   "change_pct_3y": -0.05,
+   "change_pct_5y": -0.05,
    "series_w": [
     {
      "date": "2021-09-27",
@@ -33918,7 +34066,7 @@
     },
     {
      "date": "2026-09-30",
-     "close": 0.9996
+     "close": 0.9995
     }
    ],
    "flags": [],
@@ -33927,17 +34075,22 @@
    "digest": [
     [
      "價格",
-     "2026-09-30 收 0.9996 USD、單日 +0.00%。一個月 -0.01%，三個月 +0.08%。換算馬幣約 RM 4.08（匯率 4.0787）。"
+     "2026-09-30 收 0.9995 USD、單日 -0.01%。一個月 -0.02%，三個月 +0.07%。換算馬幣約 RM 4.08（匯率 4.0787）。"
     ],
     [
      "報導",
-     "近三個月 6 則（Bitcoinist、CoinTrust、Engadget、The Coin Republic）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（WSJ、Bitcoinist、CoinTrust、Engadget）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
   {
    "symbol": "NVDA",
    "sa": "us:NVDA",
+   "zh": [
+    "辉达",
+    "英伟达"
+   ],
+   "aliases": [],
    "name": "NVIDIA",
    "note": "AI 晶片龍頭，整個 AI 資本支出的風向球",
    "sector": "AI 美股",
@@ -35080,7 +35233,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（Traders Union、finance.biggo、FinanceFeeds、The Times）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在營運（Traders Union、finance.biggo、marketscreener、Club386）。標題見下方清單。"
     ],
     [
      "數字",
@@ -35095,6 +35248,10 @@
   {
    "symbol": "AVGO",
    "sa": "us:AVGO",
+   "zh": [
+    "博通"
+   ],
+   "aliases": [],
    "name": "Broadcom 博通",
    "note": "客製化 AI 晶片與網路交換器",
    "sector": "AI 美股",
@@ -36240,7 +36397,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、業績（MarketBeat、Yahoo Finance、businessupturn、TipRanks）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等、業績（marketbeat、Yahoo Finance、Business Upturn、tipranks）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -36255,6 +36412,10 @@
   {
    "symbol": "AMD",
    "sa": "us:AMD",
+   "zh": [
+    "超微"
+   ],
+   "aliases": [],
    "name": "AMD 超微",
    "note": "AI 晶片第二供應商",
    "sector": "AI 美股",
@@ -37369,7 +37530,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事（Seeking Alpha、Nasi Lemak Tech、TweakTown、SamMobile）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購（Business Wire、Investor's Business Daily、SammyGuru、TechRadar）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -37384,6 +37545,10 @@
   {
    "symbol": "TSM",
    "sa": "us:TSM",
+   "zh": [
+    "台积电"
+   ],
+   "aliases": [],
    "name": "台積電 ADR",
    "note": "先進製程獨佔，台股權重最大",
    "sector": "AI 美股",
@@ -38525,7 +38690,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（TradingView）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（TradingView、Taipei Times）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -38540,6 +38705,10 @@
   {
    "symbol": "MSFT",
    "sa": "us:MSFT",
+   "zh": [
+    "微软"
+   ],
+   "aliases": [],
    "name": "Microsoft 微軟",
    "note": "Azure 雲端與 OpenAI 最大股東",
    "sector": "AI 美股",
@@ -38549,7 +38718,7 @@
    "fundamentals": {
     "market_cap": "3.78T",
     "pe_ratio": "28.35",
-    "forward_pe": "25.76",
+    "forward_pe": "25.77",
     "eps": "17.95",
     "earnings_date": "2026-10-28",
     "analyst_rating": "Strong Buy",
@@ -39678,7 +39847,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、評等（KitGuru、fonearena、technologyrecord、Neowin）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在營運（Windows Central、MobiGyaan、cloudwars、The Register）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -39693,6 +39862,10 @@
   {
    "symbol": "GOOGL",
    "sa": "us:GOOGL",
+   "zh": [
+    "谷歌"
+   ],
+   "aliases": [],
    "name": "Alphabet 谷歌",
    "note": "自研 TPU 與 Gemini",
    "sector": "AI 美股",
@@ -40839,7 +41012,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（Blockonomi、GuruFocus、24/7 Wall St.、The Economic Times）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（Blockonomi、GuruFocus、247wallst、The Cryptonomist）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -40854,6 +41027,10 @@
   {
    "symbol": "PLTR",
    "sa": "us:PLTR",
+   "zh": [
+    "Palantir"
+   ],
+   "aliases": [],
    "name": "Palantir",
    "note": "AI 應用軟體，估值最極端的一檔",
    "sector": "AI 美股",
@@ -41973,7 +42150,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事、業績（Stock Titan、SSBCrack、Healthcare Management Magazine、Fortune）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在人事（StreetInsider、Investing、TradingView、stocktitan.net）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -41988,6 +42165,8 @@
   {
    "symbol": "ARM",
    "sa": "us:ARM",
+   "zh": [],
+   "aliases": [],
    "name": "Arm Holdings",
    "note": "晶片架構授權",
    "sector": "AI 美股",
@@ -42707,7 +42886,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（TradingView、24/7 Wall St.、Business Weekly、Splash 24/7）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策（Yahoo Finance、247wallst、saba.ye、Shelter Island Reporter）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -42722,6 +42901,12 @@
   {
    "symbol": "6742.KL",
    "sa": "YTLPOWR",
+   "zh": [
+    "杨忠礼电力"
+   ],
+   "aliases": [
+    "YTL Power"
+   ],
    "name": "YTL Power",
    "note": "馬股最大 AI 資料中心概念股",
    "sector": "AI 馬股",
@@ -43866,6 +44051,12 @@
   {
    "symbol": "5398.KL",
    "sa": "GAMUDA",
+   "zh": [
+    "金务大"
+   ],
+   "aliases": [
+    "Gamuda"
+   ],
    "name": "Gamuda",
    "note": "資料中心工程總包",
    "sector": "AI 馬股",
@@ -45020,6 +45211,13 @@
   {
    "symbol": "5263.KL",
    "sa": "SUNCON",
+   "zh": [
+    "双威建筑"
+   ],
+   "aliases": [
+    "Sunway Construction",
+    "SunCon"
+   ],
    "name": "Sunway Construction",
    "note": "資料中心建商",
    "sector": "AI 馬股",
@@ -45027,21 +45225,21 @@
    "unit": "",
    "dp": null,
    "fundamentals": {
-    "market_cap": "10.16B",
-    "pe_ratio": "23.88",
-    "forward_pe": "21.11",
+    "market_cap": "10.28B",
+    "pe_ratio": "24.16",
+    "forward_pe": "21.36",
     "eps": "0.32",
     "dps": "0.45",
     "div_yield": "5.85%",
-    "payout_ratio": "203.04%",
+    "payout_ratio": "212.79%",
     "ex_div_date": "2026-09-14",
     "earnings_date": "2026-11-20",
     "analyst_rating": "Buy",
     "analyst_target": "9.13 (+17.96%)",
     "beta": "0.39",
-    "pb_ratio": "14.57",
-    "ptbv_ratio": "16.44",
-    "ps_ratio": "2.26",
+    "pb_ratio": "14.74",
+    "ptbv_ratio": "16.64",
+    "ps_ratio": "2.28",
     "book_value": "697.31M",
     "bvps": "0.47",
     "roe": "49.17%",
@@ -45049,7 +45247,7 @@
     "debt_equity": "0.63",
     "dividend_growth": "277.10%",
     "dividend_growth_years": "2",
-    "earnings_yield": "4.17%",
+    "earnings_yield": "4.13%",
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
@@ -46157,7 +46355,7 @@
     },
     {
      "level": "warn",
-     "text": "派息率 203%（高於盈餘）"
+     "text": "派息率 213%（高於盈餘）"
     },
     {
      "level": "info",
@@ -46175,21 +46373,28 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、派息（NST、BusinessToday Malaysia、The Edge Malaysia、simplywall.st）。標題見下方清單。"
+     "近三個月 6 則，主題集中在業績、派息（NST、BusinessToday Malaysia、The Edge Malaysia、The Star）。標題見下方清單。"
     ],
     [
      "數字",
-     "P/B 14.57、P/E 23.88、ROE 49.17%、殖利率 5.85%、派息率 203.04%、每股淨值 0.47、分析師目標價 9.13 (+17.96%)。"
+     "P/B 14.74、P/E 24.16、ROE 49.17%、殖利率 5.85%、派息率 212.79%、每股淨值 0.47、分析師目標價 9.13 (+17.96%)。"
     ],
     [
      "留意",
-     "派息率 203%，高於當年盈餘；下次財報 2026-11-20。"
+     "派息率 213%，高於當年盈餘；下次財報 2026-11-20。"
     ]
    ]
   },
   {
    "symbol": "0138.KL",
    "sa": "ZETRIX",
+   "zh": [
+    "ZETRIX"
+   ],
+   "aliases": [
+    "Zetrix",
+    "MyEG"
+   ],
    "name": "Zetrix AI（原 MyEG）",
    "note": "政府數位服務轉型 AI 與區塊鏈",
    "sector": "AI 馬股",
@@ -47333,11 +47538,11 @@
     ],
     [
      "公告",
-     "9/25 Wong Thean Soon 減持 6,000,000 股，持股 6.107% → 6.107%。 2026-09-28：Zetrix AI董事會（「董事會」）謹此宣佈，本公司已收到TGS TW PLT先生（「TGS」）辭任本公司外聘核數師的通知（「辭任通知」）。儘管TGS與本公司進行了長時間的討論，但由於其投資組合合理化和資源管理，TGS一直希望辭職。因此，董事會已於2026年…"
+     "9/25 Wong Thean Soon 減持 6,000,000 股，持股 6.107% → 6.107%。 2026-09-30：請參閱日期為 2026 年 9 月 4 日和 2026 年 9 月 9 日的有關本公司與 IPVGEmployees, Inc. 簽訂的股份購買協議的公告（「公告」）。除本公告另有界定外，本公告所用所有詞彙與此等公告所界定者俱有相同涵義。Zetrix AI 董…"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在派息、併購（BusinessToday Malaysia、The Edge Malaysia、The Malaysian Reserve）。標題見下方清單。"
+     "近三個月 6 則，主題集中在併購、派息、業績（BusinessToday Malaysia、The Edge Malaysia、The Malaysian Reserve）。標題見下方清單。"
     ],
     [
      "數字",
@@ -47352,6 +47557,12 @@
   {
    "symbol": "0166.KL",
    "sa": "INARI",
+   "zh": [
+    "益纳利美昌"
+   ],
+   "aliases": [
+    "Inari"
+   ],
    "name": "Inari Amertron",
    "note": "半導體封測，射頻與光通訊",
    "sector": "AI 馬股",
@@ -47364,12 +47575,12 @@
     "forward_pe": "34.67",
     "eps": "0.03",
     "dps": "0.05",
-    "div_yield": "1.87%",
+    "div_yield": "1.88%",
     "payout_ratio": "143.83%",
     "ex_div_date": "2026-09-17",
     "earnings_date": "2026-08-28",
     "analyst_rating": "Buy",
-    "analyst_target": "2.71 (+7.97%)",
+    "analyst_target": "2.71 (+8.4%)",
     "beta": "0.88",
     "pb_ratio": "3.10",
     "ptbv_ratio": "3.47",
@@ -48507,7 +48718,7 @@
     ],
     [
      "數字",
-     "P/B 3.10、P/E 74.93、ROE 3.96%、殖利率 1.87%、派息率 143.83%、每股淨值 0.73、分析師目標價 2.71 (+7.97%)。"
+     "P/B 3.10、P/E 74.93、ROE 3.96%、殖利率 1.88%、派息率 143.83%、每股淨值 0.73、分析師目標價 2.71 (+8.4%)。"
     ],
     [
      "留意",
@@ -48518,6 +48729,12 @@
   {
    "symbol": "0097.KL",
    "sa": "VITROX",
+   "zh": [
+    "伟特机构"
+   ],
+   "aliases": [
+    "ViTrox"
+   ],
    "name": "ViTrox",
    "note": "半導體檢測設備",
    "sector": "AI 馬股",
@@ -49667,6 +49884,12 @@
   {
    "symbol": "0128.KL",
    "sa": "FRONTKN",
+   "zh": [
+    "前研科技"
+   ],
+   "aliases": [
+    "Frontken"
+   ],
    "name": "Frontken",
    "note": "半導體設備清洗服務",
    "sector": "AI 馬股",
@@ -50798,7 +51021,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、併購、評等（The Star、BusinessToday Malaysia、KLSE Screener、The Edge Malaysia）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、併購、評等（The Star、BusinessToday Malaysia、klsescreener、The Edge Malaysia）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -50813,6 +51036,13 @@
   {
    "symbol": "3867.KL",
    "sa": "MPI",
+   "zh": [
+    "马太平洋"
+   ],
+   "aliases": [
+    "Malaysian Pacific Industries",
+    "MPI"
+   ],
    "name": "MPI 馬太平洋",
    "note": "半導體封測",
    "sector": "AI 馬股",
@@ -51947,7 +52177,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（BusinessToday Malaysia、The Star）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（BusinessToday Malaysia、The Star）。標題見下方清單。"
     ],
     [
      "數字",
@@ -51962,6 +52192,13 @@
   {
    "symbol": "5031.KL",
    "sa": "TIMECOM",
+   "zh": [
+    "时光网"
+   ],
+   "aliases": [
+    "TIME dotCom",
+    "TIMECOM"
+   ],
    "name": "TIME dotCom",
    "note": "資料中心光纖骨幹",
    "sector": "AI 馬股",
@@ -53118,6 +53355,12 @@
   {
    "symbol": "8583.KL",
    "sa": "MAHSING",
+   "zh": [
+    "马星集团"
+   ],
+   "aliases": [
+    "Mah Sing"
+   ],
    "name": "Mah Sing",
    "note": "土地轉作資料中心",
    "sector": "AI 馬股",
