@@ -249,6 +249,9 @@ def market_headlines(limit=6):
             t = a["title"]
             if _is_noise(a) or not _MARKET.search(t):
                 continue
+            # 影片、Podcast 沒有文字內容可讀（「Market Pulse [Watch]」曾排在第一則）
+            if re.search(r"\[(watch|video|listen)\]|\bpodcast\b|\bmarket pulse\b", t, re.I):
+                continue
             if any(_same_event(t, x) for x in seen_titles):
                 continue
             seen_titles.append(t)
