@@ -1,0 +1,69 @@
+name: 即時新聞
+
+# 每日更新（daily.yml）排 3 小時一次，GitHub 實際上 1.6–6.5 小時才輪到，
+# 9/29 銀行股節節敗退時網頁上的新聞還是半天前的。這支只抓新聞、公告、漲跌排行，
+# 一分鐘內跑完，結果推到獨立的 news 分支（只有一個 news.json），網頁直接從 GitHub API 讀，
+# 不必重新部署 Pages，也不碰 main。
+
+on:
+  schedule:
+    # 每 5 分鐘（從第 2 分開始，避開整點大家一起排隊的尖峰）。
+    # GitHub 的排程會延遲、會跳過，實際大約每 12 分鐘跑一次（最慢 25 分鐘）
+    - cron: '2-59/5 * * * *'
+  workflow_dispatch:        # 也可以在 GitHub 網頁上手動按一下就跑
+
+permissions:
+  contents: write           # 推 news 分支要用
+
+# 自己一組，絕不能用 daily.yml 的 'pages'：那樣會跟每日更新互相排隊
+concurrency:
+  group: news
+  cancel-in-progress: false
+
+jobs:
+  news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 取上一輪的 news.json（當翻譯快取）
+        # 標題一樣就沿用上一輪的譯文，不然每 5 分鐘都要重翻幾百則；
+        # 這一輪抓不到的來源（報價、公告⋯）也從這份沿用。
+        # news 分支還不存在（第一次跑）時留空檔，news_job.py 會當作沒有快取。
+        # 另存一份到 _news 外面，最後一步用來比對「這一輪到底有沒有寫出新的」
+        run: |
+          mkdir -p _news
+          if git fetch -q --depth=1 origin news; then
+            git show FETCH_HEAD:news.json > _news/news.json || true
+          else
+            echo "還沒有 news 分支，從頭開始"
+          fi
+          if [ -f _news/news.json ]; then cp _news/news.json _news_prev.json; fi
+
+      - name: 抓新聞、公告、漲跌排行
+        run: python3 -u news_job.py --out _news     # -u 讓進度即時顯示在 Actions 的 log
+
+      - name: 推到 news 分支
+        # 每次都是只有一個 commit 的全新分支、強制覆蓋：
+        # 歷史沒有保存價值，每 5 分鐘累積一個 commit 只會讓 repo 越來越大。
+        # 翻譯快取不寫回 main——會跟每日更新和 ./sync.sh 撞在一起。
+        # 大部分來源都失敗時 news_job.py 不寫檔（檔案跟上一輪一模一樣，或根本沒有）：
+        # 這時不推，上一輪的留在 news 分支上，網頁的「新聞 HH:MM 更新」也不會假裝剛更新過
+        run: |
+          if [ ! -s _news/news.json ] || cmp -s _news/news.json _news_prev.json; then
+            echo "這一輪沒有寫出新的 news.json，不推（news 分支保留上一輪的）"
+            exit 0
+          fi
+          cd _news
+          git init -q
+          git checkout -q -b news
+          git add news.json
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -qm "news $(date -u +%FT%TZ)"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" news

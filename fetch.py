@@ -180,6 +180,9 @@ def fetch_one(stock):
     return {
         "symbol": sym,
         "sa": stock.get("sa"),
+        # 網頁即時搜尋新聞要用：大馬中文報的稱呼（簡體，例如「马银行」）與英文別名
+        "zh": stock.get("zh", []),
+        "aliases": stock.get("aliases", []),
         "name": stock.get("name") or meta.get("shortName") or sym,
         "note": stock.get("note", ""),
         "sector": stock.get("sector", "其他"),

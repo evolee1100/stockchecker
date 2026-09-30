@@ -510,6 +510,22 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .hl:hover{background:var(--tint)}
 .hl .t{font-size:13.5px;line-height:1.5}
 .hl .m{font-size:11px;color:var(--read);margin-top:3px}
+/* 即時新聞：「追蹤股票最新」卡片，每則前面標出是哪一檔 */
+.hl .m .stk{color:var(--ink);font-weight:600}
+/* 第一次抓回來之前先佔好三則的高度：資料進來時不會把下面的漲跌排行、股票列表往下推 */
+.hl.sk{cursor:default}
+.hl.sk i{display:block;height:1em;margin:.25em 0;border-radius:4px;background:var(--hair)}
+.hl.sk i.s{width:62%}
+.hl.sk .m i{width:38%}
+.hl-note{font-size:12.5px;color:var(--read);padding:12px 14px;line-height:1.6}
+/* 個股報導裡瀏覽器剛抓到的那幾則 */
+.live{flex:none;font-size:10px;font-weight:600;line-height:1.5;color:#0b57d0;
+      border:1px solid #c9d8f3;border-radius:99px;padding:0 6px}
+/* 「新聞 18:40 更新」那一行先留好位置：第一次抓到才冒出來的話，
+   手機上報頭會多一行，整頁在讀者眼前往下跳 */
+.stamp .fresh{display:block;min-height:1.5em;color:var(--ink-2);font-weight:500}
+.dsec .zh p{margin:0 0 .8em}
+.dsec .zh p:last-child{margin-bottom:0}
 
 /* 漲跌排行：兩欄並排，手機上改上下 */
 .mv{display:grid;grid-template-columns:1fr 1fr}
@@ -553,6 +569,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .mcard-h b{font-size:17.5px}
   .mcard-h span,.mcard-h .tog{font-size:13px}
   .hl .t{font-size:16px} .hl .m{font-size:13px}
+  .hl-note{font-size:15px}
+  .live{font-size:12.5px;padding:0 7px}
   .mv{grid-template-columns:1fr}
   .mv-col + .mv-col{border-left:none;border-top:1px solid var(--line)}
   .mv-h{font-size:13px}
@@ -595,7 +613,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   <header>
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
-    <span class="stamp" id="updated" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"></span>
+    <span class="stamp" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"><span id="updated"></span><span class="fresh" id="fresh"></span></span>
     <button class="reload" type="button" id="reload" title="重新載入最新資料">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -606,6 +624,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   <div class="pulse" id="pulse"></div>
   <div id="headlines"></div>
   <div id="brief"></div>
+  <div id="watchnews"></div>
   <div id="movers"></div>
   <div id="ipo"></div>
   <div class="tabs" id="tabs"></div>
@@ -862,6 +881,52 @@ const RANGES = [
 ];
 let sortKey = null, sortDir = 1, openSym = null, chartRange = '1個月';
 
+// 同一標題的公告（EPF 一週申報五六次持股變動）合併成一則，
+// 不然清單被同一句話洗版，其他公告被擠出去。點開看得到每一則的內容。
+function groupFilings(list){
+  const by = new Map(), out = [];
+  for(const f of list || []){
+    const k = f.title_zh || f.title;
+    if(by.has(k)){ by.get(k).push(f); continue; }
+    const g = [f]; by.set(k, g); out.push(g);
+  }
+  const md = iso => iso ? +iso.slice(5, 7) + '/' + +iso.slice(8, 10) : '';
+  return out.slice(0, 6).map(g => g.length < 2 ? g[0] : {...g[0],
+    title_zh: (g[0].title_zh || g[0].title) + `（${g.length} 則）`,
+    body_zh: g.filter(f => f.body_zh).map(f => md(f.date) + '：' + f.body_zh).join('\n\n'),
+    body: ''});
+}
+
+const NO_ARTICLES = '近三個月沒有相關報導', NO_FILINGS = '沒有抓到公告';
+const newsMeta = n => [n.source_zh || n.source, ago(n)].filter(Boolean).join(' · ');
+
+// 每則新聞共用的 data-*：彈窗（showOriginal）和「中文／原文」切換都從這裡讀。
+// 大馬中文報（lang zh）全文太長不塞進屬性，用網址去 LIVE_BODY 查；
+// data-full 標出「App 裡讀得到全文」——news.json 那份只有標題，點了就直接開來源網頁
+function newsAttrs(n){
+  const zh = isZh(n);
+  return `data-zh="${esc(n.title_zh || n.title)}" data-en="${esc(n.title || '')}"
+    data-src="${esc(newsMeta(n))}" data-url="${esc(n.source_url || n.url)}"
+    data-body-en="${zh ? '' : esc(n.body || '')}" data-body-zh="${esc(n.body_zh || '')}"
+    ${zh ? `data-lang="zh" data-key="${esc(n.url)}"${zhFull(n) ? ' data-full="1"' : ''}` : ''}`;
+}
+
+// 抽出來放在外層（原本在 detailRow 裡），即時新聞抓回來後要能只重畫這一塊
+function feed(list, empty){
+  if(!list || !list.length) return `<div class="none">${empty}</div>`;
+  return list.map(n => {
+    const zh = n.title_zh || n.title, en = n.title || '';
+    const cn = isZh(n);
+    const translated = !cn && zh !== en;
+    const hasBody = cn ? zhFull(n) : !!(n.body_zh || n.body);
+    return `<div class="item" ${newsAttrs(n)}>
+      <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(zh)}</a>
+      <div class="im">${n.live ? '<span class="live">即時</span>' : ''}${esc(newsMeta(n))}
+        ${(translated || hasBody) ? `<button class="orig" type="button">${hasBody ? '讀全文' : '原文'}</button>` : ''}</div>
+    </div>`;
+  }).join('');
+}
+
 function detailRow(s){
   const f = s.fundamentals || {};
   const cells = [
@@ -877,46 +942,12 @@ function detailRow(s){
   ].filter(([,v]) => v!=null && v!=='' && v!=='—');
   const COLORED = ['5 日','3 個月','1 年','距高點'];
 
-  const esc = t => (t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
-                            .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  // 同一標題的公告（EPF 一週申報五六次持股變動）合併成一則，
-  // 不然清單被同一句話洗版，其他公告被擠出去。點開看得到每一則的內容。
-  const groupFilings = list => {
-    const by = new Map(), out = [];
-    for(const f of list || []){
-      const k = f.title_zh || f.title;
-      if(by.has(k)){ by.get(k).push(f); continue; }
-      const g = [f]; by.set(k, g); out.push(g);
-    }
-    const md = iso => iso ? +iso.slice(5, 7) + '/' + +iso.slice(8, 10) : '';
-    return out.slice(0, 6).map(g => g.length < 2 ? g[0] : {...g[0],
-      title_zh: (g[0].title_zh || g[0].title) + `（${g.length} 則）`,
-      body_zh: g.filter(f => f.body_zh).map(f => md(f.date) + '：' + f.body_zh).join('\n\n'),
-      body: ''});
-  };
-
-  const feed = (list, empty) => list && list.length
-    ? list.map(n => {
-        const zh = n.title_zh || n.title, en = n.title || '';
-        const translated = zh !== en;
-        const hasBody = !!(n.body_zh || n.body);
-        return `<div class="item"
-             data-zh="${esc(zh)}" data-en="${esc(en)}"
-             data-src="${esc([n.source_zh || n.source, ago(n)].filter(Boolean).join(' · '))}"
-             data-url="${esc(n.source_url || n.url)}"
-             data-body-en="${esc(n.body || '')}"
-             data-body-zh="${esc(n.body_zh || '')}">
-          <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${zh}</a>
-          <div class="im">${esc([n.source_zh || n.source, ago(n)].filter(Boolean).join(' · '))}
-            ${(translated || hasBody) ? `<button class="orig" type="button">${hasBody ? '讀全文' : '原文'}</button>` : ''}</div>
-        </div>`;
-      }).join('')
-    : `<div class="none">${empty}</div>`;
-
+  const artsHtml = feed(stockArticles(s), NO_ARTICLES), filHtml = feed(groupFilings(s.filings), NO_FILINGS);
   const tr = document.createElement('tr');
   tr.className = 'detail';
   tr.innerHTML = `<td colspan="${COLS.length}"><div class="dbox">
-    <div class="dnote">${s.note||''}${s.market_time?' · 最後成交 '+s.market_time:''}</div>
+    <div class="dnote">${s.note||''}${s.market_time?' · 最後成交 '+s.market_time:''}${
+      s.live && s.live_ts ? ' · 即時報價 ' + hhmm(s.live_ts) : ''}</div>
     <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
     ${(s.digest && s.digest.length) ? `<div class="dg">
       <div class="dg-h">重點報導</div>
@@ -934,13 +965,16 @@ function detailRow(s){
       <div><h4>媒體報導 <span class="seg">
         <button type="button" class="on" data-l="zh">中文</button>
         <button type="button" data-l="en">原文</button></span></h4>
-${feed(s.articles, '近三個月沒有相關報導')}</div>
+<div data-feed="a">${artsHtml}</div></div>
       <div><h4>Bursa 公告 <span class="seg">
         <button type="button" class="on" data-l="zh">中文</button>
         <button type="button" data-l="en">原文</button></span></h4>
-${feed(groupFilings(s.filings), '沒有抓到公告')}</div>
+<div data-feed="f">${filHtml}</div></div>
     </div>
   </div></td>`;
+  // 記下畫出去的內容，paintFeeds 比對：一樣就不換，面板不閃也不跳
+  tr.querySelector('[data-feed="a"]')._html = artsHtml;
+  tr.querySelector('[data-feed="f"]')._html = filHtml;
 
   const slot = tr.querySelector('.chartslot');
   const draw = () => {
@@ -1047,49 +1081,128 @@ let briefAll = false;
    追蹤清單只看得到自己挑的 49 檔。這三塊回答的是「整個市場今天怎麼了」，
    設計目標是打開頁面、不捲動、不點開，就知道大方向。 */
 
-// 可收起的卡片，收起狀態記在瀏覽器裡
+// 可收起的卡片，收起狀態記在瀏覽器裡。
+// 內容跟上次畫的一模一樣就不重畫（即時新聞每 3 分鐘檢查一次，多半沒有新的）：
+// 不閃、不動捲動位置，也不會把使用者剛切到「原文」的標題換回來。回傳有沒有重畫
 function mcard(id, title, sub, body){
   const key = 'fold_' + id;
   let folded = false;
   try { folded = localStorage.getItem(key) === '1'; } catch(e) {}
   const host = document.getElementById(id);
-  host.innerHTML = `<div class="mcard">
+  const html = `<div class="mcard">
     <div class="mcard-h"><b>${title}</b><span>${sub}</span>
       <button class="tog" type="button">${folded ? '展開' : '收起'}</button></div>
     <div class="mcard-b" ${folded ? 'hidden' : ''}>${body}</div></div>`;
+  if(host._html === html) return false;
+  host._html = html;
+  host.innerHTML = html;
   host.querySelector('.tog').onclick = () => {
     const b = host.querySelector('.mcard-b');
     b.hidden = !b.hidden;
     host.querySelector('.tog').textContent = b.hidden ? '展開' : '收起';
     try { localStorage.setItem(key, b.hidden ? '1' : '0'); } catch(e) {}
   };
+  return true;
+}
+function clearCard(id){
+  const host = document.getElementById(id);
+  host.innerHTML = '';
+  host._html = '';
 }
 
 const KSE = code => 'https://www.klsescreener.com/v2/stocks/view/' + encodeURIComponent(code);
 const ppx = v => v == null ? '—' : v.toFixed(v < 1 ? 3 : 2);
 
+// 快訊、追蹤股票都是預設 3 則，按「更多」看到 8 則：
+// 兩張都攤開的話，手機第一屏被快訊塞滿，「重點」被擠到畫面外
+const HL_TOP = 3, HL_MAX = 8, WATCH_TOP = 3, WATCH_MAX = 8;
+let hlAll = false, watchAll = false;
+
+// 「顯示更多／只看前 3 則」以按下去的那顆按鈕為準：
+// 展開時按鈕以上的內容沒變，新的幾則就接在手指的位置往下長，不用捲；
+// 收起時上面少了幾則，把按鈕捲回手指底下，不然按鈕跑到畫面外面。
+// （以前拿下面的卡片當錨點，展開的那幾則反而被推出畫面上方）
+function wireMore(host, flip, redraw){
+  const b = host.querySelector('.bmore');
+  if(!b) return;
+  b.onclick = () => {
+    const y = b.getBoundingClientRect().top;
+    const opened = flip();
+    redraw();
+    const nb = host.querySelector('.bmore');
+    if(opened || !nb) return;
+    const d = nb.getBoundingClientRect().top - y;
+    if(Math.abs(d) > 1) scrollBy(0, d);
+  };
+}
+
+const hlRow = (n, tag) => `<div class="hl item" ${newsAttrs(n)}>
+    <div class="t">${esc(n.title_zh || n.title)}</div>
+    <div class="m">${tag ? `<span class="stk">${esc(tag)}</span> · ` : ''}${esc(newsMeta(n))}</div></div>`;
+// 點一則就開全文彈窗（英文有內文的在瀏覽器裡現翻；中文報導轉成繁體）。
+// 中文報只有標題、沒有全文可讀的，彈窗裡什麼都沒有，直接開來源網頁
+function openNews(el){
+  if(el.dataset.lang === 'zh' && !el.dataset.full){
+    if(el.dataset.url) window.open(el.dataset.url, '_blank', 'noopener');
+    return;
+  }
+  showOriginal(el);
+}
+// 雲端資料的大盤新聞 + 瀏覽器剛抓到的星洲／南洋／The Edge，一起照時間排
+const marketNews = () => newest([...((D.market && D.market.headlines) || []), ...LIVE.market]).slice(0, HL_MAX);
+
 function renderHeadlines(){
-  const hs = (D.market && D.market.headlines) || [];
+  const hs = marketNews();
+  if(!hs.length){ clearCard('headlines'); return; }
+  const shown = hs.slice(0, hlAll ? HL_MAX : HL_TOP);
+  mcard('headlines', '市場快訊', `大盤最新 ${shown.length} 則${LIVE.at ? ' · 即時' : ''}`,
+    shown.map(n => hlRow(n)).join('') +
+    (hs.length > HL_TOP ? `<button class="bmore" type="button">${
+      hlAll ? '只看前 ' + HL_TOP + ' 則' : '顯示更多（共 ' + hs.length + ' 則）'}</button>` : ''));
   const host = document.getElementById('headlines');
-  if(!hs.length){ host.innerHTML = ''; return; }
-  const top = hs.slice(0, 3);
-  mcard('headlines', '市場快訊', '大盤最新 ' + top.length + ' 則',
-    top.map((h, i) => `<div class="hl item" data-hl="${i}"
-        data-zh="${esc(h.title_zh || h.title)}" data-en="${esc(h.title)}"
-        data-src="${esc([h.source, ago(h)].filter(Boolean).join(' · '))}"
-        data-url="${esc(h.source_url || h.url)}"
-        data-body-en="${esc(h.body || '')}" data-body-zh="">
-        <div class="t">${esc(h.title_zh || h.title)}</div>
-        <div class="m">${esc([h.source, ago(h)].filter(Boolean).join(' · '))}</div></div>`).join(''));
-  // 點一則就開全文彈窗（有內文的會在瀏覽器裡現翻）
-  document.querySelectorAll('#headlines .hl').forEach(el => el.onclick = () => showOriginal(el));
+  host.querySelectorAll('.hl').forEach(el => el.onclick = () => openNews(el));
+  wireMore(host, () => (hlAll = !hlAll), renderHeadlines);
   fillZh(host);
+}
+
+/* 追蹤股票最新：自己一張卡，放在「重點」下面。
+   原本塞在快訊卡的下半段，手機上快訊卡長到 770px，把「重點」擠出第一屏 */
+function renderWatch(){
+  const host = document.getElementById('watchnews');
+  const title = '追蹤股票最新';
+  // 第一次還沒抓回來：先佔好三則的位置，抓到時下面的內容才不會被往下推
+  if(!LIVE.tried){
+    const sk = '<div class="hl sk"><div class="t"><i></i><i class="s"></i></div><div class="m"><i></i></div></div>';
+    mcard('watchnews', title, '中文報 · 載入中', sk.repeat(WATCH_TOP));
+    return;
+  }
+  // 同一篇（例如收盤報導同時提到馬銀行）快訊卡最上面三則已經列了，這裡就不再重複。
+  // 只比對前三則（不管快訊卡有沒有展開），這張卡的內容才不會跟著那顆按鈕變來變去
+  const seen = new Set(marketNews().slice(0, HL_TOP).flatMap(n => dupKeys(n).filter(k => !k.startsWith('p:'))));
+  const ws = newest(LIVE.watch).filter(n => !dupKeys(n).some(k => seen.has(k))).slice(0, WATCH_MAX);
+  if(!ws.length){
+    mcard('watchnews', title, '中文報', `<div class="hl-note">${LIVE.watchOk
+      ? '最近 7 天，星洲、南洋、中國報沒有提到追蹤股票的財經新聞。'
+      : '暫時連不上星洲、南洋、中國報，稍後會自動再試。'}</div>`);
+    return;
+  }
+  // 標出是哪一檔：一篇講好幾家銀行時只寫第一家，其餘用「等 N 檔」帶過
+  const tagOf = n => n.stocks.length > 1 ? n.stocks[0].name + ' 等 ' + n.stocks.length + ' 檔'
+                                         : n.stocks[0].name;
+  const shown = ws.slice(0, watchAll ? WATCH_MAX : WATCH_TOP);
+  mcard('watchnews', title, `中文報最新 ${shown.length} 則 · 即時`,
+    shown.map(n => hlRow(n, tagOf(n))).join('') +
+    (ws.length > WATCH_TOP ? `<button class="bmore" type="button">${
+      watchAll ? '只看前 ' + WATCH_TOP + ' 則' : '顯示更多（共 ' + ws.length + ' 則）'}</button>` : ''));
+  host.querySelectorAll('.hl').forEach(el => el.onclick = () => openNews(el));
+  wireMore(host, () => (watchAll = !watchAll), renderWatch);
 }
 
 function renderMovers(){
   const mv = D.market && D.market.movers;
-  const host = document.getElementById('movers');
-  if(!mv || (!mv.up.length && !mv.down.length)){ host.innerHTML = ''; return; }
+  if(!mv || !Array.isArray(mv.up) || !Array.isArray(mv.down) || (!mv.up.length && !mv.down.length)){
+    clearCard('movers'); return;
+  }
   // 每列：名稱＋代號（Bursa 的四位數代號）／漲跌幅＋每股現價（令吉）
   const row = q => `<a class="mvr" href="${KSE(q.code)}" target="_blank" rel="noopener" title="${esc(q.name || '')}">
       <div><div class="n">${esc(q.short)}</div>
@@ -1105,14 +1218,14 @@ function renderMovers(){
        <div class="mv-col"><div class="mv-h down">跌最多</div>${mv.down.map(row).join('') || '<div class="mv-note">沒有下跌的</div>'}</div>
      </div>
      <div class="mv-note">馬來西亞交易所（Bursa Malaysia）主板與創業板。每列是「名稱、代號 · 行業」與「漲跌幅、每股現價（令吉）」，點一下看該股詳細資料。
-       只比較股價 RM0.20、市值 RM2 億以上的 ${mv.universe} 檔（共 ${mv.total.toLocaleString()} 檔）：
+       只比較股價 RM0.20、市值 RM2 億以上的${mv.universe ? ' ' + mv.universe + ' 檔' : '股票'}${
+         mv.total ? `（共 ${mv.total.toLocaleString()} 檔）` : ''}：
        RM0.005 的仙股跳一格就是 +100%，沒有參考價值。</div>`);
 }
 
 function renderIPO(){
   const ip = D.market && D.market.ipo;
-  const host = document.getElementById('ipo');
-  if(!ip || (!ip.upcoming.length && !ip.recent.length)){ host.innerHTML = ''; return; }
+  if(!ip || (!ip.upcoming.length && !ip.recent.length)){ clearCard('ipo'); return; }
   const md = iso => { const [, m, d] = iso.split('-').map(Number); return m + '/' + d; };
   const MON = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
   const dm = t => { const m = /(\d{1,2})\s+([A-Za-z]{3})/.exec(t || ''); return m && MON[m[2]] ? MON[m[2]] + '/' + (+m[1]) : ''; };
@@ -1167,7 +1280,8 @@ const mytToday = () => new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 
 function ago(n){
   if(n.ts){
     const h = (Date.now() / 1000 - n.ts) / 3600;
-    if(h < 1) return '剛剛';
+    // 即時新聞要看得出「12 分鐘前」和「50 分鐘前」的差別，不能一小時內都叫剛剛
+    if(h < 1){ const m = Math.floor(h * 60); return m < 2 ? '剛剛' : m + ' 分鐘前'; }
     if(h < 24) return Math.floor(h) + ' 小時前';
   }
   const iso = n.date || (n.ts ? new Date(n.ts * 1000 + 8 * 3600e3).toISOString().slice(0, 10) : '');
@@ -1178,6 +1292,13 @@ function ago(n){
   if(days < 30) return days + ' 天前';
   if(days < 365) return Math.floor(days / 30) + ' 個月前';
   return Math.floor(days / 365) + ' 年前';
+}
+
+// epoch 秒 → 馬來西亞時間「18:40」；不是今天就加上「9/29」
+function hhmm(ts){
+  const iso = new Date(ts * 1000 + 8 * 3600e3).toISOString();
+  const day = iso.slice(0, 10);
+  return (day === mytToday() ? '' : +day.slice(5, 7) + '/' + +day.slice(8, 10) + ' ') + iso.slice(11, 16);
 }
 
 function fmtWhen(iso){
@@ -1265,10 +1386,12 @@ function render(){
   renderPulse();
   renderHeadlines();
   renderBrief();
+  renderWatch();
   renderMovers();
   renderIPO();
   $('#title').textContent = D.title;
   $('#updated').textContent = D.updated_at;
+  paintFresh();
 
   $('#head').innerHTML = '<tr>' + COLS.map(c =>
     `<th data-k="${c.k}" class="c-${c.k}">${c.t}<span class="a">${
@@ -1356,6 +1479,7 @@ function render(){
         const d = detailRow(s);
         body.appendChild(d);
         d._redraw();                         // 插入後才畫圖，這樣量得到實際寬度
+        showStockLive(s);                    // 3 分鐘內抓過就直接用快取（已經畫在上面了）
       }
     });
   });
@@ -1390,7 +1514,7 @@ function trCache(){
 function trSave(c){
   try {
     const keys = Object.keys(c);
-    if(keys.length > 120) keys.slice(0, keys.length - 120).forEach(k => delete c[k]);
+    if(keys.length > 600) keys.slice(0, keys.length - 600).forEach(k => delete c[k]);   // 標題也存，120 則太快被擠掉
     localStorage.setItem(TR_KEY, JSON.stringify(c));
   } catch(e) {}
 }
@@ -1425,20 +1549,16 @@ async function gtranslate(part){
     held = held.replace(re, tok);
     marks.push(term);
   }
-  // 兩個 Google 入口輪流用：一個被限流（429）時另一個通常還能用
+  // 兩個 Google 入口：clients5 比較不會被限流（跟 translate.py 同樣順序），失敗才換 gtx
   let zh = '';
   try {
-    const res = await fetch('https://translate.googleapis.com/translate_a/single' +
-                            '?client=gtx&sl=en&tl=zh-TW&dt=t&q=' + encodeURIComponent(held));
-    if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
-    const data = await res.json();
-    zh = (data[0] || []).map(x => x[0]).filter(Boolean).join('');
-  } catch(e) {
-    const res = await fetch('https://clients5.google.com/translate_a/t?client=dict-chrome-ex' +
-                            '&sl=en&tl=zh-TW&q=' + encodeURIComponent(held));
-    if(!res.ok) throw new Error('翻譯服務回應 ' + res.status);
-    const data = await res.json();
+    const data = await tfetchJSON('https://clients5.google.com/translate_a/t?client=dict-chrome-ex' +
+                                  '&sl=en&tl=zh-TW&q=' + encodeURIComponent(held), {}, 10e3);
     zh = String(Array.isArray(data[0]) ? data[0][0] : data[0] || '');
+  } catch(e) {
+    const data = await tfetchJSON('https://translate.googleapis.com/translate_a/single' +
+                                  '?client=gtx&sl=en&tl=zh-TW&dt=t&q=' + encodeURIComponent(held), {}, 10e3);
+    zh = (data[0] || []).map(x => x[0]).filter(Boolean).join('');
   }
   // 佔位符必須原封不動回來，否則寧可放棄這一段
   if(!marks.every((_, i) => zh.includes('ZZ' + i + 'ZZ'))) throw new Error('專有名詞還原失敗');
@@ -1451,6 +1571,13 @@ async function gtranslate(part){
    打開畫面時把還是英文的標題在瀏覽器裡現翻（跟全文一樣存在手機上，下次不再翻）。
    一次只翻一則，遇到限流就停，不要連續打一堆請求。 */
 const hasCJK = t => /[\u4e00-\u9fff]/.test(t || '');
+// \u4e2d\u6587\u5831\u5c0e\uff1a\u5373\u6642\u6293\u7684\u6709\u6a19 lang\uff1bnews.json\uff0fklsescreener \u8f49\u4f86\u7684\u90a3\u4efd\u4e0d\u4e00\u5b9a\u6709\uff0c\u6a19\u984c\u662f\u4e2d\u6587\u5c31\u7b97
+// \uff08\u4e0d\u7136\u5f48\u7a97\u6703\u628a\u7c21\u9ad4\u6a19\u984c\u653e\u5728\u300cENGLISH\u300d\u5e95\u4e0b\uff0c\u9084\u591a\u4e00\u9846\u6c92\u7528\u7684\u300c\u539f\u6587\u300d\uff09
+const isZh = n => n.lang === 'zh' || (!n.lang && hasCJK(n.title));
+// App \u88e1\u8b80\u5f97\u5230\u5168\u6587\uff1a\u5373\u6642\u6293\u7684\u4e2d\u6587\u5831\u5167\u6587\u5728 LIVE_BODY\uff0c\u96f2\u7aef\u7ffb\u597d\u7684\u5728 body_zh
+const zhFull = n => LIVE_BODY.has(n.url) || !!n.body_zh;
+// \u6a19\u984c\u5df2\u7d93\u6709\u50cf\u6a23\u7684\u4e2d\u6587\uff1a\u82f1\u6587\u8981\u7ffb\u6210\u4e2d\u6587\uff1b\u7c21\u9ad4\u8981\u8f49\u904e\uff08\u8f49\u5931\u6557\u6642\u96f2\u7aef\u6703\u539f\u6a23\u653e\u7c21\u9ad4\uff09
+const goodZh = n => !!n.title_zh && (isZh(n) ? n.title_zh !== n.title : hasCJK(n.title_zh));
 async function fillZh(root){
   for(const el of root.querySelectorAll('[data-en]')){
     const en = el.dataset.en;
@@ -1467,13 +1594,20 @@ async function fillZh(root){
   }
 }
 
+// 翻好的先記在記憶體：手機儲存空間滿了或被擋（無痕模式）時 localStorage 存不進去，
+// 只靠它的話每次重畫都要重翻一次
+const TR_MEM = new Map();
 async function translateBody(text){
-  const cache = trCache(), key = trKey(text);
-  if(cache[key]) return cache[key];
+  const key = trKey(text);
+  if(TR_MEM.has(key)) return TR_MEM.get(key);
+  const hit = trCache()[key];
+  if(hit){ TR_MEM.set(key, hit); return hit; }
   const parts = chunk(text);
   const out = [];
   for(const p of parts) out.push(await gtranslate(p));
   const zh = out.join('');
+  TR_MEM.set(key, zh);
+  const cache = trCache();                     // 重新讀一次，別蓋掉翻譯這段時間別處存進去的
   cache[key] = zh;
   trSave(cache);
   return zh;
@@ -1486,6 +1620,7 @@ const isMobile = () => matchMedia('(max-width:700px)').matches;
 
 /* ---------- 手機的個股面板 ---------- */
 const sheet = document.getElementById('sheet');
+let sheetSym = null;                           // 面板目前開著的那一檔（沒開是 null）
 
 function openSheet(s){
   const star = document.getElementById('sh-star');
@@ -1501,26 +1636,34 @@ function openSheet(s){
     render();                                  // 底下的列表同步更新
   };
 
-  document.getElementById('sh-name').textContent = s.name;
-  document.getElementById('sh-sym').textContent  = s.symbol + (s.unit ? ' · ' + s.unit : '');
-  document.getElementById('sh-price').textContent = px(s.price, s.is_index, s.dp);
-  const chg = document.getElementById('sh-chg');
-  chg.textContent = pc(s.change_pct_1d);
-  chg.className = 'ch ' + cls(s.change_pct_1d);
+  sheetBar(s);
 
   const host = document.getElementById('sh-body');
   host.innerHTML = '';
+  sheetSym = s.symbol;                         // detailRow 裡的報導清單要知道面板開的是哪一檔
   const row = detailRow(s);                    // 沿用同一份內容，不另外維護一套
   host.appendChild(row.querySelector('.dbox'));
   sheet.classList.add('on');
   document.body.style.overflow = 'hidden';
   row._redraw();
   wireCalculator(host);
+  showStockLive(s);                            // 背景去抓這一檔的即時新聞，抓到再補進「媒體報導」
+}
+
+// 面板頂端的名稱與股價；news.json 帶來盤中報價時也用這個就地更新
+function sheetBar(s){
+  document.getElementById('sh-name').textContent = s.name;
+  document.getElementById('sh-sym').textContent  = s.symbol + (s.unit ? ' · ' + s.unit : '');
+  document.getElementById('sh-price').textContent = px(s.price, s.is_index, s.dp);
+  const chg = document.getElementById('sh-chg');
+  chg.textContent = pc(s.change_pct_1d);
+  chg.className = 'ch ' + cls(s.change_pct_1d);
 }
 
 function closeSheet(){
   sheet.classList.remove('on');
   document.body.style.overflow = '';
+  sheetSym = null;
 }
 document.getElementById('sh-x').onclick = closeSheet;
 sheet.addEventListener('click', e => { if(e.target === sheet) closeSheet(); });
@@ -1529,6 +1672,7 @@ const ovl = document.getElementById('ovl');
 
 function showOriginal(item){
   const d = item.dataset;
+  if(d.lang === 'zh') return showZhArticle(item);          // 大馬中文報：沒有英文原文，直接讀全文
   const dlg = ovl.querySelector('.dlg');
   const bodyEn = d.bodyEn || '';
   let bodyZh = d.bodyZh || '';
@@ -1562,6 +1706,35 @@ function showOriginal(item){
   }
 }
 
+/* 大馬中文報（星洲／南洋／中國報）的全文：搜尋 API 就附了完整內文，
+   在 App 裡直接讀，不用跳去對方網站（使用者特別要的）。原文是簡體，打開時才轉繁體。 */
+function showZhArticle(item){
+  const d = item.dataset;
+  const dlg = ovl.querySelector('.dlg');
+  const raw = LIVE_BODY.get(d.key) || '';
+  const ready = raw ? '' : d.bodyZh || '';                  // 雲端已經整理好的中文內文，不用再轉
+  dlg.innerHTML = `
+    <h5>${raw || ready ? '全文' : '報導'} <button class="x" type="button" aria-label="關閉">&times;</button></h5>
+    <div class="dsec"><div class="k">標題</div>
+      <div class="zh" style="font-weight:600">${esc(d.zh)}</div></div>
+    ${raw || ready ? `<div class="dsec"><div class="k">內文</div>
+      <div class="zh" id="ovl-body"><span class="tload">轉成繁體中文⋯</span></div></div>` : ''}
+    <div class="dfoot"><span>${esc(d.src || '')}</span>
+      ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">開啟來源網頁 →</a>` : ''}</div>`;
+  dlg.scrollTop = 0;
+  ovl.classList.add('on');
+  if(!raw && !ready) return;
+  const slot = dlg.querySelector('#ovl-body');
+  const paint = (t, note) => {
+    if(!slot.isConnected) return;                           // 已經關掉或換成別篇了
+    slot.innerHTML = (note ? `<p class="tfail">${note}</p>` : '') +
+      t.split('\n').map(p => `<p>${esc(p)}</p>`).join('');
+  };
+  if(ready) return paint(ready);
+  tradBody(d.key, raw).then(t => paint(t))
+    .catch(() => paint(raw, '轉繁體失敗，以下是簡體原文。'));
+}
+
 function esc(t){
   return (t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
                   .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1577,7 +1750,8 @@ addEventListener('keydown', e => {
 
 // 事件委派：新聞是動態產生的，綁在 document 上就不用每次重綁
 document.addEventListener('click', e => {
-  const btn = e.target.closest('.orig');
+  // 中文報的即時新聞點標題也是在 App 裡開全文，不跳去對方網站（只有標題、沒全文的照常開連結）
+  const btn = e.target.closest('.orig') || e.target.closest('.item[data-full] .it');
   if(!btn) return;
   e.preventDefault();
   e.stopPropagation();
@@ -1586,6 +1760,18 @@ document.addEventListener('click', e => {
 
 /* 主畫面 App 沒有網址列，沒辦法下拉強制重載，所以自己提供一顆。
    帶上時間戳繞過快取——不然按了也是拿到同一份舊資料。 */
+// 9/8 改版時誤刪了這個函式：按「更新」回來後 boot() 會丟 ReferenceError，提示從沒出現過
+const TICK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+  stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+function toast(title, sub = '', ms = 5000){
+  const el = document.getElementById('toast');
+  el.innerHTML = TICK + `<div><div class="tt">${title}</div>` +
+                 (sub ? `<div class="ts">${sub}</div>` : '') + '</div>';
+  el.classList.add('on');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('on'), ms);
+}
+
 document.getElementById('reload').onclick = ev => {
   ev.currentTarget.classList.add('busy');    // 重載有延遲，先轉起來讓人知道按到了
   try { sessionStorage.setItem('reload_from', (D && D.updated_at) || ''); } catch(e) {}
@@ -1593,6 +1779,632 @@ document.getElementById('reload').onclick = ev => {
   u.searchParams.set('t', Date.now());
   location.replace(u.toString());
 };
+
+/* ---------- 即時新聞 ----------
+   9/29 銀行股連跌，頁面上卻看不出來：資料靠 GitHub 排程更新，
+   實測「每 3 小時」的排程要 1.6～6.5 小時才真的跑一次，等資料進來早就收盤了。
+   所以新聞另外走兩條路：
+   1. news.json：伺服器端只抓新聞的工作（news 分支，約 5～15 分鐘一次），
+      帶 Google News、Bursa 公告、漲跌排行、追蹤股的盤中報價
+   2. 瀏覽器自己抓：星洲、南洋、中國報的搜尋 API，The Edge、Business Today
+   打開頁面、切回前景、看著畫面時抓：大盤快訊每 3 分鐘，追蹤股票的類股／最愛查詢每 9 分鐘
+   （每篇搜尋結果都附全文，一輪就是幾百 KB，手機流量吃不消）。
+   任何一個來源失敗就當作沒有：不擋畫面、不跳錯誤。 */
+const LIVE_MS = 180e3;
+// 追蹤股票的查詢一次涵蓋一整週的報導，晚幾分鐘看到差別不大
+const WATCH_MS = 540e3;
+// 個股的快取比 3 分鐘短一點：refreshLive 先抓完大盤才輪到個股，兩輪之間會比 3 分鐘少幾秒，
+// 快取若剛好 3 分鐘，每隔一輪就被「還沒過期」跳過，變成 6 分鐘才更新一次
+const STOCK_MS = LIVE_MS - 30e3;
+// api.github.com 推送後約 20 秒就拿得到新檔，但沒登入每小時只能 60 次；
+// 被限流時退回 raw.githubusercontent.com（有 5 分鐘快取，但不限次數）
+const NEWS_RAW = 'https://raw.githubusercontent.com/evolee1100/stockchecker/news/news.json';
+
+// 瀏覽器抓到的大盤快訊、追蹤股票新聞。tried：第一輪抓過了沒（抓到之前「追蹤股票最新」先佔位）
+let LIVE = {market: [], watch: [], at: 0, tried: false, watchOk: false, sig: ''};
+const LQ = new Map();                          // 每個查詢上一次成功的結果：「網站|關鍵字」→ {t, items}
+const LIVE_BODY = new Map();                   // 中文報全文（簡體）：網址 → 內文
+const stockLive = new Map();                   // 個股即時新聞：代號 → {t, items}
+const stockPending = new Map();
+let newsTs = 0, liveTs = 0;                    // news.json 的產生時間、瀏覽器上次抓成功的時間（秒）
+let newsWait = 0, apiWait = 0;                 // 404／被限流後先暫停一陣子
+
+// 逾時就放棄：手機訊號差時一個來源卡住，不能拖住其他來源。
+// 計時一直算到內文讀完：以前表頭一到就停表，內文傳到一半卡住時 res.json() 永遠等不完，
+// 整輪即時更新跟著卡死（liveBusy 一直是 true，之後每一輪都被跳過）
+async function tfetchJSON(url, opt = {}, ms = 8000){
+  const ac = new AbortController();
+  const t = setTimeout(() => ac.abort(), ms);
+  try {
+    const res = await fetch(url, {...opt, signal: ac.signal});
+    if(!res.ok) throw Object.assign(new Error('回應 ' + res.status), {status: res.status});
+    return await res.json();
+  } catch(e) {
+    if(ac.signal.aborted) throw new Error('逾時');
+    throw e;
+  } finally { clearTimeout(t); }
+}
+
+// HTML 實體（&amp;、&#8217;）與殘留標籤轉成純文字
+function plain(html){
+  const s = String(html || '').replace(/<br\s*\/?>|<\/p>/gi, '\n');
+  if(!/[<&]/.test(s)) return s;
+  return new DOMParser().parseFromString(s, 'text/html').body.textContent || '';
+}
+
+const normT = t => (t || '').toLowerCase().replace(/[^0-9a-z一-鿿]/g, '');
+const tsOf = n => n.ts || (n.date ? Date.parse(n.date + 'T00:00:00+08:00') / 1000 || 0 : 0);
+// 出版社名稱各來源寫法不同：「BusinessToday Malaysia」「businesstoday.com.my」「Business Today」是同一家
+const pubOf = s => String(s || '').toLowerCase().replace(/\.com|\.my|www\.|malaysia/g, '').replace(/[^0-9a-z一-鿿]/g, '');
+// WordPress 網址的最後一段就是原本的標題（stock-today-maybank-holds-steady-…）。
+// Google News 那份只有轉址網址，對方事後改了標題時，拿這段還對得上
+function slugOf(u){
+  try {
+    const seg = new URL(u).pathname.split('/').filter(Boolean).pop() || '';
+    return /^[a-z0-9]+(-[a-z0-9]+){3,}$/.test(seg) ? normT(seg) : '';
+  } catch(e) { return ''; }
+}
+// 判斷「同一篇」用的鍵：網址、標題（原文、中譯、網址裡的標題）；
+// 另外「同一家、同一秒發的」也算，但標題要夠像（p: 開頭，見 dedupe），免得同一秒排程發出的兩篇被併掉。
+// 公告只看網址：EPF 每週的持股變動標題一模一樣，但每一則都是不同的申報
+function dupKeys(n, urlOnly){
+  const ks = [n.url, n.source_url];
+  if(!urlOnly){
+    for(const t of [normT(n.title), normT(n.title_zh), slugOf(n.url), slugOf(n.source_url)]) if(t) ks.push('t:' + t);
+    if(n.ts && n.source) ks.push('p:' + pubOf(n.source) + '|' + Math.round(n.ts));
+  }
+  return ks.filter(Boolean);
+}
+const words = n => new Set(String(n.title || '').toLowerCase().match(/[a-z0-9]{3,}|[一-鿿]{2}/g) || []);
+function near(a, b){
+  const A = words(a), B = words(b);
+  let c = 0;
+  A.forEach(w => { if(B.has(w)) c++; });
+  return c > 0 && c >= 0.5 * Math.min(A.size, B.size);
+}
+// 同一篇的兩份併成一份，不是丟掉後來那份：data.js 那份常有內文、中譯、持股變動（move），
+// news.json 那份沒有；即時抓的中文報那份網址對得到 LIVE_BODY，App 裡才讀得到全文。
+// 所以有全文的即時中文報當底，其餘欄位哪一份有就用哪一份
+const FILL = ['title_zh', 'body', 'body_zh', 'move', 'source_url', 'source_zh', 'ts', 'date', 'when', 'lead', 'tax', 'stocks'];
+const blank = v => v == null || v === '' || (Array.isArray(v) && !v.length);
+function mergeItem(a, b){
+  const full = n => isZh(n) && LIVE_BODY.has(n.url);
+  if(full(b) && !full(a)) [a, b] = [b, a];
+  const m = {...a};
+  for(const k of FILL) if(blank(m[k]) && !blank(b[k])) m[k] = b[k];
+  // 留下的是 Google News 轉址那份：另一份的網址就是原站，「開啟來源網頁」直接去那裡
+  if(!m.source_url && /news\.google\.com/.test(m.url) && b.url && !/news\.google\.com/.test(b.url)) m.source_url = b.url;
+  if(!goodZh(m) && goodZh(b)) m.title_zh = b.title_zh;
+  if(!m.lang && b.lang) m.lang = b.lang;
+  if(b.live) m.live = true;
+  return m;
+}
+// 同一篇常會從兩個來源進來（Google News 和 The Edge 各一份、data.js 和 news.json 各一份）
+function dedupe(list, urlOnly){
+  const at = new Map(), out = [];
+  for(const n of list){
+    const ks = dupKeys(n, urlOnly);
+    let i = -1;
+    for(const k of ks){
+      if(!at.has(k)) continue;
+      const j = at.get(k);
+      if(k.startsWith('p:') && !near(out[j], n)) continue;
+      i = j;
+      break;
+    }
+    if(i < 0){ i = out.length; out.push(n); }
+    else out[i] = mergeItem(out[i], n);
+    ks.forEach(k => { if(!at.has(k)) at.set(k, i); });
+  }
+  return out;
+}
+const newest = (list, urlOnly) => dedupe(list, urlOnly).sort((a, b) => tsOf(b) - tsOf(a));
+
+/* 大馬三家中文報的搜尋 API（允許跨網域，瀏覽器可以直接打）。
+   注意：它們的搜尋是「每個關鍵字都要出現」——寫 A OR B 時 OR 被當停用字丟掉，
+   實測「MAYBANK OR ZETRIX」只回同時提到兩家的文章。所以一次只查一個詞。
+   單一關鍵字時照時間新到舊排，一頁 10 篇，每篇附完整內文（簡體）。 */
+const SITES = {
+  sinchew:    {api: 'https://searchapi.sinchew.com.my/full-search',    host: 'www.sinchew.com.my',    name: '星洲日報'},
+  nanyang:    {api: 'https://search.enanyang.my/full-search',          host: 'www.enanyang.my',       name: '南洋商報'},
+  chinapress: {api: 'https://searchapi.chinapress.com.my/full-search', host: 'www.chinapress.com.my', name: '中國報'},
+};
+async function liveSearch(site, kw){
+  const S = SITES[site];
+  const data = await tfetchJSON(S.api, {method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({id: 'a1', params: {query_string: kw, query_from: 0}})});
+  return ((data.hits && data.hits.hits) || []).map(h => h._source || {})
+    .filter(x => x.post_id && x.post_title && x.post_date)
+    .map(x => {
+      const url = `https://${S.host}/?p=${x.post_id}`;
+      const body = plain(x.post_content).split('\n').map(p => p.trim()).filter(Boolean).join('\n');
+      if(body) LIVE_BODY.set(url, body);
+      return {title: plain(x.post_title).replace(/\s+/g, ' ').trim(), url, source: S.name,
+              ts: Math.floor(Date.parse(x.post_date) / 1000) || null,   // post_date 是 UTC
+              tax: x.tax || [], lead: body.slice(0, 300), lang: 'zh', live: true};
+    });
+}
+// 分類裡有「财经」才算財經新聞（同一個 KLCC 也可能是購物中心的社會新聞）
+const isFin = n => (n.tax || []).some(t => String(t).includes('财经'));
+
+// The Edge 的「Corporate」最新消息：沒有搜尋，但更新最快（約 15 分鐘內）
+async function edgeLatest(){
+  const d = await tfetchJSON('https://theedgemalaysia.com/api/loadMoreCategories?offset=0&categories=corporate');
+  return (d.results || []).filter(x => x.title && x.alias && x.created).map(x => {
+    const body = plain(x.summary || '').trim();
+    return {title: plain(x.title).trim(), body, lead: body.slice(0, 300),
+            url: 'https://theedgemalaysia.com/' + x.alias, source: 'The Edge',
+            ts: Math.floor(x.created / 1000), lang: 'en', live: true};
+  });
+}
+
+// Business Today（WordPress）：可以用關鍵字查。
+// 來源名稱跟 data.js（Google News）的寫法一樣，同一家才不會在清單裡出現兩種名字
+const BT_NAME = 'BusinessToday Malaysia';
+async function btSearch(kw, ms){
+  const list = await tfetchJSON('https://www.businesstoday.com.my/wp-json/wp/v2/posts?per_page=10' +
+    '&_fields=id,date_gmt,title,link' + (kw ? '&search=' + encodeURIComponent(kw) : ''), {}, ms);
+  return (Array.isArray(list) ? list : []).filter(x => x.link && x.title && x.date_gmt).map(x => ({
+    title: plain(x.title.rendered).trim(), url: x.link, source: BT_NAME, lead: '',
+    ts: Math.floor(Date.parse(x.date_gmt + 'Z') / 1000) || null, lang: 'en', live: true}));
+}
+
+/* ---------- 簡體轉繁體 ----------
+   中文報是簡體，使用者看繁體。Google 的 clients5 一次可以送好幾個 q，一個請求就轉完一批標題。
+   網址控制在 6000 字元內（中文編碼後一個字佔 9 個字元）。 */
+const S2T = 'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=zh-CN&tl=zh-TW';
+// zh-TW 會順便「在地化」，把 Bursa 的「主板」改成電腦的「主機板」，改回來
+const twFix = t => t.replace(/主機板/g, '主板');
+async function s2tBatch(texts){
+  const batches = [];
+  let cur = [], len = S2T.length;
+  texts.forEach((t, i) => {
+    const q = encodeURIComponent(t).length + 3;
+    if(cur.length && len + q > 5800){ batches.push(cur); cur = []; len = S2T.length; }
+    cur.push(i); len += q;
+  });
+  if(cur.length) batches.push(cur);
+  const out = new Array(texts.length);
+  let ok = 0;
+  await Promise.all(batches.map(async idx => {
+    try {
+      const data = await tfetchJSON(S2T + idx.map(i => '&q=' + encodeURIComponent(texts[i])).join(''));
+      idx.forEach((i, j) => {
+        const v = Array.isArray(data) ? data[j] : null;
+        const s = Array.isArray(v) ? v[0] : v;
+        if(typeof s === 'string' && s) out[i] = twFix(s);
+      });
+      ok++;
+    } catch(e) {}                                // 一批失敗，其他批照用
+  }));
+  if(!ok && texts.length) throw new Error('轉繁體失敗');
+  return out;
+}
+
+// 標題：轉好的直接套上去，同時記在記憶體；localStorage 只是讓下次打開不用再轉的快取
+// （跟翻譯共用，鍵值加 s2t| 前綴）。以前是存進去再讀出來，手機儲存空間滿了或被擋時一個都存不進去，
+// 標題全部留在簡體，而且每 3 分鐘重送同一批。轉不成就顯示簡體。
+// 只處理還沒轉好的：news.json 帶來的多半已經是繁體
+const S2T_MEM = new Map();
+async function tradTitles(items){
+  const want = items.filter(n => isZh(n) && !goodZh(n));
+  if(!want.length) return;
+  const c = trCache();
+  const hit = t => S2T_MEM.get(t) || c['s2t|' + t];
+  const need = [...new Set(want.map(n => n.title).filter(t => !hit(t)))];
+  if(need.length){
+    try {
+      const zh = await s2tBatch(need);
+      const save = trCache();                      // 重新讀一次，別蓋掉這段時間別處存進去的翻譯
+      need.forEach((t, i) => { if(zh[i]){ S2T_MEM.set(t, zh[i]); save['s2t|' + t] = zh[i]; } });
+      trSave(save);
+    } catch(e) {}
+  }
+  want.forEach(n => { n.title_zh = hit(n.title) || n.title; });
+}
+
+// 全文：點開才轉，一段一個 q，太長的段落在句號處切開；只記在記憶體（全文太大，不佔手機儲存空間）
+const bodyTW = new Map();
+async function tradBody(key, text){
+  if(bodyTW.has(key)) return bodyTW.get(key);
+  const pieces = [];
+  text.split('\n').filter(Boolean).forEach((p, k) => {
+    let buf = '';
+    const push = () => { for(let i = 0; i < buf.length; i += 600) pieces.push({k, t: buf.slice(i, i + 600)}); buf = ''; };
+    for(const sen of p.split(/(?<=[。！？；])/)){
+      if(buf && buf.length + sen.length > 500) push();
+      buf += sen;
+    }
+    if(buf) push();
+  });
+  const zh = await s2tBatch(pieces.map(x => x.t));
+  const paras = [];
+  pieces.forEach((x, i) => { paras[x.k] = (paras[x.k] || '') + (zh[i] || x.t); });
+  const out = paras.filter(Boolean).join('\n');
+  bodyTW.set(key, out);
+  return out;
+}
+
+/* ---------- 追蹤股票的中文稱呼 ----------
+   中文報內文會寫「马银行（MAYBANK,1155,主板金融）」，所以 Bursa 簡稱（sa）最準，
+   再加上每檔的簡體稱呼（zh，例如「马银行」「大众银行」）和英文別名（aliases）——
+   fetch.py 從 watchlist.json 帶進 data.js。舊版 data.js 沒有這兩欄時就只用 Bursa 簡稱查，照樣能用。
+   （以前會另外去抓同網址的 watchlist.json 補，但線上網站沒有部署這個檔，每次都 404） */
+const reEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// 第一次被提到的位置（沒提到是 -1）。英文簡稱要整個字比對（MPI 不能配到 MPIB）；中文稱呼直接找子字串
+function mentionAt(text, keys){
+  let best = -1;
+  for(const k of keys){
+    let i;
+    if(/^[\x20-\x7e]+$/.test(k)){
+      const m = new RegExp('(^|[^A-Za-z0-9])' + reEsc(k) + '(?![A-Za-z0-9])', 'i').exec(text);
+      i = m ? m.index + m[1].length : -1;
+    } else i = text.indexOf(k);
+    if(i >= 0 && (best < 0 || i < best)) best = i;
+  }
+  return best;
+}
+// 中文報的比對要嚴一點，實測踩過的誤判：
+// - 「大马银行业」同時含「马银行」「大马银行」，其實講的是銀行業——後面接「业」的不算
+// - 「联昌证券下调评级」是分析機構在評別家公司——後面接证券／研究／投行的不算
+// - 「伊斯兰银行与金融服务」是泛稱——內文裡的稱呼要緊接括號（「马银行（MAYBANK，1155，…）」
+//   這種帶代號的正式介紹）才算；標題裡出現就算
+// 另外「MAYBANK,1155」「MAYBANK，1155」這種代號標記最準，出現在標題或開頭都算。
+const NOT_CO = /^(业|证券|研究|投行)/;
+function cnAt(n, s){
+  const sa = /\.KL$/.test(s.symbol) ? s.sa : null;
+  const code = s.symbol.replace(/\.KL$/, '').replace(/SS$/, '');
+  const text = n.title + '\n' + n.lead;
+  let best = -1;
+  const take = i => { if(best < 0 || i < best) best = i; };
+  if(sa){
+    const m = new RegExp(reEsc(sa) + '\\s*[,，]\\s*' + code).exec(text);
+    if(m) take(m.index);
+  }
+  for(const k of [sa, ...(s.zh || [])].filter(k => k && k.length >= 2)){
+    const ascii = /^[\x20-\x7e]+$/.test(k);
+    const re = ascii ? new RegExp('(^|[^A-Za-z0-9])' + reEsc(k) + '(?![A-Za-z0-9])', 'gi')
+                     : new RegExp('()' + reEsc(k), 'g');
+    for(let m; (m = re.exec(text));){
+      const i = m.index + m[1].length, after = text.slice(i + k.length);
+      if(!NOT_CO.test(after) && (i < n.title.length || /^[（(]/.test(after))){ take(i); break; }
+    }
+  }
+  return best;
+}
+// 英文（The Edge、Business Today）：簡稱或英文別名出現在標題或摘要開頭
+const stockAt = (n, s) => n.lang === 'zh' ? cnAt(n, s)
+  : mentionAt(n.title + '\n' + (n.lead || ''), [/\.KL$/.test(s.symbol) ? s.sa : '', ...(s.aliases || [])]
+      .filter(k => k && k.length >= 2));
+// 沒點名哪一檔、但整篇在講銀行股／產托的（例如 9/29「债券回酬率急升 银行股节节败退」），標成類股
+const SECTOR_TAGS = [[/银行/, /央行|国行|中央银行|日本银行|世界银行|开发银行|投资银行/, '銀行股'],
+                     [/产托|产业信托/, null, 'REIT']];
+
+
+/* ---------- 市場快訊 + 追蹤股票最新 ----------
+   大盤：星洲、南洋的「马股」和 The Edge，每 3 分鐘抓。
+   追蹤股票用 Bursa 的行業標記查：三家內文都會寫「（MAYBANK,1155,主板金融）」這種代號，
+   查「主板金融」就是最新的金融股新聞（銀行全在這一類），照時間排，一次就涵蓋 12 檔銀行。
+   各家寫法不同：星洲「主板金融」、南洋「主板金融股」、中國報「主要板金服」。
+   另外星號最愛的前 3 檔各查一次（星洲內文一定附代號）。這幾個 9 分鐘才重抓，中間沿用上一次的結果。
+   每個查詢的結果各自留著：某一個這輪失敗，就用它上一次成功的，不會整塊消失 */
+const favKws = () => favs.map(sym => D.stocks.find(s => s.symbol === sym))
+  .filter(s => s && /\.KL$/.test(s.symbol) && s.sa).slice(0, 3).map(s => s.sa);
+async function liveMarket(){
+  try {
+    const Q = [
+      ['sinchew', '马股'], ['nanyang', '马股'], ['edge', ''],
+      ['sinchew', '主板金融', 1], ['nanyang', '主板金融股', 1], ['chinapress', '主要板金服', 1],
+      ...favKws().map(k => ['sinchew', k, 1]),
+    ];
+    const key = q => q[0] + '|' + q[1];
+    const now = Date.now();
+    const due = q => { const c = LQ.get(key(q)); return !c || !q[2] || now - c.t >= WATCH_MS - 30e3; };
+    let ok = 0;
+    await Promise.all(Q.filter(due).map(async q => {
+      try {
+        const items = q[0] === 'edge' ? await edgeLatest() : await liveSearch(q[0], q[1]);
+        LQ.set(key(q), {t: Date.now(), items});
+        ok++;
+      } catch(e) {}                                 // 這個查詢失敗：沿用它上一次的結果
+    }));
+    const got = q => (LQ.get(key(q)) || {}).items || [];
+    const [sc, ny, edge] = Q.slice(0, 3).map(got);
+    const rest = Q.slice(3).flatMap(got);
+    LIVE.watchOk = Q.slice(3).some(q => LQ.has(key(q)));
+
+    const week = Date.now() / 1000 - 7 * 864e2;
+    const recent = n => (n.ts || 0) > week;
+    // The Edge 的 Corporate 大多是個別公司的人事、改名，不算「大盤」：
+    // 只有講大盤、令吉、國行的放進快訊；提到追蹤股票的放到「追蹤股票最新」
+    const edgeMkt = /\b(FBM KLCI|KLCI|Bursa|ringgit|Bank Negara|OPR)\b/i;
+    const market = [...sc, ...ny].filter(n => isFin(n) && recent(n))
+      .concat(edge.filter(n => recent(n) && edgeMkt.test(n.title)));
+    const wl = D.stocks.filter(s => /\.KL$/.test(s.symbol) && s.sa);
+    const watch = [];
+    for(const n of dedupe([...sc, ...ny, ...rest, ...edge])){
+      if(!recent(n) || (n.lang === 'zh' && !isFin(n))) continue;
+      // 只看標題和開頭：後面順帶一提的不算。越早被提到的越是主角——
+      // 「豐隆淨利新高」要標豐隆，不是後面順帶比較的馬銀行
+      let hit = wl.map(s => ({s, at: stockAt(n, s)})).filter(x => x.at >= 0)
+                  .sort((a, b) => a.at - b.at).map(x => x.s);
+      if(!hit.length && n.lang === 'zh'){
+        const sec = SECTOR_TAGS.find(([re, not]) => re.test(n.title) && !(not && not.test(n.title)));
+        if(sec) hit = [{name: sec[2]}];
+      }
+      if(hit.length) watch.push({...n, stocks: hit});
+    }
+    if(!ok) return;                                   // 這一輪全部失敗：畫面留著上一輪的
+    // 跟上一輪是同一批文章：沿用上一輪的（已經轉好繁體），不用再轉；卡片內容沒變也不會重畫
+    const sig = [...market, ...watch].map(n => n.url + '|' + (n.stocks || []).map(s => s.name).join()).join('\n');
+    if(sig !== LIVE.sig){
+      await tradTitles([...market, ...watch]);
+      Object.assign(LIVE, {market, watch, sig});
+    }
+    LIVE.at = Date.now();
+    liveTs = Math.floor(Date.now() / 1000);
+  } finally {
+    LIVE.tried = true;
+    keepScroll(() => { renderHeadlines(); renderWatch(); paintFresh(); });
+  }
+}
+
+/* ---------- 個股的即時新聞 ----------
+   打開一檔（桌機展開列、手機面板）時才查，結果併進「媒體報導」，標上「即時」。 */
+function showStockLive(s){
+  // 先看是不是正在抓：開抓時就記了時間，順序反過來的話抓到一半會被當成「剛抓過」
+  if(stockPending.has(s.symbol)) return stockPending.get(s.symbol);
+  const c = stockLive.get(s.symbol);
+  if(c && Date.now() - c.t < STOCK_MS) return Promise.resolve();
+  const prev = c ? c.items : [];
+  // 開始抓的時間就記下來（見 STOCK_MS）；新的回來之前先沿用上一輪的
+  const t = Date.now();
+  stockLive.set(s.symbol, {t, items: prev});
+  const p = fetchStockLive(s, prev, items => {
+    stockLive.set(s.symbol, {t, items});
+    paintFeeds(s);
+  }).catch(() => {}).finally(() => stockPending.delete(s.symbol));
+  stockPending.set(s.symbol, p);
+  return p;
+}
+
+// 中文報三家通常 0.2 秒就回來，先畫；Business Today 的搜尋常要 3～8 秒，
+// 只等它 3 秒，回來了再併進去——以前四個一起等，面板開了七、八秒都看不到即時新聞
+async function fetchStockLive(s, prev, publish){
+  const bursa = /\.KL$/.test(s.symbol) && !!s.sa;
+  const zh = (s.zh || []).filter(Boolean), al = (s.aliases || []).filter(Boolean);
+  const kw = bursa ? s.sa : zh[0];
+  if(!kw) return;                                     // 匯率、海外指數：大馬中文報沒有對應的稱呼
+  const got = new Map();                              // 來源名稱 → 這一輪抓到的（失敗是 null）
+  const run = (name, p) => p.then(r => { got.set(name, r); }, () => { got.set(name, null); });
+  const cn = Promise.all([
+    run(SITES.sinchew.name, liveSearch('sinchew', kw)),
+    run(SITES.nanyang.name, liveSearch('nanyang', kw)),
+    // 中國報的搜尋偏重標題，用中文稱呼查比較準
+    run(SITES.chinapress.name, liveSearch('chinapress', zh[0] || kw)),
+  ]);
+  const bt = bursa && al[0] ? run(BT_NAME, btSearch(al[0], 6000)) : null;
+  const since = Date.now() / 1000 - 90 * 864e2;
+  let done = -1;
+  const out = async () => {
+    // 全部失敗（例如訊號斷了）：不要把上一輪抓到的清掉
+    if(![...got.values()].some(Boolean)) return;
+    done = got.size;
+    // 某個來源這一輪失敗或還沒回來，先沿用它上一輪的那幾則
+    const all = [...got.values()].filter(Boolean).flat().concat(prev.filter(n => !got.get(n.source)));
+    const keep = dedupe(all).filter(n => (n.ts || 0) > since &&
+      (n.lang === 'zh' ? isFin(n) && cnAt(n, s) >= 0 : stockAt(n, s) >= 0));
+    await tradTitles(keep);
+    publish(keep);
+  };
+  await cn;
+  await out();
+  if(bt){ await bt; if(got.size > done) await out(); }
+}
+
+// 媒體報導 = 雲端資料 + 即時抓到的，照時間排，最多 10 則
+function stockArticles(s){
+  const c = stockLive.get(s.symbol);
+  return newest([...(s.articles || []), ...(c ? c.items : [])]).slice(0, 10);
+}
+
+// 只重畫報導和公告兩塊，圖表、試算都不動。
+// 內容沒變就不換；有變的話，正在讀的那一行留在原位（手機面板是自己捲動的，要補的是 .sheet-in）
+function paintFeeds(s){
+  const put = (root, sel, html) => {
+    const el = root.querySelector(sel);
+    if(!el || el._html === html) return false;
+    el._html = html;
+    el.innerHTML = html;
+    return true;
+  };
+  const paint = root => {
+    const a = put(root, '[data-feed="a"]', feed(stockArticles(s), NO_ARTICLES));
+    const f = put(root, '[data-feed="f"]', feed(groupFilings(s.filings), NO_FILINGS));
+    if(!a && !f) return;
+    // 使用者切到「原文」的話，新換上的條目也照原文顯示
+    root.querySelectorAll('.seg button.on[data-l="en"]').forEach(b => b.click());
+    fillZh(root);
+  };
+  if(sheetSym === s.symbol)
+    keepScroll(() => paint(document.getElementById('sh-body')), document.querySelector('.sheet-in'));
+  if(openSym === s.symbol && !isMobile()){
+    const d = document.querySelector('tr.detail');
+    if(d) keepScroll(() => paint(d));
+  }
+}
+
+/* ---------- news.json（伺服器端的新聞工作）---------- */
+const dataTs = () => {
+  const m = /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2})/.exec(D.updated_at || '');
+  return m ? Date.parse(m[1] + 'T' + m[2] + '+08:00') / 1000 : 0;
+};
+const okItem = x => x && typeof x.title === 'string' && typeof x.url === 'string';
+
+// 比 data.js 新才併進去；同一份 news.json 不重複處理。
+// 同一篇兩邊都有時 dedupe 會把兩份併成一份（data.js 的內文、中譯不會被 news.json 那份蓋掉）
+function mergeNews(n){
+  if(!n || typeof n.ts !== 'number' || n.ts <= newsTs) return false;
+  newsTs = n.ts;
+  if(n.ts <= dataTs()) return false;
+  const M = D.market = D.market || {};
+  if(Array.isArray(n.headlines))
+    M.headlines = newest([...n.headlines.filter(okItem), ...(M.headlines || [])]).slice(0, 12);
+  for(const [sym, x] of Object.entries(n.stocks || {})){
+    const s = D.stocks.find(y => y.symbol === sym);
+    if(!s || !x) continue;
+    if(Array.isArray(x.articles))
+      s.articles = newest([...x.articles.filter(okItem), ...(s.articles || [])]).slice(0, 10);
+    if(Array.isArray(x.filings))
+      s.filings = newest([...x.filings.filter(okItem), ...(s.filings || [])], true).slice(0, 20);
+  }
+  // 漲跌排行整份換掉，不是把欄位疊上去：收盤後的 news.json 沒有 live/time，
+  // 疊上去的話會留著 data.js 下午的 live:true，收盤排行被標成「今天盤中 15:34」
+  // 但伺服器抓報價失敗時會沿用上一輪的排行：日期比手上這份舊就不換，免得新的被舊的蓋掉
+  const mv = n.movers;
+  if(mv && Array.isArray(mv.up) && Array.isArray(mv.down) &&
+     (!M.movers || (mv.as_of || '') >= (M.movers.as_of || ''))) M.movers = mv;
+  // 盤中報價：只改現價和今日漲跌，走勢圖（series）不動
+  for(const [sym, q] of Object.entries(n.quotes || {})){
+    const s = D.stocks.find(y => y.symbol === sym);
+    if(!s || !q || typeof q.price !== 'number') continue;
+    const t = q.ts || n.ts;
+    const mt = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$/.test(s.market_time || '')
+      ? Date.parse(s.market_time.replace(' ', 'T') + ':00+08:00') / 1000 : 0;
+    if(t <= mt) continue;                                // data.js 的報價比較新就不動
+    s.price = q.price;
+    if(typeof q.change_pct_1d === 'number') s.change_pct_1d = q.change_pct_1d;
+    s.live = true;
+    s.live_ts = t;
+  }
+  return true;
+}
+
+// news 分支建立過一次就記住，之後不再先查
+const NEWS_REF = 'https://api.github.com/repos/evolee1100/stockchecker/git/matching-refs/heads/news';
+// 讀 news.json 的方式（為了 iPhone Safari 與手機流量）：
+// 1. 先問 GitHub API「news 分支現在指向哪個 commit」——回應只有幾百 bytes。
+// 2. commit 沒變就不下載；變了才去 raw.githubusercontent.com/<commit>/news.json 抓整份（約 280 KB）。
+//    commit 網址每次都不同，CDN 不可能給舊檔；而且是普通 GET、不佔 API 每小時 60 次的額度。
+// 3. 跨網域請求一律不設 fetch 的 cache 選項：Safari 會因此加上 Cache-Control／Pragma 標頭，
+//    變成要先做 CORS 預檢，而 raw 的預檢一律 403、API 的預檢不允許這兩個標頭 → iPhone 上整個讀不到
+//    （電腦上的 Chrome 測不出來）。改在網址加 t= 讓手機自己的快取失效。
+// API 被限流（同一個 IP 每小時 60 次；電信共用 IP 時可能更早用完）就退回 raw 的分支網址（CDN 最多 5 分鐘舊）。
+let newsSha = '';
+async function loadNews(){
+  if(Date.now() < newsWait) return;
+  let sha = null;
+  if(Date.now() >= apiWait){
+    try {
+      const refs = await tfetchJSON(NEWS_REF + '?t=' + Date.now());
+      const r = Array.isArray(refs) && refs.find(x => x.ref === 'refs/heads/news');
+      if(!r){ newsWait = Date.now() + 15 * 60e3; return; }   // 伺服器工作還沒跑過，分支還不存在
+      sha = (r.object && r.object.sha) || null;
+    } catch(e) {
+      if(e.status === 403 || e.status === 429) apiWait = Date.now() + 15 * 60e3;
+    }
+  }
+  if(sha && sha === newsSha){ keepScroll(paintFresh); return; }   // 伺服器沒有新檔
+  let n;
+  try {
+    n = await tfetchJSON(sha ? 'https://raw.githubusercontent.com/evolee1100/stockchecker/' + sha + '/news.json'
+                             : NEWS_RAW + '?t=' + Date.now());
+  } catch(e) { return; }
+  if(sha) newsSha = sha;
+  await applyNews(n);
+}
+
+async function applyNews(n){
+  if(!mergeNews(n)){ keepScroll(paintFresh); return; }
+  // 伺服器那邊簡轉繁失敗時，中文報標題會原樣是簡體：這裡補轉（轉好的都跳過，不會多發請求）
+  const M = D.market || {};
+  await tradTitles([...(M.headlines || []), ...D.stocks.flatMap(s => s.articles || [])]);
+  keepScroll(render);                                  // render 裡含 paintFresh
+  const s = sheetSym && D.stocks.find(x => x.symbol === sheetSym);
+  if(s){ sheetBar(s); paintFeeds(s); }                 // 開著的面板就地更新
+}
+
+/* 上面的東西變高變矮時，讓正在讀的那一行留在原位（iOS Safari 不會自動 scroll anchoring）。
+   以前只認「頂端已經捲到畫面上 1/3 的整張卡片」，讀者在看的「重點」頂端若在畫面 45%，
+   就沒有錨點，快訊卡長高 400px 時整段被推出畫面。
+   現在直接看畫面 40% 高度那一點是什麼，取它所在的那一則／那一列，重畫後把它捲回原本的位置。
+   那一則若被重畫換掉了：先用網址找回同一則，找不到就用它在區塊裡的位置。
+   box：手機的個股面板自己會捲，傳 .sheet-in；沒給就是整頁。 */
+const BLOCK = '.item, .hl, .bi, .bmore, .hl-note, .mvr, .mv-h, .mv-note, .ipor, .ipo-sec, .ipo-note, ' +
+              '.mcard-h, .brief-h, .pu, .tab, tr, h4, .dg-r, .calc, .chart, .ranges, .readout, .dnote, .chips';
+function pinAt(box){
+  const r = box ? box.getBoundingClientRect() : null;
+  const x = r ? r.left + r.width / 2 : innerWidth / 2;
+  const y = r ? r.top + r.height * 0.4 : innerHeight * 0.4;
+  // 面板或彈窗蓋在上面時，整頁要找的是蓋在底下的東西
+  const scope = box || document.querySelector('.wrap');
+  const hit = document.elementsFromPoint(x, y).find(e => e !== scope && scope.contains(e));
+  if(!hit) return null;
+  let el = hit.closest(BLOCK);
+  if(!el || !scope.contains(el)) el = hit;
+  const host = el.closest('[id], [data-feed]');       // 重畫時換掉的是它的內容，它本身還在
+  const path = [];
+  for(let e = el; host && e !== host; e = e.parentElement) path.unshift([...e.parentElement.children].indexOf(e));
+  return {el, host, hostId: host && host.id, path, url: el.dataset.url || '', top: el.getBoundingClientRect().top};
+}
+function pinFind(p){
+  if(p.el.isConnected) return p.el;
+  const host = p.host && p.host.isConnected ? p.host : p.hostId ? document.getElementById(p.hostId) : null;
+  if(!host) return null;
+  if(p.url){
+    const same = [...host.querySelectorAll('[data-url]')].find(e => e.dataset.url === p.url);
+    if(same) return same;
+  }
+  let e = host;
+  for(const i of p.path){
+    const c = e.children[Math.min(i, e.children.length - 1)];
+    if(!c) break;
+    e = c;
+  }
+  return e;
+}
+function keepScroll(fn, box){
+  // 還在最上面（沒開始往下讀）就不用顧：新東西本來就該出現在眼前
+  const p = (box ? box.scrollTop : scrollY) > 0 ? pinAt(box) : null;
+  fn();
+  if(!p) return;
+  const el = pinFind(p);
+  if(!el || !el.isConnected) return;
+  const d = el.getBoundingClientRect().top - p.top;
+  if(Math.abs(d) < 1) return;
+  if(box) box.scrollTop += d; else scrollBy(0, d);
+}
+
+// 報頭：「新聞 18:40 更新」——取 news.json 與瀏覽器即時抓取兩者較新的時間
+function paintFresh(){
+  const el = document.getElementById('fresh');
+  const t = Math.max(newsTs, liveTs);
+  if(el) el.textContent = t ? '新聞 ' + hhmm(t) + ' 更新' : '';
+}
+
+// liveBusy 記的是這一輪開始的時間。通常幾秒就跑完；卡住超過 30 秒（訊號時有時無）就不等它，
+// 否則一直是「忙碌中」，之後每一輪都直接跳過，即時新聞從此停住、也不會有任何錯誤訊息
+let liveBusy = 0, liveLast = 0;
+async function refreshLive(){
+  if(!D || (liveBusy && Date.now() - liveBusy < 30e3)) return;
+  const me = liveBusy = Date.now();
+  liveLast = Date.now();
+  try {
+    await Promise.all([loadNews().catch(() => {}), liveMarket().catch(() => {})]);
+    const sym = sheetSym || (!isMobile() && openSym);
+    const s = sym && D.stocks.find(x => x.symbol === sym);
+    if(s) await showStockLive(s);
+  } finally { if(liveBusy === me) liveBusy = 0; }
+}
+// 只在看得到頁面時抓：背景分頁不浪費流量，也不吃 GitHub 每小時 60 次的額度。
+// 每 30 秒看一次「距離上次是否滿 3 分鐘」，比直接 setInterval(3 分鐘) 耐得住背景節流
+setInterval(() => {
+  if(document.visibilityState === 'visible' && Date.now() - liveLast >= LIVE_MS - 10e3) refreshLive();
+}, 30e3);
+// 從別的 App 切回來（超過 1 分鐘）馬上抓一次
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'visible' && Date.now() - liveLast > 60e3) refreshLive();
+});
 
 /* ---------- 載入資料 ----------
    用 fetch 而不是 <script src>：固定網址的 script 會被瀏覽器快取住，
@@ -1617,6 +2429,7 @@ async function boot(){
     }
   }
   render();
+  refreshLive();                               // 即時新聞在背景抓，畫面先出來
 
   // 重載回來後才報告結果——沒有新資料就照實說，不要假裝更新了
   let prev = null;
@@ -1626,6 +2439,7 @@ async function boot(){
   } catch(e) {}
   if(prev === null) return;
   const now = (D.updated_at || '').replace(' (MYT)', '');
+  prev = (prev || '').replace(' (MYT)', '');
   toast(prev && prev !== now ? '已更新到最新資料' : '已經是最新資料',
         '資料時間 ' + now);
 }

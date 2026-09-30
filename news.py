@@ -24,14 +24,24 @@ MYT = timezone(timedelta(hours=8))
 
 GNEWS = "https://news.google.com/rss/search?q={q}&hl=en-MY&gl=MY&ceid=MY:en"
 KLSE = "https://www.klsescreener.com/v2/announcements/stock/{code}"
+# 同一份公告清單的 AJAX 版（回傳 {count, html}），只有清單本身，比整頁小一半以上。
+# 快速新聞更新（news_job.py）每 5 分鐘抓 27 檔，用這個
+KLSE_AJAX = "https://www.klsescreener.com/v2/announcements?code={code}"
+# 個股新聞：klsescreener 把星洲、南洋、中國報、The Star、NST、The Edge 的報導
+# 依股票代碼標好了，比 Google News 的寬鬆比對準，而且有中文報（Google 只有英文）
+KLSE_NEWS = "https://www.klsescreener.com/v2/news/stock/{code}"
 
 MONTHS = {m: i + 1 for i, m in enumerate(
     ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"])}
 
 
-def _fetch(url, timeout=25):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
+def _fetch(url, timeout=25, ajax=False):
+    headers = {"User-Agent": UA}
+    if ajax:
+        # klsescreener 的 JSON 端點沒有這個標頭就回整頁 HTML
+        headers["X-Requested-With"] = "XMLHttpRequest"
+    req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=timeout,
                                 context=ssl.create_default_context()) as r:
         return r.read().decode("utf-8", "replace")
@@ -55,11 +65,14 @@ def _ago(dt):
     return "{} 年前".format(days // 365)
 
 
-def _gnews_window(query, window):
+def _gnews_window(query, window, strict=False):
+    """strict=True 時抓不到就丟出例外，不回空 list（見 google_news 的 strict）。"""
     q = urllib.parse.quote('"{}" when:{}'.format(query, window))
     try:
         root = ET.fromstring(_fetch(GNEWS.format(q=q)))
     except Exception:
+        if strict:
+            raise
         return []
 
     out = []
@@ -200,7 +213,10 @@ def _tier(a, names):
     return 2 if _SOFT.search(t) else 1
 
 
-def google_news(query, limit=6, aliases=()):
+WINDOWS = ("1d", "7d", "30d", "90d")
+
+
+def google_news(query, limit=6, aliases=(), max_window="90d", strict=False):
     """媒體報導：先看跟這家公司有沒有關，再看新不新。
 
     演進：
@@ -213,11 +229,24 @@ def google_news(query, limit=6, aliases=()):
     現在：窗口從 1 天開始（熱門股的 7 天窗口會碰到 Google 100 則上限，
     而那 100 則是依相關性挑的、不是最新的），只有「真的在講這家公司」的報導
     才算進數量，不夠才往外擴；同一事件只留一則。
+
+    max_window：最多擴到哪個窗口。每 5 分鐘的快速更新只要新消息，擴到 7 天就停，
+    30／90 天的舊聞 3 小時那支已經抓過了，不必每 5 分鐘重抓。
+
+    strict：一個窗口都沒抓成功就丟出例外。預設（fetch.py）照舊回空 list；
+    快速更新要知道「是沒新聞，還是被擋了」——被擋時要沿用上一輪，不能把舊新聞清掉。
     """
     names = [query] + [a for a in aliases if a]
     seen_titles, pool = [], []
-    for window in ("1d", "7d", "30d", "90d"):
-        for a in _gnews_window(query, window):
+    windows = WINDOWS[:WINDOWS.index(max_window) + 1] if max_window in WINDOWS else WINDOWS
+    for i, window in enumerate(windows):
+        try:
+            items = _gnews_window(query, window, strict=strict)
+        except Exception:
+            if i == 0:
+                raise
+            break           # 小窗口抓到了、大窗口被擋：先用手上有的，下一個窗口多半也一樣被擋
+        for a in items:
             if _is_noise(a) or any(_same_event(a["title"], t) for t in seen_titles):
                 continue
             seen_titles.append(a["title"])
@@ -236,16 +265,27 @@ _CLOSE = re.compile(r"\b(ends?|closes?|closed|finish(es|ed)?|at close|ends? (the
                     r"settles?)\b", re.I)
 
 
-def market_headlines(limit=6):
+def market_headlines(limit=6, strict=False):
     """馬股大盤的最新消息——回答「今天市場為什麼這樣走」。
 
     稽核發現原本前 3 則全是同一件「開盤反彈」，前一天「KLCI 跌到九個月低點」的
     收盤新聞完全沒出現。現在：同事件只留一則、排除個股新聞、
     休市時把最近一則收盤總結排在最前面、交易時段內保證它在前 3 則。
+
+    strict：三個查詢全部抓不到就丟出例外（見 google_news），只掛一兩個照常回傳。
     """
     seen_titles, pool = [], []
-    for q in ("Bursa Malaysia", "FBM KLCI", "Malaysian stocks"):
-        for a in _gnews_window(q, "3d"):
+    queries = ("Bursa Malaysia", "FBM KLCI", "Malaysian stocks")
+    failed = 0
+    for q in queries:
+        try:
+            items = _gnews_window(q, "3d", strict=strict)
+        except Exception:
+            failed += 1
+            if failed == len(queries):
+                raise
+            continue
+        for a in items:
             t = a["title"]
             if _is_noise(a) or not _MARKET.search(t):
                 continue
@@ -274,11 +314,22 @@ def market_headlines(limit=6):
     return pool[:limit]
 
 
-def bursa_announcements(code, limit=12):
-    """Bursa 官方公告。code 是純數字代碼，例如 '5123'。"""
+def bursa_announcements(code, limit=12, ajax=False, strict=False):
+    """Bursa 官方公告。code 是純數字代碼，例如 '5123'。
+
+    ajax=True 改走 JSON 端點：清單內容和整頁一模一樣，但只有清單、小很多，
+    每 5 分鐘的快速更新（news_job.py）用它。
+    strict=True 抓不到就丟出例外，不回空 list：快速更新要分得出「沒有公告」和「被擋了」，
+    被擋時沿用上一輪的公告並在紀錄裡記一筆 ✗（原本 27 檔全部 403 時紀錄一行都沒有）。
+    """
     try:
-        page = _fetch(KLSE.format(code=code))
+        if ajax:
+            page = json.loads(_fetch(KLSE_AJAX.format(code=code), ajax=True)).get("html") or ""
+        else:
+            page = _fetch(KLSE.format(code=code))
     except Exception:
+        if strict:
+            raise
         return []
 
     blocks = re.findall(
@@ -311,13 +362,20 @@ def bursa_announcements(code, limit=12):
             title = title[:147] + "…"
 
         day, mon = grab("day"), grab("month")
-        when, iso = "", ""
+        when, iso, ts = "", "", None
         if day.isdigit() and mon in MONTHS:
             # 頁面上沒有年份：月份比現在大就是去年的公告
             year = today.year if MONTHS[mon] <= today.month else today.year - 1
             try:
                 dt = datetime(year, MONTHS[mon], int(day), tzinfo=MYT)
                 when, iso = _ago(dt), dt.strftime("%Y-%m-%d")
+                # 清單上還有公告的時刻（<span class="time-ago">5:38 pm</span>）。
+                # 只有日期的話，網頁只能寫「今天」，分不出是剛剛還是早上的事，
+                # 跟有時間戳的新聞一起排序時也會被排到當天最後面
+                tm = re.search(r'class="time-ago"[^>]*>\s*(\d{1,2}):(\d{2})\s*([ap])m', block, re.I)
+                if tm:
+                    hour = int(tm.group(1)) % 12 + (12 if tm.group(3).lower() == "p" else 0)
+                    ts = int(dt.replace(hour=hour, minute=int(tm.group(2))).timestamp())
             except ValueError:
                 pass
 
@@ -326,11 +384,124 @@ def bursa_announcements(code, limit=12):
         if m:
             cat = re.sub(r"\s+", " ", htmlmod.unescape(m.group(1))).strip()
 
-        out.append({"title": title, "url": "https://www.klsescreener.com" + href,
-                    "source": cat or "Bursa 公告", "when": when, "date": iso})
+        item = {"title": title, "url": "https://www.klsescreener.com" + href,
+                "source": cat or "Bursa 公告", "when": when, "date": iso}
+        if ts:
+            item["ts"] = ts
+        out.append(item)
         if len(out) >= limit:
             break
     return out
+
+
+# klsescreener 的媒體代號 → 網頁上顯示的名稱。中文報用中文名，
+# 跟網頁即時搜尋寫的（星洲日報／南洋商報／中國報）一致，同一家報紙不會出現兩種寫法
+KLSE_PUBS = {
+    "Sinchew": "星洲日報", "Nanyang": "南洋商報", "Chinapress": "中國報",
+    "Orientaldaily": "東方日報", "Seehua": "詩華日報",
+    "TheStar": "The Star", "NST": "New Straits Times", "TheEdge": "The Edge Malaysia",
+}
+# 有些媒體只給路徑：The Star 是 /business/...、The Edge 是 node/819008
+KLSE_HOSTS = {"TheStar": "https://www.thestar.com.my/", "TheEdge": "https://theedgemalaysia.com/"}
+# 馬來文報。全站最新那份清單沒有標語言，只能靠媒體名認
+KLSE_MALAY = {"BeritaHarian", "HarianMetro", "Utusan", "SinarHarian", "Kosmo"}
+
+
+def _klse_time(post, created):
+    """klsescreener 的時間字串是馬來西亞時間（頁面上寫 +08:00）。
+
+    The Star 只給日期（時間一律 00:00:00），照抄的話當天的新聞全被排到當天最後面，
+    網頁還會寫成「18 小時前」。這種就改用 klsescreener 收錄的時間，最多晚幾十分鐘。
+    """
+    def parse(s):
+        try:
+            return datetime.strptime((s or "").strip(), "%Y-%m-%d %H:%M:%S").replace(tzinfo=MYT)
+        except ValueError:
+            return None
+
+    dt, seen = parse(post), parse(created)
+    if dt and seen and (dt.hour, dt.minute, dt.second) == (0, 0, 0) and seen.date() == dt.date():
+        dt = seen
+    dt = dt or seen
+    # 對方把時區寫錯時會出現「未來」的時間，排序會永遠卡在第一則
+    now = datetime.now(MYT)
+    if dt and dt > now + timedelta(minutes=10):
+        dt = seen if seen and seen <= now + timedelta(minutes=10) else now
+    return dt
+
+
+def klse_news(code=None, days=30, strict=False):
+    """klsescreener 的新聞。code 是 Bursa 代碼（KLCC 是 '5235SS'）；不給就是全站最新 20 則。
+
+    個股新聞已經依股票代碼標好，比 Google News 的寬鬆比對準，而且有大馬中文報，
+    例如 9/29 的「债券回酬率急升 银行股节节败退」——Google 只找得到英文報導。
+
+    回傳跟 google_news 一樣的欄位，另外多三個給呼叫端判斷用：
+      lang    —— 'zh-CN'（大馬中文報都是簡體，要轉繁體）或 'en'（要翻譯）
+      tags    —— 這則標了幾檔股票。標了十幾檔的是綜合報導，對單一公司資訊量很低
+      summary —— 導言前 300 字。星洲、中國報會在內文寫「马银行（MAYBANK，1155，主要板金融）」，
+                 標題沒提到公司時，靠它判斷是不是真的在講這家
+    klsescreener 的標籤是比對字面的，「在吉隆坡会展中心（KLCC）举行」也會被標成 KLCC 產託，
+    所以不能只看有沒有標到，呼叫端要再篩。
+    馬來文報導略過：翻譯引擎是英翻中，馬來文會翻壞，而且同一件事中英文報都有寫。
+    strict=True 抓不到（403、逾時、回來的不是 JSON）就丟出例外，理由同 bursa_announcements。
+    """
+    url = KLSE_NEWS.format(code=code) if code else "https://www.klsescreener.com/v2/news"
+    try:
+        data = json.loads(_fetch(url, ajax=True))
+    except Exception:
+        if strict:
+            raise
+        return []
+
+    cutoff = datetime.now(MYT) - timedelta(days=days)
+    out = []
+    for row in data.get("data") or []:
+        n, pub = row.get("News") or {}, row.get("Publisher") or {}
+        name = pub.get("name") or n.get("publisher_name") or ""
+        lang = pub.get("language") or (
+            "ms" if name in KLSE_MALAY else
+            "zh" if re.search(r"[一-鿿]", n.get("title") or "") else "en")
+        if n.get("is_delete") or lang not in ("zh", "en"):
+            continue
+        title = re.sub(r"\s+", " ", htmlmod.unescape(re.sub(r"<[^>]+>", " ", n.get("title") or ""))).strip()
+        link = (n.get("url") or "").strip()
+        # The Edge 的業配文（content/advertise/...）不是新聞
+        if not title or "advertise/" in link:
+            continue
+        if not link.startswith("http"):
+            host = KLSE_HOSTS.get(name)
+            # 全站最新那份清單不給原文網址，只能連到 klsescreener 的轉載頁
+            link = (host + link.lstrip("/") if host and link
+                    else "https://www.klsescreener.com/v2/news/view/{}".format(n.get("id")))
+        dt = _klse_time(n.get("date_post"), n.get("created"))
+        if not dt or dt < cutoff:
+            continue
+        summary = re.sub(r"\s+", " ", htmlmod.unescape(re.sub(r"<[^>]+>", " ", n.get("summary") or "")))
+        out.append({"title": title, "url": link, "source": KLSE_PUBS.get(name, name),
+                    "when": _ago(dt), "date": dt.strftime("%Y-%m-%d"), "ts": int(dt.timestamp()),
+                    "lang": "zh-CN" if lang == "zh" else "en",
+                    "tags": len([t for t in (n.get("tags") or "").split("|") if t.strip()]),
+                    "summary": summary.strip()[:300]})
+    return out
+
+
+def _same_event_zh(a, b):
+    """兩則中文標題是不是同一件事。
+
+    _same_event 只看英文字詞，中文標題在它眼中是空的，永遠判定不同。
+    這裡用「兩字一組」的重疊率：同一篇稿子換個標點、多個空格，或各報用同一份通稿，
+    重疊率都很高；不同事件就算都提到「马银行」，重疊也有限。
+    """
+    na = re.sub(r"[^\w]", "", a or "").lower()
+    nb = re.sub(r"[^\w]", "", b or "").lower()
+    if not na or not nb:
+        return False
+    if na == nb:
+        return True
+    ga = {na[i:i + 2] for i in range(len(na) - 1)}
+    gb = {nb[i:i + 2] for i in range(len(nb) - 1)}
+    return bool(ga and gb) and len(ga & gb) / len(ga | gb) >= 0.5
 
 
 TXN = {"acquired": "增持", "disposed": "減持", "transferred": "轉讓",

@@ -8,7 +8,11 @@
       "name": "FBM KLCI",
       "sector": "大盤",
       "note": "馬股綜合指數",
-      "is_index": true
+      "is_index": true,
+      "zh": [
+        "马股",
+        "综指"
+      ]
     },
     {
       "symbol": "1155.KL",
@@ -20,6 +24,10 @@
       "aliases": [
         "Malayan Banking",
         "Maybank"
+      ],
+      "zh": [
+        "马银行",
+        "马来亚银行"
       ]
     },
     {
@@ -32,6 +40,9 @@
       "aliases": [
         "Public Bank",
         "PBBank"
+      ],
+      "zh": [
+        "大众银行"
       ]
     },
     {
@@ -43,6 +54,10 @@
       "note": "區域布局最廣",
       "aliases": [
         "CIMB"
+      ],
+      "zh": [
+        "联昌集团",
+        "联昌"
       ]
     },
     {
@@ -56,6 +71,9 @@
         "Hong Leong Bank",
         "HLBank",
         "HLB"
+      ],
+      "zh": [
+        "丰隆银行"
       ]
     },
     {
@@ -67,6 +85,9 @@
       "note": "高股息",
       "aliases": [
         "RHB"
+      ],
+      "zh": [
+        "兴业银行"
       ]
     },
     {
@@ -79,6 +100,9 @@
       "aliases": [
         "Hong Leong Financial",
         "HLFG"
+      ],
+      "zh": [
+        "丰隆金融"
       ]
     },
     {
@@ -91,6 +115,9 @@
       "aliases": [
         "AMMB",
         "AmBank"
+      ],
+      "zh": [
+        "大马银行"
       ]
     },
     {
@@ -103,6 +130,9 @@
       "aliases": [
         "Alliance Bank",
         "ABMB"
+      ],
+      "zh": [
+        "安联银行"
       ]
     },
     {
@@ -115,6 +145,10 @@
       "aliases": [
         "Bank Islam",
         "BIMB"
+      ],
+      "zh": [
+        "大马伊银",
+        "伊斯兰银行"
       ]
     },
     {
@@ -126,6 +160,10 @@
       "note": "砂拉越州政府為大股東",
       "aliases": [
         "Affin"
+      ],
+      "zh": [
+        "艾芬银行",
+        "艾芬控股"
       ]
     },
     {
@@ -136,6 +174,9 @@
       "sector": "銀行",
       "note": "最小型，前身為建屋信貸",
       "aliases": [
+        "MBSB"
+      ],
+      "zh": [
         "MBSB"
       ]
     },
@@ -149,6 +190,9 @@
       "aliases": [
         "Sentral REIT",
         "Sentral"
+      ],
+      "zh": [
+        "中环产托"
       ]
     },
     {
@@ -160,6 +204,9 @@
       "note": "零售 (Mid Valley)",
       "aliases": [
         "IGB REIT"
+      ],
+      "zh": [
+        "怡保花园产托"
       ]
     },
     {
@@ -171,6 +218,9 @@
       "note": "零售 (Pavilion KL)",
       "aliases": [
         "Pavilion REIT"
+      ],
+      "zh": [
+        "柏威年产托"
       ]
     },
     {
@@ -182,6 +232,9 @@
       "note": "工業 / 物流",
       "aliases": [
         "Axis REIT"
+      ],
+      "zh": [
+        "AXIS产托"
       ]
     },
     {
@@ -194,6 +247,9 @@
       "aliases": [
         "KLCCP",
         "KLCC"
+      ],
+      "zh": [
+        "KLCC产托"
       ]
     },
     {
@@ -206,6 +262,9 @@
       "aliases": [
         "MRCB",
         "Malaysian Resources Corp"
+      ],
+      "zh": [
+        "马资源"
       ]
     },
     {
@@ -307,7 +366,10 @@
       "sector": "加密",
       "note": "24 小時交易，週末也開盤。單日波動 3% 以上是常態",
       "is_index": true,
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "比特币"
+      ]
     },
     {
       "symbol": "USDT-USD",
@@ -327,7 +389,11 @@
       "name": "NVIDIA",
       "sector": "AI 美股",
       "note": "AI 晶片龍頭，整個 AI 資本支出的風向球",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "辉达",
+        "英伟达"
+      ]
     },
     {
       "symbol": "AVGO",
@@ -336,7 +402,10 @@
       "name": "Broadcom 博通",
       "sector": "AI 美股",
       "note": "客製化 AI 晶片與網路交換器",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "博通"
+      ]
     },
     {
       "symbol": "AMD",
@@ -345,7 +414,10 @@
       "name": "AMD 超微",
       "sector": "AI 美股",
       "note": "AI 晶片第二供應商",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "超微"
+      ]
     },
     {
       "symbol": "TSM",
@@ -354,7 +426,10 @@
       "name": "台積電 ADR",
       "sector": "AI 美股",
       "note": "先進製程獨佔，台股權重最大",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "台积电"
+      ]
     },
     {
       "symbol": "MSFT",
@@ -363,7 +438,10 @@
       "name": "Microsoft 微軟",
       "sector": "AI 美股",
       "note": "Azure 雲端與 OpenAI 最大股東",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "微软"
+      ]
     },
     {
       "symbol": "GOOGL",
@@ -372,7 +450,10 @@
       "name": "Alphabet 谷歌",
       "sector": "AI 美股",
       "note": "自研 TPU 與 Gemini",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "谷歌"
+      ]
     },
     {
       "symbol": "PLTR",
@@ -381,7 +462,10 @@
       "name": "Palantir",
       "sector": "AI 美股",
       "note": "AI 應用軟體，估值最極端的一檔",
-      "unit": "USD"
+      "unit": "USD",
+      "zh": [
+        "Palantir"
+      ]
     },
     {
       "symbol": "ARM",
@@ -401,6 +485,9 @@
       "note": "馬股最大 AI 資料中心概念股",
       "aliases": [
         "YTL Power"
+      ],
+      "zh": [
+        "杨忠礼电力"
       ]
     },
     {
@@ -412,6 +499,9 @@
       "note": "資料中心工程總包",
       "aliases": [
         "Gamuda"
+      ],
+      "zh": [
+        "金务大"
       ]
     },
     {
@@ -424,6 +514,9 @@
       "aliases": [
         "Sunway Construction",
         "SunCon"
+      ],
+      "zh": [
+        "双威建筑"
       ]
     },
     {
@@ -436,6 +529,9 @@
       "aliases": [
         "Zetrix",
         "MyEG"
+      ],
+      "zh": [
+        "ZETRIX"
       ]
     },
     {
@@ -447,6 +543,9 @@
       "note": "半導體封測，射頻與光通訊",
       "aliases": [
         "Inari"
+      ],
+      "zh": [
+        "益纳利美昌"
       ]
     },
     {
@@ -458,6 +557,9 @@
       "note": "半導體檢測設備",
       "aliases": [
         "ViTrox"
+      ],
+      "zh": [
+        "伟特机构"
       ]
     },
     {
@@ -469,6 +571,9 @@
       "note": "半導體設備清洗服務",
       "aliases": [
         "Frontken"
+      ],
+      "zh": [
+        "前研科技"
       ]
     },
     {
@@ -481,6 +586,9 @@
       "aliases": [
         "Malaysian Pacific Industries",
         "MPI"
+      ],
+      "zh": [
+        "马太平洋"
       ]
     },
     {
@@ -493,6 +601,9 @@
       "aliases": [
         "TIME dotCom",
         "TIMECOM"
+      ],
+      "zh": [
+        "时光网"
       ]
     },
     {
@@ -504,6 +615,9 @@
       "note": "土地轉作資料中心",
       "aliases": [
         "Mah Sing"
+      ],
+      "zh": [
+        "马星集团"
       ]
     }
   ]

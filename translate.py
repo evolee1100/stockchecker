@@ -207,9 +207,22 @@ def save_cache():
 
 
 # ---------------------------------------------------------------- 機器翻譯
+# 每次請求最多等幾秒。3 小時那支沿用 20 秒；每 5 分鐘的快速新聞更新（news_job.py）改成 8 秒——
+# 翻譯服務卡住時，一句等 20 秒、一句換三個引擎，一輪就要好幾分鐘，會拖到下一輪
+HTTP_TIMEOUT = 20
+# 翻譯的截止時間（time.time() 的秒數）。None = 不限（3 小時那支）。
+# 快速新聞更新設成「開始翻譯後 40 秒」：過了就不再打 API、只查快取，
+# 批次翻譯、逐句翻譯、逐句翻譯裡換引擎重試，全都看這一個時間
+DEADLINE = None
+
+
+def _late():
+    return DEADLINE is not None and time.time() > DEADLINE
+
+
 def _http(url):
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=20,
+    with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT,
                                 context=ssl.create_default_context()) as r:
         return r.read().decode("utf-8", "replace")
 
@@ -349,6 +362,8 @@ def _machine(text):
         protected.append(term)
 
     for backend in _engines():
+        if _late():            # 過了截止時間：這句就算了，不再換下一個引擎重試
+            return None
         try:
             out = backend(holder)
         except Exception:
@@ -375,6 +390,8 @@ def _machine(text):
     # 語序可能沒那麼好，但總比整句退回英文強。
     plain = _phrases(text)
     for backend in _engines():
+        if _late():
+            return None
         try:
             out = backend(plain)
         except Exception:
@@ -428,7 +445,11 @@ def text_zh(text, delay=0.35):
         return cache[t]
 
     global _calls
-    if _calls >= MAX_CALLS:                        # 翻譯服務出問題時直接停手
+    if _calls >= MAX_CALLS or _late():             # 翻譯服務出問題、或時間到了，直接停手
+        return t
+    if not _engines():
+        # 每個引擎都連續失敗到被跳過了：_machine 不會打任何請求，
+        # 但下面還是會停 0.35 秒——上百句就白等半分鐘
         return t
     _calls += 1
 
@@ -463,6 +484,203 @@ def trad(text):
         cache[key] = out
         return out
     return t
+
+
+def trad_many(texts, max_url=6000, keep_failed=True):
+    """一次把很多句簡體轉成繁體，回傳同樣順序的 list。
+
+    每 5 分鐘的快速新聞更新（news_job.py）一輪有上百則中文報標題，
+    像 trad() 那樣一句打一次 API 要幾十秒，而且容易被限流。
+    clients5 可以在同一個網址帶多個 q，一次回傳一整個陣列，所以分批送：
+    網址太長會被拒，每批控制在 max_url 字元內。
+    某一批失敗就那批保留簡體（簡體也看得懂），不寫進快取，下一輪再試。
+    keep_failed=False 時沒轉成的回傳 None：呼叫端要分得出「轉好了（剛好沒有字要換）」
+    和「沒轉成」——news_job.py 不能把簡體當成繁體譯文發出去，要讓網頁自己轉。
+    過了 DEADLINE 或連續兩批連不上就不再送（服務掛了，後面幾批也一樣）。
+    """
+    cache = _load_cache()
+    out = [(t or "").strip() for t in texts]
+    todo = []
+    for t in out:
+        if t and re.search(r"[一-鿿]", t) and "簡→繁|" + t not in cache and t not in todo:
+            todo.append(t)
+
+    base = "https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=zh-CN&tl=zh-TW"
+    batches, cur, size = [], [], len(base)
+    for t in todo:
+        q = "&q=" + urllib.parse.quote(t)
+        if cur and size + len(q) > max_url:
+            batches.append(cur)
+            cur, size = [], len(base)
+        cur.append(t)
+        size += len(q)
+    if cur:
+        batches.append(cur)
+
+    down = 0
+    for batch in batches:
+        if _late() or down >= 2:
+            break
+        url = base + "".join("&q=" + urllib.parse.quote(t) for t in batch)
+        try:
+            data = json.loads(_http(url))
+            # 回傳 ["繁1", "繁2", ...]；偶爾每句會包成 ["繁1", "zh-CN"]
+            got = [str(d[0] if isinstance(d, list) else d).strip() for d in data]
+            if len(batch) == 1:           # 單句時也可能回 ["繁1", "zh-CN"]
+                got = got[:1]
+            down = 0
+        except Exception:
+            _count("Google 簡→繁", False)
+            down += 1
+            continue
+        if len(got) != len(batch):        # 對不上就整批不用，免得張冠李戴
+            _count("Google 簡→繁", False)
+            continue
+        _count("Google 簡→繁", True)
+        for src, dst in zip(batch, got):
+            if dst:
+                cache["簡→繁|" + src] = dst
+
+    if not keep_failed:
+        return [cache.get("簡→繁|" + t) if t and re.search(r"[一-鿿]", t) else t for t in out]
+    return [cache.get("簡→繁|" + t, t) if t else t for t in out]
+
+
+def _protect(text):
+    """跟 _machine 第一步一樣：慣用語、公司名換成佔位符。回傳 (換好的句子, 每個佔位符要還原成的文字)。"""
+    protected, holder = [], text
+    for pat, zh in PHRASES:
+        def sub(m, zh=zh):
+            token = "ZZ{}ZZ".format(len(protected))
+            protected.append(m.expand(zh).strip())
+            return token
+        holder = pat.sub(sub, holder)
+    for term in sorted(TERMS, key=len, reverse=True):
+        pat = re.escape(term)
+        if term[:1].isalnum():
+            pat = r"\b" + pat
+        if term[-1:].isalnum():
+            pat = pat + r"\b"
+        if not re.search(pat, holder, re.I):
+            continue
+        token = "ZZ{}ZZ".format(len(protected))
+        holder = re.sub(pat, token, holder, flags=re.I)
+        protected.append(term)
+    return holder, protected
+
+
+def _restore(out, protected):
+    """跟 _machine 一樣的驗收標準，通過才還原佔位符；不通過回傳 None。"""
+    if not out or not all("ZZ{}ZZ".format(i) in out for i in range(len(protected))):
+        return None
+    engine_part = re.sub(r"ZZ\d+ZZ", "", out)
+    if not re.search(r"[一-鿿]", engine_part):
+        return None
+    if len(re.findall(r"[A-Za-z]{4,}", engine_part)) > 3:
+        return None
+    for i, term in enumerate(protected):
+        out = out.replace("ZZ{}ZZ".format(i), term)
+    return _polish(out)
+
+
+def half_done(src, zh):
+    """英文標題的譯文是不是半成品（沒翻或只翻了一點）。
+
+    跟 _restore 同一個標準：拿掉保護的專有名詞（Maybank、REIT、RM⋯⋯）之後，
+    要有中文，而且 4 個字母以上的英文字不能超過 3 個。
+    「新聞稿 」是 filing_title 自己加的前綴，不算翻譯出來的中文——
+    後面整句翻失敗時會變成「新聞稿 Sentral REIT 1H 2026 Realised Net Income rises⋯」，
+    看起來有中文，其實沒翻。
+    news_job.py 用上一輪的 news.json 當快取時靠這個挑掉半成品，這一輪重翻。
+    """
+    src, body = (src or "").strip(), (zh or "").strip()
+    if not body or body == src:
+        return True
+    if src.startswith("News Release") and body.startswith("新聞稿"):
+        body = body[len("新聞稿"):]
+    _, protected = _protect(src)
+    # 只拿掉英文的專有名詞。慣用語的中文（Final Dividend →「末期股息」）是正當的譯文，
+    # 拿掉的話整句只剩空白，會被當成沒翻
+    for term in sorted((p for p in protected if re.search(r"[A-Za-z]", p)), key=len, reverse=True):
+        body = re.sub(re.escape(term), "", body, flags=re.I)
+    if not re.search(r"[一-鿿]", body):
+        return True
+    return len(re.findall(r"[A-Za-z]{4,}", body)) > 3
+
+
+def text_zh_many(texts, max_url=6000):
+    """很多句英文一次翻完，回傳同樣順序的 list。
+
+    text_zh 一句打一次 API、每句還要停 0.35 秒；每 5 分鐘的快速新聞更新（news_job.py）
+    一輪可能有上百則新標題，逐句翻要一兩分鐘。clients5 一個網址可以帶多個 q，
+    所以把佔位符換好的句子分批送，每句再用跟 _machine 一樣的標準驗收
+    （佔位符都在、真的翻成中文、沒剩一堆英文）。
+    沒通過的原樣回傳英文、不寫進快取，呼叫端可以再逐句用 text_zh 補。
+    一批算一次 MAX_CALLS 額度。過了 DEADLINE 或連續兩批連不上就不再送。
+    """
+    cache = _load_cache()
+    out = [(t or "").strip() for t in texts]
+    todo = {}
+    for t in out:
+        if (not t or t in cache or t in todo or not re.search(r"[A-Za-z]{3}", t)
+                or re.search(r"[一-鿿]", t)):
+            continue
+        todo[t] = _protect(t)
+
+    def send(items):
+        """items: [(原文, 要送出的句子)]，分批送，回傳 {原文: 引擎譯文}。"""
+        base = "https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=en&tl=zh-TW"
+        batches, cur, size = [], [], len(base)
+        for t, q in items:
+            n = len("&q=" + urllib.parse.quote(q))
+            if cur and size + n > max_url:
+                batches.append(cur)
+                cur, size = [], len(base)
+            cur.append((t, q))
+            size += n
+        if cur:
+            batches.append(cur)
+
+        global _calls
+        got, down = {}, 0
+        for batch in batches:
+            if _calls >= MAX_CALLS or _late() or down >= 2:
+                break
+            _calls += 1
+            url = base + "".join("&q=" + urllib.parse.quote(q) for _, q in batch)
+            try:
+                data = json.loads(_http(url))
+                res = [str(d[0] if isinstance(d, list) else d).strip() for d in data]
+                if len(batch) == 1:
+                    res = res[:1]
+                down = 0
+            except Exception:
+                _count("Google 批次", False)
+                down += 1
+                continue
+            if len(res) != len(batch):        # 對不上就整批不用，免得張冠李戴
+                _count("Google 批次", False)
+                continue
+            _count("Google 批次", True)
+            got.update({t: r for (t, _), r in zip(batch, res)})
+        return got
+
+    # 第一輪：佔位符保護過的句子
+    first = send([(t, holder) for t, (holder, _) in todo.items()])
+    retry = []
+    for t in todo:
+        zh = _restore(first.get(t), todo[t][1])
+        if zh:
+            cache[t] = zh
+        elif t in first:
+            retry.append(t)
+    # 第二輪：跟 _machine 的備援一樣——佔位符被吃掉或留太多英文的，
+    # 改成只把慣用語換成中文、公司名不保護，有翻成中文就收
+    for t, zh in send([(t, _phrases(t)) for t in retry]).items():
+        if zh and re.search(r"[一-鿿]", zh):
+            cache[t] = _polish(zh)
+
+    return [cache.get(t, t) if t else t for t in out]
 
 
 def paragraph_zh(text, chunk=450):
