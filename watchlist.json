@@ -16,7 +16,11 @@
       "q": "Maybank",
       "name": "Maybank 馬來亞銀行",
       "sector": "銀行",
-      "note": "馬國最大銀行"
+      "note": "馬國最大銀行",
+      "aliases": [
+        "Malayan Banking",
+        "Maybank"
+      ]
     },
     {
       "symbol": "1295.KL",
@@ -24,7 +28,11 @@
       "q": "Public Bank Berhad",
       "name": "Public Bank 大眾銀行",
       "sector": "銀行",
-      "note": "資產品質最佳"
+      "note": "資產品質最佳",
+      "aliases": [
+        "Public Bank",
+        "PBBank"
+      ]
     },
     {
       "symbol": "1023.KL",
@@ -32,7 +40,10 @@
       "q": "CIMB Group",
       "name": "CIMB Group",
       "sector": "銀行",
-      "note": "區域布局最廣"
+      "note": "區域布局最廣",
+      "aliases": [
+        "CIMB"
+      ]
     },
     {
       "symbol": "5819.KL",
@@ -40,7 +51,12 @@
       "q": "Hong Leong Bank",
       "name": "Hong Leong Bank 豐隆銀行",
       "sector": "銀行",
-      "note": "持有成都銀行股權"
+      "note": "持有成都銀行股權",
+      "aliases": [
+        "Hong Leong Bank",
+        "HLBank",
+        "HLB"
+      ]
     },
     {
       "symbol": "1066.KL",
@@ -48,7 +64,10 @@
       "q": "RHB Bank",
       "name": "RHB Bank 興業銀行",
       "sector": "銀行",
-      "note": "高股息"
+      "note": "高股息",
+      "aliases": [
+        "RHB"
+      ]
     },
     {
       "symbol": "1082.KL",
@@ -56,7 +75,11 @@
       "q": "Hong Leong Financial Group",
       "name": "Hong Leong Fin Group",
       "sector": "銀行",
-      "note": "豐隆銀行控股母公司"
+      "note": "豐隆銀行控股母公司",
+      "aliases": [
+        "Hong Leong Financial",
+        "HLFG"
+      ]
     },
     {
       "symbol": "1015.KL",
@@ -64,7 +87,11 @@
       "q": "AmBank",
       "name": "AMMB (AmBank) 大馬銀行",
       "sector": "銀行",
-      "note": "中型銀行"
+      "note": "中型銀行",
+      "aliases": [
+        "AMMB",
+        "AmBank"
+      ]
     },
     {
       "symbol": "2488.KL",
@@ -72,7 +99,11 @@
       "q": "Alliance Bank Malaysia",
       "name": "Alliance Bank 安聯銀行",
       "sector": "銀行",
-      "note": "中小企業放款為主"
+      "note": "中小企業放款為主",
+      "aliases": [
+        "Alliance Bank",
+        "ABMB"
+      ]
     },
     {
       "symbol": "5258.KL",
@@ -80,7 +111,11 @@
       "q": "Bank Islam",
       "name": "Bank Islam 伊斯蘭銀行",
       "sector": "銀行",
-      "note": "純伊斯蘭銀行"
+      "note": "純伊斯蘭銀行",
+      "aliases": [
+        "Bank Islam",
+        "BIMB"
+      ]
     },
     {
       "symbol": "5185.KL",
@@ -88,7 +123,10 @@
       "q": "Affin Bank",
       "name": "Affin Bank 艾芬銀行",
       "sector": "銀行",
-      "note": "砂拉越州政府為大股東"
+      "note": "砂拉越州政府為大股東",
+      "aliases": [
+        "Affin"
+      ]
     },
     {
       "symbol": "1171.KL",
@@ -96,7 +134,10 @@
       "q": "MBSB",
       "name": "MBSB Bank",
       "sector": "銀行",
-      "note": "最小型，前身為建屋信貸"
+      "note": "最小型，前身為建屋信貸",
+      "aliases": [
+        "MBSB"
+      ]
     },
     {
       "symbol": "5123.KL",
@@ -104,7 +145,11 @@
       "q": "Sentral REIT",
       "name": "Sentral REIT",
       "sector": "REIT",
-      "note": "辦公樓 REIT"
+      "note": "辦公樓 REIT",
+      "aliases": [
+        "Sentral REIT",
+        "Sentral"
+      ]
     },
     {
       "symbol": "5227.KL",
@@ -112,7 +157,10 @@
       "q": "IGB REIT",
       "name": "IGB REIT",
       "sector": "REIT",
-      "note": "零售 (Mid Valley)"
+      "note": "零售 (Mid Valley)",
+      "aliases": [
+        "IGB REIT"
+      ]
     },
     {
       "symbol": "5212.KL",
@@ -120,7 +168,10 @@
       "q": "Pavilion REIT",
       "name": "Pavilion REIT",
       "sector": "REIT",
-      "note": "零售 (Pavilion KL)"
+      "note": "零售 (Pavilion KL)",
+      "aliases": [
+        "Pavilion REIT"
+      ]
     },
     {
       "symbol": "5106.KL",
@@ -128,7 +179,10 @@
       "q": "Axis REIT",
       "name": "Axis REIT",
       "sector": "REIT",
-      "note": "工業 / 物流"
+      "note": "工業 / 物流",
+      "aliases": [
+        "Axis REIT"
+      ]
     },
     {
       "symbol": "5235SS.KL",
@@ -136,7 +190,11 @@
       "q": "KLCCP Stapled",
       "name": "KLCCP Stapled",
       "sector": "REIT",
-      "note": "雙峰塔綜合體"
+      "note": "雙峰塔綜合體",
+      "aliases": [
+        "KLCCP",
+        "KLCC"
+      ]
     },
     {
       "symbol": "1651.KL",
@@ -144,7 +202,11 @@
       "q": "MRCB",
       "name": "MRCB 馬資源",
       "sector": "其他",
-      "note": "營建地產，Sentral REIT 的保薦人與大股東"
+      "note": "營建地產，Sentral REIT 的保薦人與大股東",
+      "aliases": [
+        "MRCB",
+        "Malaysian Resources Corp"
+      ]
     },
     {
       "symbol": "^IXIC",
@@ -336,7 +398,10 @@
       "q": "YTL Power",
       "name": "YTL Power",
       "sector": "AI 馬股",
-      "note": "馬股最大 AI 資料中心概念股"
+      "note": "馬股最大 AI 資料中心概念股",
+      "aliases": [
+        "YTL Power"
+      ]
     },
     {
       "symbol": "5398.KL",
@@ -344,7 +409,10 @@
       "q": "Gamuda",
       "name": "Gamuda",
       "sector": "AI 馬股",
-      "note": "資料中心工程總包"
+      "note": "資料中心工程總包",
+      "aliases": [
+        "Gamuda"
+      ]
     },
     {
       "symbol": "5263.KL",
@@ -352,7 +420,11 @@
       "q": "Sunway Construction",
       "name": "Sunway Construction",
       "sector": "AI 馬股",
-      "note": "資料中心建商"
+      "note": "資料中心建商",
+      "aliases": [
+        "Sunway Construction",
+        "SunCon"
+      ]
     },
     {
       "symbol": "0138.KL",
@@ -360,7 +432,11 @@
       "q": "Zetrix AI",
       "name": "Zetrix AI（原 MyEG）",
       "sector": "AI 馬股",
-      "note": "政府數位服務轉型 AI 與區塊鏈"
+      "note": "政府數位服務轉型 AI 與區塊鏈",
+      "aliases": [
+        "Zetrix",
+        "MyEG"
+      ]
     },
     {
       "symbol": "0166.KL",
@@ -368,7 +444,10 @@
       "q": "Inari Amertron",
       "name": "Inari Amertron",
       "sector": "AI 馬股",
-      "note": "半導體封測，射頻與光通訊"
+      "note": "半導體封測，射頻與光通訊",
+      "aliases": [
+        "Inari"
+      ]
     },
     {
       "symbol": "0097.KL",
@@ -376,7 +455,10 @@
       "q": "ViTrox",
       "name": "ViTrox",
       "sector": "AI 馬股",
-      "note": "半導體檢測設備"
+      "note": "半導體檢測設備",
+      "aliases": [
+        "ViTrox"
+      ]
     },
     {
       "symbol": "0128.KL",
@@ -384,15 +466,22 @@
       "q": "Frontken",
       "name": "Frontken",
       "sector": "AI 馬股",
-      "note": "半導體設備清洗服務"
+      "note": "半導體設備清洗服務",
+      "aliases": [
+        "Frontken"
+      ]
     },
     {
       "symbol": "3867.KL",
       "sa": "MPI",
-      "q": "MPI 馬太平洋",
+      "q": "Malaysian Pacific Industries",
       "name": "MPI 馬太平洋",
       "sector": "AI 馬股",
-      "note": "半導體封測"
+      "note": "半導體封測",
+      "aliases": [
+        "Malaysian Pacific Industries",
+        "MPI"
+      ]
     },
     {
       "symbol": "5031.KL",
@@ -400,7 +489,11 @@
       "q": "TIME dotCom",
       "name": "TIME dotCom",
       "sector": "AI 馬股",
-      "note": "資料中心光纖骨幹"
+      "note": "資料中心光纖骨幹",
+      "aliases": [
+        "TIME dotCom",
+        "TIMECOM"
+      ]
     },
     {
       "symbol": "8583.KL",
@@ -408,7 +501,10 @@
       "q": "Mah Sing",
       "name": "Mah Sing",
       "sector": "AI 馬股",
-      "note": "土地轉作資料中心"
+      "note": "土地轉作資料中心",
+      "aliases": [
+        "Mah Sing"
+      ]
     }
   ]
 }

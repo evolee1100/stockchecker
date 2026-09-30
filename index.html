@@ -489,6 +489,95 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .ranges{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
   .rng{font-size:13px;padding:7px 2px;text-align:center;white-space:nowrap;min-width:0}
 }
+
+/* ---------- 市場區塊（快訊／漲跌排行／IPO）----------
+   跟「重點」同一套卡片樣式，每張都能收起並記住狀態。 */
+.mcard{border:1px solid var(--line);border-radius:11px;overflow:hidden;margin-bottom:18px}
+.mcard-h{display:flex;align-items:baseline;gap:9px;padding:11px 14px 10px;
+         background:var(--tint);border-bottom:1px solid var(--line)}
+.mcard-h b{font-size:15px;font-weight:600;letter-spacing:.06em;
+           font-family:"Songti TC","Songti SC","Noto Serif TC","PingFang TC",serif}
+.mcard-h span{font-size:11px;color:var(--ink-3)}
+.mcard-h .tog{margin-left:auto;font:inherit;font-size:11px;color:var(--ink-3);
+              background:none;border:none;cursor:pointer;padding:0}
+.mcard-h .tog:hover{color:var(--ink)}
+.mcard-b[hidden]{display:none}
+
+/* 快訊 */
+.hl{display:block;padding:10px 14px;border-bottom:1px solid var(--hair);
+    color:inherit;text-decoration:none;cursor:pointer}
+.hl:last-child{border-bottom:none}
+.hl:hover{background:var(--tint)}
+.hl .t{font-size:13.5px;line-height:1.5}
+.hl .m{font-size:11px;color:var(--read);margin-top:3px}
+
+/* 漲跌排行：兩欄並排，手機上改上下 */
+.mv{display:grid;grid-template-columns:1fr 1fr}
+.mv-col + .mv-col{border-left:1px solid var(--line)}
+.mv-h{font-size:11px;font-weight:600;letter-spacing:.06em;padding:9px 14px 6px}
+.mv-h.up{color:var(--up)} .mv-h.down{color:var(--down)}
+.mvr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;
+     padding:8px 14px;border-top:1px solid var(--hair);text-decoration:none;color:inherit}
+.mvr:hover{background:var(--tint)}
+.mvr .n{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mvr .s{font-size:10.5px;color:var(--read);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mvr .p{font-size:13px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.mvr .c{font-size:11.5px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.mv-note{font-size:10.5px;color:var(--read);padding:8px 14px 10px;border-top:1px solid var(--hair);
+         line-height:1.6}
+
+/* IPO */
+.ipo-sec{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--ink-2);
+         padding:10px 14px 5px}
+.ipo-sec + .ipor{border-top:none}
+.ipor{display:grid;grid-template-columns:52px minmax(0,1fr) auto;column-gap:11px;align-items:center;
+      padding:9px 14px;border-top:1px solid var(--hair);text-decoration:none;color:inherit}
+.ipor:hover{background:var(--tint)}
+.ipor .d{font-size:11px;color:var(--read);font-variant-numeric:tabular-nums;line-height:1.35}
+.ipor .d b{display:block;font-size:14px;color:var(--ink);font-weight:650}
+.ipor .n{font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ipor .s{font-size:10.5px;color:var(--read);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ipor .r{text-align:right;font-variant-numeric:tabular-nums}
+.ipor .r .p{font-size:12.5px;color:var(--read)}
+.ipor .r .c{font-size:13px;font-weight:650}
+
+@media(max-width:700px){
+  .mcard-h b{font-size:17.5px}
+  .mcard-h span,.mcard-h .tog{font-size:13px}
+  .hl .t{font-size:16px} .hl .m{font-size:13px}
+  .mv{grid-template-columns:1fr}
+  .mv-col + .mv-col{border-left:none;border-top:1px solid var(--line)}
+  .mv-h{font-size:13px}
+  .mvr .n{font-size:16px} .mvr .s{font-size:12.5px}
+  .mvr .p{font-size:16px} .mvr .c{font-size:14px}
+  .mv-note{font-size:12.5px}
+  .ipo-sec{font-size:13px}
+  .ipor{grid-template-columns:60px minmax(0,1fr) auto}
+  .ipor .d{font-size:13px} .ipor .d b{font-size:17px}
+  .ipor .n{font-size:16px} .ipor .s{font-size:12.5px}
+  .ipor .r .p{font-size:14px} .ipor .r .c{font-size:15.5px}
+}
+
+.bi.more{display:none}
+.bmore{display:block;width:100%;font:inherit;font-size:12.5px;color:var(--ink-2);
+       background:var(--tint);border:none;border-top:1px solid var(--line);
+       padding:10px;cursor:pointer}
+.bmore:hover{color:var(--ink)}
+
+@media(max-width:700px){
+  .bmore{font-size:15px;padding:13px}
+  /* 漲跌排行在手機上仍左右並排：只留名稱與漲跌幅，高度減半 */
+  .mv{grid-template-columns:1fr 1fr}
+  .mv-col + .mv-col{border-left:1px solid var(--line);border-top:none}
+  .mvr{grid-template-columns:minmax(0,1fr) auto;padding:9px 11px;column-gap:6px}
+  .mvr .n{font-size:15px}
+  .mvr .s{font-size:11.5px}
+  .mvr .p{display:none}
+  .mvr .c{font-size:15px}
+  .mv-h{padding:9px 11px 5px}
+}
+
+@media(max-width:700px){ .mvr .mc{display:none} }
 </style>
 </head>
 <body>
@@ -505,8 +594,11 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   </header>
 
   <div class="pulse" id="pulse"></div>
-  <div class="tabs" id="tabs"></div>
+  <div id="headlines"></div>
   <div id="brief"></div>
+  <div id="movers"></div>
+  <div id="ipo"></div>
+  <div class="tabs" id="tabs"></div>
 
   <div class="scroll"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
 
@@ -777,6 +869,22 @@ function detailRow(s){
 
   const esc = t => (t || '').replace(/&/g,'&amp;').replace(/</g,'&lt;')
                             .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  // 同一標題的公告（EPF 一週申報五六次持股變動）合併成一則，
+  // 不然清單被同一句話洗版，其他公告被擠出去。點開看得到每一則的內容。
+  const groupFilings = list => {
+    const by = new Map(), out = [];
+    for(const f of list || []){
+      const k = f.title_zh || f.title;
+      if(by.has(k)){ by.get(k).push(f); continue; }
+      const g = [f]; by.set(k, g); out.push(g);
+    }
+    const md = iso => iso ? +iso.slice(5, 7) + '/' + +iso.slice(8, 10) : '';
+    return out.slice(0, 6).map(g => g.length < 2 ? g[0] : {...g[0],
+      title_zh: (g[0].title_zh || g[0].title) + `（${g.length} 則）`,
+      body_zh: g.filter(f => f.body_zh).map(f => md(f.date) + '：' + f.body_zh).join('\n\n'),
+      body: ''});
+  };
+
   const feed = (list, empty) => list && list.length
     ? list.map(n => {
         const zh = n.title_zh || n.title, en = n.title || '';
@@ -784,12 +892,12 @@ function detailRow(s){
         const hasBody = !!(n.body_zh || n.body);
         return `<div class="item"
              data-zh="${esc(zh)}" data-en="${esc(en)}"
-             data-src="${esc([n.source_zh || n.source, n.when].filter(Boolean).join(' · '))}"
+             data-src="${esc([n.source_zh || n.source, ago(n)].filter(Boolean).join(' · '))}"
              data-url="${esc(n.source_url || n.url)}"
              data-body-en="${esc(n.body || '')}"
              data-body-zh="${esc(n.body_zh || '')}">
           <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${zh}</a>
-          <div class="im">${[n.source_zh || n.source, n.when].filter(Boolean).join(' · ')}
+          <div class="im">${esc([n.source_zh || n.source, ago(n)].filter(Boolean).join(' · '))}
             ${(translated || hasBody) ? `<button class="orig" type="button">${hasBody ? '讀全文' : '原文'}</button>` : ''}</div>
         </div>`;
       }).join('')
@@ -820,7 +928,7 @@ ${feed(s.articles, '近三個月沒有相關報導')}</div>
       <div><h4>Bursa 公告 <span class="seg">
         <button type="button" class="on" data-l="zh">中文</button>
         <button type="button" data-l="en">原文</button></span></h4>
-${feed(s.filings, '沒有抓到公告')}</div>
+${feed(groupFilings(s.filings), '沒有抓到公告')}</div>
     </div>
   </div></td>`;
 
@@ -907,6 +1015,7 @@ ${feed(s.filings, '沒有抓到公告')}</div>
 
   tr._redraw = draw;                         // 由 render() 在插進 DOM 後呼叫（那時才量得到寬度）
   wireCalculator(tr);
+  fillZh(tr);                                // 還是英文的報導標題，在手機上補翻
   tr.querySelectorAll('.rng').forEach(b => b.onclick = ev => {
     ev.stopPropagation();                    // 別讓點擊冒泡去收合這一列
     chartRange = b.dataset.d;
@@ -919,16 +1028,129 @@ ${feed(s.filings, '沒有抓到公告')}</div>
 }
 
 const BRIEF_KEY = 'brief_collapsed';
+// 重點預設只顯示前 5 條：第一屏要能看完大方向，細節要看再展開
+const BRIEF_TOP = 5;
+let briefAll = false;
+
+
+/* ---------- 市場區塊：快訊、漲跌排行、IPO ----------
+   追蹤清單只看得到自己挑的 49 檔。這三塊回答的是「整個市場今天怎麼了」，
+   設計目標是打開頁面、不捲動、不點開，就知道大方向。 */
+
+// 可收起的卡片，收起狀態記在瀏覽器裡
+function mcard(id, title, sub, body){
+  const key = 'fold_' + id;
+  let folded = false;
+  try { folded = localStorage.getItem(key) === '1'; } catch(e) {}
+  const host = document.getElementById(id);
+  host.innerHTML = `<div class="mcard">
+    <div class="mcard-h"><b>${title}</b><span>${sub}</span>
+      <button class="tog" type="button">${folded ? '展開' : '收起'}</button></div>
+    <div class="mcard-b" ${folded ? 'hidden' : ''}>${body}</div></div>`;
+  host.querySelector('.tog').onclick = () => {
+    const b = host.querySelector('.mcard-b');
+    b.hidden = !b.hidden;
+    host.querySelector('.tog').textContent = b.hidden ? '展開' : '收起';
+    try { localStorage.setItem(key, b.hidden ? '1' : '0'); } catch(e) {}
+  };
+}
+
+const KSE = code => 'https://www.klsescreener.com/v2/stocks/view/' + encodeURIComponent(code);
+const ppx = v => v == null ? '—' : v.toFixed(v < 1 ? 3 : 2);
+
+function renderHeadlines(){
+  const hs = (D.market && D.market.headlines) || [];
+  const host = document.getElementById('headlines');
+  if(!hs.length){ host.innerHTML = ''; return; }
+  const top = hs.slice(0, 3);
+  mcard('headlines', '市場快訊', '大盤最新 ' + top.length + ' 則',
+    top.map((h, i) => `<div class="hl item" data-hl="${i}"
+        data-zh="${esc(h.title_zh || h.title)}" data-en="${esc(h.title)}"
+        data-src="${esc([h.source, ago(h)].filter(Boolean).join(' · '))}"
+        data-url="${esc(h.source_url || h.url)}"
+        data-body-en="${esc(h.body || '')}" data-body-zh="">
+        <div class="t">${esc(h.title_zh || h.title)}</div>
+        <div class="m">${esc([h.source, ago(h)].filter(Boolean).join(' · '))}</div></div>`).join(''));
+  // 點一則就開全文彈窗（有內文的會在瀏覽器裡現翻）
+  document.querySelectorAll('#headlines .hl').forEach(el => el.onclick = () => showOriginal(el));
+  fillZh(host);
+}
+
+function renderMovers(){
+  const mv = D.market && D.market.movers;
+  const host = document.getElementById('movers');
+  if(!mv || (!mv.up.length && !mv.down.length)){ host.innerHTML = ''; return; }
+  const row = q => `<a class="mvr" href="${KSE(q.code)}" target="_blank" rel="noopener">
+      <div><div class="n">${esc(q.short)}</div>
+           <div class="s">${esc(q.sector_zh || '')}<span class="mc"> · 市值 RM${Math.round(q.mcap).toLocaleString()}M</span></div></div>
+      <div><div class="p">${ppx(q.price)}</div>
+           <div class="c ${cls(q.pct)}">${pc(q.pct)}</div></div></a>`;
+  const asOf = mv.live ? '今天盤中 ' + (mv.time || '')
+             : mv.as_of ? (mv.as_of === mytToday() ? '今天收盤' : fmtWhen(mv.as_of) + ' 收盤')
+             : '';
+  mcard('movers', '全市場漲跌排行', [asOf, '前 ' + Math.max(mv.up.length, mv.down.length) + ' 名'].filter(Boolean).join(' · '),
+    `<div class="mv">
+       <div class="mv-col"><div class="mv-h up">漲最多</div>${mv.up.map(row).join('') || '<div class="mv-note">沒有上漲的</div>'}</div>
+       <div class="mv-col"><div class="mv-h down">跌最多</div>${mv.down.map(row).join('') || '<div class="mv-note">沒有下跌的</div>'}</div>
+     </div>
+     <div class="mv-note">主板與創業板中，股價 RM0.20、市值 RM2 億以上的 ${mv.universe} 檔
+       （共 ${mv.total.toLocaleString()} 檔）。排除仙股：RM0.005 跳一格就是 +100%，沒有參考價值。</div>`);
+}
+
+function renderIPO(){
+  const ip = D.market && D.market.ipo;
+  const host = document.getElementById('ipo');
+  if(!ip || (!ip.upcoming.length && !ip.recent.length)){ host.innerHTML = ''; return; }
+  const md = iso => { const [, m, d] = iso.split('-').map(Number); return m + '/' + d; };
+  const up = ip.upcoming.slice(0, 3).map(i => `<a class="ipor" href="${KSE(i.code)}" target="_blank" rel="noopener">
+      <div class="d"><b>${md(i.listing)}</b>${i.days_to === 0 ? '今天' : i.days_to + ' 天後'}</div>
+      <div><div class="n">${esc(i.short)}</div>
+           <div class="s">${esc([i.board, i.sector_zh].filter(Boolean).join(' · ') || i.name)}</div></div>
+      <div class="r"><div class="p">IPO 價</div>
+           <div class="c">${i.ipo_price ? 'RM' + ppx(i.ipo_price) : '—'}</div></div></a>`).join('');
+  const rc = ip.recent.filter(i => i.since_ipo != null).slice(0, 4).map(i => `<a class="ipor" href="${KSE(i.code)}" target="_blank" rel="noopener">
+      <div class="d"><b>${md(i.listing)}</b>上市</div>
+      <div><div class="n">${esc(i.short)}</div>
+           <div class="s">${esc([i.board, i.sector_zh].filter(Boolean).join(' · '))}</div></div>
+      <div class="r"><div class="p">${ppx(i.ipo_price)} → ${ppx(i.price)}</div>
+           <div class="c ${cls(i.since_ipo)}">${pc(i.since_ipo)}</div></div></a>`).join('');
+  const broke = ip.recent.filter(i => i.since_ipo != null && i.since_ipo < 0).length;
+  const withP = ip.recent.filter(i => i.since_ipo != null).length;
+  mcard('ipo', '新股 IPO', `即將上市 ${ip.upcoming.length} · 近 3 個月 ${ip.recent.length}`,
+    (up ? '<div class="ipo-sec">即將上市</div>' + up : '') +
+    (rc ? `<div class="ipo-sec">最近上市 · 上市後表現（${withP} 檔中 ${broke} 檔跌破 IPO 價）</div>` + rc : ''));
+}
 
 /* ---------- 今日重點 ----------
    每次更新後由 analyze.py 用規則挑出來的，不是全部列出來。
    點一下跳到那一檔。 */
 // 把 2026-09-25 變成「9/25（五）」，並在是今天時直接說「今天」
+// 馬來西亞當地日期（UTC+8），不依賴手機的時區設定
+const mytToday = () => new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
+
+// 報導時間在打開頁面的當下才算。資料檔裡的「3 小時前」是雲端抓資料那一刻算的，
+// 兩三個小時後再看就不準了——所以有時間戳就用時間戳，只有日期的公告就用日期
+function ago(n){
+  if(n.ts){
+    const h = (Date.now() / 1000 - n.ts) / 3600;
+    if(h < 1) return '剛剛';
+    if(h < 24) return Math.floor(h) + ' 小時前';
+  }
+  const iso = n.date || (n.ts ? new Date(n.ts * 1000 + 8 * 3600e3).toISOString().slice(0, 10) : '');
+  if(!iso) return n.when || '';
+  const days = Math.round((Date.parse(mytToday()) - Date.parse(iso)) / 864e5);
+  if(days <= 0) return '今天';
+  if(days === 1) return '昨天';
+  if(days < 30) return days + ' 天前';
+  if(days < 365) return Math.floor(days / 30) + ' 個月前';
+  return Math.floor(days / 365) + ' 年前';
+}
+
 function fmtWhen(iso){
   const parts = (iso || '').split('-').map(Number);
   if(parts.length !== 3) return iso || '';
   const [y, m, d] = parts;
-  const today = (D.updated_at || '').slice(0, 10);
+  const today = mytToday();
   const wd = '日一二三四五六'[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
   return (iso === today ? '今天 ' : '') + `${m}/${d}（${wd}）`;
 }
@@ -947,16 +1169,21 @@ function renderBrief(){
   host.innerHTML = `<div class="brief">
     <div class="brief-h"><b>重點</b><span>${hl.length} 條 · 截至 ${cut}</span>
       <button class="tog" type="button">${collapsed ? '展開' : '收起'}</button></div>
-    <div class="brief-list" ${collapsed ? 'hidden' : ''}>${hl.map(h => `
-      <div class="bi ${h.level}" data-go="${h.symbol}">
+    <div class="brief-list" ${collapsed ? 'hidden' : ''}>${hl.map((h, i) => `
+      <div class="bi ${h.level} ${i >= BRIEF_TOP && !briefAll ? 'more' : ''}" data-go="${h.symbol}">
         <div class="bar"></div>
         <div class="bt">
           <div class="bw"><b>${h.name}</b> ${h.what}</div>
-          ${h.why ? `<div class="by">${h.why}</div>` : ''}
+          ${h.why && ((h.kind || '').startsWith('類股') || h.level === 'critical') ? `<div class="by">${h.why}</div>` : ''}
           ${h.when ? `<div class="bwhen">${fmtWhen(h.when)}${h.kind ? ' · ' + h.kind : ''}</div>` : ''}
         </div>
         <div class="bn">${h.sector}</div>
-      </div>`).join('')}</div></div>`;
+      </div>`).join('')}
+      ${hl.length > BRIEF_TOP ? `<button class="bmore" type="button">${briefAll ? '只看前 ' + BRIEF_TOP + ' 條' : '顯示全部 ' + hl.length + ' 條'}</button>` : ''}
+    </div></div>`;
+
+  const more = host.querySelector('.bmore');
+  if(more) more.onclick = () => { briefAll = !briefAll; renderBrief(); };
 
   host.querySelector('.tog').onclick = () => {
     const list = host.querySelector('.brief-list');
@@ -1002,7 +1229,10 @@ function renderPulse(){
 
 function render(){
   renderPulse();
+  renderHeadlines();
   renderBrief();
+  renderMovers();
+  renderIPO();
   $('#title').textContent = D.title;
   $('#updated').textContent = D.updated_at;
 
@@ -1110,6 +1340,15 @@ const KEEP = ['Sentral REIT','IGB REIT','Pavilion REIT','Axis REIT','KLCCP',
   'TIME dotCom','Mah Sing','NVIDIA','Broadcom','Palantir','Nasdaq',
   'OPR','DPU','NPI','EPS','ROE','NIM','EPF','KWAP','REIT','REITs','GDP','RM'];
 
+// 金融慣用語對照（由 translate.py 的 PHRASES 產生，兩邊一致）。
+// 機器翻譯會把 bargain hunting 翻成「特價狩獵」、at opening 翻成「打開便宜貨」，
+// 先換成佔位符、翻完再換成正確中文。
+const PHRASES = [["what to expect on (Bursa Malaysia|Bursa|the market)", "\\1 盤前展望："], ["bargain[- ]hunting (emerges|returns|kicks in)", "逢低買盤進場"], ["bargain[- ]hunting", "逢低買盤"], ["profit[- ]taking", "獲利了結"], ["window[- ]dressing", "作帳行情"], ["foreign buying", "外資買盤"], ["foreign (funds|investors) (net )?(sold|sell|dumped)", "外資賣超"], ["foreign (funds|investors) (net )?(bought|buy)", "外資買超"], ["net (sellers|selling)", "賣超"], ["net (buyers|buying)", "買超"], ["at (the )?open(ing)?( bell)?", "開盤時"], ["at (the )?(mid-?day|midday) break", "午盤時"], ["at (the )?close(?! to)", "收盤時"], ["opens? sharply higher", "大幅開高"], ["opens? sharply lower", "大幅開低"], ["opens? slightly higher", "小幅開高"], ["opens? slightly lower", "小幅開低"], ["(ends?|closes?|finish(es)?) sharply higher", "大幅收高"], ["(ends?|closes?|finish(es)?) sharply lower", "大幅收低"], ["(ends?|closes?|finish(es)?) slightly higher", "小幅收高"], ["(ends?|closes?|finish(es)?) slightly lower", "小幅收低"], ["opens? higher", "開高"], ["opens? lower", "開低"], ["(ends?|closes?|finish(es)?) higher", "收高"], ["(ends?|closes?|finish(es)?) lower", "收低"], ["(retreats?|retreated|pulls? back) sharply", "大幅回落"], ["(falls?|fell|drops?|dropped|slides?|slid|slumps?|slumped) sharply", "大幅下跌"], ["(rises?|rose|climbs?|climbed|gains?|gained|jumps?|jumped) sharply", "大幅上漲"], ["(rebounds?|rebounded) sharply", "大幅反彈"], ["sharply", "大幅"], ["caution lingers", "謹慎情緒未退"], ["cautious sentiment", "謹慎情緒"], ["risk-off", "避險情緒"], ["risk-on", "風險偏好回升"], ["blue[- ]chips?", "藍籌股"], ["key index", "綜合指數"], ["benchmark index", "基準指數"], ["(rising|higher) (bond )?yields", "殖利率上升"], ["rate cut", "降息"], ["rate hike", "升息"], ["private placement", "私募配售"], ["rights issue", "附加股發行"], ["bonus issue", "紅股發行"], ["final (single[- ]tier )?dividend", "末期股息"], ["(first |second )?interim (single[- ]tier )?dividend", "中期股息"], ["special (single[- ]tier )?dividend", "特別股息"], ["single[- ]tier dividend", "單層股息"], ["dividend", "股息"], ["target price", "目標價"], ["upgrade[sd]?", "調升評級"], ["downgrade[sd]?", "調降評級"]].map(
+  ([p, zh]) => [new RegExp('\\b' + p + '\\b', 'gi'), zh]);
+
+// 翻完之後中文換中文（跟 translate.POST 同一份）：「外國拋售壓力」→「外資賣壓」
+const POST = [["(外國|海外|外資)(投資者)?(的)?拋售(壓力)?", "外資賣壓"], ["拋壓壓力|拋售壓力", "賣壓"], ["逢低吸收", "逢低買盤"], ["馬來西亞證券交易所|大馬交易所", "馬交所"]].map(([p, zh]) => [new RegExp(p, 'g'), zh]);
+
 const TR_KEY = 'tr_cache';
 function trCache(){
   try { return JSON.parse(localStorage.getItem(TR_KEY)) || {}; } catch(e) { return {}; }
@@ -1137,6 +1376,14 @@ function chunk(text, size = 450){
 async function gtranslate(part){
   const marks = [];
   let held = part;
+  for(const [re, zh] of PHRASES){
+    held = held.replace(re, (...m) => {
+      const tok = 'ZZ' + marks.length + 'ZZ';
+      // 對照表裡的 \\1 代表第一個括號，逐一代換
+      marks.push(zh.replace(/\\(\d)/g, (_, n) => m[+n] || '').trim());
+      return tok;
+    });
+  }
   for(const term of [...KEEP].sort((a, b) => b.length - a.length)){
     const re = new RegExp('\\b' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
     if(!re.test(held)) continue;
@@ -1153,7 +1400,28 @@ async function gtranslate(part){
   // 佔位符必須原封不動回來，否則寧可放棄這一段
   if(!marks.every((_, i) => zh.includes('ZZ' + i + 'ZZ'))) throw new Error('專有名詞還原失敗');
   marks.forEach((term, i) => { zh = zh.split('ZZ' + i + 'ZZ').join(term); });
+  for(const [re, to] of POST) zh = zh.replace(re, to);
   return zh.replace(/([，。、；：！？（）])\s+/g, '$1').trim();
+}
+
+/* 標題翻譯的後備：雲端批次翻譯偶爾被 Google 限流，標題就原樣留英文。
+   打開畫面時把還是英文的標題在瀏覽器裡現翻（跟全文一樣存在手機上，下次不再翻）。
+   一次只翻一則，遇到限流就停，不要連續打一堆請求。 */
+const hasCJK = t => /[\u4e00-\u9fff]/.test(t || '');
+async function fillZh(root){
+  for(const el of root.querySelectorAll('[data-en]')){
+    const en = el.dataset.en;
+    if(!en || hasCJK(el.dataset.zh)) continue;
+    let zh;
+    try { zh = await translateBody(en); } catch(e) { return; }
+    if(!hasCJK(zh)) continue;
+    el.dataset.zh = zh;
+    const t = el.querySelector('.t, .it');
+    if(t) t.textContent = zh;
+    const im = el.querySelector('.im');
+    if(im && !im.querySelector('.orig'))
+      im.insertAdjacentHTML('beforeend', '<button class="orig" type="button">原文</button>');
+  }
 }
 
 async function translateBody(text){

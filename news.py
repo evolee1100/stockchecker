@@ -38,11 +38,15 @@ def _fetch(url, timeout=25):
 
 
 def _ago(dt):
-    """把日期變成「3 天前」這種好讀的相對時間。"""
-    days = (datetime.now(MYT).date() - dt.date()).days
-    if days <= 0:
-        return "今天"
-    if days == 1:
+    """把日期變成「3 小時前」「昨天」這種好讀的相對時間。"""
+    now = datetime.now(MYT)
+    hours = (now - dt).total_seconds() / 3600
+    if hours < 1:
+        return "剛剛"
+    if hours < 24:
+        return "{} 小時前".format(int(hours))
+    days = (now.date() - dt.date()).days
+    if days <= 1:
         return "昨天"
     if days < 30:
         return "{} 天前".format(days)
@@ -51,8 +55,7 @@ def _ago(dt):
     return "{} 年前".format(days // 365)
 
 
-def google_news(query, limit=6, window="90d"):
-    """媒體報導。query 例如 'Sentral REIT'。"""
+def _gnews_window(query, window):
     q = urllib.parse.quote('"{}" when:{}'.format(query, window))
     try:
         root = ET.fromstring(_fetch(GNEWS.format(q=q)))
@@ -76,24 +79,199 @@ def google_news(query, limit=6, window="90d"):
                 title = head
                 source = source or tail
 
-        when, iso = "", ""
+        ts, iso, when = 0, "", ""
         pub = item.findtext("pubDate")
         if pub:
             try:
                 dt = datetime.strptime(pub, "%a, %d %b %Y %H:%M:%S %Z")
                 dt = dt.replace(tzinfo=timezone.utc).astimezone(MYT)
-                when, iso = _ago(dt), dt.strftime("%Y-%m-%d")
+                ts, iso, when = dt.timestamp(), dt.strftime("%Y-%m-%d"), _ago(dt)
             except Exception:
                 pass
-
         out.append({"title": htmlmod.unescape(title.strip()), "url": link,
-                    "source": source, "when": when, "date": iso})
-        if len(out) >= limit:
-            break
+                    "source": source, "when": when, "date": iso, "ts": ts})
     return out
 
 
-def bursa_announcements(code, limit=6):
+# 不是新聞報導的來源：社群貼文、預測農場、產品部落格、無關的生活新聞。
+# 時間排序之後這類內容特別容易擠到前面，必須先濾掉。
+NOISE_SOURCES = {
+    "moomoo", "pluang", "unisba media", "techpowerup", "nvidia", "nvidia developer",
+    "worldfirst.com", "hubbis", "the business manual", "wake up singapore", "says.com",
+    "business manual",
+    # 自動生成的財經文，稽核時發現內容常與事實不符，卻常排在第一則
+    "ad hoc news",
+}
+_EMOJI = re.compile("[\U0001F300-\U0001FAFF\u2600-\u27BF]")
+_CASHTAG = re.compile(r"\$[A-Z]{2,}")
+
+
+def _is_noise(a):
+    src = (a.get("source") or "").strip().lower()
+    if src in NOISE_SOURCES:
+        return True
+    t = a.get("title") or ""
+    # 社群貼文的特徵：表情符號、$股票代號、第一人稱「Me:」
+    return bool(_EMOJI.search(t) or _CASHTAG.search(t) or re.search(r"\bMe:", t))
+
+
+_WORD = re.compile(r"[a-z0-9]{3,}")
+
+# 股價異動的字眼：使用者最怕漏掉的就是「某某股大跌」這種報導
+_MOVE = re.compile(r"\b(tumbl|plung|slump|slid|slide|sink|sank|fall|fell|drop|dive|"
+                   r"crash|jump|surg|soar|rall|spike|rebound|hits? (a )?\d+-(week|month|year) low)",
+                   re.I)
+# 一篇講很多家公司的綜合報導，對單一公司來說資訊量很低
+_ROUNDUP = re.compile(r"^(insider moves|trading ideas|stocks to watch|market movers|"
+                      r"stocks? on the move|what to expect)", re.I)
+# 券商研究部對「別家公司」的評等：標題裡有 Maybank，講的卻不是 Maybank
+# 「這家銀行的研究部門對別家公司的評級」：Maybank Research Downgrades First Resources、
+# RHB keeps Apac Realty at buy。標題裡有公司名，但講的是別人。
+# 只在「公司名（+ Research/IB 等）緊接著評級動詞」時才算，
+# 「House Keeps Outperform on Public Bank」這種評的是自己的，不能降級
+_BROKER_VERB = (r"(?:\s+(?:research|ib|investment bank|securities|capital|bank|group|"
+                r"digital|islamic))*\s+(?:maintains|keeps|reiterates|upgrades?|downgrades?|"
+                r"initiates|rates|raises|cuts|lifts|trims|retains|sets|starts)\b")
+
+
+_STOP = {"the", "and", "for", "from", "with", "after", "over", "into", "amid",
+         "its", "has", "have", "will", "says", "said", "on", "to", "of", "in"}
+
+
+def _tokens(t):
+    return set(_WORD.findall(t.lower())) - _STOP
+
+
+_MONEY = re.compile(r"(\d+(?:\.\d+)?)\s*(?:bil(?:lion)?|mil(?:lion)?|b\b|m\b)", re.I)
+_PCT = re.compile(r"(\d+(?:\.\d+)?)\s*(?:%|per ?cent|sen\b)", re.I)
+_DATE = re.compile(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})\b", re.I)
+
+
+def _prints(rx, t):
+    return {"".join(g).lower().rstrip("0").rstrip(".") for g in
+            (m.groups() for m in rx.finditer(t))}
+
+
+def _same_event(a, b):
+    """兩則標題是不是在講同一件事。
+
+    只比對字詞擋不住「同一事件換個寫法」：
+      Maybank finalises RM2.5bil sukuk ／ Maybank Issues 2.5 Billion Ringgit in AT1 Islamic Bonds
+      Oct 23 ruling on bid to restrain RHB ... ／ High Court to rule Oct 23 on bid to stop RHB ...
+    所以另外用金額、百分比、日期當「指紋」：
+      - 字詞重疊 ≥ 四成 → 同一件
+      - 同一個金額（億、百萬）而且至少一個相同的字（通常就是公司名）→ 同一件
+      - 同一個百分比或日期，而且至少兩個相同的字 → 同一件
+    """
+    ta, tb = _tokens(a), _tokens(b)
+    if not ta or not tb:
+        return False
+    common = ta & tb
+    if len(common) / len(ta | tb) >= 0.4:
+        return True
+    if _prints(_MONEY, a) & _prints(_MONEY, b) and common:
+        return True
+    return bool((_prints(_PCT, a) & _prints(_PCT, b)) or
+                (_prints(_DATE, a) & _prints(_DATE, b))) and len(common) >= 2
+
+
+# 公益活動、信用卡／App 推廣、粉絲排隊這類報導跟股價無關，
+# 就算標題提到公司名也排到最後，免得擠掉真正會影響股價的消息
+_SOFT = re.compile(r"\b(youths?|students?|scholarships?|asnaf|b40|charity|donat\w*|csr|"
+                   r"contest|festival|fans|queue|playground|perks|cash ?back|debit card|"
+                   r"credit card|app\b|campaign|giveaway|sponsor\w*|makeover|renovation)", re.I)
+
+
+def _tier(a, names):
+    """關聯度分級：0 = 講這家公司而且是股價異動，1 = 講這家公司，2 = 其他（含公益、促銷）。"""
+    t = a["title"]
+    low = t.lower()
+    mentions = any(re.search(r"\b" + re.escape(n.lower()) + r"\b", low) for n in names)
+    if not mentions or _ROUNDUP.search(t) or t.count(",") >= 3:
+        return 2
+    if any(re.match(r"\s*" + re.escape(n.lower()) + _BROKER_VERB, low) for n in names):
+        return 2
+    # 股價異動的字眼要搭配幅度（%、令吉、仙、N 個月低點）才算，
+    # 否則「BTS 限量簽帳卡 drops」這種「推出」也會被當成股價下跌
+    moved = _MOVE.search(t) and re.search(
+        r"\d+(\.\d+)?\s*%|RM\s?\d|\d+\s*sen\b|\d+-(week|month|year)", t, re.I)
+    if moved:
+        return 0
+    return 2 if _SOFT.search(t) else 1
+
+
+def google_news(query, limit=6, aliases=()):
+    """媒體報導：先看跟這家公司有沒有關，再看新不新。
+
+    演進：
+    - 最早是 90 天窗口、照 Google 相關性取前 6 則——最前面常是兩個月前的舊聞。
+    - 改成最新優先後，又被企業社會責任新聞、多公司綜合報導、券商評別家公司、
+      同一事件的重複報導佔滿，使用者最在意的「RHB 大跌 9%」反而被擠掉。
+    - 冷門股的 7 天窗口會被 Google 寬鬆比對到的無關報導湊滿 6 則，
+      於是不再往外擴，真正的公司新聞永遠抓不到。
+
+    現在：窗口從 1 天開始（熱門股的 7 天窗口會碰到 Google 100 則上限，
+    而那 100 則是依相關性挑的、不是最新的），只有「真的在講這家公司」的報導
+    才算進數量，不夠才往外擴；同一事件只留一則。
+    """
+    names = [query] + [a for a in aliases if a]
+    seen_titles, pool = [], []
+    for window in ("1d", "7d", "30d", "90d"):
+        for a in _gnews_window(query, window):
+            if _is_noise(a) or any(_same_event(a["title"], t) for t in seen_titles):
+                continue
+            seen_titles.append(a["title"])
+            a["tier"] = _tier(a, names)
+            pool.append(a)
+        if sum(1 for a in pool if a["tier"] < 2) >= limit:
+            break
+
+    pool.sort(key=lambda a: (a["tier"], -a["ts"]))
+    return [{k: v for k, v in a.items() if k != "tier"} for a in pool[:limit]]
+
+
+_MARKET = re.compile(r"\b(klci|bursa|market|stocks|shares|equities|foreign (funds|investors)|"
+                     r"ringgit|index|blue[- ]chips?)\b", re.I)
+_CLOSE = re.compile(r"\b(ends?|closes?|closed|finish(es|ed)?|at close|ends? (the )?week|"
+                    r"settles?)\b", re.I)
+
+
+def market_headlines(limit=6):
+    """馬股大盤的最新消息——回答「今天市場為什麼這樣走」。
+
+    稽核發現原本前 3 則全是同一件「開盤反彈」，前一天「KLCI 跌到九個月低點」的
+    收盤新聞完全沒出現。現在：同事件只留一則、排除個股新聞、
+    休市時把最近一則收盤總結排在最前面、交易時段內保證它在前 3 則。
+    """
+    seen_titles, pool = [], []
+    for q in ("Bursa Malaysia", "FBM KLCI", "Malaysian stocks"):
+        for a in _gnews_window(q, "3d"):
+            t = a["title"]
+            if _is_noise(a) or not _MARKET.search(t):
+                continue
+            if any(_same_event(t, x) for x in seen_titles):
+                continue
+            seen_titles.append(t)
+            pool.append(a)
+    pool.sort(key=lambda a: -a["ts"])
+
+    # 收盤總結才會講「為什麼」。休市時（晚上、清晨、週末）把最近一則排第一；
+    # 交易時段內最新的盤中消息比昨天的收盤重要，收盤總結只保證留在前 3 則。
+    # 期貨的收盤不算——「KLCI Futures End Lower」沒有解釋任何事
+    close = next((a for a in pool if _CLOSE.search(a["title"])
+                  and "futures" not in a["title"].lower()), None)
+    if close:
+        now = datetime.now(MYT)
+        trading = now.weekday() < 5 and (9, 0) <= (now.hour, now.minute) < (17, 0)
+        pos = pool.index(close)
+        if not trading:
+            pool.insert(0, pool.pop(pos))
+        elif pos > 2:
+            pool.insert(2, pool.pop(pos))
+    return pool[:limit]
+
+
+def bursa_announcements(code, limit=12):
     """Bursa 官方公告。code 是純數字代碼，例如 '5123'。"""
     try:
         page = _fetch(KLSE.format(code=code))
@@ -434,7 +612,7 @@ def fetch(stock):
     code = stock["symbol"].split(".")[0]
     has_code = bool(re.match(r"^\d{4}[A-Z]{0,3}$", code))
     return {
-        "articles": google_news(query) if query else [],
+        "articles": google_news(query, aliases=stock.get("aliases", ())) if query else [],
         "filings": bursa_announcements(code) if has_code else [],
     }
 

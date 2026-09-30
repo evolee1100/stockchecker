@@ -40,6 +40,78 @@ TERMS = [
     "ESG", "REIT", "REITs", "M-REIT", "M-REITs", "GDP", "CPI", "RM",
 ]
 
+# ---------------------------------------------------------------- 金融慣用語
+# 機器翻譯對這些片語會字面直譯：bargain hunting →「特價狩獵」、
+# at opening →「在打開便宜貨時」、what to expect →「好玩新鮮事」。
+# 送翻譯之前先換成正確的中文，Google 遇到中文會原樣保留。
+# 順序很重要：長片語要排在它包含的短片語前面。
+PHRASES = [
+    (r"what to expect on (Bursa Malaysia|Bursa|the market)", "\\1 盤前展望："),
+    (r"bargain[- ]hunting (emerges|returns|kicks in)", "逢低買盤進場"),
+    (r"bargain[- ]hunting", "逢低買盤"),
+    (r"profit[- ]taking", "獲利了結"),
+    (r"window[- ]dressing", "作帳行情"),
+    # foreign selling、selling pressure 不再事先替換：佔位符把句子切斷後，
+    # 引擎把「as foreign selling pressure persists」譯成「外資賣壓 仍堅挺」（意思相反）。
+    # 讓引擎整句翻（「由於外國拋售壓力持續」），再由 POST 把用詞改成習慣說法。
+    (r"foreign buying", "外資買盤"),
+    (r"foreign (funds|investors) (net )?(sold|sell|dumped)", "外資賣超"),
+    (r"foreign (funds|investors) (net )?(bought|buy)", "外資買超"),
+    (r"net (sellers|selling)", "賣超"),
+    (r"net (buyers|buying)", "買超"),
+    (r"at (the )?open(ing)?( bell)?", "開盤時"),
+    (r"at (the )?(mid-?day|midday) break", "午盤時"),
+    (r"at (the )?close(?! to)", "收盤時"),
+    # 修飾詞要逐一列出對照。用 \1 帶入的話 "sharply" 會原樣留在中文裡
+    (r"opens? sharply higher", "大幅開高"),
+    (r"opens? sharply lower", "大幅開低"),
+    (r"opens? slightly higher", "小幅開高"),
+    (r"opens? slightly lower", "小幅開低"),
+    (r"(ends?|closes?|finish(es)?) sharply higher", "大幅收高"),
+    (r"(ends?|closes?|finish(es)?) sharply lower", "大幅收低"),
+    (r"(ends?|closes?|finish(es)?) slightly higher", "小幅收高"),
+    (r"(ends?|closes?|finish(es)?) slightly lower", "小幅收低"),
+    (r"opens? higher", "開高"),
+    (r"opens? lower", "開低"),
+    (r"(ends?|closes?|finish(es)?) higher", "收高"),
+    (r"(ends?|closes?|finish(es)?) lower", "收低"),
+    # 「retreats sharply」只換 sharply 會變成「回落 大幅」，動詞一起換
+    (r"(retreats?|retreated|pulls? back) sharply", "大幅回落"),
+    (r"(falls?|fell|drops?|dropped|slides?|slid|slumps?|slumped) sharply", "大幅下跌"),
+    (r"(rises?|rose|climbs?|climbed|gains?|gained|jumps?|jumped) sharply", "大幅上漲"),
+    (r"(rebounds?|rebounded) sharply", "大幅反彈"),
+    (r"sharply", "大幅"),
+    (r"caution lingers", "謹慎情緒未退"),
+    (r"cautious sentiment", "謹慎情緒"),
+    (r"risk-off", "避險情緒"),
+    (r"risk-on", "風險偏好回升"),
+    (r"blue[- ]chips?", "藍籌股"),
+    (r"key index", "綜合指數"),
+    (r"benchmark index", "基準指數"),
+    (r"(rising|higher) (bond )?yields", "殖利率上升"),
+    (r"rate cut", "降息"),
+    (r"rate hike", "升息"),
+    (r"private placement", "私募配售"),
+    (r"rights issue", "附加股發行"),
+    (r"bonus issue", "紅股發行"),
+    (r"final (single[- ]tier )?dividend", "末期股息"),
+    (r"(first |second )?interim (single[- ]tier )?dividend", "中期股息"),
+    (r"special (single[- ]tier )?dividend", "特別股息"),
+    (r"single[- ]tier dividend", "單層股息"),
+    (r"dividend", "股息"),
+    (r"target price", "目標價"),
+    (r"upgrade[sd]?", "調升評級"),
+    (r"downgrade[sd]?", "調降評級"),
+]
+PHRASES = [(re.compile(r"\b" + p + r"\b", re.I), zh) for p, zh in PHRASES]
+
+
+def _phrases(text):
+    for pat, zh in PHRASES:
+        text = pat.sub(lambda m: m.expand(zh), text)
+    return text
+
+
 # ---------------------------------------------------------------- 公告類別
 CATEGORY = {
     "Listing Circulars": "上市通函",
@@ -157,9 +229,21 @@ def _mymemory(text):
 
 
 
+# 引擎翻得對、但不是馬股慣用語的詞，翻完再換。
+# 跟 PHRASES 不同，這些是中文換中文，不會打斷英文句子的結構。
+POST = [
+    (r"(外國|海外|外資)(投資者)?(的)?拋售(壓力)?", "外資賣壓"),
+    (r"拋壓壓力|拋售壓力", "賣壓"),
+    (r"逢低吸收", "逢低買盤"),
+    (r"馬來西亞證券交易所|大馬交易所", "馬交所"),
+]
+
+
 def _polish(text):
     """機器翻譯後的收尾：中文標點後不該有空格，單位縮寫補成中文。"""
     t = text
+    for pat, zh in POST:
+        t = re.sub(pat, zh, t)
     # 還原佔位符後常留下「，  Sentral」這種標點後的空格
     t = re.sub(r"([，。、；：！？（）「」])\s+", r"\1", t)
     t = re.sub(r"\s+([，。、；：！？）」])", r"\1", t)
@@ -175,8 +259,25 @@ def _polish(text):
 
 
 def _machine(text):
-    """公司名先換成佔位符，翻完再換回來；換不回來就放棄，回傳 None 保留英文。"""
-    protected, holder = [], text
+    """先把公司名與金融慣用語換成佔位符，翻完再換回來。
+
+    佔位符的原因：如果直接把中文塞進英文句子（「Bursa ends 大幅收低 on ...」），
+    句子變成中英混雜，翻譯引擎會搞不清楚要翻什麼，後半段乾脆不翻。
+    用佔位符的話，引擎看到的是完整英文句子結構，翻完的語序才對。
+
+    還原失敗（佔位符被引擎吃掉）就放棄，回傳 None 保留英文。
+    """
+    protected, holder = [], text      # protected: 每個佔位符要還原成的文字
+
+    # 1) 金融慣用語 → 還原時換成正確中文
+    for pat, zh in PHRASES:
+        def sub(m, zh=zh):
+            token = "ZZ{}ZZ".format(len(protected))
+            protected.append(m.expand(zh).strip())
+            return token
+        holder = pat.sub(sub, holder)
+
+    # 2) 公司名與縮寫 → 還原時保持英文原樣
     for term in sorted(TERMS, key=len, reverse=True):
         # 短詞一定要加 \b，否則 "RM" 會配到 "farm"、"ROE" 會配到 "Roe"
         pat = re.escape(term)
@@ -201,9 +302,27 @@ def _machine(text):
         ok = all("ZZ{}ZZ".format(i) in out for i in range(len(protected)))
         if not ok:
             continue
+        # 檢查要在還原之前做：還原後的中文可能全是對照表自己塞的，
+        # 翻譯引擎其實整句沒翻（半英文的結果也會被當成成功）
+        engine_part = re.sub(r"ZZ\d+ZZ", "", out)
+        if not re.search(r"[一-鿿]", engine_part):
+            continue
+        if len(re.findall(r"[A-Za-z]{4,}", engine_part)) > 3:
+            continue          # 引擎產出裡還留著一堆英文單字，視為沒翻完
         for i, term in enumerate(protected):
             out = out.replace("ZZ{}ZZ".format(i), term)
-        if re.search(r"[一-鿿]", out):     # 真的有中文才算成功
+        return _polish(out)
+
+    # 備援：佔位符被翻譯引擎吃掉（實測 MyMemory 常丟掉句首的佔位符）時，
+    # 改成只把慣用語直接換成中文、公司名不保護，再試一次。
+    # 語序可能沒那麼好，但總比整句退回英文強。
+    plain = _phrases(text)
+    for backend in (_google, _mymemory):
+        try:
+            out = backend(plain)
+        except Exception:
+            continue
+        if out and re.search(r"[一-鿿]", out):
             return _polish(out)
     return None
 

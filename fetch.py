@@ -17,6 +17,7 @@ from datetime import datetime, timedelta, timezone
 import analyze
 import digest
 import fundamentals
+import market
 import news
 import palm
 import translate
@@ -372,6 +373,49 @@ def main():
             st["myr_rate"] = fx
         st["digest"] = digest.build(st)
 
+    # ---- 全市場：漲跌排行、IPO、大盤快訊 ----
+    # 追蹤清單只有 49 檔，看不到自己沒追的股票；這裡補上「整個市場今天怎麼了」
+    mk = {}
+    try:
+        qs = market.quotes()
+        mv = market.movers(qs)
+        slim = lambda q: {k: q[k] for k in ("short", "name", "code", "price", "pct",
+                                            "mcap", "sector_zh", "board")}
+        mk["movers"] = {"up": [slim(q) for q in mv["up"]],
+                        "down": [slim(q) for q in mv["down"]],
+                        "universe": mv["universe"], "total": mv["total"]}
+        # 標明這份排行是哪一天的、收盤了沒。每 3 小時更新一次，半夜、清晨、
+        # 週末那幾次拿到的是上一個交易日的收盤，不能寫成「今日」
+        klse = next((s for s in stocks if s.get("symbol") == "^KLSE"), None)
+        if klse and klse.get("market_time"):
+            now = datetime.now(MYT)
+            mt = datetime.strptime(klse["market_time"], "%Y-%m-%d %H:%M")
+            mk["movers"]["as_of"] = mt.strftime("%Y-%m-%d")
+            # Bursa 下午 5 點收盤；收盤後 Yahoo 的時間戳會停在 5 點左右
+            if mt.date() == now.date() and (now.hour, now.minute) < (17, 10):
+                mk["movers"]["live"] = True
+                mk["movers"]["time"] = now.strftime("%H:%M")
+        mk["ipo"] = market.ipo_summary(qs, datetime.now(MYT).date())
+        print("\n全市場 {} 檔，篩選後比較 {} 檔；IPO 即將 {}、近期 {}".format(
+            mv["total"], mv["universe"], len(mk["ipo"]["upcoming"]),
+            len(mk["ipo"]["recent"])), flush=True)
+    except Exception as exc:  # noqa: BLE001 - 全市場資料掛了不能拖垮整份更新
+        print("  ✗ 全市場資料: {}".format(exc), flush=True)
+    try:
+        heads = news.market_headlines()
+        for a in heads:
+            a["title_zh"] = translate.text_zh(a["title"])
+            # 大盤快訊是「為什麼今天這樣走」的答案，值得抓內文讓人點開就能讀
+            real = news.resolve_google_url(a["url"])
+            if real != a["url"]:
+                a["source_url"] = real
+            body = news.article_body(real)
+            if body:
+                a["body"] = body
+        mk["headlines"] = heads
+    except Exception as exc:  # noqa: BLE001
+        print("  ✗ 市場快訊: {}".format(exc), flush=True)
+
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())
     print("\n重點 {} 條：".format(len(highlights)), flush=True)
     for h in highlights[:5]:
@@ -382,6 +426,7 @@ def main():
         "updated_at": datetime.now(MYT).strftime("%Y-%m-%d %H:%M:%S (MYT)"),
         "stocks": stocks,
         "highlights": highlights,
+        "market": mk,
         "errors": errors,
     }
 

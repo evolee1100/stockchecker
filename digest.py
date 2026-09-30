@@ -68,6 +68,16 @@ def _sources(articles):
     return seen
 
 
+def _holder(name):
+    """持有人縮寫。代理人（nominees）只是代持，真正的持有人在後面。"""
+    import analyze
+    short = analyze._short(name)
+    if short != (name or "")[:22]:
+        return short
+    return re.sub(r"^.*?(Nominees|Trustees)\s*(\([^)]*\))?\s*(Sdn\.?\s*Bhd\.?|Berhad|Bhd)?\s*",
+                  "", name or "").strip()[:30] or (name or "")[:30]
+
+
 def build(stock):
     s = stock
     f = s.get("fundamentals") or {}
@@ -108,16 +118,61 @@ def build(stock):
     out.append(("價格", line))
 
     # ---------- 官方公告 ----------
-    fl = [x for x in (s.get("filings") or []) if x.get("body_zh")]
-    if fl:
-        rows = []
-        for x in fl[:2]:
+    filings = s.get("filings") or []
+    rows = []
+    # 同一個大股東連續申報（EPF 常常一週報五六次）合併成一句「淨增持／淨減持」，
+    # 逐則列出只會看到兩段一模一樣的長句，看不出方向
+    groups, used = {}, set()
+    for x in filings:
+        if x.get("move"):
+            # 用縮寫分組：EPF 透過不同代理人帳戶申報，全名各不相同
+            groups.setdefault(_holder(x["move"]["holder"]), []).append(x)
+    for holder, xs in list(groups.items())[:2]:
+        seen, buy, sell = set(), 0.0, 0.0
+        for x in xs:
+            mv = x["move"]
+            if mv["key"] in seen:            # 第138條與第219條會重複申報同一筆
+                continue
+            seen.add(mv["key"])
+            sh = float(mv.get("shares") or 0)
+            if mv["act"] == "增持":
+                buy += sh
+            else:
+                sell += sh
+        days = sorted(x["date"] for x in xs if x.get("date"))
+        md = lambda iso: "{}/{}".format(int(iso[5:7]), int(iso[8:10]))
+        net = buy - sell
+        span = (md(days[0]) if days[0] == days[-1] else
+                "{}–{}".format(md(days[0]), md(days[-1]))) if days else ""
+        if len(seen) == 1:
+            what = "{} {:,.0f} 股".format("增持" if buy else "減持", buy or sell)
+        elif buy and sell:
+            what = "申報 {} 次，增持 {:,.0f} 股、減持 {:,.0f} 股，淨{} {:,.0f} 股".format(
+                len(seen), buy, sell, "增持" if net >= 0 else "減持", abs(net))
+        else:
+            what = "申報 {} 次，共{} {:,.0f} 股".format(
+                len(seen), "增持" if buy else "減持", buy or sell)
+        line = "{} {} {}".format(span, holder, what).strip()
+        p_new, p_old = xs[0]["move"].get("pct"), xs[-1]["move"].get("pct")
+        if p_new and p_old and len(xs) > 1:
+            line += "，持股 {}% → {}%".format(p_old, p_new)
+        elif p_new:
+            line += "，持股 {}%".format(p_new)
+        rows.append(line + "。")
+    for xs in groups.values():
+        used.update(id(x) for x in xs)
+    # 沒解析出股數的持股申報也不逐則列（內容就是一長串代理人名稱）
+    fl = [x for x in filings if x.get("body_zh") and id(x) not in used
+          and not any(k in (x.get("title_zh") or "") for k in ("持股變動", "權益變動"))]
+    if fl or rows:
+        # 一般公告（財報、派息、訴訟）至少留一則，不能被持股申報的摘要擠掉
+        for x in fl[:max(1, 2 - len(rows))]:
             # 只把連續空白收成一個，不能整個刪掉——刪了會把英文擠成 SentralREITManagement
             body = re.sub(r"\s+", " ", x["body_zh"]).strip()
             rows.append("{}：{}".format(x.get("date", ""), body[:130] +
                                        ("…" if len(body) > 130 else "")))
         out.append(("公告", " ".join(rows)))
-    elif s.get("filings") and s.get("sector") != "AI 美股":
+    elif filings and s.get("sector") != "AI 美股":
         out.append(("公告", "最近 {} 則公告都沒有可抓取的內文，標題見下方清單。"
                     .format(len(s["filings"]))))
 
