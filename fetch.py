@@ -336,6 +336,24 @@ def main():
     with open(os.path.join(HERE, "watchlist.json"), encoding="utf-8") as fh:
         cfg = json.load(fh)
 
+    # 市場快訊最先做：它在首頁最上面，翻譯額度要先給它，
+    # 放在最後的話，額度常在逐檔抓新聞時就被用光
+    mk = {}
+    try:
+        heads = news.market_headlines()
+        for a in heads:
+            a["title_zh"] = translate.text_zh(a["title"])
+            # 大盤快訊是「為什麼今天這樣走」的答案，值得抓內文讓人點開就能讀
+            real = news.resolve_google_url(a["url"])
+            if real != a["url"]:
+                a["source_url"] = real
+            body = news.article_body(real)
+            if body:
+                a["body"] = body
+        mk["headlines"] = heads
+    except Exception as exc:  # noqa: BLE001
+        print("  ✗ 市場快訊: {}".format(exc), flush=True)
+
     total = len(cfg["stocks"])
     print("開始抓取 {} 檔\n".format(total), flush=True)
 
@@ -373,9 +391,8 @@ def main():
             st["myr_rate"] = fx
         st["digest"] = digest.build(st)
 
-    # ---- 全市場：漲跌排行、IPO、大盤快訊 ----
+    # ---- 全市場：漲跌排行、IPO（大盤快訊在最前面已經抓好）----
     # 追蹤清單只有 49 檔，看不到自己沒追的股票；這裡補上「整個市場今天怎麼了」
-    mk = {}
     try:
         qs = market.quotes()
         mv = market.movers(qs)
@@ -401,20 +418,6 @@ def main():
             len(mk["ipo"]["recent"])), flush=True)
     except Exception as exc:  # noqa: BLE001 - 全市場資料掛了不能拖垮整份更新
         print("  ✗ 全市場資料: {}".format(exc), flush=True)
-    try:
-        heads = news.market_headlines()
-        for a in heads:
-            a["title_zh"] = translate.text_zh(a["title"])
-            # 大盤快訊是「為什麼今天這樣走」的答案，值得抓內文讓人點開就能讀
-            real = news.resolve_google_url(a["url"])
-            if real != a["url"]:
-                a["source_url"] = real
-            body = news.article_body(real)
-            if body:
-                a["body"] = body
-        mk["headlines"] = heads
-    except Exception as exc:  # noqa: BLE001
-        print("  ✗ 市場快訊: {}".format(exc), flush=True)
 
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())
     print("\n重點 {} 條：".format(len(highlights)), flush=True)

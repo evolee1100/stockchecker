@@ -181,7 +181,10 @@ _cache = None
 _calls = 0                 # 這一輪已經打了幾次 API
 MAX_CALLS = 450            # 上限：翻譯服務掛掉時不要把整個更新拖死。
                            # 第一次跑要翻上百篇內文會超過這個數，翻不完的部分
-                           # 因為失敗不入快取，下一輪（一天三次）會自動補完。
+                           # 因為失敗不入快取，下一輪（每 3 小時）會自動補完。
+BODY_BUDGET = 300          # 內文最多用到這裡，剩下的留給標題。
+                           # 標題是首頁一眼看到的，內文點開時瀏覽器也能現翻；
+                           # 公告從 6 則加到 12 則那次，額度被內文用光，138 個標題留英文。
 
 
 def _load_cache():
@@ -408,6 +411,9 @@ def paragraph_zh(text, chunk=450):
         buf += sentence + " "
     if buf.strip():
         parts.append(buf.strip())
+
+    if _calls + len(parts) > BODY_BUDGET:   # 翻不完就別開始，額度留給標題
+        return t
 
     out = []
     for part in parts:
