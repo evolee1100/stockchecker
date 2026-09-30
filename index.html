@@ -540,6 +540,14 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .ipor .r{text-align:right;font-variant-numeric:tabular-nums}
 .ipor .r .p{font-size:12.5px;color:var(--read)}
 .ipor .r .c{font-size:13px;font-weight:650}
+.ipor{align-items:start}
+.ipor .n,.ipor .s{white-space:normal;overflow:visible}
+.ipor .fn{font-size:10.5px;color:var(--read);margin-top:1px}
+.ipor .biz{font-size:12px;color:var(--ink-2);line-height:1.5;margin-top:4px;
+           display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ipor .meta{font-size:11px;color:var(--read);line-height:1.5;margin-top:3px}
+.ipor .meta b{color:var(--ink-2);font-weight:600}
+.ipo-note{font-size:11px;color:var(--read);padding:9px 14px 2px;line-height:1.6}
 
 @media(max-width:700px){
   .mcard-h b{font-size:17.5px}
@@ -556,6 +564,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .ipor .d{font-size:13px} .ipor .d b{font-size:17px}
   .ipor .n{font-size:16px} .ipor .s{font-size:12.5px}
   .ipor .r .p{font-size:14px} .ipor .r .c{font-size:15.5px}
+  .ipor .fn{font-size:12.5px} .ipor .biz{font-size:14.5px} .ipor .meta{font-size:13px}
+  .ipo-note{font-size:13px}
 }
 
 .bi.more{display:none}
@@ -571,9 +581,9 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .mv-col + .mv-col{border-left:1px solid var(--line);border-top:none}
   .mvr{grid-template-columns:minmax(0,1fr) auto;padding:9px 11px;column-gap:6px}
   .mvr .n{font-size:15px}
-  .mvr .s{font-size:11.5px}
-  .mvr .p{display:none}
+  .mvr .s{font-size:12px}
   .mvr .c{font-size:15px}
+  .mvr .p{font-size:12.5px;font-weight:500;color:var(--ink-2)}
   .mv-h{padding:9px 11px 5px}
 }
 
@@ -1080,21 +1090,23 @@ function renderMovers(){
   const mv = D.market && D.market.movers;
   const host = document.getElementById('movers');
   if(!mv || (!mv.up.length && !mv.down.length)){ host.innerHTML = ''; return; }
-  const row = q => `<a class="mvr" href="${KSE(q.code)}" target="_blank" rel="noopener">
+  // 每列：名稱＋代號（Bursa 的四位數代號）／漲跌幅＋每股現價（令吉）
+  const row = q => `<a class="mvr" href="${KSE(q.code)}" target="_blank" rel="noopener" title="${esc(q.name || '')}">
       <div><div class="n">${esc(q.short)}</div>
-           <div class="s">${esc(q.sector_zh || '')}<span class="mc"> · 市值 RM${Math.round(q.mcap).toLocaleString()}M</span></div></div>
-      <div><div class="p">${ppx(q.price)}</div>
-           <div class="c ${cls(q.pct)}">${pc(q.pct)}</div></div></a>`;
+           <div class="s">${esc(q.code)} · ${esc(q.sector_zh || '')}<span class="mc"> · 市值 RM${Math.round(q.mcap).toLocaleString()}M</span></div></div>
+      <div><div class="c ${cls(q.pct)}">${pc(q.pct)}</div>
+           <div class="p">RM${ppx(q.price)}</div></div></a>`;
   const asOf = mv.live ? '今天盤中 ' + (mv.time || '')
              : mv.as_of ? (mv.as_of === mytToday() ? '今天收盤' : fmtWhen(mv.as_of) + ' 收盤')
              : '';
-  mcard('movers', '全市場漲跌排行', [asOf, '前 ' + Math.max(mv.up.length, mv.down.length) + ' 名'].filter(Boolean).join(' · '),
+  mcard('movers', '馬股漲跌排行', asOf || '全市場前 5 名',
     `<div class="mv">
        <div class="mv-col"><div class="mv-h up">漲最多</div>${mv.up.map(row).join('') || '<div class="mv-note">沒有上漲的</div>'}</div>
        <div class="mv-col"><div class="mv-h down">跌最多</div>${mv.down.map(row).join('') || '<div class="mv-note">沒有下跌的</div>'}</div>
      </div>
-     <div class="mv-note">主板與創業板中，股價 RM0.20、市值 RM2 億以上的 ${mv.universe} 檔
-       （共 ${mv.total.toLocaleString()} 檔）。排除仙股：RM0.005 跳一格就是 +100%，沒有參考價值。</div>`);
+     <div class="mv-note">馬來西亞交易所（Bursa Malaysia）主板與創業板。每列是「名稱、代號 · 行業」與「漲跌幅、每股現價（令吉）」，點一下看該股詳細資料。
+       只比較股價 RM0.20、市值 RM2 億以上的 ${mv.universe} 檔（共 ${mv.total.toLocaleString()} 檔）：
+       RM0.005 的仙股跳一格就是 +100%，沒有參考價值。</div>`);
 }
 
 function renderIPO(){
@@ -1102,21 +1114,43 @@ function renderIPO(){
   const host = document.getElementById('ipo');
   if(!ip || (!ip.upcoming.length && !ip.recent.length)){ host.innerHTML = ''; return; }
   const md = iso => { const [, m, d] = iso.split('-').map(Number); return m + '/' + d; };
-  const up = ip.upcoming.slice(0, 3).map(i => `<a class="ipor" href="${KSE(i.code)}" target="_blank" rel="noopener">
-      <div class="d"><b>${md(i.listing)}</b>${i.days_to === 0 ? '今天' : i.days_to + ' 天後'}</div>
-      <div><div class="n">${esc(i.short)}</div>
-           <div class="s">${esc([i.board, i.sector_zh].filter(Boolean).join(' · ') || i.name)}</div></div>
+  const MON = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+  const dm = t => { const m = /(\d{1,2})\s+([A-Za-z]{3})/.exec(t || ''); return m && MON[m[2]] ? MON[m[2]] + '/' + (+m[1]) : ''; };
+  // 金額換成「萬／億」令吉
+  const rm = v => !v ? '' : v >= 1e8 ? 'RM' + (v / 1e8).toFixed(2).replace(/\.?0+$/, '') + ' 億'
+                              : 'RM' + Math.round(v / 1e4).toLocaleString() + ' 萬';
+  // 「GB BOND HOLDINGS BERHAD」→「GB Bond Holdings Berhad」
+  const title = t => (t || '').toLowerCase().replace(/\b([a-z])([a-z]{3,})/g, (_, a, b) => a.toUpperCase() + b)
+                                 .replace(/\b([a-z]{1,3})\b/g, w => w.toUpperCase());
+  const detail = i => {
+    const meta = [
+      i.open && i.close ? `認購 ${dm(i.open)}–${dm(i.close)}` : '',
+      i.oversub ? `超額認購 <b>${i.oversub} 倍</b>` : '',
+      i.raise_m ? `集資 ${rm(i.raise_m * 1e6)}` : '',
+      i.mcap ? `上市市值 ${rm(i.mcap)}` : '',
+    ].filter(Boolean).join(' · ');
+    return `<div class="n">${esc(i.short)}${i.name_zh ? ' ' + esc(i.name_zh) : ''}</div>
+      <div class="s">代號 ${esc(i.code)} · 馬股${esc(i.board_zh || i.board || '')}${i.sector_zh ? ' · ' + esc(i.sector_zh) : ''}</div>
+      <div class="fn">${esc(title(i.name))}</div>
+      ${(i.business || i.about) ? `<div class="biz">${esc(i.business ? '業務：' + i.business : i.about)}</div>` : ''}
+      ${meta ? `<div class="meta">${meta}</div>` : ''}`;
+  };
+  const up = ip.upcoming.slice(0, 6).map(i => `<a class="ipor" href="${KSE(i.code)}" target="_blank" rel="noopener">
+      <div class="d"><b>${md(i.listing)}</b>${i.days_to === 0 ? '今天' : i.days_to === 1 ? '明天' : i.days_to + ' 天後'}</div>
+      <div>${detail(i)}</div>
       <div class="r"><div class="p">IPO 價</div>
            <div class="c">${i.ipo_price ? 'RM' + ppx(i.ipo_price) : '—'}</div></div></a>`).join('');
   const rc = ip.recent.filter(i => i.since_ipo != null).slice(0, 4).map(i => `<a class="ipor" href="${KSE(i.code)}" target="_blank" rel="noopener">
       <div class="d"><b>${md(i.listing)}</b>上市</div>
-      <div><div class="n">${esc(i.short)}</div>
-           <div class="s">${esc([i.board, i.sector_zh].filter(Boolean).join(' · '))}</div></div>
-      <div class="r"><div class="p">${ppx(i.ipo_price)} → ${ppx(i.price)}</div>
+      <div>${detail(i)}</div>
+      <div class="r"><div class="p">IPO ${ppx(i.ipo_price)}</div>
+           <div class="p">現價 ${ppx(i.price)}</div>
            <div class="c ${cls(i.since_ipo)}">${pc(i.since_ipo)}</div></div></a>`).join('');
   const broke = ip.recent.filter(i => i.since_ipo != null && i.since_ipo < 0).length;
   const withP = ip.recent.filter(i => i.since_ipo != null).length;
-  mcard('ipo', '新股 IPO', `即將上市 ${ip.upcoming.length} · 近 3 個月 ${ip.recent.length}`,
+  mcard('ipo', '馬股新股 IPO', `即將上市 ${ip.upcoming.length} 檔`,
+    '<div class="ipo-note">全部是在馬來西亞交易所（Bursa Malaysia）掛牌的新股，價格單位是令吉（RM）。' +
+    '創業板（ACE）是給成長型中小企業的板塊，風險比主板高。</div>' +
     (up ? '<div class="ipo-sec">即將上市</div>' + up : '') +
     (rc ? `<div class="ipo-sec">最近上市 · 上市後表現（${withP} 檔中 ${broke} 檔跌破 IPO 價）</div>` + rc : ''));
 }

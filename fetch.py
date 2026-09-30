@@ -6,6 +6,7 @@
 """
 
 import json
+import re
 import os
 import ssl
 import time
@@ -413,6 +414,23 @@ def main():
                 mk["movers"]["live"] = True
                 mk["movers"]["time"] = now.strftime("%H:%M")
         mk["ipo"] = market.ipo_summary(qs, datetime.now(MYT).date())
+        # IPO 的業務簡介：星洲日報是簡體，轉繁體；英文的翻成中文
+        for it in mk["ipo"]["upcoming"] + mk["ipo"]["recent"]:
+            for k in ("business", "about", "name_zh"):
+                v = it.get(k)
+                if not v:
+                    continue
+                if k == "about" and sum(c.isupper() for c in v[:80]) >= 40:
+                    it.pop(k)                      # 全大寫的是公告標題，不是介紹
+                    continue
+                if not re.search(r"[一-鿿]", v):
+                    # 「beverage blend maker」會被譯成「飲料混合機」；改成「maker of beverage blends」語意才對
+                    m = re.match(r"(.+?)\s+(provider|manufacturer|contractor|developer|supplier|"
+                                 r"specialist|operator|producer|distributor|maker)$", v, re.I)
+                    if m:
+                        v = "{} of {}".format(m.group(2), m.group(1))
+                it[k] = (translate.trad(v) if re.search(r"[一-鿿]", v)
+                         else translate.text_zh(v))
         print("\n全市場 {} 檔，篩選後比較 {} 檔；IPO 即將 {}、近期 {}".format(
             mv["total"], mv["universe"], len(mk["ipo"]["upcoming"]),
             len(mk["ipo"]["recent"])), flush=True)

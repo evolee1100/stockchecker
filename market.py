@@ -203,10 +203,123 @@ def ipos(today=None):
             "mcap": _num(field("Market Cap")),
             "board": field("Board"),
             "sector": field("Sector").title(),
+            "sub_sector": field("Sub sector").title(),
             "sector_zh": sector_zh(field("Sector").title()),
             "ipo_price": price,
         })
     return items
+
+
+BOARD_ZH = {"main market": "主板", "ace market": "創業板（ACE）",
+            "leap market": "LEAP 板（限資深投資者）"}
+
+
+def board_zh(board):
+    return BOARD_ZH.get((board or "").strip().lower(), board or "")
+
+
+def ipo_detail(code, short, name=""):
+    """IPO 個股頁的「Recent News」：業務簡介、超額認購倍數、中文名、板別。
+
+    IPO 清單卡片只有代號和英文名，看不出公司做什麼、甚至看不出是不是馬股。
+    個股頁底下有星洲日報的新股介紹（簡體中文，會寫「主要涉及……業務」）
+    和 The Star 的認購結果，從這裡抓。
+    """
+    try:
+        page = _fetch("/v2/stocks/view/" + code, timeout=25)
+    except Exception:
+        return {}
+    items = []
+    for li in re.findall(r'<li class="list-group-item[^"]*">(.*?)</li>', page, re.S):
+        a = re.search(r'<h6><a[^>]*href="([^"]+)"[^>]*>(.*?)</a></h6>', li, re.S)
+        body = re.search(r'<div class="text-justify">(.*?)</div>', li, re.S)
+        tm = re.search(r'<time datetime="([^"]+)"', li)
+        src = re.search(r'<span class="pull-right[^"]*">\s*([^<]+?)\s*<', li)
+        if not a:
+            continue
+        items.append({"title": _text(a.group(2)), "url": BASE + a.group(1),
+                      "summary": re.sub(r"\[vip_content_start\].*", "", _text(body.group(1)) if body else ""),
+                      "time": tm.group(1) if tm else "", "source": src.group(1) if src else ""})
+
+    out = {}
+    blob = " ".join(i["title"] + " " + i["summary"] for i in items)
+    m = (re.search(r"oversubscribed by ([\d.]+) times", blob, re.I)
+         or re.search(r"超[额額]认?[购購]率?(?:报|報)?\s*([\d.]+)\s*倍", blob)
+         or re.search(r"([\d.]+)\s*倍超[额額]认?[购購]", blob))
+    if m:
+        out["oversub"] = float(m.group(1))
+    m = re.search(r"raise[sd]? (?:about |some |up to )?RM\s?([\d.]+)\s?(mil|million|bil|billion)", blob, re.I)
+    if m:
+        out["raise_m"] = float(m.group(1)) * (1000 if m.group(2).lower().startswith("bil") else 1)
+    # 中文名：星洲寫「GB联合（GBBOND,0475,创业板…）」「Pioneer Heat控股(PIONEER,0471,…)」
+    m = re.search(r"((?:[A-Za-z0-9]+ )?[A-Za-z0-9]*[一-鿿]{1,8})\s*[（(]\s*" + re.escape(short)
+                  + r"\s*[,，]\s*" + re.escape(code), blob)
+    if m:
+        out["name_zh"] = re.sub(r"^.*(?:挂牌的|掛牌的|上市的|登场的|登場的|的)", "", m.group(1)).strip()
+
+    # 公司的稱呼：代號、英文名第一個字（至少 3 個字母）、英文名前兩個字、中文名
+    words = re.findall(r"[A-Za-z0-9&]+", name or "")
+    names = {short.lower()}
+    if words and len(words[0]) >= 3:
+        names.add(words[0].lower())
+    if len(words) >= 2:
+        names.add((words[0] + " " + words[1]).lower())
+    if out.get("name_zh"):
+        names.add(out["name_zh"].lower())
+    about_it = lambda t: any(n in t.lower() for n in names)
+    # 只看標題就在講這家公司的報導；「IPO Watch: 三家公司」這種合集會張冠李戴
+    mine = [i for i in items if about_it(i["title"])] or [i for i in items if about_it(i["summary"][:120])]
+
+    # 業務簡介：先試固定寫法（描述要緊貼在公司名前面），都沒有就挑一則介紹型報導的第一句
+    nm = "(?:" + "|".join(re.escape(n) for n in sorted(names, key=len, reverse=True)) + ")"
+    pats = [
+        (r"主要(?:涉及|从事|從事|经营|經營|业务为|業務為)([^。；]{4,90}?)(?:等)?(?:业务|業務)", False),
+        (r"([A-Za-z0-9一-鿿、，和及与與]{2,30}(?:供应商|供應商|承包商|制造商|製造商|服务商|服務商|开发商|開發商|"
+         r"生产商|生產商|提供商|营运商|營運商|经销商|經銷商))\s*[—–-]*\s*(?=" + nm + ")", True),
+        (r"((?:[A-Za-z&/-]+ ){1,5}(?:provider|manufacturer|contractor|developer|supplier|specialist|operator|"
+         r"producer|distributor|maker))\s+(?=" + nm + ")", False),
+    ]
+    # 標題和內文分開比對，否則會把標題尾巴和內文開頭接成一句
+    texts = [t for it in mine for t in (it["title"], it["summary"])]
+    for t in texts:
+        for pat, strip_de in pats:
+            b = re.search(pat, t, re.I)
+            if not b:
+                continue
+            biz = b.group(1).strip("，, ")
+            if strip_de:                     # 「即将登陆马股创业板的柔佛建筑工程承包商」→「柔佛建筑工程承包商」
+                biz = re.sub(r"^.*的", "", biz)
+            else:                            # 「Butterfield Newly listed beverage blend maker」→「beverage blend maker」
+                ws = biz.split()
+                while ws and (ws[0].lower() in names or ws[0].lower() in
+                              ("newly", "listed", "newly-listed", "the", "a", "an", "local", "leading")):
+                    ws.pop(0)
+                biz = " ".join(ws)
+            if len(biz) >= 4:
+                out["business"] = biz
+                break
+        if "business" in out:
+            break
+    if "business" not in out and mine:
+        def score(i):
+            sc = 2 if re.search(r"[一-鿿]", i["summary"]) else 0
+            if re.search(r"业务|業務|供应|供應|制造|製造|工程|provider|manufactur|engaged|involved|"
+                         r"principally|specialis|IPO|首次公开|首次公開", i["title"] + i["summary"], re.I):
+                sc += 3
+            return sc
+        # 全大寫的是公告標題（法律文件），不是介紹
+        mine = [i for i in mine if sum(c.isupper() for c in i["summary"][:80]) < 40] or mine
+        best = max(mine, key=score)
+        body = re.sub(r"^[（(][^）)]{2,16}[讯訊][）)]|^[A-Z][A-Z ]{3,30}:\s*", "", best["summary"])
+        first = re.split(r"(?<=[。！？])|(?<=\.)\s", body)[0].strip()
+        if first:
+            out["about"] = first[:120]
+    if re.search(r"ACE Market|创业板|創業板", blob):
+        out["board_hint"] = "ACE Market"
+    elif re.search(r"Main Market|主板|主要板", blob):
+        out["board_hint"] = "Main Market"
+    out["news"] = [{k: i[k] for k in ("title", "url", "time", "source")} for i in items[:3]]
+    return out
 
 
 def ipo_summary(qs, today=None, recent_days=90):
@@ -230,6 +343,15 @@ def ipo_summary(qs, today=None, recent_days=90):
             recent.append(it)
     up.sort(key=lambda x: x["listing"])
     recent.sort(key=lambda x: x["listing"], reverse=True)
+    # 網頁上看得到的那幾檔（即將上市全部、最近上市前 6 檔）補上詳細資料
+    for it in up[:8] + recent[:6]:
+        it.update(ipo_detail(it["code"], it["short"], it.get("name", "")))
+        if not it.get("board") and it.get("board_hint"):
+            it["board"] = it["board_hint"]
+        it["board_zh"] = board_zh(it.get("board"))
+        # 上市後總股數 × IPO 價 = 上市市值；klsescreener 的 Issue Size 是總股數
+        if it.get("issue_size") and not it.get("mcap") and it.get("ipo_price"):
+            it["mcap"] = it["issue_size"] * it["ipo_price"]
     return {"upcoming": up, "recent": recent}
 
 

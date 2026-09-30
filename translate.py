@@ -442,6 +442,29 @@ def text_zh(text, delay=0.35):
     return t
 
 
+def trad(text):
+    """簡體中文轉繁體（星洲日報等大馬中文媒體是簡體）。失敗就原樣回傳，簡體也看得懂。"""
+    t = (text or "").strip()
+    if not t or not re.search(r"[一-鿿]", t):
+        return t
+    cache = _load_cache()
+    key = "簡→繁|" + t
+    if key in cache:
+        return cache[key]
+    url = ("https://clients5.google.com/translate_a/t?client=dict-chrome-ex"
+           "&sl=zh-CN&tl=zh-TW&q=" + urllib.parse.quote(t))
+    try:
+        data = json.loads(_http(url))
+        first = data[0][0] if isinstance(data[0], list) else data[0]
+        out = str(first).strip()
+    except Exception:
+        return t
+    if out:
+        cache[key] = out
+        return out
+    return t
+
+
 def paragraph_zh(text, chunk=450):
     """長文分段翻譯。
 
