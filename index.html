@@ -772,12 +772,16 @@ function priceChart(host, series, isIdx){
   const line = series.map((d,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(d.close).toFixed(1)}`).join(' ');
   const gid = 'pg'+Math.random().toString(36).slice(2,7);
 
-  // x 軸日期：頭、尾、加中間兩點
+  // x 軸日期：頭、尾、加中間兩點。
+  // 跨一年以上（1年／3年／5年）改標「年/月」：原本一律「月/日」，
+  // 5 年圖標成 10/04、06/05、02/10、10/07，看起來像同一年，年份根本看不出來
   const xi = [0, Math.round((series.length-1)/3), Math.round((series.length-1)*2/3), series.length-1];
+  const spanDays = (Date.parse(series[series.length-1].date) - Date.parse(series[0].date)) / 864e5;
   const xlab = [...new Set(xi)].map(i=>{
     const [y,m,d] = series[i].date.split('-');
     const anchor = i===0 ? 'start' : i===series.length-1 ? 'end' : 'middle';
-    return `<text class="axis" x="${X(i).toFixed(1)}" y="${H-5}" text-anchor="${anchor}">${m}/${d}</text>`;
+    const t = spanDays >= 300 ? `${y}/${m}` : `${m}/${d}`;
+    return `<text class="axis" x="${X(i).toFixed(1)}" y="${H-5}" text-anchor="${anchor}">${t}</text>`;
   }).join('');
 
   host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
