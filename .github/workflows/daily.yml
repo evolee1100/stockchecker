@@ -51,7 +51,7 @@ jobs:
       - name: 組出網站檔案
         run: |
           mkdir -p _site
-          cp index.html manifest.webmanifest _site/
+          cp index.html manifest.webmanifest t2s.js _site/
           # 這裡以前會把建置時間戳進 <script src="data/data.js"> 的網址來破快取。
           # 現在頁面改用 fetch(..., {cache:'no-store'}) 載入資料，不再有那個標籤，
           # 原本的 sed/grep 找不到東西會讓整個步驟失敗，所以移除。

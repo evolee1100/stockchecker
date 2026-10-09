@@ -50,6 +50,12 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
         color:var(--ink-2);background:#fff;border:1px solid var(--line);
         border-radius:4px;padding:12px 19px}      /* 長方形，不是膠囊 */
 .reload svg{width:24px;height:24px;flex:none}
+/* 繁／简 切換：跟「更新」同一種長方形，選中的那邊反白 */
+.lang{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff}
+.lang button{font:inherit;font-size:17px;line-height:1;padding:12px 14px;border:none;background:none;
+             color:var(--ink-3);cursor:pointer}
+.lang button + button{border-left:1px solid var(--line)}
+.lang button.on{background:var(--ink);color:#fff}
 .reload:hover{color:var(--ink);border-color:#c9d1da;background:var(--tint)}
 .reload:active{transform:translateY(1px)}
 .reload.busy svg{animation:spin .7s linear infinite}
@@ -388,6 +394,9 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
   .reload{order:2;margin-left:auto;font-size:22.8px;padding:15px 24px;gap:10px;border-radius:5px}
   .reload svg{width:30px;height:30px}
+  /* 繁／简 放在標題那一列的右邊：第二列只剩時間戳｜更新鈕，三樣擠一列會把更新鈕擠到第三列 */
+  .lang{order:2;margin-left:auto;align-self:center;border-radius:5px}
+  .lang button{font-size:18px;padding:10px 12px}
   tr.group td{font-size:15.6px}
   tr.row td.c-name{font-size:21px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
@@ -458,12 +467,14 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
       「第一欄靠左」的規則套到星星上，名稱變第二欄繼承了靠右
    手機上不該把東西藏在看不出來的滑動後面，改成全部攤開。 */
 @media(max-width:700px){
-  /* 1. 報頭：第一列 圖示＋標題，第二列 時間戳｜更新鈕 */
+  /* 1. 報頭：第一列 圖示＋標題｜繁简，第二列 時間戳｜更新鈕 */
   header{flex-wrap:wrap;row-gap:12px}
   header .logo{order:0}
-  header h1{order:1;flex:1 1 calc(100% - 40px)}
-  header .stamp{order:2;flex:1 1 auto;flex-basis:auto;margin:0;align-self:center;text-align:left}
-  header .reload{order:3;margin-left:auto}
+  header h1{order:1;flex:0 1 auto;min-width:0}
+  header .lang{order:2;margin-left:auto}
+  /* 基準寬度給小一點：375 寬的手機放不下「時間戳＋更新鈕」時，讓時間戳折行，不要把更新鈕擠到第三列 */
+  header .stamp{order:3;flex:1 1 120px;min-width:0;margin:0;align-self:center;text-align:left}
+  header .reload{order:4;margin-left:auto}
 
   /* 2. 市場脈搏：2x2 格，四個數字全部看得到 */
   .pulse{display:grid;grid-template-columns:1fr 1fr;overflow:visible;margin:0 0 20px;padding:0}
@@ -614,6 +625,9 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
     <span class="stamp" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"><span id="updated"></span><span class="fresh" id="fresh"></span></span>
+    <div class="lang" id="lang" role="group" aria-label="語言">
+      <button type="button" data-l="zh-Hant">繁</button><button type="button" data-l="zh-Hans">简</button>
+    </div>
     <button class="reload" type="button" id="reload" title="重新載入最新資料">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -651,7 +665,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 <div class="ovl" id="ovl">
   <div class="dlg" role="dialog" aria-modal="true" aria-label="原文">
     <h5>原文 <button class="x" type="button" aria-label="關閉">&times;</button></h5>
-    <div class="dsec"><div class="k">${failed ? 'ENGLISH（這則翻譯失敗，下次更新會再試）' : 'ENGLISH 原文'}</div><div class="en" id="ovl-en"></div></div>
+    <div class="dsec"><div class="k">ENGLISH 原文</div><div class="en" id="ovl-en"></div></div>
     <div class="dsec"><div class="k">中譯（機器翻譯）</div><div class="zh" id="ovl-zh"></div></div>
     <div class="dfoot"><span id="ovl-src"></span>
       <a id="ovl-url" href="#" target="_blank" rel="noopener">開啟原文網頁 →</a></div>
@@ -1953,6 +1967,81 @@ async function btSearch(kw, ms){
     ts: Math.floor(Date.parse(x.date_gmt + 'Z') / 1000) || null, lang: 'en', live: true}));
 }
 
+/* ---------- 語言設定：繁體／簡體 ----------
+   整個網頁（介面、資料、翻譯）都是繁體寫的。選「简」時不另外維護一套文字，
+   而是載入 t2s.js（OpenCC 的繁→簡字表），用 MutationObserver 把畫面上出現的每一段文字
+   當場轉成簡體——之後不管哪裡重畫、彈窗、提示，都會自動轉，不必在每個 render 裡各加一次。
+   切回「繁」直接重新載入：畫面上的字已經是簡體，沒有簡→繁的字表可以轉回去。 */
+const LANG_KEY = 'lang';
+let lang = (() => { try { return localStorage.getItem(LANG_KEY) === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant'; } catch(e) { return 'zh-Hant'; } })();
+const simp = () => lang === 'zh-Hans';
+let t2sObs = null;
+
+function paintLang(){
+  document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
+  document.documentElement.lang = lang;
+}
+
+// 把一棵子樹裡的文字節點、以及 title／placeholder 提示全部轉成簡體
+function t2sTree(root){
+  if(!window.t2s) return;
+  const skip = {SCRIPT: 1, STYLE: 1, TEXTAREA: 1};
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+    acceptNode: n => n.nodeType === 1 ? (skip[n.tagName] ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP)
+                                      : NodeFilter.FILTER_ACCEPT });
+  const nodes = [];
+  if(root.nodeType === 3) nodes.push(root);
+  for(let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+  for(const n of nodes){
+    const v = t2s(n.nodeValue);
+    if(v !== n.nodeValue) n.nodeValue = v;
+  }
+  if(root.nodeType === 1){
+    for(const el of [root, ...root.querySelectorAll('[title],[placeholder]')]){
+      for(const a of ['title', 'placeholder']){
+        const v = el.getAttribute && el.getAttribute(a);
+        if(v){ const w = t2s(v); if(w !== v) el.setAttribute(a, w); }
+      }
+    }
+  }
+}
+
+async function startSimplified(){
+  if(!window.t2s){
+    await new Promise((ok, bad) => {
+      const sc = document.createElement('script');
+      sc.src = 't2s.js'; sc.onload = ok; sc.onerror = bad;
+      document.head.appendChild(sc);
+    });
+  }
+  t2sTree(document.body);
+  document.title = t2s(document.title);
+  if(t2sObs) return;
+  t2sObs = new MutationObserver(recs => {
+    for(const r of recs){
+      if(r.type === 'characterData') t2sTree(r.target);
+      else r.addedNodes.forEach(n => t2sTree(n));
+    }
+    t2sObs.takeRecords();                        // 丟掉上面這幾行自己造成的變動，不然會沒完沒了
+  });
+  t2sObs.observe(document.body, {childList: true, subtree: true, characterData: true});
+}
+
+document.querySelectorAll('#lang button').forEach(b => b.onclick = async () => {
+  if(b.dataset.l === lang) return;
+  lang = b.dataset.l;
+  try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+  if(simp()){
+    paintLang();
+    try { await startSimplified(); }
+    catch(e) { toast('簡體字表載入失敗', '請確認網路後再試一次'); }
+  } else {
+    location.reload();
+  }
+});
+paintLang();
+if(simp()) startSimplified().catch(() => {});
+
 /* ---------- 簡體轉繁體 ----------
    中文報是簡體，使用者看繁體。Google 的 clients5 一次可以送好幾個 q，一個請求就轉完一批標題。
    網址控制在 6000 字元內（中文編碼後一個字佔 9 個字元）。 */
@@ -1993,6 +2082,7 @@ const S2T_MEM = new Map();
 async function tradTitles(items){
   const want = items.filter(n => isZh(n) && !goodZh(n));
   if(!want.length) return;
+  if(simp()){ want.forEach(n => { n.title_zh = n.title; }); return; }   // 看簡體：原文就是簡體
   const c = trCache();
   const hit = t => S2T_MEM.get(t) || c['s2t|' + t];
   const need = [...new Set(want.map(n => n.title).filter(t => !hit(t)))];
@@ -2010,6 +2100,7 @@ async function tradTitles(items){
 // 全文：點開才轉，一段一個 q，太長的段落在句號處切開；只記在記憶體（全文太大，不佔手機儲存空間）
 const bodyTW = new Map();
 async function tradBody(key, text){
+  if(simp()) return text;                        // 看簡體：原文就是簡體
   if(bodyTW.has(key)) return bodyTW.get(key);
   const pieces = [];
   text.split('\n').filter(Boolean).forEach((p, k) => {
