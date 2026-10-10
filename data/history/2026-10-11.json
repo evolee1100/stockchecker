@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-11 04:21:00 (MYT)",
+ "updated_at": "2026-10-11 06:51:51 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
@@ -5764,7 +5764,7 @@
     "eps": "0.79",
     "dps": "0.50",
     "div_yield": "6.93%",
-    "payout_ratio": "62.79%",
+    "payout_ratio": "62.98%",
     "ex_div_date": "2026-09-14",
     "earnings_date": "2026-09-03",
     "analyst_rating": "Hold",
@@ -6894,7 +6894,7 @@
     ],
     [
      "數字",
-     "P/B 0.92、P/E 9.09、ROE 10.31%、殖利率 6.93%、派息率 62.79%、每股淨值 7.81、分析師目標價 8.81 (+22.02%)。"
+     "P/B 0.92、P/E 9.09、ROE 10.31%、殖利率 6.93%、派息率 62.98%、每股淨值 7.81、分析師目標價 8.81 (+22.02%)。"
     ],
     [
      "留意",
@@ -12728,7 +12728,7 @@
     "eps": "0.02",
     "dps": "0.03",
     "div_yield": "6.02%",
-    "payout_ratio": "282.70%",
+    "payout_ratio": "98.50%",
     "ex_div_date": "2026-09-09",
     "earnings_date": "2026-11-27",
     "analyst_rating": "Hold",
@@ -13840,10 +13840,6 @@
     {
      "level": "warn",
      "text": "ROE 偏低 1.8%"
-    },
-    {
-     "level": "warn",
-     "text": "派息率 283%（高於盈餘）"
     }
    ],
    "digest": [
@@ -13861,11 +13857,11 @@
     ],
     [
      "數字",
-     "P/B 0.45、P/E 25.34、ROE 1.76%、殖利率 6.02%、派息率 282.70%、每股淨值 1.18、分析師目標價 0.66 (+23.36%)。"
+     "P/B 0.45、P/E 25.34、ROE 1.76%、殖利率 6.02%、派息率 98.50%、每股淨值 1.18、分析師目標價 0.66 (+23.36%)。"
     ],
     [
      "留意",
-     "派息率 283%，高於當年盈餘；ROE 僅 1.8%，賺錢效率偏低；下次財報 2026-11-27。"
+     "ROE 僅 1.8%，賺錢效率偏低；下次財報 2026-11-27。"
     ]
    ]
   },
@@ -13892,7 +13888,7 @@
     "eps": "0.05",
     "dps": "0.06",
     "div_yield": "9.69%",
-    "payout_ratio": "125.27%",
+    "payout_ratio": "125.06%",
     "ex_div_date": "2026-08-20",
     "earnings_date": "2026-11-06",
     "analyst_rating": "Strong Buy",
@@ -15026,7 +15022,7 @@
     ],
     [
      "數字",
-     "P/B 0.55、P/E 12.91、ROE 4.26%、殖利率 9.69%、派息率 125.27%、每股淨值 1.15、分析師目標價 0.83 (+30.71%)。"
+     "P/B 0.55、P/E 12.91、ROE 4.26%、殖利率 9.69%、派息率 125.06%、每股淨值 1.15、分析師目標價 0.83 (+30.71%)。"
     ],
     [
      "留意",
@@ -21921,7 +21917,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（The Globe and Mail、Yahoo Finance、Kalkine Media、JournalArta）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（The Globe and Mail、Yahoo Finance、Kalkine Media）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -24115,7 +24111,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、政策（Trefis、TradingKey、Benzinga、Yahoo Finance）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在評等、業績（Stocktwits、Trefis、BeInCrypto、TechGraph）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -27394,7 +27390,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（Simply Wall Street、Reuters、BigGo Finance、Yahoo! Finance Canada）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（Simply Wall Street、BigGo Finance、Yahoo Finance、Newswire）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -31809,28 +31805,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 82955.8984,
+   "price": 82882.2734,
    "prev_close": 82546.3203,
-   "change_pct_1d": 0.5,
-   "change_pct_5d": -3.3,
-   "change_pct_1m": 2.12,
-   "change_pct_3m": 27.81,
-   "change_pct_1y": -26.73,
+   "change_pct_1d": 0.41,
+   "change_pct_5d": -3.39,
+   "change_pct_1m": 2.03,
+   "change_pct_3m": 27.7,
+   "change_pct_1y": -26.79,
    "day_high": 83069.375,
    "day_low": 82475.2,
-   "volume": 13231122432,
+   "volume": 12884302848,
    "avg_volume_20d": 32521070261,
-   "volume_ratio": 0.41,
+   "volume_ratio": 0.4,
    "high_52w": 116273.31,
    "low_52w": 57747.766,
-   "off_52w_high": -28.65,
+   "off_52w_high": -28.72,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-11 04:17",
-   "change_pct_3y": 176.58,
-   "change_pct_5y": 51.46,
+   "market_time": "2026-10-11 06:48",
+   "change_pct_3y": 176.33,
+   "change_pct_5y": 51.32,
    "series_w": [
     {
      "date": "2021-10-04",
@@ -32882,25 +32878,25 @@
     },
     {
      "date": "2026-10-11",
-     "close": 82955.9
+     "close": 82882.27
     }
    ],
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -28.6%"
+     "text": "距 52 週高點 -28.7%"
     }
    ],
-   "myr": 338833.37,
+   "myr": 338532.65,
    "myr_rate": 4.0845,
    "digest": [
     [
      "價格",
-     "2026-10-11 收 82,956 USD、單日 +0.50%。一個月 +2.12%，三個月 +27.81%。換算馬幣約 RM 338,833.37（匯率 4.0845）。"
+     "2026-10-11 收 82,882 USD、單日 +0.41%。一個月 +2.03%，三個月 +27.70%。換算馬幣約 RM 338,532.65（匯率 4.0845）。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、併購（Yahoo Finance、Binance、Traders Union、Bitget）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等（Yahoo Finance、24/7 Wall St.、CryptoPotato、Binance）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -32917,28 +32913,28 @@
    "dp": 4,
    "fundamentals": {},
    "currency": "USD",
-   "price": 0.999,
+   "price": 0.9991,
    "prev_close": 0.9991,
-   "change_pct_1d": -0.01,
-   "change_pct_5d": -0.09,
-   "change_pct_1m": -0.06,
-   "change_pct_3m": -0.02,
-   "change_pct_1y": -0.28,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": -0.08,
+   "change_pct_1m": -0.05,
+   "change_pct_3m": -0.01,
+   "change_pct_1y": -0.27,
    "day_high": 0.99935484,
    "day_low": 0.99894893,
-   "volume": 37124083712,
+   "volume": 37141635072,
    "avg_volume_20d": 75620834996,
    "volume_ratio": 0.49,
    "high_52w": 1.003483,
    "low_52w": 0.989577,
-   "off_52w_high": -0.45,
+   "off_52w_high": -0.44,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-11 04:18",
-   "change_pct_3y": -0.1,
-   "change_pct_5y": -0.2,
+   "market_time": "2026-10-11 06:48",
+   "change_pct_3y": -0.09,
+   "change_pct_5y": -0.19,
    "series_w": [
     {
      "date": "2021-10-04",
@@ -33990,7 +33986,7 @@
     },
     {
      "date": "2026-10-11",
-     "close": 0.999
+     "close": 0.9991
     }
    ],
    "flags": [],
@@ -33999,11 +33995,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-11 收 0.9990 USD、單日 -0.01%。一個月 -0.06%，三個月 -0.02%。換算馬幣約 RM 4.08（匯率 4.0845）。"
+     "2026-10-11 收 0.9991 USD、單日 +0.00%。一個月 -0.05%，三個月 -0.01%。換算馬幣約 RM 4.08（匯率 4.0845）。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購（CryptoRank、TronWeekly、unchainedcrypto、CryptoTicker）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購（TronWeekly、unchainedcrypto、CryptoTicker、Cryptopolitan）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -35149,7 +35145,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、營運（TweakTown、GuruFocus、WSJ、Reuters）。標題見下方清單。"
+     "近三個月 6 則，主題集中在併購（BigGo Finance、TweakTown、GuruFocus、FourWeekMBA）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -36309,7 +36305,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、業績（Kalkine Media、Intellectia AI、The Motley Fool、Simply Wall Street）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等（Investing India、Kalkine Media、Intellectia AI、The Motley Fool）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -36364,7 +36360,7 @@
    "change_pct_3m": 13.79,
    "change_pct_1y": 182.97,
    "day_high": 626.5,
-   "day_low": 606.01,
+   "day_low": 606.0,
    "volume": 13694400,
    "avg_volume_20d": 22404295,
    "volume_ratio": 0.61,
@@ -37443,7 +37439,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（VideoCardz、Kalkine Media、The Manila Times、Barchart）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（Simply Wall Street、TweakTown、VideoCardz、Kalkine Media）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -39756,7 +39752,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事（How-To Geek、The Seattle Times、Notebookcheck、HotHardware）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在人事（Windows Latest、TechCrunch、UA.NEWS、CNBC）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -39784,7 +39780,7 @@
    "fundamentals": {
     "market_cap": "4.30T",
     "pe_ratio": "17.64",
-    "forward_pe": "26.17",
+    "forward_pe": "26.18",
     "eps": "19.93",
     "earnings_date": "2026-10-28",
     "analyst_rating": "Strong Buy",
@@ -40909,7 +40905,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運、政策（Stocktwits、TipRanks、Yahoo Finance、The Market Periodical）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在營運、政策（Stocktwits、Simply Wall Street、TipRanks、Yahoo Finance）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -40963,7 +40959,7 @@
    "change_pct_1m": 26.04,
    "change_pct_3m": 60.76,
    "change_pct_1y": 19.16,
-   "day_high": 209.3,
+   "day_high": 209.31,
    "day_low": 198.3,
    "volume": 37479600,
    "avg_volume_20d": 22969555,
@@ -42047,7 +42043,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、併購（Beinsure、TradingKey、SuaraGarut.ID、Yahoo Finance）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在評等、併購、人事（SuaraGarut.ID、Yahoo Finance、TheStreet、TipRanks）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -42787,7 +42783,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購（roundtable.io、USA Today、Salmon Arm Observer、EcoPortal.net）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、營運（The Hawk、ServeTheHome、roundtable.io、Salmon Arm Observer）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -45129,7 +45125,7 @@
     "eps": "0.32",
     "dps": "0.45",
     "div_yield": "5.88%",
-    "payout_ratio": "212.79%",
+    "payout_ratio": "203.04%",
     "ex_div_date": "2026-09-14",
     "earnings_date": "2026-11-20",
     "analyst_rating": "Buy",
@@ -46253,7 +46249,7 @@
     },
     {
      "level": "warn",
-     "text": "派息率 213%（高於盈餘）"
+     "text": "派息率 203%（高於盈餘）"
     },
     {
      "level": "info",
@@ -46275,11 +46271,11 @@
     ],
     [
      "數字",
-     "P/B 14.69、P/E 24.06、ROE 49.17%、殖利率 5.88%、派息率 212.79%、每股淨值 0.47、分析師目標價 9.13 (+18.42%)。"
+     "P/B 14.69、P/E 24.06、ROE 49.17%、殖利率 5.88%、派息率 203.04%、每股淨值 0.47、分析師目標價 9.13 (+18.42%)。"
     ],
     [
      "留意",
-     "派息率 213%，高於當年盈餘；下次財報 2026-11-20。"
+     "派息率 203%，高於當年盈餘；下次財報 2026-11-20。"
     ]
    ]
   },
@@ -47436,7 +47432,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購（The Edge Malaysia、BusinessToday Malaysia、Fintech News Malaysia、Free Malaysia Today）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購（The Edge Malaysia、BusinessToday Malaysia、Fintech News Malaysia）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -53213,7 +53209,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、業績、派息（Simply Wall Street、BusinessToday Malaysia、The Star、The Edge Malaysia）。標題見下方清單。"
+     "近三個月 6 則，主題集中在業績、評等、派息（Simply Wall Street、BusinessToday Malaysia、The Star、The Edge Malaysia）。標題見下方清單。"
     ],
     [
      "數字",
