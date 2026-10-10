@@ -50,7 +50,7 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
         color:var(--ink-2);background:#fff;border:1px solid var(--line);
         border-radius:4px;padding:12px 19px}      /* 長方形，不是膠囊 */
 .reload svg{width:24px;height:24px;flex:none}
-/* 繁／简 切換：跟「更新」同一種長方形，選中的那邊反白 */
+/* 中文／EN 切換：跟「更新」同一種長方形，選中的那邊反白 */
 .lang{display:inline-flex;flex:none;border:1px solid var(--line);border-radius:4px;overflow:hidden;background:#fff}
 .lang button{font:inherit;font-size:17px;line-height:1;padding:12px 14px;border:none;background:none;
              color:var(--ink-3);cursor:pointer}
@@ -113,7 +113,10 @@ h1{margin:0;font-size:25px;font-weight:600;letter-spacing:.02em;line-height:1.15
 .toast .ts{font-size:12px;line-height:1.3;color:rgba(255,255,255,.7);
            font-variant-numeric:tabular-nums;margin-top:2px}
 @media(max-width:700px){
-  .toast{padding:14px 20px;bottom:22px;gap:12px}
+  /* 英文的說明比較長：折行，別跑出螢幕。要寫 width:max-content——固定定位又 left:50% 的盒子，
+     自動寬度只會量到右半邊（197px），一折行就變成又窄又高的一條 */
+  .toast{padding:14px 20px;bottom:22px;gap:12px;white-space:normal;width:max-content}
+  .toast > div{min-width:0}
   .toast svg{width:22px;height:22px}
   .toast .tt{font-size:19.2px}
   .toast .ts{font-size:16.2px}
@@ -394,9 +397,12 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   /* 手機上這顆要夠大才按得準，也才不會跟旁邊的字級不協調 */
   .reload{order:2;margin-left:auto;font-size:22.8px;padding:15px 24px;gap:10px;border-radius:5px}
   .reload svg{width:30px;height:30px}
-  /* 繁／简 放在標題那一列的右邊：第二列只剩時間戳｜更新鈕，三樣擠一列會把更新鈕擠到第三列 */
+  /* 中文／EN 放在標題那一列的右邊：第二列只剩時間戳｜更新鈕，三樣擠一列會把更新鈕擠到第三列。
+     「中文」兩個字比原本的「繁」寬，字級和左右留白各收一點，375 寬才跟標題擠得進同一列 */
   .lang{order:2;margin-left:auto;align-self:center;border-radius:5px}
-  .lang button{font-size:18px;padding:10px 12px}
+  .lang button{font-size:16px;padding:10px 8px}
+  /* 英文標題比六個中文字長很多：縮小並允許折成兩行，不然會蓋到右邊的切換鈕 */
+  html[lang="en"] h1{font-size:24px;white-space:normal;line-height:1.1}
   tr.group td{font-size:15.6px}
   tr.row td.c-name{font-size:21px}
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
@@ -467,10 +473,14 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
       「第一欄靠左」的規則套到星星上，名稱變第二欄繼承了靠右
    手機上不該把東西藏在看不出來的滑動後面，改成全部攤開。 */
 @media(max-width:700px){
-  /* 1. 報頭：第一列 圖示＋標題｜繁简，第二列 時間戳｜更新鈕 */
+  /* 1. 報頭：第一列 圖示＋標題｜中文/EN，第二列 時間戳｜更新鈕 */
   header{flex-wrap:wrap;row-gap:12px}
   header .logo{order:0}
-  header h1{order:1;flex:0 1 auto;min-width:0}
+  /* 標題的 flex-basis 給 150px：flex 要不要換行是看 flex-basis 決定的，不是看它能縮到多窄。
+     基準是整段標題寬（auto）的話，英文標題一長就把切換鈕擠到第二列；
+     給 0 的話時間戳又會跟著擠上第一列。150 剛好：圖示＋標題＋切換鈕排得進第一列，
+     再加時間戳就超過，時間戳乖乖去第二列，標題再把第一列剩下的寬度撐滿 */
+  header h1{order:1;flex:1 1 150px;min-width:0}
   header .lang{order:2;margin-left:auto}
   /* 基準寬度給小一點：375 寬的手機放不下「時間戳＋更新鈕」時，讓時間戳折行，不要把更新鈕擠到第三列 */
   header .stamp{order:3;flex:1 1 120px;min-width:0;margin:0;align-self:center;text-align:left}
@@ -509,6 +519,9 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .mcard-h b{font-size:15px;font-weight:600;letter-spacing:.06em;
            font-family:"Songti TC","Songti SC","Noto Serif TC","PingFang TC",serif}
 .mcard-h span{font-size:11px;color:var(--ink-3)}
+/* 卡片標題不折行：英文副標長，手機上會把「Watchlist news」擠成兩行；要折就折副標 */
+.mcard-h b,.brief-h b{white-space:nowrap;flex:none}
+.mcard-h span,.brief-h span{min-width:0}
 .mcard-h .tog{margin-left:auto;font:inherit;font-size:11px;color:var(--ink-3);
               background:none;border:none;cursor:pointer;padding:0}
 .mcard-h .tog:hover{color:var(--ink)}
@@ -617,6 +630,29 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 }
 
 @media(max-width:700px){ .mvr .mc{display:none} }
+
+/* ---------- 英文模式：英文比中文長，手機上這幾處要另外收一收 ---------- */
+@media(max-width:700px){
+  /* 分頁：「Indices 13」「Palm oil 2」在 375 寬的格子裡會蓋到邊框，字級收小一點 */
+  html[lang="en"] .tab{font-size:16px;padding:10px 2px}
+  html[lang="en"] .tab .n{font-size:13px;margin-left:2px}
+  /* 更新鈕：Refresh 比「更新」寬，旁邊的時間戳被擠成三行 */
+  html[lang="en"] .reload{font-size:19px;padding:13px 16px}
+  html[lang="en"] .reload svg{width:26px;height:26px}
+  /* 漲跌排行的行業名（Industrial products）塞不進半欄：折行，不要省略成「Indust…」 */
+  html[lang="en"] .mvr .s{white-space:normal}
+  /* 表格的小字列（P/B · ROE · DY）：折成兩行也要把殖利率留在畫面上 */
+  html[lang="en"] tr.row td.c-meta{white-space:normal}
+  /* 重點報導的欄名（Key figures）比「數字」寬 */
+  html[lang="en"] .dg-k{width:56px}
+  /* 重點：類股標籤（AI (Bursa)）佔掉右邊一整欄，句子只剩 230px 寬折成五六行；英文模式把標籤放到句子底下 */
+  html[lang="en"] .bi{flex-wrap:wrap}
+  html[lang="en"] .bi .bn{flex:0 0 100%;padding-left:14px;margin:-6px 0 0;text-align:right}
+  /* IPO 的業務說明：英文長一截，多給一行 */
+  html[lang="en"] .ipor .biz{-webkit-line-clamp:4}
+  /* 快訊標題：中文一行、機器翻譯回來的英文兩行，先把兩行的高度留好，翻好寫回時下面的卡片才不會跳 */
+  html[lang="en"] .hl .t{min-height:3em}
+}
 </style>
 </head>
 <body>
@@ -625,8 +661,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
     <img class="logo" src="icon.svg" alt="" width="26" height="26">
     <h1 id="title">馬股每日追蹤</h1>
     <span class="stamp" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"><span id="updated"></span><span class="fresh" id="fresh"></span></span>
-    <div class="lang" id="lang" role="group" aria-label="語言">
-      <button type="button" data-l="zh-Hant">繁</button><button type="button" data-l="zh-Hans">简</button>
+    <div class="lang" id="lang" role="group" aria-label="語言" translate="no">
+      <button type="button" data-l="zh">中文</button><button type="button" data-l="en">EN</button>
     </div>
     <button class="reload" type="button" id="reload" title="重新載入最新資料">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
@@ -833,7 +869,7 @@ const COLS = [
       const bad = (s.flags||[]).find(f=>f.level==='bad');
       const warn = (s.flags||[]).find(f=>f.level==='warn');
       const dot = bad ? '<span class="dot bad"></span>' : warn ? '<span class="dot warn"></span>' : '';
-      return `<span class="name">${s.name}</span><span class="sym">${s.symbol}</span>${dot}`; },
+      return `<span class="name">${nameEn(s.name)}</span><span class="sym">${s.symbol}</span>${dot}`; },
      sort:s=>s.name, dir:1},
   {k:'trend',t:'走勢·半年', cell:s=>spark(s.series.slice(-126),74,22,false), sort:s=>s.change_pct_1m},
   {k:'price',t:'股價',   cell:s=>px(s.price,s.is_index,s.dp), sort:s=>s.price},
@@ -848,7 +884,7 @@ const COLS = [
       const bits = [];
       if(f.pb_ratio)  bits.push('P/B ' + f.pb_ratio);
       if(f.roe)       bits.push('ROE ' + f.roe);
-      if(f.div_yield) bits.push('息 ' + f.div_yield);
+      if(f.div_yield) bits.push((isEn() ? 'DY ' : '息 ') + f.div_yield);   // 英文模式直接寫短的，不經字典
       if(!bits.length) bits.push('1個月 ' + pc(s.change_pct_1m));
       return bits.join(' · '); }},
 ];
@@ -909,7 +945,8 @@ function groupFilings(list){
     const g = [f]; by.set(k, g); out.push(g);
   }
   const md = iso => iso ? +iso.slice(5, 7) + '/' + +iso.slice(8, 10) : '';
-  return out.slice(0, 6).map(g => g.length < 2 ? g[0] : {...g[0],
+  // filing 標記：英文模式的 titleOf 靠它知道這是公告（才會先查字典的公告樣板）
+  return out.slice(0, 6).map(g => g.length < 2 ? {...g[0], filing: true} : {...g[0], filing: true,
     title_zh: (g[0].title_zh || g[0].title) + `（${g.length} 則）`,
     body_zh: g.filter(f => f.body_zh).map(f => md(f.date) + '：' + f.body_zh).join('\n\n'),
     body: ''});
@@ -917,13 +954,33 @@ function groupFilings(list){
 
 const NO_ARTICLES = '近三個月沒有相關報導', NO_FILINGS = '沒有抓到公告';
 const newsMeta = n => [n.source_zh || n.source, ago(n)].filter(Boolean).join(' · ');
+// 中文標題：中文報在英文模式一律用原始標題（即時抓的是簡體原文，雲端那份另有繁體 title_zh）——
+// 卡片和彈窗顯示同一個字串，機器翻譯才共用同一條快取，不然兩邊各翻一次、譯文不一樣、人名音譯也不一樣
+const zhTitle = n => isEn() && isZh(n) ? (n.title || n.title_zh) : (n.title_zh || n.title);
+// 清單上顯示的標題：英文模式有英文原標題就直接用（不必再翻回去）；中文報的標題留給畫面上的機器翻譯。
+// 公告先查字典：translate.py 整理過的中文標題字典有整齊的英文（Substantial shareholder's interest — KWAP (7)），
+// 比 Bursa 原本一整串大寫好讀；查不到才用原標題。
+// groupFilings 把同標題的公告併成一則時，「（N 則）」是接在中文標題後面的，英文標題要自己補上
+function titleOf(n){
+  if(isEn() && !isZh(n)){
+    if(n.filing && hasCJK(n.title_zh || '')){
+      const t = toEn(n.title_zh);
+      if(t !== null && !hasCJK(t)) return t;
+    }
+    if(n.title && !hasCJK(n.title)){
+      const g = /（(\d+) 則）$/.exec(n.title_zh || '');
+      return g ? n.title + ' (' + g[1] + ')' : n.title;
+    }
+  }
+  return zhTitle(n);
+}
 
 // 每則新聞共用的 data-*：彈窗（showOriginal）和「中文／原文」切換都從這裡讀。
 // 大馬中文報（lang zh）全文太長不塞進屬性，用網址去 LIVE_BODY 查；
 // data-full 標出「App 裡讀得到全文」——news.json 那份只有標題，點了就直接開來源網頁
 function newsAttrs(n){
   const zh = isZh(n);
-  return `data-zh="${esc(n.title_zh || n.title)}" data-en="${esc(n.title || '')}"
+  return `data-zh="${esc(zhTitle(n))}" data-en="${esc(n.title || '')}"
     data-src="${esc(newsMeta(n))}" data-url="${esc(n.source_url || n.url)}"
     data-body-en="${zh ? '' : esc(n.body || '')}" data-body-zh="${esc(n.body_zh || '')}"
     ${zh ? `data-lang="zh" data-key="${esc(n.url)}"${zhFull(n) ? ' data-full="1"' : ''}` : ''}`;
@@ -933,9 +990,9 @@ function newsAttrs(n){
 function feed(list, empty){
   if(!list || !list.length) return `<div class="none">${empty}</div>`;
   return list.map(n => {
-    const zh = n.title_zh || n.title, en = n.title || '';
+    const zh = titleOf(n), en = n.title || '';
     const cn = isZh(n);
-    const translated = !cn && zh !== en;
+    const translated = !cn && zh !== en;         // 英文模式直接顯示英文原標題時 zh === en，就不會多一顆「原文」
     const hasBody = cn ? zhFull(n) : !!(n.body_zh || n.body);
     return `<div class="item" ${newsAttrs(n)}>
       <a class="it" href="${esc(n.url)}" target="_blank" rel="noopener">${esc(zh)}</a>
@@ -963,9 +1020,15 @@ function detailRow(s){
   const artsHtml = feed(stockArticles(s), NO_ARTICLES), filHtml = feed(groupFilings(s.filings), NO_FILINGS);
   const tr = document.createElement('tr');
   tr.className = 'detail';
+  // 「中文／原文」切換在英文模式沒有意義（英文原文已經直接顯示，中文報標題翻成英文後也沒得切），不畫
+  const SEG = isEn() ? '' : `<span class="seg">
+        <button type="button" class="on" data-l="zh">中文</button>
+        <button type="button" data-l="en">原文</button></span>`;
+  // 說明、最後成交、即時報價各包一個 span：英文模式是逐個文字節點查字典，拆開才各自對得到
   tr.innerHTML = `<td colspan="${COLS.length}"><div class="dbox">
-    <div class="dnote">${s.note||''}${s.market_time?' · 最後成交 '+s.market_time:''}${
-      s.live && s.live_ts ? ' · 即時報價 ' + hhmm(s.live_ts) : ''}</div>
+    <div class="dnote">${s.note ? `<span>${s.note}</span>` : ''}${
+      s.market_time ? `<span> · 最後成交 ${s.market_time}</span>` : ''}${
+      s.live && s.live_ts ? `<span> · 即時報價 ${hhmm(s.live_ts)}</span>` : ''}</div>
     <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
     ${(s.digest && s.digest.length) ? `<div class="dg">
       <div class="dg-h">重點報導</div>
@@ -980,13 +1043,9 @@ function detailRow(s){
     ).join('')}</div>
     ${s.calculator ? calculator(s) : ''}
     <div class="news">
-      <div><h4>媒體報導 <span class="seg">
-        <button type="button" class="on" data-l="zh">中文</button>
-        <button type="button" data-l="en">原文</button></span></h4>
+      <div><h4>媒體報導 ${SEG}</h4>
 <div data-feed="a">${artsHtml}</div></div>
-      <div><h4>Bursa 公告 <span class="seg">
-        <button type="button" class="on" data-l="zh">中文</button>
-        <button type="button" data-l="en">原文</button></span></h4>
+      <div><h4>Bursa 公告 ${SEG}</h4>
 <div data-feed="f">${filHtml}</div></div>
     </div>
   </div></td>`;
@@ -1007,7 +1066,7 @@ function detailRow(s){
         <span class="pt"></span>
         <span class="rg">區間 ${seg[0].date} → ${seg[seg.length-1].date} ·
           ${seg.length} ${r.w ? '週' : '個交易日'} ·
-          <span class="${cls(chg)}">${pc(chg)}</span>${r.w ? '（週線）' : ''}</span>
+          <span class="${cls(chg)}">${pc(chg)}</span>${r.w ? (isEn() ? ' (weekly)' : '（週線）') : ''}</span>
       </div>`;
 
     const host = slot.querySelector('.chart');
@@ -1154,9 +1213,10 @@ function wireMore(host, flip, redraw){
   };
 }
 
+// tag 是已經跳脫過的 HTML（見 renderWatch 的 tagOf）
 const hlRow = (n, tag) => `<div class="hl item" ${newsAttrs(n)}>
-    <div class="t">${esc(n.title_zh || n.title)}</div>
-    <div class="m">${tag ? `<span class="stk">${esc(tag)}</span> · ` : ''}${esc(newsMeta(n))}</div></div>`;
+    <div class="t">${esc(titleOf(n))}</div>
+    <div class="m">${tag ? `<span class="stk">${tag}</span> · ` : ''}${esc(newsMeta(n))}</div></div>`;
 // 點一則就開全文彈窗（英文有內文的在瀏覽器裡現翻；中文報導轉成繁體）。
 // 中文報只有標題、沒有全文可讀的，彈窗裡什麼都沒有，直接開來源網頁
 function openNews(el){
@@ -1205,8 +1265,9 @@ function renderWatch(){
     return;
   }
   // 標出是哪一檔：一篇講好幾家銀行時只寫第一家，其餘用「等 N 檔」帶過
-  const tagOf = n => n.stocks.length > 1 ? n.stocks[0].name + ' 等 ' + n.stocks.length + ' 檔'
-                                         : n.stocks[0].name;
+  // 「等 N 檔」另外包一個 span：英文模式逐個文字節點查字典，股票名和「等 N 檔」分開才各自對得到
+  const tagOf = n => esc(nameEn(n.stocks[0].name)) +
+    (n.stocks.length > 1 ? ' <span>等 ' + n.stocks.length + ' 檔</span>' : '');
   const shown = ws.slice(0, watchAll ? WATCH_MAX : WATCH_TOP);
   mcard('watchnews', title, `中文報最新 ${shown.length} 則 · 即時`,
     shown.map(n => hlRow(n, tagOf(n))).join('') +
@@ -1221,10 +1282,11 @@ function renderMovers(){
   if(!mv || !Array.isArray(mv.up) || !Array.isArray(mv.down) || (!mv.up.length && !mv.down.length)){
     clearCard('movers'); return;
   }
-  // 每列：名稱＋代號（Bursa 的四位數代號）／漲跌幅＋每股現價（令吉）
+  // 每列：名稱＋代號（Bursa 的四位數代號）／漲跌幅＋每股現價（令吉）。
+  // 行業名包一個 span：英文模式逐個文字節點查字典，單獨一個節點才對得到「工業」這種整詞
   const row = q => `<a class="mvr" href="${KSE(q.code)}" target="_blank" rel="noopener" title="${esc(q.name || '')}">
       <div><div class="n">${esc(q.short)}</div>
-           <div class="s">${esc(q.code)} · ${esc(q.sector_zh || '')}<span class="mc"> · 市值 RM${Math.round(q.mcap).toLocaleString()}M</span></div></div>
+           <div class="s">${esc(q.code)} · <span>${esc(q.sector_zh || '')}</span><span class="mc"> · 市值 RM${Math.round(q.mcap).toLocaleString()}M</span></div></div>
       <div><div class="c ${cls(q.pct)}">${pc(q.pct)}</div>
            <div class="p">RM${ppx(q.price)}</div></div></a>`;
   const asOf = mv.live ? '今天盤中 ' + (mv.time || '')
@@ -1247,21 +1309,31 @@ function renderIPO(){
   const md = iso => { const [, m, d] = iso.split('-').map(Number); return m + '/' + d; };
   const MON = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
   const dm = t => { const m = /(\d{1,2})\s+([A-Za-z]{3})/.exec(t || ''); return m && MON[m[2]] ? MON[m[2]] + '/' + (+m[1]) : ''; };
-  // 金額換成「萬／億」令吉
-  const rm = v => !v ? '' : v >= 1e8 ? 'RM' + (v / 1e8).toFixed(2).replace(/\.?0+$/, '') + ' 億'
-                              : 'RM' + Math.round(v / 1e4).toLocaleString() + ' 萬';
+  // 金額換成「萬／億」令吉；英文模式直接寫 m／bn——「1.2 億」要換成「120m」得換數字，字典和機器翻譯都做不到。
+  // 單位貼著數字（RM103.1m，財經慣例），隔一格的話「m」會自己折到下一行
+  const rm = v => !v ? '' : isEn()
+    ? (v >= 1e9 ? 'RM' + (v / 1e9).toFixed(2).replace(/\.?0+$/, '') + 'bn'
+                : 'RM' + (v / 1e6).toFixed(1).replace(/\.0$/, '') + 'm')
+    : (v >= 1e8 ? 'RM' + (v / 1e8).toFixed(2).replace(/\.?0+$/, '') + ' 億'
+                : 'RM' + Math.round(v / 1e4).toLocaleString() + ' 萬');
   // 「GB BOND HOLDINGS BERHAD」→「GB Bond Holdings Berhad」
   const title = t => (t || '').toLowerCase().replace(/\b([a-z])([a-z]{3,})/g, (_, a, b) => a.toUpperCase() + b)
                                  .replace(/\b([a-z]{1,3})\b/g, w => w.toUpperCase());
   const detail = i => {
+    // 這幾個片段用 <b> 拆成好幾個文字節點，字典對不到整句；英文模式直接寫英文
+    const en = isEn();
     const meta = [
-      i.open && i.close ? `認購 ${dm(i.open)}–${dm(i.close)}` : '',
-      i.oversub ? `超額認購 <b>${i.oversub} 倍</b>` : '',
-      i.raise_m ? `集資 ${rm(i.raise_m * 1e6)}` : '',
-      i.mcap ? `上市市值 ${rm(i.mcap)}` : '',
+      i.open && i.close ? `${en ? 'Subscription' : '認購'} ${dm(i.open)}–${dm(i.close)}` : '',
+      i.oversub ? (en ? `Oversubscribed <b>${i.oversub}x</b>` : `超額認購 <b>${i.oversub} 倍</b>`) : '',
+      i.raise_m ? `${en ? 'Raising' : '集資'} ${rm(i.raise_m * 1e6)}` : '',
+      i.mcap ? `${en ? 'Market cap at listing' : '上市市值'} ${rm(i.mcap)}` : '',
     ].filter(Boolean).join(' · ');
-    return `<div class="n">${esc(i.short)}${i.name_zh ? ' ' + esc(i.name_zh) : ''}</div>
-      <div class="s">代號 ${esc(i.code)} · 馬股${esc(i.board_zh || i.board || '')}${i.sector_zh ? ' · ' + esc(i.sector_zh) : ''}</div>
+    // 英文模式：中文簡稱不畫，板塊與行業直接用 Bursa 的英文原文（market.py 翻成中文前的欄位），不經翻譯
+    const where = isEn()
+      ? `${esc(i.code)} · Bursa ${esc(i.board || i.board_zh || '')}${(i.sector || i.sector_zh) ? ' · ' + esc(i.sector || i.sector_zh) : ''}`
+      : `${esc(i.code)} · 馬股${esc(i.board_zh || i.board || '')}${i.sector_zh ? ' · ' + esc(i.sector_zh) : ''}`;
+    return `<div class="n">${esc(i.short)}${i.name_zh && !isEn() ? ' ' + esc(i.name_zh) : ''}</div>
+      <div class="s"><span>代號</span> ${where}</div>
       <div class="fn">${esc(title(i.name))}</div>
       ${(i.business || i.about) ? `<div class="biz">${esc(i.business ? '業務：' + i.business : i.about)}</div>` : ''}
       ${meta ? `<div class="meta">${meta}</div>` : ''}`;
@@ -1337,8 +1409,10 @@ function renderBrief(){
   try { collapsed = localStorage.getItem(BRIEF_KEY) === '1'; } catch(e) {}
 
   // 資料可能是前一個交易日的（週末、開盤前），所以標題不寫「今日」，
-  // 直接標出資料截止時間，每條再各自帶自己的日期
-  const cut = (D.updated_at || '').slice(0, 10);
+  // 直接標出資料截止時間，每條再各自帶自己的日期。
+  // 日期和種類各包一個 span：英文模式逐個文字節點查字典，拆開才各自對得到
+  // 英文副標「12 items · as of 2026-09-30」會在連字號處折行、日期斷成兩截：英文模式換成不折行的連字號（U+2011）
+  const cut = (D.updated_at || '').slice(0, 10).replace(/-/g, isEn() ? '\u2011' : '-');
   host.innerHTML = `<div class="brief">
     <div class="brief-h"><b>重點</b><span>${hl.length} 條 · 截至 ${cut}</span>
       <button class="tog" type="button">${collapsed ? '展開' : '收起'}</button></div>
@@ -1346,9 +1420,9 @@ function renderBrief(){
       <div class="bi ${h.level} ${i >= BRIEF_TOP && !briefAll ? 'more' : ''}" data-go="${h.symbol}">
         <div class="bar"></div>
         <div class="bt">
-          <div class="bw"><b>${h.name}</b> ${h.what}</div>
+          <div class="bw"><b>${nameEn(h.name)}</b> ${h.what}</div>
           ${h.why && ((h.kind || '').startsWith('類股') || h.level === 'critical') ? `<div class="by">${h.why}</div>` : ''}
-          ${h.when ? `<div class="bwhen">${fmtWhen(h.when)}${h.kind ? ' · ' + h.kind : ''}</div>` : ''}
+          ${h.when ? `<div class="bwhen"><span>${fmtWhen(h.when)}</span>${h.kind ? ' · <span>' + h.kind + '</span>' : ''}</div>` : ''}
         </div>
         <div class="bn">${h.sector}</div>
       </div>`).join('')}
@@ -1387,7 +1461,7 @@ function renderPulse(){
   if(!items.length){ host.innerHTML = ''; return; }
 
   host.innerHTML = items.map(s => `<div class="pu" data-go="${s.symbol}">
-      <div class="k">${s.name}</div>
+      <div class="k">${nameEn(s.name)}</div>
       <div class="v">${px(s.price, s.is_index, s.dp)}</div>
       <div class="c ${cls(s.change_pct_1d)}">${pc(s.change_pct_1d)}</div>
     </div>`).join('');
@@ -1407,7 +1481,7 @@ function render(){
   renderWatch();
   renderMovers();
   renderIPO();
-  $('#title').textContent = D.title;
+  $('#title').textContent = isEn() ? EN_TITLE : D.title;   // 英文模式的標題固定，不經字典也不經機器翻譯
   $('#updated').textContent = D.updated_at;
   paintFresh();
 
@@ -1589,14 +1663,15 @@ async function gtranslate(part){
    打開畫面時把還是英文的標題在瀏覽器裡現翻（跟全文一樣存在手機上，下次不再翻）。
    一次只翻一則，遇到限流就停，不要連續打一堆請求。 */
 const hasCJK = t => /[\u4e00-\u9fff]/.test(t || '');
-// \u4e2d\u6587\u5831\u5c0e\uff1a\u5373\u6642\u6293\u7684\u6709\u6a19 lang\uff1bnews.json\uff0fklsescreener \u8f49\u4f86\u7684\u90a3\u4efd\u4e0d\u4e00\u5b9a\u6709\uff0c\u6a19\u984c\u662f\u4e2d\u6587\u5c31\u7b97
-// \uff08\u4e0d\u7136\u5f48\u7a97\u6703\u628a\u7c21\u9ad4\u6a19\u984c\u653e\u5728\u300cENGLISH\u300d\u5e95\u4e0b\uff0c\u9084\u591a\u4e00\u9846\u6c92\u7528\u7684\u300c\u539f\u6587\u300d\uff09
+// 中文報導：即時抓的有標 lang；news.json／klsescreener 轉來的那份不一定有，標題是中文就算
+// （不然彈窗會把簡體標題放在「ENGLISH」底下，還多一顆沒用的「原文」）
 const isZh = n => n.lang === 'zh' || (!n.lang && hasCJK(n.title));
-// App \u88e1\u8b80\u5f97\u5230\u5168\u6587\uff1a\u5373\u6642\u6293\u7684\u4e2d\u6587\u5831\u5167\u6587\u5728 LIVE_BODY\uff0c\u96f2\u7aef\u7ffb\u597d\u7684\u5728 body_zh
+// App 裡讀得到全文：即時抓的中文報內文在 LIVE_BODY，雲端翻好的在 body_zh
 const zhFull = n => LIVE_BODY.has(n.url) || !!n.body_zh;
-// \u6a19\u984c\u5df2\u7d93\u6709\u50cf\u6a23\u7684\u4e2d\u6587\uff1a\u82f1\u6587\u8981\u7ffb\u6210\u4e2d\u6587\uff1b\u7c21\u9ad4\u8981\u8f49\u904e\uff08\u8f49\u5931\u6557\u6642\u96f2\u7aef\u6703\u539f\u6a23\u653e\u7c21\u9ad4\uff09
+// 標題已經有像樣的中文：英文要翻成中文；簡體要轉過（轉失敗時雲端會原樣放簡體）
 const goodZh = n => !!n.title_zh && (isZh(n) ? n.title_zh !== n.title : hasCJK(n.title_zh));
 async function fillZh(root){
+  if(isEn()) return;                             // 英文模式：英文標題本來就直接顯示，不用翻成中文
   for(const el of root.querySelectorAll('[data-en]')){
     const en = el.dataset.en;
     if(!en || hasCJK(el.dataset.zh)) continue;
@@ -1670,8 +1745,10 @@ function openSheet(s){
 
 // 面板頂端的名稱與股價；news.json 帶來盤中報價時也用這個就地更新
 function sheetBar(s){
-  document.getElementById('sh-name').textContent = s.name;
-  document.getElementById('sh-sym').textContent  = s.symbol + (s.unit ? ' · ' + s.unit : '');
+  document.getElementById('sh-name').textContent = nameEn(s.name);
+  // 單位（RM/噸）跟代號寫在同一個節點，字典只認得單位本身，先各自換好再拼起來
+  const unit = s.unit && isEn() ? (toEn(s.unit) || s.unit) : s.unit;
+  document.getElementById('sh-sym').textContent  = s.symbol + (unit ? ' · ' + unit : '');
   document.getElementById('sh-price').textContent = px(s.price, s.is_index, s.dp);
   const chg = document.getElementById('sh-chg');
   chg.textContent = pc(s.change_pct_1d);
@@ -1695,6 +1772,26 @@ function showOriginal(item){
   const bodyEn = d.bodyEn || '';
   let bodyZh = d.bodyZh || '';
   if(bodyZh && bodyEn && bodyZh === bodyEn) bodyZh = '';   // 伺服器沒翻成功
+
+  if(isEn()){
+    // 英文模式：標題和內文直接用英文原文，沒有「機器翻譯」那一段；
+    // 只有中譯、沒有原文的（少見）就放中譯，畫面上的觀察器會再翻成英文。
+    // 公告標題跟清單一樣先查字典（Substantial shareholder's interest — KWAP），查不到才用 Bursa 的大寫原標題
+    const body = bodyEn || bodyZh;
+    const dict = d.zh && hasCJK(d.zh) ? toEn(d.zh) : null;
+    dlg.innerHTML = `
+      <h5>${body ? '全文' : '原文對照'}
+        <button class="x" type="button" aria-label="關閉">&times;</button></h5>
+      <div class="dsec"><div class="k">標題</div>
+        <div class="zh" style="font-weight:600">${esc(dict && !hasCJK(dict) ? dict : (d.en || d.zh))}</div></div>
+      ${body ? `<div class="dsec"><div class="k">內文</div>
+        <div class="zh">${esc(body).replace(/\n/g, '<br>')}</div></div>` : ''}
+      <div class="dfoot"><span>${esc(d.src || '')}</span>
+        ${d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener">開啟來源網頁 →</a>` : ''}</div>`;
+    dlg.scrollTop = 0;
+    ovl.classList.add('on');
+    return;
+  }
 
   const needs = !bodyZh && bodyEn;                          // 要在瀏覽器現翻
   dlg.innerHTML = `
@@ -1967,93 +2064,383 @@ async function btSearch(kw, ms){
     ts: Math.floor(Date.parse(x.date_gmt + 'Z') / 1000) || null, lang: 'en', live: true}));
 }
 
-/* ---------- 語言設定：繁體／簡體 ----------
-   整個網頁（介面、資料、翻譯）都是繁體寫的。選「简」時不另外維護一套文字，
-   而是載入 t2s.js（OpenCC 的繁→簡字表），用 MutationObserver 把畫面上出現的每一段文字
-   當場轉成簡體——之後不管哪裡重畫、彈窗、提示，都會自動轉，不必在每個 render 裡各加一次。
-   切回「繁」直接重新載入：畫面上的字已經是簡體，沒有簡→繁的字表可以轉回去。 */
+/* ---------- 語言設定：中文／English ----------
+   整個網頁（介面、資料、翻譯）都是繁體中文寫的，英文不另外維護一套頁面：
+   選「EN」時載入 lang-en.js（字典：整句對照 exact ＋ 帶數字的樣板 rules），
+   用 MutationObserver 把畫面上出現的每一段文字當場換成英文——之後不管哪裡重畫、
+   彈窗、提示，都會自動換，不必在每個 render 裡各加一次。
+   字典查不到、又含中文的，攢成一批送 Google 機器翻譯（寫回前核對數字一個都沒變）。
+   切回「中文」直接重新載入：畫面上的字已經是英文，沒有英→中的字典可以轉回去。 */
 const LANG_KEY = 'lang';
-let lang = (() => { try { return localStorage.getItem(LANG_KEY) === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant'; } catch(e) { return 'zh-Hant'; } })();
-const simp = () => lang === 'zh-Hans';
-let t2sObs = null;
+// 舊版存的是 zh-Hant／zh-Hans（繁簡切換，已拿掉）：除了 en 一律當中文，
+// 而且順手改寫成 zh——同一個網域的舊分頁或舊版頁面讀到舊值才不會各自解讀
+let lang = (() => {
+  try {
+    const v = localStorage.getItem(LANG_KEY);
+    if(v && v !== 'en' && v !== 'zh') localStorage.setItem(LANG_KEY, 'zh');
+    return v === 'en' ? 'en' : 'zh';
+  } catch(e) { return 'zh'; }
+})();
+const isEn = () => lang === 'en';
+const EN_TITLE = 'Bursa Daily Tracker';
+let UI = null;                                   // lang-en.js 編譯後的 {exact, rules}；rules 的正規式只編譯一次
+let enObs = null, enLoading = null;
 
 function paintLang(){
   document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
-  document.documentElement.lang = lang;
+  document.documentElement.lang = isEn() ? 'en' : 'zh-Hant';
 }
 
-// 把一棵子樹裡的文字節點、以及 title／placeholder 提示全部轉成簡體
-function t2sTree(root){
-  if(!window.t2s) return;
-  const skip = {SCRIPT: 1, STYLE: 1, TEXTAREA: 1};
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
-    acceptNode: n => n.nodeType === 1 ? (skip[n.tagName] ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP)
-                                      : NodeFilter.FILTER_ACCEPT });
-  const nodes = [];
-  if(root.nodeType === 3) nodes.push(root);
-  for(let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
-  for(const n of nodes){
-    const v = t2s(n.nodeValue);
-    if(v !== n.nodeValue) n.nodeValue = v;
+// 一段文字查字典：先整句對照，再試樣板規則（規則作者自己用 ^…$ 定界，第一條對到又換乾淨的算數）；
+// 整段對不到就在句號處拆成一句一句各查——重點報導的「公告」列是兩句樣板接起來的（KWAP 申報 2 次…。 EPF 增持…。），
+// 每一句字典都有，整列當一句卻永遠對不到，只好送機器翻譯，而機器翻譯把「2 次」寫成 twice，數字核對過不了，那一列就永遠留著中文。
+// 前後空白原樣保留（樣板字串常帶換行縮排），中間連續空白併成一格再查，規則才不用管排版。
+// 回傳 null 表示字典沒有、要送機器翻譯；沒有中文的一律原樣回傳，所以換好的節點不會再被動到
+function toEn(text){
+  const m = /^(\s*)([\s\S]*?)(\s*)$/.exec(text);
+  if(!hasCJK(m[2])) return text;
+  if(!UI) return null;
+  const q = m[2].replace(/\s+/g, ' ');
+  let out = enLookup(q);
+  if(out === null){
+    // 兩句以上才拆；每一句都要查得到，少一句就整段送機器翻譯（半英半中更難讀）
+    const parts = q.split(/(?<=。)\s*(?=\S)/);
+    if(parts.length > 1){
+      const done = parts.map(enLookup);
+      if(done.every(p => p !== null)) out = done.join(' ');
+    }
   }
-  if(root.nodeType === 1){
-    for(const el of [root, ...root.querySelectorAll('[title],[placeholder]')]){
-      for(const a of ['title', 'placeholder']){
-        const v = el.getAttribute && el.getAttribute(a);
-        if(v){ const w = t2s(v); if(w !== v) el.setAttribute(a, w); }
+  return out === null ? null : m[1] + tidy(out) + m[3];
+}
+// 一句查字典（整句對照 → 樣板規則）；查不到回 null
+function enLookup(q){
+  if(!hasCJK(q)) return q;
+  const hit = UI.exact[q];
+  if(hit != null) return hit;
+  for(const [re, to, n] of UI.rules){
+    if(!re.test(q)) continue;
+    // 自己展開 $1…$14 與 $$（字典的長句樣板用到十個以上的括號）。
+    // 換完還夾著中文的規則不算數：「大股東減持 8,617,400 股」曾被去股名尾巴的規則削成
+    // 「大股東減持 8,617,400」寫上畫面，從此沒人再翻它；寧可整句送機器翻譯
+    const out = q.replace(re, (...g) => to.replace(/\$(\$|\d\d?)/g, (_, d) => {
+      if(d === '$') return '$';
+      let i = +d, tail = '';
+      if(i > n && d.length === 2){ i = +d[0]; tail = d[1]; }
+      return capEn(g[i] || '') + tail;
+    }));
+    if(hasCJK(out)) continue;
+    // 只把尾巴砍掉、一個字都沒換的，不算翻譯：去股票名中文尾巴的規則（Maybank 馬來亞銀行 → Maybank）
+    // 也會把「8.22 倍」削成「8.22」、「P/B 0.97（低於帳面淨值）」削成「P/B 0.97」，那是把意思砍掉。
+    // 只有追蹤清單裡的股票名例外（股票名在 nameEn 已先換好，這裡是保險）
+    if(q.startsWith(out) && out.length < q.length && !isStockName(q)) continue;
+    return out;
+  }
+  return null;
+}
+// 括號抓到的若是中文（報社名、股票名、主題「派息、併購、人事」），再查整句對照；
+// 頓號隔開的清單逐項查，全部查得到才換（有一項查不到就原樣留著中文，外面會判這條規則不算數）
+function capEn(v){
+  if(!hasCJK(v)) return v;
+  const hit = UI.exact[v];
+  if(hit != null) return hit;
+  if(!v.includes('、')) return v;
+  const items = v.split('、').map(x => x.trim()).map(x => hasCJK(x) ? UI.exact[x] : x);
+  return items.every(x => x != null) ? items.join(', ') : v;
+}
+// 字典換出來的英文偶爾夾著全形標點（規則照抄括號裡的「10/9：」、「（」）：換成半形，英文讀者才不覺得怪。
+// hasCJK 只看漢字，全形冒號它不管，所以得在這裡處理
+const tidy = s => /[：，；、。（）％]/.test(s)
+  ? s.replace(/：/g, ': ').replace(/[，、]/g, ', ').replace(/；/g, '; ').replace(/。/g, '. ')
+     .replace(/（/g, ' (').replace(/）/g, ')').replace(/％/g, '%').replace(/ {2,}/g, ' ').replace(/\s+$/, '')
+  : s;
+let namesOf = null, NAMES = new Set();
+function isStockName(t){
+  if(namesOf !== D){ namesOf = D; NAMES = new Set(((D && D.stocks) || []).map(s => s.name)); }
+  return NAMES.has(t);
+}
+// 股票名在資料層先換好：「Maybank 馬來亞銀行」只留英文那半；整個是中文的（台積電 ADR、美元兌馬幣）查字典。
+// 砍完還有中文的（馬股 AI 概念股）不砍，留給字典或機器翻譯整句處理
+const NAME_TAIL = /^(\S.*?[A-Za-z0-9)])\s+[㐀-鿿（）]+$/;
+function nameEn(name){
+  if(!isEn() || !hasCJK(name || '')) return name;
+  const hit = UI && UI.exact[name];
+  if(hit != null) return hit;
+  const cut = name.replace(NAME_TAIL, '$1');
+  return hasCJK(cut) ? name : cut;
+}
+
+/* 機器翻譯的後備：字典沒有的句子攢 150 ms 送一批（一次重畫只打一兩個請求），
+   翻好的記在記憶體 + localStorage（en_cache，最多 1500 條，先進先出；全文段落太長只留記憶體）。
+   寫回畫面前要確認節點還是原來那句（期間可能已重畫），而且數字一個都不能變。 */
+const EN_KEY = 'en_cache', EN_CAP = 1500;
+const EN_MEM = new Map();
+function enLoad(){
+  try { for(const [k, v] of Object.entries(JSON.parse(localStorage.getItem(EN_KEY)) || {})) EN_MEM.set(k, v); }
+  catch(e) {}
+}
+function enPersist(){
+  while(EN_MEM.size > EN_CAP) EN_MEM.delete(EN_MEM.keys().next().value);
+  try {
+    const o = {};
+    for(const [k, v] of EN_MEM) if(k.length <= 400) o[k] = v;
+    localStorage.setItem(EN_KEY, JSON.stringify(o));
+  } catch(e) {}
+}
+// 數字核對：把兩邊的數字都換算成「量」再比——中文報的「3.96億」機器翻譯會寫成「396 million」，
+// 量沒變就不算改數字；寫成「3.96 billion」量差十倍才是真的翻錯。千分位、%、句尾句點都不影響。
+// 中文裡的每一個量都要原樣出現在英文裡、個數也要一樣；英文多出來的只放行「光溜溜的一兩位整數」，
+// 而且中文裡要有國字數量詞——「一個月」譯成「1-month」、「半年」譯成「6 months」是把國字寫成數字，不是改數字
+const SCALE = {'萬': 1e4, '万': 1e4, '億': 1e8, '亿': 1e8, '兆': 1e12, '千': 1e3, k: 1e3, thousand: 1e3,
+               m: 1e6, mn: 1e6, mil: 1e6, million: 1e6, b: 1e9, bn: 1e9, bil: 1e9, billion: 1e9, trillion: 1e12};
+// 全形的「９％」「，」先換成半形：中文報標題常用全形百分號，不換的話「跌破9％」對上「below 9%」永遠對不齊，
+// 那一則就一直留著中文。英文的 twice 當 2（「申報 2 次」機器翻譯愛寫 twice）；once 不管，once again 太常見
+const halfWidth = t => t.replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) - 0xFEE0))
+                        .replace(/％/g, '%').replace(/，/g, ',').replace(/．/g, '.').replace(/−/g, '-')
+                        .replace(/\btwice\b/gi, '2');
+// 負號一起抓（前面不是字母、數字、小數點或 % 才算：2026-09-30 的連字號不是負號）：
+// 「-4.5%」譯成「4.5%」是把跌說成漲。正號不管，「+2.41%」寫成「up 2.41%」意思沒變
+const NUM_RE = /((?:(?<![\w.%])-)?\d[\d,]*(?:\.\d+)?)(?:\s?(%|per ?cent|percent|萬|万|億|亿|兆|千|thousand|million|mil|mn|m|billion|bil|bn|b|trillion|k)(?![A-Za-z]))?/gi;
+const NUMS = t => [...halfWidth(t).matchAll(NUM_RE)].map(m => {
+  const v = parseFloat(m[1].replace(/,/g, ''));
+  const u = (m[2] || '').toLowerCase().replace(/\s/g, '');
+  return /^(%|percent)$/.test(u) ? v + '%' : String(+(v * (SCALE[u] || 1)).toPrecision(12));
+});
+// 國字數字後面要接量詞（一個月、半年、十日、三次）才算數量詞；「十分嚴重」的「十」不是，
+// 不然機器翻譯憑空捏一個小數字進來也混得過去
+const ZH_COUNT = /[一二三四五六七八九十兩半](?=[個月年日天週季檔次倍成則筆家位項度])/;
+function numsOk(zh, en){
+  const left = NUMS(en);
+  for(const n of NUMS(zh)){
+    const i = left.indexOf(n);
+    if(i < 0) return false;                      // 中文裡的數字在英文裡不見了或被改了（例如 2026-09-30 改寫成英文日期）
+    left.splice(i, 1);
+  }
+  return !left.length || (ZH_COUNT.test(zh) && left.every(n => /^\d{1,2}$/.test(n)));
+}
+// 大馬中文報寫「3.96億」「2500元」指的都是令吉，機器翻譯常擅自寫成 RMB／yuan（人民幣）：
+// 原文沒提人民幣的一律改回 RM／ringgit。量沒變，數字核對照樣過得了，所以得另外擋
+function fixCurrency(zh, en){
+  if(/人民幣|人民币|RMB|CNY|¥/.test(zh)) return en;
+  return en.replace(/\bChinese yuan\b/gi, 'ringgit').replace(/\b(?:RMB|CNY)\s?/g, 'RM')
+           .replace(/\b(?:yuan|renminbi)\b/gi, 'ringgit');
+}
+function enOk(zh, en){
+  if(!numsOk(zh, en)) return false;              // 數字對不上：寧可留中文
+  if(!hasCJK(en)) return true;
+  // 還夾著中文：大多是英文就收下（通常是沒翻的專有名詞），不然留中文
+  const cjk = (en.match(/[一-鿿]/g) || []).length;
+  const lat = (en.match(/[A-Za-z]/g) || []).length;
+  return lat >= 4 * cjk;
+}
+// 太長的段落（中文報全文）在句號處切開：網址有長度上限
+function splitLong(text, max = 500){
+  const out = [];
+  let buf = '';
+  for(const sen of text.split(/(?<=[。！？；])/)){
+    if(buf && buf.length + sen.length > max){ out.push(buf); buf = ''; }
+    buf += sen;
+  }
+  if(buf) out.push(buf);
+  return out.flatMap(p => { const ps = []; for(let i = 0; i < p.length; i += max) ps.push(p.slice(i, i + max)); return ps; });
+}
+
+const mtQ = [];                                  // 等著送機器翻譯的 {node, attr, raw, tries, due}
+const wrote = new WeakMap();                     // 節點 → 我們最後寫進去的字：翻完仍帶中文的別再送一次
+const EN_BAD = new Set();                        // 翻回來數字對不上的句子：這次開頁不再送（再翻還是一樣），也不存快取，下次開頁再試
+let mtTimer = 0, mtRetry = 0, mtBusy = false, mtAgain = false;
+function mtQueue(node, attr, raw, tries = 0){
+  // 重試的隔 3 秒、6 秒再送，別跟剛失敗的那批擠在一起。到期時間記在項目上，計時器只管「最早到期的那一筆」：
+  // 以前共用一個計時器、每次排入就重設，第二輪的重試被新排進來的第一輪一再推遲，最後擠成同一批
+  mtQ.push({node, attr, raw, tries, due: tries ? Date.now() + 3000 * tries : 0});
+  if(tries){ armRetry(); return; }
+  clearTimeout(mtTimer);
+  mtTimer = setTimeout(() => mtFlush().catch(() => {}), 150);
+}
+function armRetry(){
+  const now = Date.now();
+  const next = Math.min(...mtQ.filter(e => e.due > now).map(e => e.due));
+  clearTimeout(mtRetry);
+  if(isFinite(next)) mtRetry = setTimeout(() => mtFlush().catch(() => {}), next - now);
+}
+// 送機器翻譯前先把字典認得的專有名詞換成英文（黃天順 → Wong Thean Soon、馬銀行 → Maybank），
+// 不然機器翻譯會音譯成 Huang Tianshun，跟字典翻出來的公告對不上。lang-en.js 的 names 可有可無，沒有就原樣送
+function preMT(t){
+  if(!UI || !UI.names.length) return t;
+  for(const [zh, en] of UI.names) t = t.split(zh).join(en);
+  return t;
+}
+const curText = e => e.attr ? e.node.getAttribute(e.attr) : e.node.nodeValue;
+const trimCore = raw => /^\s*([\s\S]*?)\s*$/.exec(raw)[1].replace(/\s+/g, ' ');
+async function mtFlush(){
+  // 上一批還在等 Google 回來：記下來，它回來後再跑一次（佇列裡的東西留著），同一句才不會送兩次
+  if(mtBusy){ mtAgain = true; return; }
+  mtBusy = true;
+  try { await mtFlushNow(); }
+  finally {
+    mtBusy = false;
+    if(mtAgain){ mtAgain = false; mtFlush().catch(() => {}); }
+  }
+}
+async function mtFlushNow(){
+  const now = Date.now();
+  const later = mtQ.filter(e => e.due > now);    // 還沒到重試時間的留在佇列裡，時間到了計時器會再來
+  const groups = new Map();                      // 查詢字串 → 要寫回的節點們
+  for(const e of mtQ.splice(0)){
+    if(e.due > now) continue;
+    if(!e.node.isConnected || curText(e) !== e.raw) continue;   // 送出前就被重畫掉了
+    const q = trimCore(e.raw);
+    if(!groups.has(q)) groups.set(q, []);
+    groups.get(q).push(e);
+  }
+  mtQ.push(...later);
+  const need = [...groups.keys()].filter(q => !EN_MEM.has(q) && !EN_BAD.has(q));
+  if(need.length){
+    const pieces = need.map(q => q.length > 500 ? splitLong(q) : [q]);
+    let out = [];
+    try { out = await gBatch(pieces.flat().map(preMT), 'auto', 'en'); } catch(e) {}   // 失敗就留中文，下次重畫再試
+    let k = 0;
+    pieces.forEach((ps, i) => {
+      const parts = ps.map(() => out[k++]);
+      if(!parts.every(Boolean)) return;
+      const en = fixCurrency(need[i], parts.join(' '));
+      // 數字對不上的不存：存了會佔掉快取的位置，之後每次重畫讀到的都是同一句錯的，永遠沒有第二次機會
+      if(enOk(need[i], en)) EN_MEM.set(need[i], en); else EN_BAD.add(need[i]);
+    });
+    enPersist();
+  }
+  let dropped = false;
+  const write = () => {
+    for(const [q, list] of groups){
+      let en = EN_MEM.get(q);
+      if(en && !enOk(q, en)){ EN_MEM.delete(q); EN_BAD.add(q); en = null; dropped = true; }   // 舊版存下來的壞譯文：丟掉
+      if(!en){
+        if(EN_BAD.has(q)) continue;              // 翻出來的數字對不上：留中文，這次不必再試（再翻還是一樣）
+        // 這批沒回來（逾時、被限流）：最多再試兩次，不然那幾句會一直留著中文
+        for(const e of list) if(e.tries < 2) mtQueue(e.node, e.attr, e.raw, e.tries + 1);
+        continue;
+      }
+      en = fixCurrency(q, en);                   // 舊版存下來的 RMB 也一併改掉
+      for(const e of list){
+        if(!e.node.isConnected || curText(e) !== e.raw) continue;
+        const m = /^(\s*)[\s\S]*?(\s*)$/.exec(e.raw);
+        const v = m[1] + en + m[2];
+        if(e.attr) e.node.setAttribute(e.attr, v);
+        else { wrote.set(e.node, v); e.node.nodeValue = v; }
       }
     }
-  }
+  };
+  // 英文標題比中文長一倍，寫回去時整張卡會長高：把讀者正在看的那一塊釘住，內容才不會在手指底下跳走
+  keepScroll(write, sheet.classList.contains('on') ? document.querySelector('.sheet-in') : null);
+  if(dropped) enPersist();                       // 壞譯文也要從 localStorage 拿掉，下次開頁才會重翻
+  if(later.length) armRetry();
+  if(enObs) enObs.takeRecords();                 // 丟掉上面自己造成的變動
 }
 
-async function startSimplified(){
-  if(!window.t2s){
-    await new Promise((ok, bad) => {
-      const sc = document.createElement('script');
-      sc.src = 't2s.js'; sc.onload = ok; sc.onerror = bad;
-      document.head.appendChild(sc);
-    });
-  }
-  t2sTree(document.body);
-  document.title = t2s(document.title);
-  if(t2sObs) return;
-  t2sObs = new MutationObserver(recs => {
-    for(const r of recs){
-      if(r.type === 'characterData') t2sTree(r.target);
-      else r.addedNodes.forEach(n => t2sTree(n));
+// 一棵子樹裡的文字節點、以及 title／placeholder／aria-label 全部換成英文；字典沒有的排進機器翻譯。
+// translate="no" 的元素整棵跳過（語言切換鈕的「中文」就是要用中文寫）
+const EN_ATTRS = ['title', 'placeholder', 'aria-label'];
+const noTr = el => el.getAttribute('translate') === 'no';
+function enText(n){
+  const v = n.nodeValue;
+  if(!hasCJK(v) || wrote.get(n) === v) return;
+  const w = toEn(v);
+  if(w === null) mtQueue(n, null, v);
+  else if(w !== v){ wrote.set(n, w); n.nodeValue = w; }
+}
+function enTree(root){
+  const skip = {SCRIPT: 1, STYLE: 1, TEXTAREA: 1};
+  if(root.nodeType === 3){ if(!root.parentElement || !root.parentElement.closest('[translate="no"]')) enText(root); return; }
+  if(root.nodeType !== 1 || skip[root.tagName] || root.closest('[translate="no"]')) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+    acceptNode: n => n.nodeType === 1 ? (skip[n.tagName] || noTr(n) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_SKIP)
+                                      : NodeFilter.FILTER_ACCEPT });
+  const nodes = [];
+  for(let n = walker.nextNode(); n; n = walker.nextNode()) nodes.push(n);
+  nodes.forEach(enText);
+  for(const el of [root, ...root.querySelectorAll('[title],[placeholder],[aria-label]')])
+    for(const a of EN_ATTRS){
+      if(el.closest('[translate="no"]')) break;
+      const v = el.getAttribute(a);
+      if(!v || !hasCJK(v)) continue;
+      const w = toEn(v);
+      if(w === null) mtQueue(el, a, v);
+      else if(w !== v) el.setAttribute(a, w);
     }
-    t2sObs.takeRecords();                        // 丟掉上面這幾行自己造成的變動，不然會沒完沒了
+}
+
+// 第一次選 EN 才下載字典，看中文的人完全不用載
+function loadEn(){
+  if(window.UI_EN) return Promise.resolve();
+  if(!enLoading) enLoading = new Promise((ok, bad) => {
+    const sc = document.createElement('script');
+    sc.src = 'lang-en.js';
+    sc.onload = ok;
+    sc.onerror = () => { enLoading = null; bad(new Error('lang-en.js 載入失敗')); };
+    document.head.appendChild(sc);
   });
-  t2sObs.observe(document.body, {childList: true, subtree: true, characterData: true});
+  return enLoading;
+}
+async function startEnglish(){
+  let err = null;
+  try { await loadEn(); } catch(e) { err = e; }    // 字典載不到也照樣轉：全靠機器翻譯，總比整頁中文好
+  const u = window.UI_EN || {};
+  // 每條規則記下括號數：取代字串裡的 $12 在只有 9 個括號時要當 $1 接「2」（跟 String.replace 一樣）
+  UI = {exact: u.exact || {},
+        rules: (u.rules || []).map(([re, to]) => {
+          try { return [new RegExp(re), to, new RegExp(re + '|').exec('').length - 1]; }
+          catch(e) { return null; }
+        }).filter(Boolean),                      // 一條規則寫壞不能拖垮整本字典
+        // 送機器翻譯前要先換掉的專有名詞（人名、公司簡稱）：長的先換，「馬銀行」才不會被「銀行」搶先
+        names: Object.entries(u.names || {}).sort((a, b) => b[0].length - a[0].length)};
+  enLoad();
+  document.title = EN_TITLE;
+  enTree(document.body);
+  if(!enObs){
+    enObs = new MutationObserver(recs => {
+      for(const r of recs){
+        if(r.type === 'characterData') enTree(r.target);
+        else r.addedNodes.forEach(enTree);
+      }
+      enObs.takeRecords();                       // 丟掉上面這幾行自己造成的變動，不然會沒完沒了
+    });
+    enObs.observe(document.body, {childList: true, subtree: true, characterData: true});
+  }
+  enObs.takeRecords();
+  if(err) throw err;
 }
 
 document.querySelectorAll('#lang button').forEach(b => b.onclick = async () => {
   if(b.dataset.l === lang) return;
   lang = b.dataset.l;
   try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
-  if(simp()){
-    paintLang();
-    try { await startSimplified(); }
-    catch(e) { toast('簡體字表載入失敗', '請確認網路後再試一次'); }
-  } else {
-    location.reload();
+  if(!isEn()){ location.reload(); return; }
+  paintLang();
+  closeOverlay();                                // 彈窗是中文版排的（「內文（機器翻譯）」「ENGLISH」那幾段），翻成英文也不對，關掉
+  if(D) keepScroll(render);                      // 資料層的英文（英文原標題、IPO 板塊）要重畫才會換過來
+  // 手機面板也是中文版排的（中文／原文切換鈕、中譯標題）：同一檔重開一次，捲到哪裡保留
+  if(sheetSym && D){
+    const s = D.stocks.find(x => x.symbol === sheetSym);
+    const box = document.querySelector('.sheet-in');
+    const top = box ? box.scrollTop : 0;
+    if(s){ openSheet(s); if(box) box.scrollTop = top; }
   }
+  try { await startEnglish(); }
+  catch(e) { toast('英文字典載入失敗', '先用機器翻譯頂著，請確認網路後再試一次'); }
 });
 paintLang();
-if(simp()) startSimplified().catch(() => {});
+if(isEn()) startEnglish().catch(() => {});       // 開頁就是英文：字典在背景載，畫面先出來
 
-/* ---------- 簡體轉繁體 ----------
-   中文報是簡體，使用者看繁體。Google 的 clients5 一次可以送好幾個 q，一個請求就轉完一批標題。
-   網址控制在 6000 字元內（中文編碼後一個字佔 9 個字元）。 */
-const S2T = 'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=zh-CN&tl=zh-TW';
-// zh-TW 會順便「在地化」，把 Bursa 的「主板」改成電腦的「主機板」，改回來
-const twFix = t => t.replace(/主機板/g, '主板');
-async function s2tBatch(texts){
+/* ---------- Google 翻譯（批次）----------
+   clients5 一次可以送好幾個 q，一個請求就處理完一批；網址控制在 6000 字元內（中文編碼後一個字佔 9 個字元）。
+   兩個用途：中文報的簡轉繁（zh-CN→zh-TW）、英文模式的機器翻譯（auto→en，簡體繁體都進得來）。 */
+const GT = (sl, tl) => 'https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=' + sl + '&tl=' + tl;
+async function gBatch(texts, sl, tl, fix = t => t){
+  const base = GT(sl, tl);
   const batches = [];
-  let cur = [], len = S2T.length;
+  let cur = [], len = base.length;
   texts.forEach((t, i) => {
     const q = encodeURIComponent(t).length + 3;
-    if(cur.length && len + q > 5800){ batches.push(cur); cur = []; len = S2T.length; }
+    if(cur.length && len + q > 5800){ batches.push(cur); cur = []; len = base.length; }
     cur.push(i); len += q;
   });
   if(cur.length) batches.push(cur);
@@ -2061,18 +2448,23 @@ async function s2tBatch(texts){
   let ok = 0;
   await Promise.all(batches.map(async idx => {
     try {
-      const data = await tfetchJSON(S2T + idx.map(i => '&q=' + encodeURIComponent(texts[i])).join(''));
+      const data = await tfetchJSON(base + idx.map(i => '&q=' + encodeURIComponent(texts[i])).join(''));
       idx.forEach((i, j) => {
         const v = Array.isArray(data) ? data[j] : null;
-        const s = Array.isArray(v) ? v[0] : v;
-        if(typeof s === 'string' && s) out[i] = twFix(s);
+        const s = Array.isArray(v) ? v[0] : v;   // sl=auto 時每項是 [譯文, 偵測到的語言]
+        if(typeof s === 'string' && s) out[i] = fix(s);
       });
       ok++;
     } catch(e) {}                                // 一批失敗，其他批照用
   }));
-  if(!ok && texts.length) throw new Error('轉繁體失敗');
+  if(!ok && texts.length) throw new Error('翻譯失敗');
   return out;
 }
+
+/* ---------- 簡體轉繁體 ----------
+   中文報是簡體，使用者看繁體。zh-TW 會順便「在地化」，把 Bursa 的「主板」改成電腦的「主機板」，改回來 */
+const twFix = t => t.replace(/主機板/g, '主板');
+const s2tBatch = texts => gBatch(texts, 'zh-CN', 'zh-TW', twFix);
 
 // 標題：轉好的直接套上去，同時記在記憶體；localStorage 只是讓下次打開不用再轉的快取
 // （跟翻譯共用，鍵值加 s2t| 前綴）。以前是存進去再讀出來，手機儲存空間滿了或被擋時一個都存不進去，
@@ -2082,7 +2474,7 @@ const S2T_MEM = new Map();
 async function tradTitles(items){
   const want = items.filter(n => isZh(n) && !goodZh(n));
   if(!want.length) return;
-  if(simp()){ want.forEach(n => { n.title_zh = n.title; }); return; }   // 看簡體：原文就是簡體
+  if(isEn()) return;                             // 英文模式：簡體標題留著，畫面上的觀察器會直接翻成英文
   const c = trCache();
   const hit = t => S2T_MEM.get(t) || c['s2t|' + t];
   const need = [...new Set(want.map(n => n.title).filter(t => !hit(t)))];
@@ -2100,7 +2492,7 @@ async function tradTitles(items){
 // 全文：點開才轉，一段一個 q，太長的段落在句號處切開；只記在記憶體（全文太大，不佔手機儲存空間）
 const bodyTW = new Map();
 async function tradBody(key, text){
-  if(simp()) return text;                        // 看簡體：原文就是簡體
+  if(isEn()) return text;                        // 英文模式：不轉繁體，段落畫出來後由觀察器翻成英文
   if(bodyTW.has(key)) return bodyTW.get(key);
   const pieces = [];
   text.split('\n').filter(Boolean).forEach((p, k) => {
