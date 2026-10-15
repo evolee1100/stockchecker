@@ -525,6 +525,13 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .mcard-h .tog{margin-left:auto;font:inherit;font-size:11px;color:var(--ink-3);
               background:none;border:none;cursor:pointer;padding:0}
 .mcard-h .tog:hover{color:var(--ink)}
+/* 副標長的時候（分析分頁「題材股風險」）讓副標折行，「收起」不能被擠成直的兩個字 */
+.mcard-h .tog{flex:none;white-space:nowrap}
+/* 整條標題列都能點來收起／展開（見 mcard）。「展開／收起」本身也放大可點範圍，負 margin 抵掉，版面不變 */
+.mcard-h{cursor:pointer}
+.mcard-h .tog{padding:12px 10px;margin:-12px -10px -12px auto}
+/* 收起時「展開」用深一點的灰：那是使用者要找的入口，不是可以略過的字 */
+.mcard.folded .mcard-h .tog{color:var(--ink-2)}
 .mcard-b[hidden]{display:none}
 
 /* 快訊 */
@@ -631,6 +638,91 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 
 @media(max-width:700px){ .mvr .mc{display:none} }
 
+/* ---------- 分析分頁 ----------
+   不是把一份寫死的報告貼上來：數字每次開頁都從 data.js 現算，資料一更新就跟著變；
+   只有「大環境觀點」是人工整理的，所以標日期、放最後，過期了會自己說。
+   卡片沿用首頁的 .mcard，列的排法比照漲跌排行（.mvr）：左邊名稱＋小字，右邊數字。 */
+#analysis[hidden],.scroll[hidden]{display:none}
+/* 最上面：資料時間＋免責，兩行字，不做成卡片。做成可收起的卡片時，按一次「收起」就永遠看不到
+   「不構成投資建議」，而且卡片標題「分析」只是把剛點的分頁名稱再寫一次 */
+.an-head{font-size:12px;color:var(--read);line-height:1.6;margin:0 2px 12px}
+/* 現在發生什麼事：一條一句，標籤粗體在前。點得開的（綜指、毛棕油開那一檔；銀行股、REIT 捲到下面的卡片）
+   尾巴加「›」：五條長得一模一樣，不標出來使用者不會知道哪幾條能點 */
+.anb{padding:10px 14px;border-top:1px solid var(--hair);font-size:13.5px;line-height:1.55}
+.anb:first-child{border-top:none}
+.anb b{font-weight:650;margin-right:6px}
+.anb[data-go],.anb[data-to]{cursor:pointer;position:relative;padding-right:30px}
+.anb[data-go]::after,.anb[data-to]::after{content:"›";position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);font-size:20px;line-height:1;color:var(--ink-3)}
+.anb[data-go]:hover,.anb[data-to]:hover,.anr:hover{background:var(--tint)}
+/* 銀行／REIT／題材股的列。第一行：名稱（可以折行，不要省略成「Hong Leong…」），右邊只放「今年」一個數字；
+   第二行橫跨整列：標籤固定排第一個，後面接 P/B · ROE · 股息率 · 派息率 · 距52週高。
+   以前標籤跟在名稱後面、右邊疊兩個數字：375 寬的手機上有的列標籤擠到名稱底下、有的沒有，列高參差，一眼掃不下去 */
+.anr{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:baseline;
+     padding:9px 14px;border-top:1px solid var(--hair);cursor:pointer}
+.anr:first-child{border-top:none}
+.anr .n{font-size:13.5px;font-weight:600;line-height:1.4}
+/* 每一項（「派息率 125%」）整塊換行，標籤和數字不會被拆在兩行。
+   項目之間用間距分開、不用「 · 」：以前用 · 串起來，折行時新的一行會以「·」開頭 */
+.anr .s{grid-column:1 / -1;font-size:11.5px;color:var(--read);margin-top:3px;line-height:1.6;
+        font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px}
+.anr .s > span{max-width:100%}
+.anr .r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:12.5px;font-weight:600}
+/* 「今年」這個小標用 --ink-2 不用 --ink-3：它是唯一說明右邊數字是什麼的字，不是可以略過的字 */
+.anr .r .k{font-size:11px;font-weight:500;color:var(--ink-2);margin-right:4px}
+/* 長標籤（REIT 那個）要能在標籤裡折行；藥丸形折成兩行很怪，圓角收小 */
+.anr .chip,.an-note .chip{display:inline-block;max-width:100%;white-space:normal;line-height:1.4;
+                          border-radius:6px;font-weight:500}
+.chip.info{color:#2459b3;border-color:#c9d8f3}
+.an-note{font-size:12px;color:var(--read);line-height:1.7;padding:9px 14px 11px;border-top:1px solid var(--hair)}
+.mcard-b > .an-note:first-child{border-top:none}
+/* 圖例：放在列表上面，一項一行，標籤後面直接接說明。
+   以前是兩欄格線，左欄被最寬的標籤撐開：英文模式（Cheap for a reason）圖例高到 400px，佔掉大半個畫面 */
+.an-lg > div + div{margin-top:5px}
+.an-lg .chip{margin-right:7px}
+.an-lg .k0{font-weight:600;color:var(--ink-2);margin-right:7px}
+/* 文字段落（怎麼看數字、原則、觀點） */
+.an-txt{padding:2px 14px 12px;font-size:13px;line-height:1.7}
+.an-txt p{margin:10px 0 0}
+/* 小標自己一行：中文小標後面接全形冒號的話，英文模式那個冒號會變成單獨一個翻不到的文字節點 */
+.an-txt b{display:block;font-weight:650}
+.an-ol{margin:6px 0 0;padding-left:21px}
+.an-ol > li{margin-top:9px;padding-left:2px}
+.an-ol ul{margin:5px 0 0;padding-left:18px}
+.an-ol ul li{margin-top:5px}
+/* 「目前符合：MBSB」這種現算的部分，跟固定說明分開看得出來 */
+.an-live{display:block;margin-top:2px;font-weight:600;color:var(--ink)}
+.an-warn{margin:10px 14px 0;padding:8px 11px;border-radius:7px;font-size:12.5px;line-height:1.55;
+         color:#8a5c00;background:#fdf6e3;border:1px solid #eeddb6}
+/* 來源：一行一個、整行可點。擠成一段的話手機上每個連結只有 16px 高，還會在名稱中間折行，很容易點錯。
+   一行一個會拉長很多，所以收在「來源（7）」底下，要查的人再點開 */
+.an-srch{margin-top:12px}
+.an-srch summary{cursor:pointer;padding:6px 0;font-weight:650;color:var(--ink-2)}
+.an-src{list-style:none;margin:4px 0 0;padding:0;font-size:12px;line-height:1.45}
+.an-src li{border-top:1px solid var(--hair)}
+.an-src li:last-child{border-bottom:1px solid var(--hair)}
+.an-src a{display:block;padding:7px 0;color:#0b57d0;text-decoration:none}
+.an-src a:hover{text-decoration:underline}
+.an-txt .an-foot{font-size:11.5px;color:var(--read)}
+@media(max-width:700px){
+  .an-head{font-size:13.5px}
+  .anb{font-size:16px}
+  .anr .n{font-size:16px}
+  .anr .s{font-size:13.5px}
+  .anr .r{font-size:15px}
+  .anr .r .k{font-size:13px}
+  /* 標籤不另外縮小，用全站手機版 .chip 的 15px：跟點進去的面板裡 ROE、除息那些標籤一樣大 */
+  .an-note{font-size:16px}
+  .an-lg{font-size:15px}
+  .an-txt{font-size:16px}
+  .an-warn{font-size:16px}
+  .an-src{font-size:15px}
+  .an-src a,.an-srch summary{padding:10px 0}
+  .an-txt .an-foot{font-size:13.5px}
+  /* 手機沒有 hover：按下去要有反應，跟表格的列（tr.row:active）一樣 */
+  .anb[data-go]:active,.anb[data-to]:active,.anr:active{opacity:.55}
+}
+
 /* ---------- 英文模式：英文比中文長，手機上這幾處要另外收一收 ---------- */
 @media(max-width:700px){
   /* 分頁：「Indices 13」「Palm oil 2」在 375 寬的格子裡會蓋到邊框，字級收小一點 */
@@ -679,7 +771,12 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   <div id="ipo"></div>
   <div class="tabs" id="tabs"></div>
 
-  <div class="scroll"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <div class="scroll" id="tablewrap"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
+  <!-- 「分析」分頁：選到它時取代上面的表格。每張卡片一個固定的容器，mcard 才比得出內容有沒有變、不必每次重畫 -->
+  <div id="analysis" hidden>
+    <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-howto"></div><div id="an-bank"></div>
+    <div id="an-reit"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
+  </div>
 
 
 </div>
@@ -781,7 +878,11 @@ function wireCalculator(root){
 
   [cpo, oer].forEach(el => {
     el.addEventListener('input', () => {
-      if(el === oer){ try { localStorage.setItem(OER_KEY, el.value); } catch(e) {} }
+      if(el === oer){
+        try { localStorage.setItem(OER_KEY, el.value); } catch(e) {}
+        // 分析分頁「鮮果串約 RM…」用的是同一個出油率：手機上面板蓋在分析頁上面改，關掉時底下要已經是新的
+        if(activeTab === '分析') renderAnalysis();
+      }
       run();
     });
     el.addEventListener('click', e => e.stopPropagation());
@@ -918,6 +1019,8 @@ const TABS = [
   // 它在分頁內有自己的「其他」小標題，不會被誤讀成油棕相關
   {t:'油棕', secs:['油棕','其他']},
   {t:'全部', secs:ORDER},
+  // 特例：不是股票清單，是一頁從資料現算的整理（見 renderAnalysis）。放最後，不影響原本分頁的位置
+  {t:'分析', secs:[], view:'analysis'},
 ];
 const TAB_KEY = 'tab';
 let activeTab = (() => {
@@ -1161,22 +1264,29 @@ let briefAll = false;
 // 可收起的卡片，收起狀態記在瀏覽器裡。
 // 內容跟上次畫的一模一樣就不重畫（即時新聞每 3 分鐘檢查一次，多半沒有新的）：
 // 不閃、不動捲動位置，也不會把使用者剛切到「原文」的標題換回來。回傳有沒有重畫
-function mcard(id, title, sub, body){
+// foldDef：使用者從沒按過時要不要先收起（分析分頁的「怎麼看數字」「原則」是長篇固定文字，預設收起，
+// 不然每次打開都要捲過一大段才看到下面）。按過一次就照他按的記住
+function mcard(id, title, sub, body, foldDef = false){
   const key = 'fold_' + id;
-  let folded = false;
-  try { folded = localStorage.getItem(key) === '1'; } catch(e) {}
+  let folded = foldDef;
+  try { const v = localStorage.getItem(key); if(v !== null) folded = v === '1'; } catch(e) {}
   const host = document.getElementById(id);
-  const html = `<div class="mcard">
+  const html = `<div class="mcard${folded ? ' folded' : ''}">
     <div class="mcard-h"><b>${title}</b><span>${sub}</span>
-      <button class="tog" type="button">${folded ? '展開' : '收起'}</button></div>
+      <button class="tog" type="button" aria-expanded="${!folded}">${folded ? '展開' : '收起'}</button></div>
     <div class="mcard-b" ${folded ? 'hidden' : ''}>${body}</div></div>`;
   if(host._html === html) return false;
   host._html = html;
   host.innerHTML = html;
-  host.querySelector('.tog').onclick = () => {
-    const b = host.querySelector('.mcard-b');
+  // 整條標題列都能點（按鈕留著給鍵盤、讀屏用）：預設收起的卡片只靠右上角兩個小字，手機上幾乎點不到。
+  // 標題列裡若有連結，點連結不要順便收起
+  host.querySelector('.mcard-h').onclick = e => {
+    if(e.target.closest('a')) return;
+    const b = host.querySelector('.mcard-b'), t = host.querySelector('.tog');
     b.hidden = !b.hidden;
-    host.querySelector('.tog').textContent = b.hidden ? '展開' : '收起';
+    host.querySelector('.mcard').classList.toggle('folded', b.hidden);
+    t.textContent = b.hidden ? '展開' : '收起';
+    t.setAttribute('aria-expanded', String(!b.hidden));
     try { localStorage.setItem(key, b.hidden ? '1' : '0'); } catch(e) {}
   };
   return true;
@@ -1439,15 +1549,9 @@ function renderBrief(){
     host.querySelector('.tog').textContent = now ? '展開' : '收起';
     try { localStorage.setItem(BRIEF_KEY, now ? '1' : '0'); } catch(e) {}
   };
-  host.querySelectorAll('.bi').forEach(el => el.onclick = () => {
-    const s = D.stocks.find(x => x.symbol === el.dataset.go);
-    if(!s) return;
-    if(isMobile()){ openSheet(s); return; }
-    openSym = s.symbol; render();
-    const row = [...document.querySelectorAll('tr.row')]
-      .find(r => r.textContent.includes(s.symbol));
-    if(row) row.scrollIntoView({block:'center', behavior:'smooth'});
-  });
+  // 跟分析分頁點一列同一套（openStock）：以前只設 openSym 再重畫，停在「分析」分頁（表格藏起來）
+  // 或那一檔不在目前分頁時，桌機上點了什麼都沒發生
+  host.querySelectorAll('.bi').forEach(el => el.onclick = () => openStock(el.dataset.go, 'center'));
 }
 
 /* ---------- 市場脈搏 ----------
@@ -1472,6 +1576,306 @@ function renderPulse(){
     if(isMobile()){ openSheet(s); return; }
     activeTab = '全部'; openSym = s.symbol; render();
   });
+}
+
+/* ---------- 分析分頁 ----------
+   使用者要的是「把分析報告放進網站」。但直接貼一份寫死的報告，兩週後數字全錯、看起來卻像今天寫的。
+   所以這一頁幾乎全部從 D 現算，資料一更新就跟著變；固定的只有不會過期的說明（怎麼看數字、原則），
+   和一段標了日期的「大環境觀點」（放最後，超過 14 天會自己說可能過時）。
+   英文模式：畫面上每一段中文在 lang-en.js 都有整句對照或樣板規則（「分析分頁」那一段）。
+   帶數字的句子刻意排成固定句型，名稱、標籤、句子各包一個 span——字典是逐個文字節點查的，拆開才各自對得到。 */
+
+// 人工整理的大環境觀點：不會自動更新，所以帶日期。改內容時 lang-en.js 的對照要一起改，不然英文模式會退回機器翻譯。
+// 每一句都要對得到下面列的來源（2026-10-15 逐條對過原文）。來源裡沒有的數字（下次開會的日期、哪一週的金額）
+// 不要寫進來；來源說「有經濟學家預期升息」，就不能寫成「市場預期不動」——這是公開網頁，說法要跟來源一致
+const COMMENTARY = {
+  date: '2026-10-11',
+  points: [
+    '10 年期大馬公債（MGS）殖利率一度升到 4.18%，之後在 4% 左右；主要是跟著全球利率走高（美國升息），不是本地基本面變差。',
+    '殖利率上升，銀行手上的債券出現帳面虧損、壓到資本比率；公債就有 4% 左右的殖利率，銀行股股息的吸引力相對變小。',
+    '外資在賣：9 月下旬一週淨賣馬股 RM4.73 億，預算案前市場仍偏觀望；債市也出現約 RM30 億的外資淨流出。',
+    '隔夜政策利率（OPR）2.75%，自 2025 年 7 月降息後就沒動；國家銀行 11 月開今年最後一次會，有券商預期維持不變，也有愈來愈多經濟學家預期升息。',
+    '上半年 GDP +5.7%，今年前 7 個月通膨平均 1.8%；研究機構認為銀行業基本面仍健康。這一輪比較像估值修正，11 月中下旬的第三季財報是檢驗點。',
+  ],
+  sources: [
+    {t: 'The Edge 10/1：MGS 一度 4.18%、升息預期', u: 'https://theedgemalaysia.com/node/820219'},
+    {t: 'The Star 10/9：殖利率上升對銀行的短期風險', u: 'https://www.thestar.com.my/business/business-news/2026/10/09/rising-bond-yields-pose-short-term-risk-to-banks'},
+    {t: 'The Star 9/28：外資淨賣 RM4.73 億', u: 'https://www.thestar.com.my/business/business-news/2026/09/28/foreign-investors-turn-net-sellers-on-bursa-with-rm4731mil-outflow'},
+    {t: 'Business Today 10/6：預算案前外資賣超', u: 'https://www.businesstoday.com.my/2026/10/06/investors-on-bursa-remain-risk-off-ahead-of-budget-2027-foreign-selling/'},
+    {t: 'Business Today 10/10：外資淨賣債 RM30 億', u: 'https://www.businesstoday.com.my/2026/10/10/foreign-investors-pullout-from-bond-market-with-rm3-billion-net-outflow/'},
+    {t: 'NST 9/4：OPR 維持 2.75%', u: 'https://www.nst.com.my/amp/business/economy/2026/09/1525353/firm-demand-backs-bank-negaras-275pct-opr-hold-experts'},
+    {t: 'NST 9 月：Apex 預期 11 月不動', u: 'https://www.nst.com.my/amp/business/economy/2026/09/1537442/bank-negara-keep-opr-275pct-november-meeting-apex-securities'},
+  ],
+};
+const COMMENTARY_STALE = 14;                     // 天：大環境的數字（殖利率、外資）兩週就會變
+
+// 出油率跟個股面板的鮮果串試算共用同一個設定（palm_oer）。試算框每打一個字就存一次，
+// 打到一半的「1」也會被存下來：不在 10–30% 之間的當作沒設，免得算出 RM40 一噸的鮮果串
+function anOer(){
+  let v = NaN;
+  try { v = parseFloat(localStorage.getItem(OER_KEY)); } catch(e) {}
+  return v >= 10 && v <= 30 ? +v.toFixed(2) : 18.75;
+}
+// 數字一律寫成 en-US 格式（1,608）：手機語系若用句點或空格分千位，英文字典的樣板就對不到
+const anInt = v => Math.round(v).toLocaleString('en-US');
+// 一律帶正負號（+0.0%）：字典的樣板認的是「[-+]數字%」，少了正號的那句會掉去機器翻譯
+const pc1 = v => v == null || !isFinite(v) ? '—' : (v < 0 ? '' : '+') + v.toFixed(1) + '%';
+const nv = (v, d) => v == null ? d : v;
+// 句子裡列名字用短名（「Maybank 馬來亞銀行」→ Maybank、「Zetrix AI（原 MyEG）」→ Zetrix AI）；
+// 列表本身用完整名稱，跟表格一致，使用者才認得出是同一檔
+const shortName = s => s.name.replace(/[（(].*?[）)]/g, '').replace(/\s*[一-鿿].*$/, '').trim() || nameEn(s.name);
+
+// 今年以來：基準是去年最後一個收盤——新聞、券商講的「今年漲跌」都這樣算，使用者拿去對才對得起來。
+// 以前用今年第一個交易日的收盤，IGB REIT 明明今年小漲，這裡卻顯示 -1.4%。series（一年的日線）沒有去年的點才退回今年第一個收盤。
+// 「今年」是馬來西亞今天的年份，不是 series 最後一天的年份：1/1 到第一個交易日之間最後一天還是去年，
+// 會把去年整年的漲跌標成「今年」。
+// 今年高點只看今年的收盤（去年 12/31 不算）；今年還沒有交易日時沒有高點（peak 是 null）。
+// 現價用 s.price（news.json 帶來盤中報價時會比 series 的最後一天新）
+function ytdOf(s){
+  const ser = (s.series || []).filter(p => p && p.close != null && p.date);
+  if(!ser.length) return null;
+  const jan1 = mytToday().slice(0, 4) + '-01-01';
+  const prev = ser.filter(p => p.date < jan1), yr = ser.filter(p => p.date >= jan1);
+  const base = prev.length ? prev[prev.length - 1] : yr[0];
+  if(!(base && base.close > 0)) return null;
+  const now = s.price != null ? s.price : ser[ser.length - 1].close;
+  const ytd = (now / base.close - 1) * 100;
+  if(!yr.length) return {now, ytd, peak: null, peakDate: null, off: null};
+  const top = yr.reduce((a, p) => p.close > a.close ? p : a, yr[0]);
+  const peak = Math.max(top.close, now);
+  return {now, ytd, peak, peakDate: now >= top.close ? null : top.date, off: (now / peak - 1) * 100};
+}
+
+// 銀行的標籤，依序第一個符合的算數。先看股息撐不撐得住：ROE 再高，派得比賺得多也撐不久
+function bankTier(s){
+  const f = s.fundamentals || {};
+  const roe = num(f.roe), pb = num(f.pb_ratio), pay = num(f.payout_ratio), dps = num(f.dps), eps = num(f.eps);
+  if((pay != null && pay > 90) || (dps != null && eps != null && dps > 0 && dps > eps)) return ['bad', '股息撐不住'];
+  // ROE 低於 8%：真的低於帳面才叫「便宜有原因」（P/B 低是因為賺得少）；
+  // P/B 1.3 的低 ROE 銀行一點也不便宜，標成「便宜」是說錯話，只說 ROE 偏低
+  if(roe != null && roe < 8) return pb != null && pb < 1 ? ['warn', '便宜有原因'] : ['', 'ROE 偏低'];
+  if(roe != null && roe >= 11) return ['good', '穩健'];
+  if(roe != null && pb != null && pb < 1) return ['info', '低於帳面'];   // 走到這裡 ROE 一定 ≥ 8%
+  return null;
+}
+// 圖例：標籤、說明。只列今天真的有出現的標籤
+const TIER_LEGEND = [
+  ['good', '穩健', 'ROE 11% 以上'],
+  ['info', '低於帳面', 'P/B 低於 1，ROE 也有 8% 以上'],
+  ['warn', '便宜有原因', 'ROE 低於 8%，P/B 也低於 1：便宜是因為賺得少'],
+  ['', 'ROE 偏低', 'ROE 低於 8%'],
+  ['bad', '股息撐不住', '派息率超過 90%，或每股股息比每股盈利多'],
+];
+// REIT 不看 ROE。派得比帳面盈利多在 REIT 很常見（盈利扣了建築物折舊，現金其實還在），
+// 所以不用紅色的「撐不住」嚇人，只提醒去查可分派收入
+function reitTier(s){
+  const f = s.fundamentals || {};
+  const pay = num(f.payout_ratio), dps = num(f.dps), eps = num(f.eps);
+  const over = pay != null ? pay > 100 : dps != null && eps != null && dps > 0 && dps > eps;
+  return over ? ['warn', '派息高於盈利，要查可分派收入'] : null;
+}
+
+// 列的第二行：標籤（固定排第一個）· P/B · ROE · 股息率 · 派息率 · 距52週高。
+// 缺資料寫「—」而不是省略：少一欄會被誤讀成「沒有派息」。「息」寫全成「股息率」：只寫一個「息」會被看成利率。
+// 距52週高用 data.js 的 off_52w_high，不用盤中現價重算：點開的面板（重點報導「距 52 週高點…」、詳細資料的「距高點」）
+// 用的都是這個數字，同一檔點下去前後要是同一個數。不上紅綠色：它永遠 ≤ 0，紅色不帶任何訊息
+function anMeta(s, chip, withRoe){
+  const f = s.fundamentals || {};
+  const p = v => v == null ? '—' : v.toFixed(1) + '%';
+  const pay = num(f.payout_ratio);
+  return (chip ? `<span class="chip ${chip[0]}">${chip[1]}</span>` : '') +
+    ['P/B ' + (f.pb_ratio || '—'), withRoe ? 'ROE ' + p(num(f.roe)) : '', '股息率 ' + p(num(f.div_yield)),
+     '派息率 ' + (pay == null ? '—' : Math.round(pay) + '%'), '距52週高 ' + pc1(s.off_52w_high)]
+      .filter(Boolean).map(b => `<span>${esc(b)}</span>`).join('');
+}
+function anRow(s, chip, withRoe){
+  const y = ytdOf(s);
+  return `<div class="anr" data-go="${esc(s.symbol)}">
+    <div class="n">${esc(nameEn(s.name))}</div>
+    <div class="r"><span class="k">今年</span><span class="${cls(y && y.ytd)}">${y ? pc1(y.ytd) : '—'}</span></div>
+    <div class="s">${anMeta(s, chip, withRoe)}</div></div>`;
+}
+
+// 點一列：跟在表格裡點那一檔一樣。手機開面板；桌機的詳細資料是表格裡展開的那一列：
+// 現在的分頁就看得到這一檔（從「重點」點進來常是這樣）就留在原分頁只展開，看不到才切到它所在的分頁，再捲過去。
+// 切過去不記成使用者選的分頁，重新整理還是回到原本那頁，跟點市場脈搏一樣
+function openStock(sym, block = 'start'){
+  const s = D && D.stocks.find(x => x.symbol === sym);
+  if(!s) return;
+  if(isMobile()){ openSheet(s); return; }
+  const cur = TABS.find(t => t.t === activeTab);
+  const here = cur && !cur.view && (cur.secs === null ? isFav(s.symbol) : cur.secs.includes(s.sector));
+  if(!here){
+    const t = TABS.find(t => t.secs && t.secs !== ORDER && !t.view && t.secs.includes(s.sector));
+    activeTab = t ? t.t : '全部';
+  }
+  openSym = s.symbol;
+  render();
+  const row = document.querySelector('tr.row.on');
+  if(row) row.scrollIntoView({block, behavior: 'smooth'});
+}
+// 事件委派：卡片內容沒變時 mcard 不重畫，綁在外層就不必每次重綁。
+// data-go 開那一檔；data-to 捲到這一頁下面的卡片（「現在發生什麼事」的銀行股、REIT 那兩條）
+document.getElementById('analysis').addEventListener('click', e => {
+  const to = e.target.closest('[data-to]');
+  if(to){
+    const card = document.getElementById(to.dataset.to);
+    if(card && card.firstChild) card.scrollIntoView({block: 'start', behavior: 'smooth'});
+    return;
+  }
+  const el = e.target.closest('[data-go]');
+  if(el) openStock(el.dataset.go);
+});
+
+function renderAnalysis(){
+  if(!D) return;
+  const en = isEn();
+  const of = sec => D.stocks.filter(s => s.sector === sec);
+  const bySym = sym => D.stocks.find(s => s.symbol === sym);
+  const md = iso => +iso.slice(5, 7) + '/' + +iso.slice(8, 10);
+  // 英文副標裡的日期換成不折行的連字號（U+2011），跟「重點」同一招：不然手機上會在連字號處斷成兩截
+  const nb = t => en ? t.replace(/-/g, '‑') : t;
+
+  // ---- 0. 資料時間、免責：固定兩行字，不能收起（見 CSS .an-head）
+  const head = `<div>資料時間 ${esc(nb(D.updated_at || ''))}</div><div>僅為資訊整理，不構成投資建議；買賣請自己判斷。</div>`;
+  const top = document.getElementById('an-top');
+  if(top._html !== head){ top._html = head; top.innerHTML = head; }
+
+  // ---- 1. 現在發生什麼事：[屬性（data-go 開那一檔／data-to 捲到卡片／空字串不能點）, 標籤, 一句話]
+  const now = [];
+  const k = bySym('^KLSE'), ky = k && ytdOf(k);
+  if(ky) now.push([`data-go="${esc(k.symbol)}"`, '綜指', `${anInt(ky.now)}，今年 ${pc1(ky.ytd)}` +
+    (ky.peak == null ? '' : !ky.peakDate ? '，今年新高'
+      : `，比今年高點 ${anInt(ky.peak)}（${md(ky.peakDate)}）低 ${Math.abs(ky.off).toFixed(1)}%`)]);
+  // 類股：「重點」裡已經有這個類股的趨勢就直接用那一句（同一件事兩處說法要一樣）；
+  // 沒有（類股沒在跌，重點不會報）才自己算，算法和句型都跟 analyze.py 一樣：每檔截在 ±15% 再平均，
+  // 一檔暴跌不會把整個類股拉下去；句型一樣，英文字典的類股規則也就共用
+  const sector = (sec, label, card) => {
+    const h = (D.highlights || []).find(h => h.sector === sec && /^類股/.test(h.kind || '') && h.what);
+    if(h) return [`data-to="${card}"`, label, h.what];
+    const list = of(sec).filter(s => s.change_pct_1m != null);
+    if(list.length < 2) return null;
+    const avg = list.reduce((a, s) => a + Math.max(-15, Math.min(15, s.change_pct_1m)), 0) / list.length;
+    const down = list.filter(s => s.change_pct_1m < 0).length;
+    return [`data-to="${card}"`, label, `一個月平均 ${pc1(avg)}，${list.length} 檔` +
+      (down === list.length ? '全數下跌' : `中 ${down} 檔下跌`)];
+  };
+  [sector('銀行', '銀行股', 'an-bank'), sector('REIT', 'REIT', 'an-reit')].forEach(x => x && now.push(x));
+  const c = bySym('MPOB-CPO');
+  if(c && c.price){
+    const oer = anOer(), ffb = anInt(c.price * oer / 100);
+    now.push([`data-go="${esc(c.symbol)}"`, '毛棕油', `RM${anInt(c.price)}/噸` +
+      (c.avg30 ? `，${c.avg30_days || 30} 日均價 RM${anInt(c.avg30)}` : '') + `；鮮果串約 RM${ffb}/噸（出油率 ${oer}%）`]);
+  }
+  // 最近上市（market.py 只留 90 天內的）：上市幾檔就寫幾檔；沒有現價的（LEAP 板常見）判斷不了有沒有跌破，
+  // 另外註明「幾檔有報價」——以前直接濾掉，10 檔被說成 9 檔
+  const recent = (D.market && D.market.ipo && D.market.ipo.recent) || [];
+  const ipoSay = (list, board) => {
+    if(!list.length) return '';
+    const q = list.filter(i => i.since_ipo != null);
+    return `最近 3 個月${board}上市 ${list.length} 檔` + (q.length < list.length ? `（${q.length} 檔有報價）` : '') +
+      `，${q.filter(i => i.since_ipo < 0).length} 檔跌破發行價`;
+  };
+  const ipoLine = ipoSay(recent, '');
+  // 「三種先不要碰」講的是創業板（ACE）新股，那裡只數 ACE 的：主板一檔漲了兩倍多，混進去會把話說反
+  const aceLine = ipoSay(recent.filter(i => /ACE/i.test(i.board || '')), '創業板');
+  if(ipoLine) now.push(['', '新股', ipoLine]);
+  mcard('an-now', '現在發生什麼事', '從最新資料自動算', now.map(([attr, label, text]) =>
+    `<div class="anb"${attr ? ' ' + attr : ''}><b>${label}</b><span>${esc(text)}</span></div>`).join(''));
+
+  // ---- 2. 怎麼看數字（固定說明，預設收起）。排在銀行股前面：下面每一列的 P/B、ROE、派息率，先在這裡講過
+  mcard('an-howto', '怎麼看數字', 'P/B、ROE、派息率、股息率', `<div class="an-txt">
+    <p><b>P/B（股價 ÷ 每股淨值）</b><span>1.0 代表用帳面價值買。銀行股 P/B 低於 1 是打折，但要搭配 ROE 一起看。</span></p>
+    <p><b>ROE（股東權益報酬率）</b><span>銀行拿股東的錢一年賺幾 %。ROE 愈高，值得的 P/B 愈高：ROE 高、P/B 低才是便宜；ROE 低、P/B 低是便宜有原因。</span></p>
+    <p><b>派息率（股息 ÷ 盈利）</b><span>超過 90% 等於把賺的幾乎全發出去，盈利一變差就可能減息；每股股息比每股盈利還多，就是發的比賺的多。</span></p>
+    <p><b>股息率 vs 公債殖利率</b><span>股息率要跟 10 年期大馬公債（MGS）殖利率比，差距就是承擔股價波動的補償。公債殖利率往上，補償就縮水，股價往往要再跌一點才平衡。</span></p>
+    </div>`, true);
+
+  // ---- 3. 銀行股：ROE 高的在前，ROE 一樣時 P/B 低的在前（同樣的賺錢能力，買得比較便宜）
+  const banks = of('銀行').map(s => ({s, roe: num((s.fundamentals || {}).roe), pb: num((s.fundamentals || {}).pb_ratio)}))
+    .sort((a, b) => nv(b.roe, -1e9) - nv(a.roe, -1e9) || nv(a.pb, 1e9) - nv(b.pb, 1e9)).map(x => x.s);
+  const tiers = banks.map(bankTier);
+  if(banks.length){
+    // 圖例放在列表上面：第一個標籤出現之前就先看得到意思（以前放在 11 列底下，要往下捲一千多 px）
+    const has = new Set(tiers.filter(Boolean).map(t => t[1]));
+    const legend = '<div class="an-note an-lg">' +
+      TIER_LEGEND.filter(x => has.has(x[1])).map(([c, t, d]) => `<div><span class="chip ${c}">${t}</span><span>${d}</span></div>`).join('') +
+      '<div><span class="k0">沒有標籤</span><span>沒有特別要注意的</span></div>' +
+      '<div><span class="k0">距52週高</span><span>比過去一年的最高收盤低多少</span></div></div>';
+    mcard('an-bank', '銀行股體檢', `${banks.length} 檔 · 依 ROE 排序`,
+      legend + banks.map((s, i) => anRow(s, tiers[i], true)).join(''));
+  } else clearCard('an-bank');
+
+  // ---- 4. REIT：收租型看的是股息，股息率高的在前
+  const reits = of('REIT').sort((a, b) => nv(num((b.fundamentals || {}).div_yield), -1) - nv(num((a.fundamentals || {}).div_yield), -1));
+  if(reits.length) mcard('an-reit', 'REIT 體檢', `${reits.length} 檔 · 依股息率排序`,
+    reits.map(s => anRow(s, reitTier(s), false)).join('') +
+    '<div class="an-note">REIT 的帳面盈利扣了建築物折舊，派息高於盈利很常見，不一定是警訊；要看的是「可分派收入」撐不撐得住。' +
+    '利率上升時 REIT 兩面受壓：借款利息變貴，股息相對公債也變得沒那麼吸引人。</div>');
+  else clearCard('an-reit');
+
+  // ---- 5. 題材股風險：只看題材類股（「AI」分頁那兩類）。以前是「指數、匯率、加密、油價以外全部」，
+  // 一年跌掉一半的建築地產股也會被叫成題材股、列在「通常是公司出了結構性問題」底下——在公開網頁上點名一家公司，說法要準
+  const THEME = (TABS.find(t => t.t === 'AI') || {}).secs || [];
+  const risk = D.stocks.filter(s => THEME.includes(s.sector)).map(s => {
+    const f = s.fundamentals || {};
+    const y1 = s.change_pct_1y, pe = num(f.pe_ratio);
+    // 目標價「1.55 (+1,723.53%)」：股價崩了、分析師沒更新，算出來的上漲空間就離譜。錯的數字比沒數字危險
+    const m = /\(([-+]?[\d,.]+)%\)/.exec(f.analyst_target || '');
+    const up = m ? parseFloat(m[1].replace(/,/g, '')) : null;
+    const why = [];
+    if(y1 != null && y1 <= -50) why.push(`一年 ${y1 < 0 ? '' : '+'}${anInt(y1)}%`);
+    // 門檻是「過 80」：四捨五入成整數會把 80.3 寫成「80 倍」，看起來像沒過門檻。
+    // 100 倍以下留一位小數、無條件進位（減一點點是抵掉 80.1 × 10 = 801.0000000001 這種浮點誤差）
+    if(pe != null && pe > 80) why.push(`本益比 ${pe < 100 ? (Math.ceil(pe * 10 - 1e-9) / 10).toFixed(1) : anInt(pe)} 倍`);
+    if(up != null && Math.abs(up) > 100) why.push(`分析師目標價 ${up < 0 ? '' : '+'}${anInt(up)}%，已過時`);
+    return {s, why, y1: nv(y1, 0), pe: nv(pe, 0), crash: y1 != null && y1 <= -50};
+  }).filter(x => x.why.length)
+    // 一年腰斬的排前面（跌最多的最前），其餘照本益比由高到低
+    .sort((a, b) => (b.crash - a.crash) || (a.crash ? a.y1 - b.y1 : b.pe - a.pe));
+  mcard('an-risk', '題材股風險', '一年腰斬、本益比過 80、目標價過時',
+    (risk.length ? risk.map(({s, why}) => `<div class="anr" data-go="${esc(s.symbol)}">
+      <div class="n">${esc(nameEn(s.name))}</div>
+      <div class="s">${why.map(w => `<span>${esc(w)}</span>`).join('')}</div></div>`).join('')
+      : '<div class="anb">目前沒有符合條件的股票。</div>') +
+    '<div class="an-note">題材股漲的時候本益比不重要，跌的時候什麼都不重要；本益比很高的股票，一個壞消息就能腰斬。</div>');
+
+  // ---- 6. 給新手的原則（固定說明，預設收起）。「三種先不要碰」不寫死股票名：描述類型，後面接現在符合的。
+  // 這是公開網頁：原則只講通用的方法，不寫任何人自己的買賣計畫，也不寫成叫人買哪一類股票
+  const names = list => list.length ? '目前符合：' + list.map(shortName).join('、') : '目前沒有';
+  const payBad = banks.filter((s, i) => (tiers[i] || [])[0] === 'bad');
+  const reitOver = reits.filter(s => reitTier(s));
+  const crashed = risk.filter(x => x.crash).map(x => x.s);
+  const live = t => `<span class="an-live">${esc(t)}</span>`;
+  mcard('an-rules', '給新手的原則', '不是叫你買哪一檔', `<div class="an-txt"><ol class="an-ol">
+    <li><b>先弄懂三個數字</b><span>P/B、ROE、派息率，個股詳細資料裡都有。看不懂這三個數字，就還不到買的時候。</span></li>
+    <li><b>收息股不是致富工具</b><span>銀行股、REIT 這類股票的報酬主要來自股息，股價一年跌 20% 也不奇怪；承受不了這種波動，就不要買個股。</span></li>
+    <li><b>不要一次買完</b><span>價格接下來往哪走沒人知道。分幾次、每次固定金額買，比一次買完不容易後悔。</span></li>
+    <li><b>不要只買一檔</b><span>分散到不同產業、不同類型的資產，一家公司出事才不會拖垮全部。</span></li>
+    <li><b>買之前查兩個日期</b><span>除息日（除息前買才拿得到這次股息）和財報日（財報前後波動大），個股詳細資料裡都有。</span></li>
+    <li><b>三種先不要碰</b><ul>
+      <li><span>股息撐不住的：派息率超過 90%，或每股股息比每股盈利多。</span>${live(names(payBad))}${
+        reitOver.length ? live('REIT 要先查可分派收入：' + reitOver.map(shortName).join('、')) : ''}</li>
+      <li><span>剛上市的創業板（ACE）新股：超額認購幾倍也不代表上市後會漲。</span>${aceLine ? live(aceLine) : ''}</li>
+      <li><span>一年跌掉一半以上的題材股：通常是公司出了結構性問題，不是「跌夠了可以撿」。</span>${live(names(crashed))}</li>
+    </ul></li>
+    <li><b>算清楚成本</b><span>買賣各收券商佣金（線上多為 0.1%–0.42%）、印花稅 0.1%、清算費 0.03%，一買一賣約 0.5%–1%，頻繁進出會把股息吃掉。個人股息所得每年超過 RM10 萬的部分要繳 2% 股息稅（2025 課稅年起，細節請向券商或稅務人員確認）。</span></li>
+    <li><b>事先寫好計畫</b><span>買進條件、分幾次買，先寫下來，照計畫執行，不要臨時決定。</span></li>
+    <li><b>先留 6 個月生活費，再談投資</b><span>收入不固定的人要留更多。</span></li>
+    </ol></div>`, true);
+
+  // ---- 7. 大環境觀點（人工整理、帶日期）。日期用馬來西亞當地日期算，不看手機時區。
+  // 過期了：警告寫在卡片裡，副標也寫「已 N 天」（卡片收起時只看得到標題列），而且預設收起，不讓過時的看法佔掉一整屏。
+  // 使用者自己按過展開／收起的，照使用者按的
+  const age = Math.round((Date.parse(mytToday()) - Date.parse(COMMENTARY.date)) / 864e5);
+  const stale = age > COMMENTARY_STALE;
+  mcard('an-view', '大環境觀點', esc(nb(COMMENTARY.date)) + (stale ? ` · 已 ${age} 天` : ''),
+    (stale ? `<div class="an-warn">這段觀點已超過 ${age} 天，數字可能過時</div>` : '') +
+    `<div class="an-txt"><ul class="an-ol">${COMMENTARY.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
+      <details class="an-srch"><summary>來源（${COMMENTARY.sources.length}）</summary>
+      <ul class="an-src">${COMMENTARY.sources.map(x =>
+        `<li><a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join('')}</ul></details>
+      <p class="an-foot">這段是人工整理的看法，不會自動更新。</p></div>`, stale);
 }
 
 function render(){
@@ -1504,8 +1908,10 @@ function render(){
   if(!tabs.some(t => t.t === activeTab)) activeTab = pinned.length ? '最愛' : '銀行';
   const countOf = t => t.secs === null ? pinned.length
                      : D.stocks.filter(s => t.secs.includes(s.sector)).length;
+  // 「分析」不是清單，不標檔數
   $('#tabs').innerHTML = tabs.map(t =>
-    `<button class="tab ${t.t===activeTab?'on':''}" type="button" data-t="${t.t}">${t.t}<span class="n">${countOf(t)}</span></button>`).join('');
+    `<button class="tab ${t.t===activeTab?'on':''}" type="button" data-t="${t.t}">${t.t}${
+      t.view ? '' : `<span class="n">${countOf(t)}</span>`}</button>`).join('');
   $('#tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => {
     activeTab = b.dataset.t;
     try { localStorage.setItem(TAB_KEY, activeTab); } catch(e) {}
@@ -1516,6 +1922,11 @@ function render(){
   });
 
   const tab = tabs.find(t => t.t === activeTab);
+  // 分析分頁：藏起表格、畫分析。表格內容上面已經清空，不必再排一次
+  const an = tab.view === 'analysis';
+  $('#tablewrap').hidden = an;
+  $('#analysis').hidden = !an;
+  if(an){ renderAnalysis(); return; }
   const groups = [];
   if(tab.secs === null){
     groups.push(['最愛', pinned]);
@@ -2818,7 +3229,8 @@ async function applyNews(n){
    那一則若被重畫換掉了：先用網址找回同一則，找不到就用它在區塊裡的位置。
    box：手機的個股面板自己會捲，傳 .sheet-in；沒給就是整頁。 */
 const BLOCK = '.item, .hl, .bi, .bmore, .hl-note, .mvr, .mv-h, .mv-note, .ipor, .ipo-sec, .ipo-note, ' +
-              '.mcard-h, .brief-h, .pu, .tab, tr, h4, .dg-r, .calc, .chart, .ranges, .readout, .dnote, .chips';
+              '.mcard-h, .brief-h, .pu, .tab, tr, h4, .dg-r, .calc, .chart, .ranges, .readout, .dnote, .chips, ' +
+              '.anb, .anr, .an-note, .an-warn, .an-txt > p, .an-ol > li, .an-head > div, .an-src li';
 function pinAt(box){
   const r = box ? box.getBoundingClientRect() : null;
   const x = r ? r.left + r.width / 2 : innerWidth / 2;
