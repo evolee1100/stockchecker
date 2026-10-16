@@ -9,22 +9,47 @@
 <link rel="icon" href="favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0b2a4f">
 <meta name="apple-mobile-web-app-title" content="馬股追蹤">
 <style>
-/* 淺色 · 極簡：一個表格搞定，只用髮絲線分隔，不用卡片和陰影 */
+/* 淺色 · 銀行 App：深藍報頭＋淺灰底白卡片。顏色全部集中在這裡，下面的元件只引用 token */
 :root{
-  --bg:#fff;
-  --line:#e8eaee;
-  --hair:#f1f3f5;
-  --ink:#16191d;
-  --ink-2:#6b737e;
-  --ink-3:#98a0ab;   /* 只用於標籤、單位這類不需要細讀的字 */
-  --read:#5a626d;    /* 說明文字專用：白底對比 6.2:1，遠高於 AA 的 4.5:1 */
-  --up:#0a7a45;
-  --down:#c2261f;
-  --flat:#a3aab4;
-  --tint:#f7f8fa;
+  --bg:#f2f5f9;      /* 頁面底：很淡的藍灰，白卡片才浮得出來 */
+  --card:#fff;
+  --line:#e1e6ed;
+  --hair:#edf0f4;
+  --ink:#0e1a2b;
+  --ink-2:#4a5668;
+  /* 只用於標籤、單位、來源時間這類不需要細讀的字。設計稿的 #7d8899 白底只有 3.6:1；#6b7686 白底 4.6，
+     但這種字也放在淡色底上（分頁列 #e5eaf1、試算區 #f7f9fc、嚴重那條的淡紅底、數字格 --tint），一到淡底就掉到 3.8–4.4。
+     #5f6a7a 在這些底色上都還有 4.5 以上 */
+  --ink-3:#5f6a7a;
+  --read:#4f5b6d;    /* 說明文字專用：白底對比 7:1 */
+  /* 綠色：#07804a 放在淡綠膠囊（--up-bg）上只有 4.38:1，差一點不到 4.5；#06703f 是 5.4，看起來幾乎一樣 */
+  --up:#06703f;
+  --down:#c8261e;
+  /* 平盤的灰：膠囊（--flat-bg）上要 4.5 以上。原本 #8c95a3 只有 2.7，「0.00%」幾乎看不見 */
+  --flat:#5f6b7a;
+  --tint:#f5f7fa;
+  /* 品牌：深海軍藍。報頭、個股面板頂端、選中的分頁字色 */
+  --brand:#0b2a4f;
+  --brand-2:#174a7e;
+  --brand-tint:#eaf0f8;
+  /* 狀態膠囊：淡底＋深字 */
+  --up-bg:#e3f4ea;
+  --down-bg:#fceae8;
+  --flat-bg:#eef1f5;
+  --warn:#8a5300;  --warn-bg:#fff1d1;  --warn-bar:#e8a20c;
+  --crit:#c8261e;  --crit-bg:#fce8e6;
+  --info:#2459b3;  --info-bg:#e6eefb;
+  --good:#06703f;  --good-bg:#e3f4ea;
+  /* 報頭上的漲跌：膠囊底要比深藍方塊「更暗」，字才浮得出來。設計稿用同色系的半透明亮底（粉紅字配粉紅底），
+     方塊在漸層較亮的下半部時只有 3.3–4:1；改成暗紅／暗綠底後，漸層最亮處加上右上角的光也還有 6:1 以上 */
+  --up-on-dark:#86f2c0;   --up-on-dark-bg:rgba(0,50,35,.5);
+  --down-on-dark:#ffc4bd; --down-on-dark-bg:rgba(110,15,25,.5);
+  --flat-on-dark:#e3eaf3; --flat-on-dark-bg:rgba(0,0,0,.18);
+  --r-card:18px;
+  --shadow:0 1px 2px rgba(14,26,43,.05),0 6px 18px rgba(14,26,43,.05);
 }
 *{box-sizing:border-box}
 body{
@@ -408,6 +433,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   /* 字變大後名稱會提早截斷，把股票代碼藏起來換回寬度——展開面板裡還是看得到 */
   tr.row td.c-name .sym{display:none}
   tr.row td.c-name .dot{margin-left:5px}
+  .nw{white-space:nowrap}
   tr.row td.c-meta{font-size:15.6px}
   tr.row td.c-price{font-size:22.8px}
   tr.row td.c-d1{font-size:18px}
@@ -601,7 +627,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .mcard-h span,.mcard-h .tog{font-size:13px}
   .hl .t{font-size:16px} .hl .m{font-size:13px}
   .hl-note{font-size:15px}
-  .live{font-size:12.5px;padding:0 7px}
+  .live{font-size:13px;padding:0 7px}
   .mv{grid-template-columns:1fr}
   .mv-col + .mv-col{border-left:none;border-top:1px solid var(--line)}
   .mv-h{font-size:13px}
@@ -742,28 +768,536 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   html[lang="en"] .bi .bn{flex:0 0 100%;padding-left:14px;margin:-6px 0 0;text-align:right}
   /* IPO 的業務說明：英文長一截，多給一行 */
   html[lang="en"] .ipor .biz{-webkit-line-clamp:4}
-  /* 快訊標題：中文一行、機器翻譯回來的英文兩行，先把兩行的高度留好，翻好寫回時下面的卡片才不會跳 */
-  html[lang="en"] .hl .t{min-height:3em}
+  /* 快訊標題：中文一行、機器翻譯回來的英文兩行，先把兩行的高度留好，翻好寫回時下面的卡片才不會跳。
+     剛好兩行（手機版行高 1.42，見下面銀行 App 那段）：寫 3em 會比兩行字多出 3px，三則就把「重點」再往下推 8px */
+  html[lang="en"] .hl .t{min-height:2.84em}
+}
+
+/* =====================================================================
+   方向 C · 銀行 App 外觀
+   放在最後面：上面的規則管「排什麼、怎麼排」，這一段管「長什麼樣子」。
+   - 深藍報頭：標題、中文｜EN、更新鈕、四個市場數字（白色粗體大字）
+   - 淺灰底＋白卡片；每張卡片標題左邊一個彩色圖示方塊，看顏色就知道是哪一區
+   - 漲跌一律是有底色的小膠囊；狀態（注意／嚴重）也是淡底膠囊
+   - 分頁、圖表區間、中文／原文都是同一種圓角分段按鈕
+   字級節奏（手機）：大數字 29 / 股價 22 / 標題 18 / 內文 17–19 / 小字 14
+   間距節奏：4 的倍數，卡片內距 16、卡片間距 16、圓角 18（卡）／12（小塊）
+   ===================================================================== */
+html,body{background:var(--bg)}
+.wrap{padding-top:24px}
+
+/* ---------- 報頭 ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;margin:0 0 20px;padding:18px 22px 20px;
+      border-radius:24px;
+      background:linear-gradient(160deg,#0b2a4f 0%,#123d6b 58%,#1b5288 100%);
+      box-shadow:0 12px 30px rgba(11,42,79,.18)}
+/* 右上角一圈很淡的光：只是讓深藍不那麼平，點不到 */
+.hero::after{content:"";position:absolute;right:-70px;top:-90px;width:240px;height:240px;border-radius:50%;
+             background:radial-gradient(circle,rgba(255,255,255,.11),rgba(255,255,255,0) 68%);pointer-events:none}
+.hero > *{position:relative;z-index:1}
+.hero header{border-bottom:none;padding-bottom:0;gap:12px}
+.hero .logo{border-radius:9px;box-shadow:0 0 0 2px rgba(255,255,255,.2)}
+.hero h1{font-family:inherit;font-weight:750;color:#fff;letter-spacing:.02em;font-size:24px}
+.hero .stamp{color:rgba(255,255,255,.62)}
+.hero .stamp .fresh{color:rgba(255,255,255,.9);font-weight:600}
+.hero .lang{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:13px;padding:3px}
+.hero .lang button{color:rgba(255,255,255,.78);border-radius:10px;font-weight:600;padding:9px 12px}
+.hero .lang button + button{border-left:none}
+.hero .lang button.on{background:#fff;color:var(--brand)}
+.hero .reload{background:#fff;color:var(--brand);border:none;border-radius:14px;font-weight:700;
+              box-shadow:0 3px 10px rgba(0,0,0,.16)}
+.hero .reload:hover{background:var(--brand-tint);color:var(--brand)}
+
+/* 四個市場數字：半透明的小方塊，數字白色粗體 */
+.hero .pulse{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;
+             border:none;margin:18px 0 0;padding:0;overflow:visible}
+.hero .pu{min-width:0;padding:12px 14px 13px;border:1px solid rgba(255,255,255,.12);border-radius:16px;
+          background:rgba(255,255,255,.08);-webkit-tap-highlight-color:transparent}
+.hero .pu:first-child{padding-left:14px}
+.hero .pu:hover{background:rgba(255,255,255,.14)}
+.hero .pu .k{color:rgba(255,255,255,.72);font-size:13px;overflow:hidden;text-overflow:ellipsis}
+.hero .pu .v{color:#fff;font-size:26px;font-weight:750;letter-spacing:-.02em;margin-top:4px}
+.hero .pu .c{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:99px;font-size:13.5px;font-weight:700}
+.hero .pu .c.up  {background:var(--up-on-dark-bg);color:var(--up-on-dark)}
+.hero .pu .c.down{background:var(--down-on-dark-bg);color:var(--down-on-dark)}
+.hero .pu .c.flat{background:var(--flat-on-dark-bg);color:var(--flat-on-dark)}
+
+/* ---------- 卡片（快訊、重點、追蹤、排行、IPO、分析） ---------- */
+.mcard,.brief{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);
+              box-shadow:var(--shadow);margin-bottom:16px}
+/* 標題列：彩色圖示｜標題（上）＋副標（下）｜收起 */
+.mcard-h,.brief-h{display:grid;grid-template-columns:auto minmax(0,1fr) auto;
+                  grid-template-areas:"ic t tg" "ic s tg";align-items:center;column-gap:12px;row-gap:1px;
+                  padding:14px 16px;background:var(--card);border-bottom:1px solid var(--hair)}
+.mcard-h::before,.brief-h::before{content:"";grid-area:ic;width:38px;height:38px;border-radius:12px;
+                  background:var(--c,var(--brand)) var(--ic,none) center/21px 21px no-repeat}
+.mcard-h b,.brief-h b{grid-area:t;font-family:inherit;font-size:17px;font-weight:750;letter-spacing:.02em;
+                      color:var(--ink);line-height:1.25}
+/* 標題放不下就折行（上面的舊規則是 nowrap）：英文的「Reading the numbers」在 375 寬比標題欄寬 20px，
+   不折行會壓到右邊的「Show」鈕上 */
+.mcard-h b,.brief-h b{white-space:normal;min-width:0;overflow-wrap:anywhere}
+.mcard-h span,.brief-h span{grid-area:s;font-size:12.5px;color:var(--ink-3);line-height:1.4}
+.mcard-h .tog,.brief-h .tog{grid-area:tg;margin:0;font:inherit;font-size:13px;font-weight:600;line-height:1.2;
+                  color:var(--ink-2);background:var(--tint);border:1px solid var(--line);border-radius:99px;padding:6px 13px}
+.mcard-h .tog:hover,.brief-h .tog:hover{color:var(--ink);background:var(--brand-tint)}
+/* 收起時的「展開」是使用者要找的入口：品牌色淡底膠囊，不要跟「收起」一樣灰（同上面 .mcard.folded 的理由） */
+.mcard.folded .mcard-h .tog,.brief.folded .brief-h .tog{color:var(--brand);background:var(--brand-tint);border-color:#d3dfef}
+/* 重點的標題列長得跟其他卡片一模一樣，點起來也要一樣：整條都能點（見 renderBrief），不是只有右邊那顆小膠囊 */
+.brief-h{cursor:pointer}
+/* 收起時只剩標題列，底線就不要了 */
+.mcard-h:has(+ .mcard-b[hidden]),.brief-h:has(+ .brief-list[hidden]){border-bottom:none}
+
+/* 每一區的顏色與圖示（SVG 直接內嵌，不多一個請求） */
+#headlines{--c:#2563EB;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 5h13v14H6.5A2.5 2.5 0 0 1 4 16.5z'/%3E%3Cpath d='M17 9h3v7.5a2.5 2.5 0 0 1-2.5 2.5'/%3E%3Cpath d='M8 9h5M8 12.5h5M8 16h3'/%3E%3C/svg%3E")}
+#brief{--c:#E07B00;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13 2.5 4.5 13.5H11l-1 8 8.5-11H12z'/%3E%3C/svg%3E")}
+#watchnews{--c:#0F8A7E;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 12S6 5 12 5s9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E")}
+#movers{--c:#6D3FE0;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 17l6-6 4 4 8-8'/%3E%3Cpath d='M15 7h6v6'/%3E%3C/svg%3E")}
+#ipo{--c:#D2336F;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2'/%3E%3Cpath d='M9 15l-3-3 6.5-6.5C15 3 18 3 21 3c0 3 0 6-2.5 8.5L12 18z'/%3E%3Ccircle cx='15.5' cy='8.5' r='1.6'/%3E%3C/svg%3E")}
+#an-now{--c:#2563EB;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h4l3-7 4 14 3-7h4'/%3E%3C/svg%3E")}
+#an-bank{--c:#08834A;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9.5 12 4l9 5.5'/%3E%3Cpath d='M5.5 10v7.5M10 10v7.5M14 10v7.5M18.5 10v7.5'/%3E%3Cpath d='M3 20.5h18'/%3E%3C/svg%3E")}
+#an-reit{--c:#4F46E5;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3' width='14' height='18' rx='1.5'/%3E%3Cpath d='M9 7.5h2M13 7.5h2M9 11.5h2M13 11.5h2M10 21v-4h4v4'/%3E%3C/svg%3E")}
+#an-risk{--c:#D92D20;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5 2.5 20h19z'/%3E%3Cpath d='M12 10v4.5M12 17.2v.1'/%3E%3C/svg%3E")}
+#an-howto{--c:#475569;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5V5a2 2 0 0 1 2-2h13.5v14H6a2 2 0 0 0-2 2.5z'/%3E%3Cpath d='M19.5 17v4H6a2 2 0 0 1-2-1.5'/%3E%3Cpath d='M9 7.5h6'/%3E%3C/svg%3E")}
+#an-rules{--c:#B45309;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.5l1.6 1.6L8.5 5M4 12.5l1.6 1.6 2.9-3.1M4 18.5l1.6 1.6 2.9-3.1'/%3E%3Cpath d='M12 7h8M12 13h8M12 19h8'/%3E%3C/svg%3E")}
+#an-view{--c:#0E7490;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'/%3E%3C/svg%3E")}
+
+/* 「顯示更多」：卡片底部一整條文字按鈕 */
+.bmore{background:var(--card);color:var(--brand-2);font-weight:650;border-top:1px solid var(--hair);padding:12px}
+.bmore:hover{background:var(--brand-tint);color:var(--brand)}
+
+/* ---------- 重點 ---------- */
+/* 每條：左邊色條跨整條；類股膠囊在最上面，句子拿到整個寬度，不用跟膠囊擠 */
+.bi{display:grid;grid-template-columns:4px minmax(0,1fr);grid-template-areas:"bar bn" "bar bt";
+    column-gap:12px;row-gap:7px;padding:14px 16px;border-bottom:1px solid var(--hair)}
+.bi .bar{grid-area:bar;width:4px;border-radius:4px}
+.bi .bt{grid-area:bt}
+.bi.warn .bar{background:var(--warn-bar)}
+.bi.critical{background:linear-gradient(90deg,#fff6f5,var(--card) 70%)}
+.bi .bw b{font-weight:750}
+.bi .by{color:var(--read)}
+/* 類股標籤變成狀態膠囊：顏色跟左邊的色條一樣 */
+.bi .bn{grid-area:bn;justify-self:start;margin:0;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:650;
+        line-height:1.5;background:var(--flat-bg);color:var(--ink-2)}
+.bi.critical .bn{background:var(--crit-bg);color:var(--crit)}
+.bi.warn .bn{background:var(--warn-bg);color:var(--warn)}
+.bi.good .bn{background:var(--good-bg);color:var(--good)}
+.bi.info .bn{background:var(--info-bg);color:var(--info)}
+.bi .bwhen{color:var(--ink-3)}
+
+/* ---------- 快訊／追蹤股票 ---------- */
+.hl{padding:13px 16px}
+.hl .t{font-weight:500;color:var(--ink)}
+.hl .m{color:var(--ink-3)}
+.hl .m .stk{display:inline-block;padding:0 8px;border-radius:7px;background:#e3f3f1;color:#0b6e65;font-weight:700}
+.hl-note{padding:14px 16px}
+/* 佔位的灰條：一條的高度＝一行字（行高 1.5 → 1.5em），灰色只畫中間 1em。
+   上下的空用透明邊框做、不用 margin：相鄰的 margin 會疊在一起，三行的佔位實際只有兩行半高 */
+.hl.sk i{margin:0;height:1.5em;border-block:.25em solid transparent;background-clip:content-box}
+/* 「顯示更多」的佔位：灰條一條，點不了 */
+.bmore.sk{cursor:default;background:var(--card)}
+.bmore.sk i{display:block;width:38%;height:1.5em;margin:0 auto;border-block:.25em solid transparent;
+            background-clip:content-box;border-radius:4px;background-color:var(--hair)}
+
+/* ---------- 漲跌排行 ---------- */
+.mv-h{font-size:13px;font-weight:750;letter-spacing:.04em;padding:10px 14px}
+.mv-h.up{background:var(--up-bg)}
+.mv-h.down{background:var(--down-bg)}
+.mv-h.up:before{content:"▲ "}
+.mv-h.down:before{content:"▼ "}
+.mvr{padding:10px 14px;align-items:center}
+.mvr > div:last-child{text-align:right}
+.mvr .c{display:inline-block;padding:2px 8px;border-radius:8px;font-weight:750}
+.mvr .c.up{background:var(--up-bg)}
+.mvr .c.down{background:var(--down-bg)}
+.mvr .p{color:var(--ink-2);font-weight:500;margin-top:3px}
+/* 排行、IPO 底下的說明是要讀的句子，維持 --read（9/8 修過對比度太低讀不了），不跟著標籤變淡 */
+.mv-note,.ipo-note{color:var(--read)}
+
+/* ---------- IPO ---------- */
+.ipo-sec{font-size:12px;font-weight:750;letter-spacing:.04em;color:var(--brand-2);background:var(--tint);
+         padding:8px 16px;border-top:1px solid var(--hair)}
+.ipor{padding:14px 16px}
+/* 上市日期做成小日曆方塊 */
+/* 桌機欄寬 52 → 58：英文的「Tomorrow」放不進 52px 的方塊，會凸出去。左右內距留 4px：只留 2px 的話「10/14」貼著方塊邊 */
+.ipor{grid-template-columns:58px minmax(0,1fr) auto}
+.ipor .d{background:var(--brand-tint);border-radius:12px;text-align:center;padding:7px 4px 8px;color:#3b5b85}
+.ipor .d b{color:var(--brand);font-weight:750}
+.ipor .r .c{display:inline-block;padding:2px 8px;border-radius:8px;font-weight:750;margin-top:3px}
+.ipor .r .c.up{background:var(--up-bg)}
+.ipor .r .c.down{background:var(--down-bg)}
+
+/* ---------- 分頁：圓角分段按鈕 ---------- */
+/* 放不下就折成兩列，不橫向捲動：捲軸是藏起來的，iPad 直放（768）英文＋最愛時「Analysis」被切掉一截卻看不出來還有 */
+.tabs{width:max-content;max-width:100%;gap:4px;margin:6px 0 16px;padding:5px;
+      background:#e5eaf1;border-radius:16px;flex-wrap:wrap;overflow:visible}
+.tab{border:none;background:transparent;border-radius:12px;color:var(--ink-2);font-weight:600;padding:9px 18px}
+.tab:hover{background:rgba(255,255,255,.6);color:var(--ink);border-color:transparent}
+.tab.on{background:var(--card);color:var(--brand);font-weight:750;border-color:transparent;
+        box-shadow:0 1px 2px rgba(14,26,43,.08),0 3px 10px rgba(14,26,43,.08)}
+/* 檔數用 --ink-2：分頁列的底色 #e5eaf1 比白卡暗，--ink-3 在上面只剩 4.5 左右 */
+.tab .n{color:var(--ink-2);opacity:1;font-weight:600}
+.tab.on .n{color:var(--brand-2);opacity:.75}
+/* 「分析」不是股票清單：前面加個小圖示，跟其他分頁區分開 */
+.tab[data-t="分析"]::before{content:"";display:inline-block;width:1.05em;height:1.05em;margin-right:6px;vertical-align:-.16em;
+  background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v9h9'/%3E%3Cpath d='M20.5 15.5A9 9 0 1 1 8.5 3.7'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3v9h9'/%3E%3Cpath d='M20.5 15.5A9 9 0 1 1 8.5 3.7'/%3E%3C/svg%3E") center/contain no-repeat}
+
+/* ---------- 股票表格：一張白卡 ---------- */
+.scroll{background:var(--card);border:1px solid var(--line);border-radius:var(--r-card);box-shadow:var(--shadow);
+        padding:6px 20px 10px}
+thead th{color:var(--ink-3);font-size:11.5px}
+tr.group td{border-bottom:none;color:var(--brand);font-size:13px;font-weight:750;letter-spacing:.08em;padding:22px 0 8px}
+tr.group td:before{content:"";display:inline-block;width:4px;height:15px;border-radius:2px;
+                   background:var(--brand-2);margin-right:9px;vertical-align:-2px}
+.name{font-weight:650}
+td.c-name,th.c-name{text-align:left}   /* 桌機：名稱靠左（星星佔了第一欄，名稱原本跟著數字靠右） */
+td.c-d1 span{display:inline-block;padding:2px 8px;border-radius:8px;font-weight:700}
+td.c-d1 .up{background:var(--up-bg)}
+td.c-d1 .down{background:var(--down-bg)}
+td.c-d1 .flat{background:var(--flat-bg)}
+tr.row:hover td,tr.row.on td{background:var(--tint)}
+/* 空心星沿用 --ink-3（白底 5.5:1）：設計稿的 #c3cad5 只有 1.65:1，列表上幾乎看不見，而這是從列表加最愛的唯一入口 */
+.star:hover{color:#d9a400}
+.star.on{color:#f2a900}
+/* 實心的金色星在白底只有 2:1：描一圈深琥珀色的邊（4:1），還是金色，但看得出形狀。面板頂端是深藍底，不需要 */
+tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
+
+/* ---------- 共用：狀態膠囊、分段按鈕 ---------- */
+.chip{border:none;background:var(--flat-bg);color:var(--ink-2);font-weight:600}
+.chip.bad{background:var(--crit-bg);color:var(--crit)}
+.chip.good{background:var(--good-bg);color:var(--good)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.chip.info{background:var(--info-bg);color:var(--info)}
+.ranges,.seg{background:#eaeef4;border:none;border-radius:13px;padding:4px;gap:3px}
+.ranges{margin:16px 0 10px}
+.rng,.seg button{border:none;background:transparent;border-radius:10px;color:var(--ink-2);font-weight:600}
+.rng:hover,.seg button:hover{background:rgba(255,255,255,.6);color:var(--ink)}
+.rng.on,.seg button.on,.seg button.on:hover{background:var(--card);color:var(--brand);font-weight:750;
+        box-shadow:0 1px 2px rgba(14,26,43,.08),0 2px 8px rgba(14,26,43,.08)}
+.seg button + button{border-left:none}
+
+/* ---------- 個股面板：頂端也是深藍 ---------- */
+.sheet{background:rgba(8,20,38,.5)}
+.sheet-in{top:26px;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(8,20,38,.25)}
+.sheet-bar{align-items:center;gap:12px;padding:16px 16px 18px;border-bottom:none;color:#fff;
+           background:linear-gradient(160deg,#0b2a4f 0%,#17497c 100%)}
+.sheet-bar .star{margin-top:0;color:rgba(255,255,255,.55)}
+.sheet-bar .star.on{color:#ffc53d}
+.sheet-bar .nm{color:#fff;font-weight:750}
+.sheet-bar .sy{color:rgba(255,255,255,.65);margin-top:3px}
+.sheet-bar .pr{color:#fff;font-weight:750}
+.sheet-bar .ch{display:block;width:fit-content;margin:5px 0 0 auto;padding:2px 10px;border-radius:99px;font-weight:700}
+.sheet-bar .ch.up  {background:var(--up-on-dark-bg);color:var(--up-on-dark)}
+.sheet-bar .ch.down{background:var(--down-on-dark-bg);color:var(--down-on-dark)}
+.sheet-bar .ch.flat{background:var(--flat-on-dark-bg);color:var(--flat-on-dark)}
+.sheet-bar .x{flex:none;display:grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;
+              background:rgba(255,255,255,.14);color:#fff;font-size:28px;line-height:1}
+.sheet-bar .x:hover{background:rgba(255,255,255,.24)}
+.sheet-body .dbox{padding-top:16px}
+
+/* 面板內容 */
+.dnote{color:var(--read)}
+.readout{color:var(--ink-2)}
+.readout .pt{color:var(--ink)}
+.chart .gl{stroke:#eef1f5}
+.dgrid{gap:8px}
+.dgrid > div{background:var(--tint);border-radius:12px;padding:10px 12px 11px;min-width:0}
+.dgrid .k{color:var(--ink-3)}
+.dgrid .v{font-weight:700;margin-top:3px;overflow-wrap:anywhere}
+.dg{border-radius:16px;margin:16px 0 4px}
+.dg-h{background:var(--brand-tint);color:var(--brand);font-weight:750;letter-spacing:.04em;border-bottom:1px solid #dce5f1}
+.dg-k{color:var(--ink-2);font-weight:650}
+.dg-v{color:var(--read)}
+.calc{background:#f7f9fc;border-radius:16px;margin-top:20px;padding:16px}
+.calc h4{color:var(--brand)}
+/* 欄名放到輸入框「上面」：手機上結果會折到下一行，欄名放下面就跟輸入框對不起來 */
+.calc{display:flex;flex-direction:column}
+.calc .clab{order:1;margin:2px 0 5px}
+.calc .crow{order:2}
+.calc .cbtns{order:3}
+.clab span{text-align:left}
+.clab span:empty{width:8px}           /* 對齊「×」的寬度，「出油率」才會在第二個框正上方 */
+.ci{border-radius:10px;background:var(--card)}
+.ci:focus{border-color:var(--brand-2)}
+.cout{color:var(--brand)}
+.cb{background:var(--card)}
+.news{margin-top:24px}
+.news h4{color:var(--ink);font-weight:750;text-transform:none;letter-spacing:.02em;margin-bottom:6px}
+.news h4:before{content:"";width:4px;height:16px;border-radius:2px;background:var(--brand-2);flex:none}
+/* 快訊／追蹤股票的每一則也帶 .item（讀全文要用）：不排除的話，桌機上這條會蓋掉 .hl 的左右內距，字貼齊卡片邊 */
+.item:not(.hl){padding:12px 0;border-bottom:1px solid var(--hair)}
+.im{color:var(--ink-3)}
+.orig{background:var(--brand-tint);border-color:transparent;color:var(--brand-2);font-weight:600}
+.orig:hover{background:#dce6f4;color:var(--brand)}
+.live{background:var(--info-bg);border-color:transparent;color:var(--info)}
+
+/* 原文彈窗、更新通知 */
+.ovl{background:rgba(8,20,38,.5)}
+.dlg{border-radius:20px}
+.dlg h5{color:var(--brand);font-weight:750}
+.dlg .x{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--tint);padding:0}
+.toast{background:var(--brand);border-radius:14px;box-shadow:0 10px 30px rgba(11,42,79,.35)}
+.toast svg{color:var(--up-on-dark)}
+
+/* ---------- 分析分頁 ---------- */
+/* 資料時間＋免責：照樣不做成卡片（不能收起，見上面 .an-head 的說明），只換成淡藍底的說明條，
+   左邊一個「i」：跟下面的卡片分得開，一看就知道是說明、不是內容。免責那一句用深字，不能比資料時間還淡 */
+.an-head{position:relative;margin:0 0 16px;padding:11px 14px 12px 44px;border-radius:14px;
+         background:var(--brand-tint);color:var(--ink-2);font-size:13px}
+.an-head:empty{display:none}
+.an-head::before{content:"";position:absolute;left:14px;top:12px;width:20px;height:20px;background:var(--brand-2);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 11v6M12 7.6v.1'/%3E%3C/svg%3E") center/contain no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 11v6M12 7.6v.1'/%3E%3C/svg%3E") center/contain no-repeat}
+.an-head > div + div{color:var(--ink);font-weight:600}
+.anb b{display:inline-block;padding:0 8px;border-radius:7px;background:var(--brand-tint);color:var(--brand);
+       font-weight:700;margin-right:8px}
+.anb,.anr{padding:12px 16px}
+.anr .n{font-weight:700}
+/* 「今年」的數字跟全站的漲跌一樣用淡底膠囊（股票列表的今日、漲跌排行都是） */
+.anr .r > span:last-child{display:inline-block;padding:1px 7px;border-radius:8px;font-weight:700}
+.anr .r > .up{background:var(--up-bg)}
+.anr .r > .down{background:var(--down-bg)}
+.anr .r > .flat{background:var(--flat-bg)}
+.an-note,.an-txt{padding-left:16px;padding-right:16px}
+.an-warn{border-radius:12px;background:var(--warn-bg);border-color:#f3dca4;color:var(--warn);margin:12px 16px 0}
+.an-live{color:var(--brand-2)}
+/* 「來源（7）」做成跟「顯示更多」同一種整條按鈕：瀏覽器自帶的 ▼ 三角形是全頁唯一沒換掉的原生樣式。
+   右邊自己畫一個箭頭，打開時轉向上 */
+.an-srch summary{display:flex;align-items:center;justify-content:center;gap:8px;list-style:none;
+                 color:var(--brand-2);font-weight:650;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.an-srch summary::-webkit-details-marker{display:none}
+.an-srch summary::marker{content:""}
+.an-srch summary::after{content:"";width:8px;height:8px;margin-top:-4px;border:solid currentColor;border-width:0 2px 2px 0;
+                        transform:rotate(45deg);transition:transform .15s}
+.an-srch[open] summary::after{margin-top:4px;transform:rotate(-135deg)}
+.an-srch summary:hover{background:var(--brand-tint);color:var(--brand)}
+.an-srch[open] summary{border-bottom:none}
+.an-src a{color:var(--info)}
+
+/* =================== 平板直放、窄的桌機視窗（701–900） ===================
+   這個寬度用的是桌機的表格，但上面加大的卡片內距、今日膠囊讓表格比框寬 100px：
+   iPad 直放（768）時殖利率整欄、ROE 半欄要往右滑才看得到。欄距和框的內距收一點，表格就放得下 */
+@media(min-width:701px) and (max-width:900px){
+  .wrap{padding-left:16px;padding-right:16px}
+  .scroll{padding:6px 12px 10px}
+  th,td{padding-left:6px;padding-right:6px}
+  td.c-d1 span{padding:2px 6px}
+  /* 走勢線縮短一點：它只是看形狀，數字欄才是不能被擠出去的 */
+  td.c-trend .spark{width:60px}
+  /* 名稱欄是最寬的一欄（「Hong Leong Fin Group 1082.KL」不折行要 218px）：放不下時讓它在空格處折成兩行，
+     不要把右邊的殖利率推出框外。只在空格折，「馬來亞銀行」不會被拆開 */
+  td.c-name{white-space:normal;word-break:keep-all;overflow-wrap:break-word}
+  /* 分頁左右內距 18 → 14：iPad 直放英文＋最愛的八個分頁剛好排得進一列；更窄時照上面的規則折成兩列 */
+  .tab{padding:9px 14px}
+}
+
+/* =================== 手機 =================== */
+@media(max-width:700px){
+  .wrap{padding:0 16px 56px}
+  /* 報頭貼齊螢幕兩邊，只有下緣是圓角。
+     報頭＋快訊卡要一起放得進第一屏、還要露出下面的「重點」（見 BRIEF_TOP、HL_TOP 的說明）：
+     設計稿的尺寸讓 375×812 的「重點」整張掉到畫面外（從 836px 才開始），所以報頭的上下內距、
+     四個數字方塊、卡片標題列、快訊每一則的上下留白都收過一輪，字級只有大數字 29 → 27，其餘不變 */
+  .hero{margin:0 -16px 12px;padding:10px 16px 12px;border-radius:0 0 26px 26px;box-shadow:0 8px 24px rgba(11,42,79,.16)}
+  .hero header{row-gap:8px}
+  .hero .logo{width:32px;height:32px}
+  .hero h1{font-size:27px}
+  html[lang="en"] .hero h1{font-size:22px}
+  /* 中文｜EN：外框不留內距（以前那 3px 的一圈點了沒反應），改用按鈕自己透明的 3px 邊框做出「白色膠囊縮在框裡」的樣子，
+     邊框也算按鈕的一部分，整顆 42px 高都按得到 */
+  .hero .lang{padding:0}
+  .hero .lang button,.hero .lang button + button{font-size:16px;padding:10px 11px;border:3px solid transparent;
+                                                 background-clip:padding-box;border-radius:13px}
+  .hero .stamp{font-size:14.5px;line-height:1.35}
+  .hero .reload{font-size:19px;padding:10px 16px;gap:8px;border-radius:14px}
+  .hero .reload svg{width:24px;height:24px}
+  html[lang="en"] .hero .reload{font-size:18px;padding:10px 15px}
+  .hero .pulse{grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .hero .pu{padding:8px 12px 9px}
+  .hero .pu .k{font-size:14.5px;line-height:1.3}
+  /* 英文的「CPO (crude palm oil)」在 375 寬比方塊寬 7px，會被「…」吃掉：字小一號，真的再窄就折行，不用省略號 */
+  html[lang="en"] .hero .pu .k{font-size:13.5px;white-space:normal;text-overflow:clip}
+  .hero .pu .v{font-size:27px;line-height:1.12;margin-top:2px}
+  .hero .pu .c{font-size:15.5px;line-height:1.35;padding:1px 9px;margin-top:5px}
+
+  .mcard,.brief{margin-bottom:12px;border-radius:20px}
+  .mcard-h,.brief-h{padding:9px 14px 9px 16px;column-gap:12px}
+  .mcard-h::before,.brief-h::before{width:34px;height:34px;border-radius:11px;background-size:19px 19px}
+  .mcard-h b,.brief-h b{font-size:19px;line-height:1.2}
+  .mcard-h span,.brief-h span{font-size:14px;line-height:1.35}
+  .mcard-h .tog,.brief-h .tog{font-size:14.5px;padding:8px 14px}
+  /* 高 45px：手指按得到，但不像以前 53px 那樣佔掉一整列 */
+  .bmore{font-size:16px;padding:10px 12px}
+
+  .bi{padding:13px 16px 13px 14px;row-gap:5px}
+  .bi .bw{font-size:19px}
+  .bi .by{font-size:16.5px}
+  .bi .bn{font-size:14px;padding:3px 10px}
+  .bi .bwhen{font-size:14px;margin-top:6px}
+  html[lang="en"] .bi .bn{flex:none;margin:0;padding:3px 10px;text-align:left}
+
+  /* 快訊每則上下各少 3–4px、標題 17.5 → 17：「由於市場持續謹慎，FBM KLCI 放棄開盤漲幅」這種長度照樣折兩行，
+     但三則加起來少 30px 左右，「重點」才回得到第一屏 */
+  .hl{padding:10px 16px 11px}
+  .hl .t{font-size:17px;line-height:1.42}
+  .hl .m{font-size:14px;margin-top:3px;line-height:1.4}
+  /* 佔位的灰條跟著手機版的行高走：一條就是真的一行字的高度 */
+  .hl.sk .t i{height:1.42em;border-block-width:.21em}
+  .hl.sk .m i{height:1.4em;border-block-width:.2em}
+  .hl-note{font-size:16px}
+
+  .mv-h{font-size:15px;padding:10px 12px}
+  /* 半欄很窄：名稱自己一行（不被膠囊擠成「CAPIT…」），下一行漲跌膠囊＋股價，最後是代號・行業。
+     三行不併成兩行：375 寬半欄只剩 147px，「CNERGEN」＋膠囊要 150px 以上，併了就得把名稱切掉。
+     改成把三行的行高、列距收緊：每列 103 → 87px，整張卡少 80px，字級不變 */
+  .mvr{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"n n" "c p" "s s";
+       padding:9px 12px 10px;column-gap:8px;row-gap:2px}
+  .mvr > div{display:contents}
+  .mvr .n{grid-area:n}
+  .mvr .s{grid-area:s}
+  .mvr .c{grid-area:c;justify-self:start}
+  .mvr .p{grid-area:p;align-self:center;text-align:right;margin-top:0}
+  .mvr .n{font-size:16.5px;line-height:1.3}
+  .mvr .s{font-size:13px;line-height:1.35}
+  .mvr .c{font-size:15.5px;line-height:1.3;padding:2px 7px}
+  .mvr .p{font-size:13.5px}
+  .mv-note{font-size:13.5px;padding:10px 14px 12px}
+
+  .ipo-sec{font-size:14px;padding:9px 16px}
+  /* 右邊的 IPO 價只跟名稱、代號並排；下面的英文全名、業務、認購資料拿到整個寬度，不會被擠成一字一行 */
+  /* 日期欄 62 → 66：方塊左右留 4px 之後，英文的「Tomorrow」要 58px，62 會凸出 2px */
+  .ipor{padding:14px 14px 14px 16px;grid-template-columns:66px minmax(0,1fr) auto;
+        grid-template-areas:"d n r" "d s r" "d fn fn" "d biz biz" "d meta meta"}
+  .ipor > div:nth-child(2){display:contents}
+  .ipor .d{grid-area:d} .ipor .n{grid-area:n} .ipor .s{grid-area:s} .ipor .r{grid-area:r}
+  .ipor .fn{grid-area:fn} .ipor .biz{grid-area:biz} .ipor .meta{grid-area:meta}
+  /* 日期 19 → 17：「10/14」19px 粗體塞滿 62px 的方塊，左右只剩 3px，貼著邊很擠 */
+  .ipor .d{font-size:13px} .ipor .d b{font-size:17px}
+  .ipor .n{font-size:17px} .ipor .s{font-size:13.5px}
+  /* 業務說明：手機上已經橫跨整列，不必再切成三、四行——英文版切到「…profit」就斷掉，最後那句結論反而看不到。
+     字級跟內文一樣 16 */
+  .ipor .fn{font-size:13.5px} .ipor .meta{font-size:14px}
+  .ipor .biz,html[lang="en"] .ipor .biz{display:block;-webkit-line-clamp:none;overflow:visible;font-size:16px}
+  .ipor .r .p{font-size:14px} .ipor .r .c{font-size:16px}
+  .ipo-note{font-size:14px;padding:12px 16px 4px}
+
+  /* 分頁：4 欄 x 2 列的分段按鈕 */
+  .tabs{width:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:5px;margin:4px 0 14px;border-radius:18px}
+  .tab{font-size:17px;padding:11px 2px;border-radius:13px}
+  .tab .n{font-size:14px}
+  /* 七個分頁排 4＋3 時，最後的「分析」佔兩格補滿第二列；有「最愛」時剛好 8 個，不用補 */
+  .tab:nth-child(7):last-child{grid-column:span 2}
+  /* 英文分頁也維持等寬四欄（375 寬每格 80px）。以前讓欄寬跟著最長的名字走，四欄寬窄不一，
+     選中的白色膠囊左右只剩 1px，檔數還縮到 12.5px。改成讓名字放得進格子：
+     「最愛」英文用 Starred（Favourites 太長，見 JS 的 tabName），字 15px、左右各留 3px；
+     有「最愛」時「分析」只佔一格，「◔ Analysis」放不下，圖示拿掉；沒有最愛時它佔兩格，圖示照留 */
+  html[lang="en"] .tab{font-size:15px;padding:11px 3px}
+  html[lang="en"] .tab .n{font-size:13px;margin-left:3px}
+  html[lang="en"] .tab[data-t="分析"]:nth-child(8)::before{display:none}
+
+  /* 股票列表 */
+  .scroll{padding:2px 14px 6px;border-radius:20px}
+  tr.group td{font-size:17px;padding:20px 0 6px;letter-spacing:.06em}
+  tr.group:first-child td{padding-top:14px}
+  /* 第二行（P/B · ROE · 息）往右延伸到走勢圖底下：殖利率才不會被「…」吃掉 */
+  /* 每列是一張小卡：
+       ☆  名稱（整行都給它，少被「…」吃掉）   股價
+          半年走勢線                        今日漲跌膠囊
+          P/B · ROE · 息（整列寬，一行放得下）
+     走勢線原本夾在名稱和股價中間，名稱只剩 150px，「Maybank 馬…」「Hong Leong…」都看不完整。
+     三行都留著，但上下留白、股價的行高、走勢線的高度收過：每列 123 → 約 104px，「全部」49 檔少捲將近 1,000px */
+  tr.row{padding:12px 0 11px;column-gap:10px;row-gap:3px;
+         grid-template-columns:24px minmax(0,1fr) auto;
+         grid-template-areas:"fv nm pr" "fv tr ch" "fv mt mt"}
+  tr.row:last-child{border-bottom:none}
+  tr.row td.c-name{font-size:19.5px;align-self:center}
+  /* 名稱太長就折成兩行，不用「…」：「Hong Leong Bank 豐…」「Sunway Constructi…」看不出是哪一檔（分析分頁的列也是這樣）。
+     只在空格處折（Hong Leong Bank／豐隆銀行），一長串沒有空格的才逐字折 */
+  tr.row td.c-name{white-space:normal;overflow:visible;text-overflow:clip;line-height:1.3;
+                   word-break:keep-all;overflow-wrap:anywhere}
+  tr.row td.c-trend{align-self:center}
+  tr.row td.c-trend .spark{width:100%;max-width:150px;height:22px;margin-left:0}
+  tr.row td.c-trend .spark path{vector-effect:non-scaling-stroke;stroke-width:1.7}
+  tr.row td.c-meta{margin-top:1px}
+  /* 放不下就折行，不用「…」：殖利率是要看的數字，不能被藏起來 */
+  tr.row td.c-meta{display:flex;flex-wrap:wrap;column-gap:12px;row-gap:1px;white-space:normal;
+                   font-size:14.5px;line-height:1.45;color:var(--ink);font-weight:600}
+  tr.row td.c-meta .mb{white-space:nowrap}
+  tr.row td.c-meta i{font-style:normal;font-weight:500;color:var(--ink-3)}
+  tr.row td.c-price{font-size:22px;font-weight:750;line-height:1.25}
+  tr.row td.c-d1{font-size:15.5px;line-height:1.3;margin-top:0;align-self:center}
+  tr.row td.c-d1 span{padding:2px 7px}
+
+  /* 個股面板 */
+  .sheet-in{top:22px}
+  .sheet-bar{padding:16px 14px 18px 16px}
+  /* 名稱折行只在空格處折：「Maybank／馬來亞銀行」，不會折成「馬來亞銀／行」 */
+  .sheet-bar .nm{font-size:21px;line-height:1.25;word-break:keep-all;overflow-wrap:anywhere}
+  .sheet-bar .sy{font-size:14.5px}
+  .sheet-bar .pr{font-size:28px}
+  .sheet-bar .ch{font-size:16px}
+  .dnote{font-size:16.5px;line-height:1.6}
+  .clab span:empty{width:12px}
+  .cout{flex-basis:100%;margin-top:6px;font-size:27px;color:var(--brand)}
+  .chip{font-size:14.5px;padding:3px 11px}
+  .dg-h{font-size:15.5px;padding:10px 14px}
+  .dg-r{padding:11px 14px}
+  .dg-v{font-size:17px}
+  .ranges{gap:3px}
+  .rng{font-size:15px;padding:9px 0}
+  .readout{font-size:15px;gap:4px 12px}
+  /* 數字格：一張白卡分兩欄，像對帳單。三欄時「3,157,600」「2026-11-23」會被折斷 */
+  .dgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:4px;
+         background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .dgrid > div{background:none;border-radius:0;padding:11px 14px 12px;margin-bottom:-1px;
+               border-bottom:1px solid var(--hair)}
+  .dgrid > div:nth-child(odd){border-right:1px solid var(--hair)}
+  .dgrid .k{font-size:14px}
+  .dgrid .v{font-size:19px;margin-top:2px;overflow-wrap:normal}
+  .news h4{font-size:17px}
+  .it{font-size:17.5px;line-height:1.5}
+  .im{font-size:14.5px}
+  .seg button{font-size:14.5px;padding:5px 14px}
+
+  /* 資料時間 14、免責 15.5：比卡片副標大，免責一定要讀得到 */
+  .an-head{font-size:14px;padding:12px 14px 13px 46px;margin-bottom:14px}
+  .an-head::before{top:13px;width:22px;height:22px}
+  .an-head > div + div{font-size:15.5px;line-height:1.55;margin-top:2px}
+  .anb{font-size:16.5px;line-height:1.6}
+  .anr .n{font-size:17px}
+  .anr .s{font-size:14px}
+  .anr .r{font-size:15.5px}
+  /* .an-note（圖例、REIT／題材股的說明）不在這裡縮小：上面手機版已經是 16px／圖例 15px，內文不能小於 16 */
+  .an-txt{font-size:16.5px}
+
+  .dlg{border-radius:22px 22px 0 0}
+  /* 彈窗裡的英文原文是 JS 直接寫 13px：手機上內文至少 16px */
+  .dsec .en[style]{font-size:16px !important;line-height:1.55}
+  .toast{border-radius:16px}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <img class="logo" src="icon.svg" alt="" width="26" height="26">
-    <h1 id="title">馬股每日追蹤</h1>
-    <span class="stamp" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"><span id="updated"></span><span class="fresh" id="fresh"></span></span>
-    <div class="lang" id="lang" role="group" aria-label="語言" translate="no">
-      <button type="button" data-l="zh">中文</button><button type="button" data-l="en">EN</button>
-    </div>
-    <button class="reload" type="button" id="reload" title="重新載入最新資料">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/>
-      </svg><span>更新</span></button>
-  </header>
+  <!-- 深藍報頭：標題、語言、更新鈕、四個市場數字包在同一塊 -->
+  <div class="hero">
+    <header>
+      <img class="logo" src="icon.svg" alt="" width="26" height="26">
+      <h1 id="title">馬股每日追蹤</h1>
+      <span class="stamp" title="收盤價，非即時報價。僅為資訊整理，不構成投資建議。"><span id="updated"></span><span class="fresh" id="fresh"></span></span>
+      <div class="lang" id="lang" role="group" aria-label="語言" translate="no">
+        <button type="button" data-l="zh">中文</button><button type="button" data-l="en">EN</button>
+      </div>
+      <button class="reload" type="button" id="reload" title="重新載入最新資料">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/>
+        </svg><span>更新</span></button>
+    </header>
 
-  <div class="pulse" id="pulse"></div>
+    <div class="pulse" id="pulse"></div>
+  </div>
   <div id="headlines"></div>
   <div id="brief"></div>
   <div id="watchnews"></div>
@@ -935,13 +1469,16 @@ function priceChart(host, series, isIdx){
     return `<text class="axis" x="${X(i).toFixed(1)}" y="${H-5}" text-anchor="${anchor}">${t}</text>`;
   }).join('');
 
+  // 刻度數字和「最新價」標籤要隔多遠才不疊：至少一個字高再多 2px。
+  // 手機上這兩種字是 14.4／15px（桌機 10／10.5），以前一律用 11px，馬銀行一個月圖的「10.08」就壓在「10.00」上
+  const clear = isMobile() ? 17 : 12;
   host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
     <defs><linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0" stop-color="${col}" stop-opacity=".16"/>
       <stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
     ${ticks.map(v=>{
       // 格線照畫，但刻度數字若跟「最新價」標籤太近就省略，免得疊在一起
-      const near = Math.abs(Y(v) - Y(last.close)) < 11;
+      const near = Math.abs(Y(v) - Y(last.close)) < clear;
       return `<line class="gl" x1="${P.l}" x2="${P.l+pw}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}"/>` +
         (near ? '' : `<text class="axis" x="${P.l+pw+7}" y="${(Y(v)+3.5).toFixed(1)}">${px(v,isIdx)}</text>`);
     }).join('')}
@@ -970,7 +1507,11 @@ const COLS = [
       const bad = (s.flags||[]).find(f=>f.level==='bad');
       const warn = (s.flags||[]).find(f=>f.level==='warn');
       const dot = bad ? '<span class="dot bad"></span>' : warn ? '<span class="dot warn"></span>' : '';
-      return `<span class="name">${nameEn(s.name)}</span><span class="sym">${s.symbol}</span>${dot}`; },
+      // 圓點跟名稱最後一個字綁在一起：名稱會在空格處折行，圓點不綁的話會自己掉到下一行，看起來像雜點
+      const nm = nameEn(s.name), cut = nm.lastIndexOf(' ');
+      const name = !dot ? nm : cut > 0 ? nm.slice(0, cut + 1) + `<span class="nw">${nm.slice(cut + 1)}${dot}</span>`
+                                       : `<span class="nw">${nm}${dot}</span>`;
+      return `<span class="name">${name}</span><span class="sym">${s.symbol}</span>`; },
      sort:s=>s.name, dir:1},
   {k:'trend',t:'走勢·半年', cell:s=>spark(s.series.slice(-126),74,22,false), sort:s=>s.change_pct_1m},
   {k:'price',t:'股價',   cell:s=>px(s.price,s.is_index,s.dp), sort:s=>s.price},
@@ -983,11 +1524,12 @@ const COLS = [
   {k:'meta', t:'', nosort:true, cell:s=>{
       const f = s.fundamentals || {};
       const bits = [];
-      if(f.pb_ratio)  bits.push('P/B ' + f.pb_ratio);
-      if(f.roe)       bits.push('ROE ' + f.roe);
-      if(f.div_yield) bits.push((isEn() ? 'DY ' : '息 ') + f.div_yield);   // 英文模式直接寫短的，不經字典
-      if(!bits.length) bits.push('1個月 ' + pc(s.change_pct_1m));
-      return bits.join(' · '); }},
+      if(f.pb_ratio)  bits.push(['P/B', f.pb_ratio]);
+      if(f.roe)       bits.push(['ROE', f.roe]);
+      if(f.div_yield) bits.push([isEn() ? 'DY' : '息', f.div_yield]);   // 英文模式直接寫短的，不經字典
+      if(!bits.length) bits.push(['1個月', pc(s.change_pct_1m)]);
+      // 每一項包成一塊（標籤淡、數字深）：放不下時整塊換到下一行，不會折成「息／6.41%」
+      return bits.map(([k, v]) => `<span class="mb"><i>${k}</i> ${v}</span>`).join(' '); }},
 ];
 
 /* ---------- 最愛 ----------
@@ -1022,6 +1564,10 @@ const TABS = [
   // 特例：不是股票清單，是一頁從資料現算的整理（見 renderAnalysis）。放最後，不影響原本分頁的位置
   {t:'分析', secs:[], view:'analysis'},
 ];
+// 分頁、分類標題上顯示的名字。英文的「最愛」直接寫 Starred，不經字典的 Favourites：
+// 手機上分頁是等寬四欄（375 寬每格 80px），「Favourites 1」要 88px 放不下；加最愛本來就是按星號，Starred 一看就懂。
+// 分類標題（最愛分頁、全部分頁最上面那組）跟著寫一樣的字，分頁和清單才對得起來
+const tabName = t => isEn() && t === '最愛' ? 'Starred' : t;
 const TAB_KEY = 'tab';
 let activeTab = (() => {
   try { return localStorage.getItem(TAB_KEY) || ''; } catch(e) { return ''; }
@@ -1112,7 +1658,8 @@ function detailRow(s){
     ['5 日', pc(s.change_pct_5d)], ['3 個月', pc(s.change_pct_3m)], ['1 年', pc(s.change_pct_1y)],
     ['3 年', pc(s.change_pct_3y)], ['5 年', pc(s.change_pct_5y)],
     ['52週高', px(s.high_52w,s.is_index,s.dp)], ['52週低', px(s.low_52w,s.is_index,s.dp)], ['距高點', pc(s.off_52w_high)],
-    ['成交量', s.volume ? s.volume.toLocaleString() : '—'],
+    // 十億以上寫成「26.52B」（跟市值同一種寫法）：比特幣的「26,518,478,848」在手機兩欄格裡比格子寬 10px，會凸到卡片邊上
+    ['成交量', !s.volume ? '—' : s.volume >= 1e9 ? (s.volume / 1e9).toFixed(2) + 'B' : s.volume.toLocaleString()],
     ['量能倍數', s.volume_ratio ? s.volume_ratio+'x' : '—'],
     ['市值', f.market_cap], ['P/E', f.pe_ratio], ['每股淨值', f.bvps], ['EPS', f.eps], ['ROA', f.roa],
     ['每股派息', f.dps], ['派息率', f.payout_ratio], ['除息日', f.ex_div_date],
@@ -1359,9 +1906,12 @@ function renderWatch(){
   const host = document.getElementById('watchnews');
   const title = '追蹤股票最新';
   // 第一次還沒抓回來：先佔好三則的位置，抓到時下面的內容才不會被往下推
+  // 佔位要跟真的卡片差不多高：每則三行標題（中文報多半兩行，The Edge 的英文標題常是三到五行）＋一行來源，
+  // 最下面再留一條「顯示更多」（通常都超過三則）。以前每則只佔兩行、也沒留那一條，佔位比真的矮 170px，
+  // 載完時漲跌排行、分頁、股票列表整片往下跳
   if(!LIVE.tried){
-    const sk = '<div class="hl sk"><div class="t"><i></i><i class="s"></i></div><div class="m"><i></i></div></div>';
-    mcard('watchnews', title, '中文報 · 載入中', sk.repeat(WATCH_TOP));
+    const sk = '<div class="hl sk"><div class="t"><i></i><i></i><i class="s"></i></div><div class="m"><i></i></div></div>';
+    mcard('watchnews', title, '中文報 · 載入中', sk.repeat(WATCH_TOP) + '<div class="bmore sk"><i></i></div>');
     return;
   }
   // 同一篇（例如收盤報導同時提到馬銀行）快訊卡最上面三則已經列了，這裡就不再重複。
@@ -1523,9 +2073,9 @@ function renderBrief(){
   // 日期和種類各包一個 span：英文模式逐個文字節點查字典，拆開才各自對得到
   // 英文副標「12 items · as of 2026-09-30」會在連字號處折行、日期斷成兩截：英文模式換成不折行的連字號（U+2011）
   const cut = (D.updated_at || '').slice(0, 10).replace(/-/g, isEn() ? '\u2011' : '-');
-  host.innerHTML = `<div class="brief">
+  host.innerHTML = `<div class="brief${collapsed ? ' folded' : ''}">
     <div class="brief-h"><b>重點</b><span>${hl.length} 條 · 截至 ${cut}</span>
-      <button class="tog" type="button">${collapsed ? '展開' : '收起'}</button></div>
+      <button class="tog" type="button" aria-expanded="${!collapsed}">${collapsed ? '展開' : '收起'}</button></div>
     <div class="brief-list" ${collapsed ? 'hidden' : ''}>${hl.map((h, i) => `
       <div class="bi ${h.level} ${i >= BRIEF_TOP && !briefAll ? 'more' : ''}" data-go="${h.symbol}">
         <div class="bar"></div>
@@ -1542,11 +2092,15 @@ function renderBrief(){
   const more = host.querySelector('.bmore');
   if(more) more.onclick = () => { briefAll = !briefAll; renderBrief(); };
 
-  host.querySelector('.tog').onclick = () => {
-    const list = host.querySelector('.brief-list');
+  // 跟 mcard 一樣整條標題列都能點：標題列看起來跟其他卡片一模一樣，只有右邊 35px 高的小膠囊點得到的話，
+  // 使用者點「重點」兩個字會以為壞了。收起時加 .folded，「展開」才會跟其他卡片一樣變成藍色膠囊
+  host.querySelector('.brief-h').onclick = () => {
+    const list = host.querySelector('.brief-list'), t = host.querySelector('.tog');
     const now = !list.hidden;
     list.hidden = now;
-    host.querySelector('.tog').textContent = now ? '展開' : '收起';
+    host.querySelector('.brief').classList.toggle('folded', now);
+    t.textContent = now ? '展開' : '收起';
+    t.setAttribute('aria-expanded', String(!now));
     try { localStorage.setItem(BRIEF_KEY, now ? '1' : '0'); } catch(e) {}
   };
   // 跟分析分頁點一列同一套（openStock）：以前只設 openSym 再重畫，停在「分析」分頁（表格藏起來）
@@ -1910,7 +2464,7 @@ function render(){
                      : D.stocks.filter(s => t.secs.includes(s.sector)).length;
   // 「分析」不是清單，不標檔數
   $('#tabs').innerHTML = tabs.map(t =>
-    `<button class="tab ${t.t===activeTab?'on':''}" type="button" data-t="${t.t}">${t.t}${
+    `<button class="tab ${t.t===activeTab?'on':''}" type="button" data-t="${t.t}">${tabName(t.t)}${
       t.view ? '' : `<span class="n">${countOf(t)}</span>`}</button>`).join('');
   $('#tabs').querySelectorAll('.tab').forEach(b => b.onclick = () => {
     activeTab = b.dataset.t;
@@ -1958,7 +2512,7 @@ function render(){
 
     const gr = document.createElement('tr');
     gr.className = 'group';
-    gr.innerHTML = `<td colspan="${COLS.length}">${sec}</td>`;
+    gr.innerHTML = `<td colspan="${COLS.length}">${tabName(sec)}</td>`;
     body.appendChild(gr);
 
     list.forEach(s => {
@@ -2736,7 +3290,7 @@ async function mtFlushNow(){
         const m = /^(\s*)[\s\S]*?(\s*)$/.exec(e.raw);
         const v = m[1] + en + m[2];
         if(e.attr) e.node.setAttribute(e.attr, v);
-        else { wrote.set(e.node, v); e.node.nodeValue = v; }
+        else { const x = nbDate(v); wrote.set(e.node, x); e.node.nodeValue = x; }   // 日期不折行，見 nbDate
       }
     }
   };
@@ -2751,12 +3305,16 @@ async function mtFlushNow(){
 // translate="no" 的元素整棵跳過（語言切換鈕的「中文」就是要用中文寫）
 const EN_ATTRS = ['title', 'placeholder', 'aria-label'];
 const noTr = el => el.getAttribute('translate') === 'no';
+// 英文裡的日期（2026-09-30）連字號換成不折行的連字號（U+2011）：英文句子可以在連字號後面折行，
+// 面板裡的「Last trade 2026-09-」「30 10:27」、重點報導的「on 2026-09-」「30」都是這樣斷成兩截（重點的副標也是同一招）。
+// 只在寫上畫面的那一刻換：字典規則、數字核對看到的都還是原本的連字號
+const nbDate = s => s.replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, '$1\u2011$2\u2011$3');
 function enText(n){
   const v = n.nodeValue;
   if(!hasCJK(v) || wrote.get(n) === v) return;
   const w = toEn(v);
   if(w === null) mtQueue(n, null, v);
-  else if(w !== v){ wrote.set(n, w); n.nodeValue = w; }
+  else if(w !== v){ const x = nbDate(w); wrote.set(n, x); n.nodeValue = x; }
 }
 function enTree(root){
   const skip = {SCRIPT: 1, STYLE: 1, TEXTAREA: 1};
