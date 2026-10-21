@@ -283,6 +283,17 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .dg-k{flex:none;width:34px;font-size:11px;color:var(--ink-3);padding-top:1px}
 .dg-v{flex:1;min-width:0;font-size:12.5px;line-height:1.7;color:var(--read)}
 
+/* 歷史低點參考價：沿用重點報導的框，裡面的數字要比說明字深，掃一眼就看到價位 */
+.bz .dg-v b,.bz-tier .n{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.bz-tier{display:flex;flex-wrap:wrap;column-gap:8px;align-items:baseline}
+.bz-tier + .bz-tier{margin-top:3px}
+.bz-tier .t{color:var(--ink-2);font-weight:600}
+.bz-yrs{display:flex;flex-wrap:wrap;column-gap:13px;font-variant-numeric:tabular-nums}
+.bz-yrs .lo{color:var(--ink);font-weight:650}
+.bz-bad{color:var(--down);font-weight:600}
+.bz-hit{color:var(--up);font-weight:600}
+.chart .bzl{stroke:#2459b3;stroke-width:1;stroke-dasharray:4 3}
+.chart .bzt{fill:#2459b3;font-size:10px}
 /* 新聞 */
 .news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 @media(max-width:700px){ .news{grid-template-columns:1fr;gap:18px} }
@@ -463,6 +474,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .dg-h{font-size:15.6px}
   .dg-k{font-size:15.6px;width:40px}
   .dg-v{font-size:18px;line-height:1.75}
+  .chart .bzt{font-size:14.4px}
   .news h4{font-size:15px}
   .it{font-size:18px}
   .im{font-size:15.6px}
@@ -856,6 +868,8 @@ html,body{background:var(--bg)}
 #an-now{--c:#2563EB;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h4l3-7 4 14 3-7h4'/%3E%3C/svg%3E")}
 #an-bank{--c:#08834A;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9.5 12 4l9 5.5'/%3E%3Cpath d='M5.5 10v7.5M10 10v7.5M14 10v7.5M18.5 10v7.5'/%3E%3Cpath d='M3 20.5h18'/%3E%3C/svg%3E")}
 #an-reit{--c:#4F46E5;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3' width='14' height='18' rx='1.5'/%3E%3Cpath d='M9 7.5h2M13 7.5h2M9 11.5h2M13 11.5h2M10 21v-4h4v4'/%3E%3C/svg%3E")}
+/* 歷史低點參考價：一條往下走的線落在一條水平的「價位」上 */
+#an-buy{--c:#0E7490;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5l5 5 4-3 6 8'/%3E%3Cpath d='M3 19h18' stroke-dasharray='2.5 2.5'/%3E%3C/svg%3E")}
 #an-risk{--c:#D92D20;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5 2.5 20h19z'/%3E%3Cpath d='M12 10v4.5M12 17.2v.1'/%3E%3C/svg%3E")}
 #an-howto{--c:#475569;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5V5a2 2 0 0 1 2-2h13.5v14H6a2 2 0 0 0-2 2.5z'/%3E%3Cpath d='M19.5 17v4H6a2 2 0 0 1-2-1.5'/%3E%3Cpath d='M9 7.5h6'/%3E%3C/svg%3E")}
 #an-rules{--c:#B45309;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.5l1.6 1.6L8.5 5M4 12.5l1.6 1.6 2.9-3.1M4 18.5l1.6 1.6 2.9-3.1'/%3E%3Cpath d='M12 7h8M12 13h8M12 19h8'/%3E%3C/svg%3E")}
@@ -1309,7 +1323,7 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
   <!-- 「分析」分頁：選到它時取代上面的表格。每張卡片一個固定的容器，mcard 才比得出內容有沒有變、不必每次重畫 -->
   <div id="analysis" hidden>
     <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-howto"></div><div id="an-bank"></div>
-    <div id="an-reit"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
+    <div id="an-reit"></div><div id="an-buy"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
   </div>
 
 
@@ -1433,7 +1447,7 @@ function wireCalculator(root){
 /* ---------- 有刻度的價格圖 ----------
    小縮圖不需要刻度，但展開後的圖要能回答「多少錢、在什麼價位」，
    所以這裡畫格線 + 右側價格刻度 + 最新價標記，滑過去還能看單日價格。 */
-function priceChart(host, series, isIdx){
+function priceChart(host, series, isIdx, marks = []){
   const W = Math.max(280, host.clientWidth || 640), H = 168;
   const P = {t:10, r:54, b:18, l:2};
   const pw = W - P.l - P.r, ph = H - P.t - P.b;
@@ -1472,6 +1486,11 @@ function priceChart(host, series, isIdx){
   // 刻度數字和「最新價」標籤要隔多遠才不疊：至少一個字高再多 2px。
   // 手機上這兩種字是 14.4／15px（桌機 10／10.5），以前一律用 11px，馬銀行一個月圖的「10.08」就壓在「10.00」上
   const clear = isMobile() ? 17 : 12;
+  // 參考價虛線（歷史低點參考價）：只在落在這張圖的價格範圍內時才畫。
+  // 不為了它把範圍撐大——一個月圖為了一條遠在下面的線被壓扁，走勢反而看不清楚
+  const markSvg = marks.filter(m => m.v > lo && m.v < hi).map(m =>
+    `<line class="bzl" x1="${P.l}" x2="${P.l+pw}" y1="${Y(m.v).toFixed(1)}" y2="${Y(m.v).toFixed(1)}"/>` +
+    `<text class="bzt" x="${P.l+4}" y="${(Y(m.v) - 4).toFixed(1)}">${m.t}</text>`).join('');
   host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
     <defs><linearGradient id="${gid}" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0" stop-color="${col}" stop-opacity=".16"/>
@@ -1484,6 +1503,7 @@ function priceChart(host, series, isIdx){
     }).join('')}
     <path d="${line} L${X(series.length-1).toFixed(1)} ${P.t+ph} L${P.l} ${P.t+ph} Z" fill="url(#${gid})"/>
     <path d="${line}" fill="none" stroke="${col}" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/>
+    ${markSvg}
     <line class="cross" x1="0" x2="0" y1="${P.t}" y2="${P.t+ph}" style="display:none"/>
     <circle class="hov" r="3.5" fill="${col}" style="display:none"/>
     <circle cx="${X(series.length-1).toFixed(1)}" cy="${Y(last.close).toFixed(1)}" r="3" fill="${col}"/>
@@ -1651,6 +1671,78 @@ function feed(list, empty){
   }).join('');
 }
 
+/* ---------- 歷史低點參考價 ----------
+   buyzone.py 算好歷年低點與三個價位；跟現價有關的（距離、股息率、P/B、能不能用）在這裡現算，
+   因為網頁有盤中報價，比 buy_zone 的計算時間新。判斷順序跟 buyzone.status() 一樣，改一邊要一起改：
+     broken  現價跌破近五個完整年度每一年的低點 → 過去的低點沒守住，不給參考價
+     falling 年度低點一年比一年低            → 同上
+     below   現價已在參考買價以下
+     above   參考買價在現價下面 */
+function bzStatus(s){
+  const z = s.buy_zone, p = s.price;
+  // 只給銀行股與 REIT（跟 buyzone.SECTORS 一致）。舊資料檔可能還帶著其他類股的 buy_zone，這裡再擋一次
+  if(!z || !p || !['銀行', 'REIT'].includes(s.sector)) return null;
+  const kind = p < z.floor_done ? 'broken' : z.trend === 'down' ? 'falling' : p <= z.ref ? 'below' : 'above';
+  const bvps = num((s.fundamentals || {}).bvps);
+  return {kind, ok: kind === 'below' || kind === 'above', gap: (z.ref / p - 1) * 100,
+          yld: s.ttm_dividend ? s.ttm_dividend / z.ref * 100 : null,
+          pb: bvps ? z.ref / bvps : null};
+}
+const BZ_CHIP = {broken: ['bad', '跌破五年低點'], falling: ['warn', '低點逐年下移'], below: ['good', '已低於參考價']};
+
+function buyZoneHtml(s){
+  const z = s.buy_zone, st = bzStatus(s);
+  if(!st) return '';
+  const P = v => px(v, false, s.dp);
+  const off = v => (v / s.price - 1) * 100;
+  const done = z.years.filter(y => !y.ytd);
+  const rows = [];
+
+  let head;
+  if(st.kind === 'broken')
+    head = `<span class="bz-bad">現價 ${P(s.price)} 已跌破近 ${Math.min(5, done.length)} 個完整年度每一年的最低價（最低 ${P(z.floor_done)}）。</span>` +
+      '過去的低點沒有守住，用低點推算買價在這裡不適用，所以不提供參考價。';
+  else if(st.kind === 'falling')
+    head = '<span class="bz-bad">年度最低價一年比一年低。</span>過去的低點一路被跌破，用低點推算買價在這裡不適用，所以不提供參考價。';
+  else
+    head = `<b>參考買價 ${P(z.ref)}</b>` + (st.kind === 'below'
+      ? `，<span class="bz-hit">現價 ${P(s.price)} 已比它低 ${Math.abs(st.gap).toFixed(1)}%</span>。`
+      : `，比現價 ${P(s.price)} 低 ${Math.abs(st.gap).toFixed(1)}%。`) +
+      (st.yld ? `用這個價位買，以近 12 個月股息算，股息率約 ${st.yld.toFixed(1)}%` +
+                (st.pb ? `、P/B 約 ${st.pb.toFixed(2)}` : '') + '。' : '');
+  rows.push(['結論', head]);
+
+  if(st.ok){
+    const names = ['第一批', '第二批', '第三批'];
+    rows.push(['分批', z.tiers.map((t, i) => {
+      const o = off(t.p);
+      return `<div class="bz-tier"><span class="t">${names[i]}</span><span class="n">${P(t.p)}</span>` +
+        `<span>${t.k}${t.d ? '，' + t.d : ''}</span>` +
+        (o >= 0 ? '<span class="bz-hit">現價已到</span>' : `<span>${pc1(o)}</span>`) + '</div>';
+    }).join('')]);
+  }
+
+  const pb = z.pullback;
+  if(pb && st.ok){
+    const now = (s.price / pb.high - 1) * 100;
+    rows.push(['回檔', `過去 ${pb.years} 年，每年從年內高點最深跌掉的幅度，中位數是 ${pb.pct.toFixed(1)}%；` +
+      `以一年高點 ${P(pb.high)} 計，是 ${P(pb.p)}。` +
+      (s.price <= pb.p ? `現價已比一年高點低 ${Math.abs(now).toFixed(1)}%，跌得比一般年份深。`
+                       : `現價比一年高點低 ${Math.abs(now).toFixed(1)}%，還在一般年份的回檔範圍內。`)]);
+  }
+  if(z.trend === 'up' && st.ok)
+    rows.push(['趨勢', '年度最低價一年比一年高：愈舊的低點離現價愈遠，第二、三批不一定等得到。這種股票看上面的「回檔」比較實際。']);
+
+  const lowest = Math.min(...z.years.map(y => y.p));
+  rows.push(['歷年', '<div class="bz-yrs">' + z.years.map(y =>
+    `<span${y.p === lowest ? ' class="lo"' : ''}>${y.y}${y.ytd ? '（今年）' : ''} ${P(y.p)}</span>`).join('') + '</div>']);
+  rows.push(['說明', '用收盤價計算（不含盤中最低）。參考買價是「前兩年＋今年」三個年度最低價的中位數。' +
+    '這只是歷史統計：不代表會跌到這裡，也不代表跌到就不會再跌。買之前先看派息率撐不撐得住股息，分批買。不構成投資建議。']);
+
+  return `<div class="dg bz"><div class="dg-h">歷史低點參考價</div>` +
+    rows.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div><div class="dg-v">${v}</div></div>`).join('') + '</div>';
+}
+
 function detailRow(s){
   const f = s.fundamentals || {};
   const cells = [
@@ -1685,6 +1777,7 @@ function detailRow(s){
       ${s.digest.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div>
         <div class="dg-v">${v}</div></div>`).join('')}
     </div>` : ''}
+    ${buyZoneHtml(s)}
     <div class="ranges">${RANGES.filter(r => !r.w || (s.series_w || []).length > 30)
       .map(r => `<span class="rng ${r.t===chartRange?'on':''}" data-d="${r.t}">${r.t}</span>`).join('')}</div>
     <div class="chartslot"></div>
@@ -1720,7 +1813,9 @@ function detailRow(s){
       </div>`;
 
     const host = slot.querySelector('.chart');
-    const {X, Y, P, pw, svg} = priceChart(host, seg, s.is_index);
+    const bz = bzStatus(s);
+    const marks = bz && bz.ok ? [{v: s.buy_zone.ref, t: '參考買價 ' + px(s.buy_zone.ref, false, s.dp)}] : [];
+    const {X, Y, P, pw, svg} = priceChart(host, seg, s.is_index, marks);
     const tip = document.createElement('div');
     tip.className = 'tip';
     host.appendChild(tip);
@@ -2367,6 +2462,29 @@ function renderAnalysis(){
     '<div class="an-note">REIT 的帳面盈利扣了建築物折舊，派息高於盈利很常見，不一定是警訊；要看的是「可分派收入」撐不撐得住。' +
     '利率上升時 REIT 兩面受壓：借款利息變貴，股息相對公債也變得沒那麼吸引人。</div>');
   else clearCard('an-reit');
+
+  // ---- 4b. 歷史低點參考價：銀行與 REIT（收息股才適合用低點分批買；題材股的歷年低點離現價太遠）。
+  // 能用的排前面、離參考價近的在前（已經低於參考價的最前）；低點法不適用的排最後，不給價位
+  const bzList = [...banks, ...reits].map(s => ({s, st: bzStatus(s)})).filter(x => x.st)
+    .sort((a, b) => (b.st.ok - a.st.ok) || (b.st.gap - a.st.gap));
+  if(bzList.length) mcard('an-buy', '歷史低點參考價', '銀行與 REIT · 依歷年低點',
+    '<div class="an-note">參考買價＝「前兩年＋今年」三個年度最低收盤價的中位數。點進個股可以看分三批的價位、每年的最低價和回檔幅度。' +
+    '跌破近五年每一年低點、或低點一年比一年低的，用低點推算不適用，不給價位。這是歷史統計，不構成投資建議。</div>' +
+    bzList.map(({s, st}) => {
+      const z = s.buy_zone, P = v => px(v, false, s.dp);
+      const chip = BZ_CHIP[st.kind];
+      // 體檢標籤一起放：Bank Islam 這類「便宜有原因」的，跌到參考價以下也只是更便宜，不代表比較值得買
+      const tier = s.sector === '銀行' ? bankTier(s) : reitTier(s);
+      const meta = [`現價 ${P(s.price)}`, `一年低點 ${P(z.tiers[0].p)}`, `五年最低 ${P(z.tiers[2].p)}`];
+      if(st.ok && st.yld) meta.push(`參考價股息率 ${st.yld.toFixed(1)}%`);
+      return `<div class="anr" data-go="${esc(s.symbol)}">
+        <div class="n">${esc(nameEn(s.name))}</div>
+        <div class="r"><span class="k">參考</span>${st.ok ? `${P(z.ref)} <span class="${st.kind === 'below' ? 'up' : 'flat'}">${pc1(st.gap)}</span>` : '—'}</div>
+        <div class="s">${[chip, tier && tier[0] !== 'good' ? tier : null].filter(Boolean)
+          .map(c => `<span class="chip ${c[0]}">${c[1]}</span>`).join('')}${meta.map(m => `<span>${esc(m)}</span>`).join('')}</div></div>`;
+    }).join('') +
+    '<div class="an-note">右邊的百分比是參考價相對現價：負數是還要再跌多少才到；綠色的正數代表現價已經比參考價低。</div>');
+  else clearCard('an-buy');
 
   // ---- 5. 題材股風險：只看題材類股（「AI」分頁那兩類）。以前是「指數、匯率、加密、油價以外全部」，
   // 一年跌掉一半的建築地產股也會被叫成題材股、列在「通常是公司出了結構性問題」底下——在公開網頁上點名一家公司，說法要準
