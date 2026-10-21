@@ -18,6 +18,7 @@ from datetime import datetime, timedelta, timezone
 import analyze
 import buyzone
 import digest
+import dividend
 import fundamentals
 import market
 import news
@@ -39,7 +40,7 @@ CHART_URL = (
 # 只有近五年存進 series_w 給圖表用，前五年算完參考價就丟掉，資料檔大小不變。
 CHART_URL_5Y = (
     "https://query1.finance.yahoo.com/v8/finance/chart/{sym}"
-    "?range=10y&interval=1wk"
+    "?range=10y&interval=1wk&events=div"
 )
 
 
@@ -124,7 +125,7 @@ def fetch_one(stock):
     lo52 = meta.get("fiftyTwoWeekLow")
 
     # 五年週線，長區間用
-    weekly = []
+    weekly, divs10 = [], []
     try:
         wraw = http_json(CHART_URL_5Y.format(sym=urllib.parse.quote(sym)), tries=2)
         wres = wraw["chart"]["result"][0]
@@ -135,16 +136,24 @@ def fetch_one(stock):
                 continue
             weekly.append({"date": datetime.fromtimestamp(t, MYT).strftime("%Y-%m-%d"),
                            "close": _round(c)})
+        # 十年派息紀錄，股息體檢（dividend.py）用。上面一年日線的派息只有近一年，看不出趨勢
+        for ev in (wres.get("events", {}) or {}).get("dividends", {}).values():
+            divs10.append({"date": datetime.fromtimestamp(ev["date"], MYT).strftime("%Y-%m-%d"),
+                           "amount": ev["amount"]})
     except Exception:
         pass
 
     # 歷史低點參考價用完整十年；圖表與 3 年／5 年漲跌幅只用近五年（跟以前抓 range=5y 一樣）
-    buy_zone = None
+    buy_zone = div_info = None
     if buyzone.applicable(stock):
         try:
             buy_zone = buyzone.build(weekly, series, datetime.now(MYT).date())
         except Exception as exc:  # noqa: BLE001 - 參考價算不出來不能拖垮整檔
             print("    參考價計算失敗 {}: {}".format(sym, exc), flush=True)
+        try:
+            div_info = dividend.build(divs10, weekly, datetime.now(MYT).date())
+        except Exception as exc:  # noqa: BLE001
+            print("    股息體檢失敗 {}: {}".format(sym, exc), flush=True)
     cut5 = (datetime.now(MYT) - timedelta(days=5 * 365 + 2)).strftime("%Y-%m-%d")
     weekly = [p for p in weekly if p["date"] >= cut5]
     fund = {}
@@ -234,6 +243,7 @@ def fetch_one(stock):
         "series": [{"date": p["date"], "close": _round(p["close"])} for p in series],
         "series_w": weekly,      # 五年週線
         "buy_zone": buy_zone,    # 歷史低點參考價（buyzone.py），不適用的標的是 None
+        "dividend": div_info,    # 股息體檢（dividend.py），只有銀行股與 REIT
     }
 
 

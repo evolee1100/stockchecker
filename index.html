@@ -294,6 +294,23 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .bz-hit{color:var(--up);font-weight:600}
 .chart .bzl{stroke:#2459b3;stroke-width:1;stroke-dasharray:4 3}
 .chart .bzt{fill:#2459b3;font-size:10px}
+.bz-y{color:#0E7490;font-weight:600}
+
+/* 股息體檢：收息族最在意的一塊，標題列用綠色底跟其他框分開，股息率字放大 */
+.dv{border-color:#bfe3cf}
+.dv .dg-h{background:var(--good-bg);color:var(--good);border-bottom-color:#bfe3cf}
+.dv .dg-k{width:44px}
+.dv .dg-v b{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.dv .dg-v b.dv-big{font-size:15px;color:var(--good)}
+.dv-bars{display:grid;grid-template-columns:auto minmax(60px,1fr) auto auto;column-gap:9px;row-gap:3px;
+         align-items:center;font-variant-numeric:tabular-nums;max-width:460px}
+.dv-bar{display:contents}
+.dv-bar .tr{height:9px;background:var(--hair);border-radius:3px;overflow:hidden}
+.dv-bar .tr i{display:block;height:100%;background:#3aa76d;border-radius:3px}
+.dv-bar .tr i.ytd{background:#a8d8bd}
+.dv-bar .am{color:var(--ink);font-weight:600;text-align:right}
+.dv-bar .nn{color:var(--ink-3);font-size:.92em}
+.dv-fn{font-size:.92em;margin-top:5px}
 /* 新聞 */
 .news{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
 @media(max-width:700px){ .news{grid-template-columns:1fr;gap:18px} }
@@ -475,6 +492,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
   .dg-k{font-size:15.6px;width:40px}
   .dg-v{font-size:18px;line-height:1.75}
   .chart .bzt{font-size:14.4px}
+  .dv .dg-k{width:52px}
+  .dv .dg-v b.dv-big{font-size:21px}
   .news h4{font-size:15px}
   .it{font-size:18px}
   .im{font-size:15.6px}
@@ -742,6 +761,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .an-src a{display:block;padding:7px 0;color:#0b57d0;text-decoration:none}
 .an-src a:hover{text-decoration:underline}
 .an-txt .an-foot{font-size:11.5px;color:var(--read)}
+.an-dv{border-top:1px solid var(--hair);padding-top:8px}
+.an-dv > b{color:var(--good)}
 @media(max-width:700px){
   .an-head{font-size:13.5px}
   .anb{font-size:16px}
@@ -1322,8 +1343,8 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
   <div class="scroll" id="tablewrap"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
   <!-- 「分析」分頁：選到它時取代上面的表格。每張卡片一個固定的容器，mcard 才比得出內容有沒有變、不必每次重畫 -->
   <div id="analysis" hidden>
-    <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-howto"></div><div id="an-bank"></div>
-    <div id="an-reit"></div><div id="an-buy"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
+    <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-howto"></div><div id="an-reit"></div><div id="an-bank"></div>
+    <div id="an-buy"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
   </div>
 
 
@@ -1690,6 +1711,88 @@ function bzStatus(s){
 }
 const BZ_CHIP = {broken: ['bad', '跌破五年低點'], falling: ['warn', '低點逐年下移'], below: ['good', '已低於參考價']};
 
+/* ---------- 股息體檢（dividend.py 整理十年派息；現價股息率、在區間哪裡在這裡現算）----------
+   只有銀行股與 REIT。REIT 排在最前面講：使用者買 REIT 就是為了股息 */
+const isReit = s => s.sector === 'REIT';
+const sen = (s, v) => s.currency === 'MYR' ? (v * 100).toFixed(v * 100 >= 10 ? 1 : 2) + ' 仙' : v.toFixed(2) + ' ' + (s.currency || '');
+function divStatus(s){
+  const d = s.dividend, p = s.price;
+  if(!d || !d.ttm || !p || !['銀行', 'REIT'].includes(s.sector)) return null;
+  const y = d.ttm / p * 100, b = d.band;
+  // 股息率在過去五年分布的哪裡：高於 80% 的時間 → 以股息看便宜；低於 20% 的時間 → 以股息看貴
+  const pos = !b ? '' : y >= b.hi ? 'high' : y <= b.lo ? 'low' : 'mid';
+  // 股息率偏高、但股息本身在減少：股息率高是因為股價先跌了，不是便宜，是陷阱（Sentral 就是這樣）。不能標成綠色的「便宜」
+  const trap = pos === 'high' && d.trend === 'down';
+  return {y, pos: trap ? 'trap' : pos, trap, income: y * 100,     // income：投入 RM10,000 一年領多少（稅前）
+          pHi: b ? d.ttm / (b.hi / 100) : null,          // 股息率回到五年偏高水準時的價格
+          pMed: b ? d.ttm / (b.med / 100) : null};
+}
+const DIV_POS = {high: ['good', '股息率偏高（以股息看便宜）'], low: ['warn', '股息率偏低（以股息看貴）'], mid: ['', '股息率在五年區間中間'],
+                 trap: ['bad', '股息率高，但股息在減少']};
+const DIV_TREND = {up: ['good', '股息成長'], down: ['bad', '股息減少'], flat: ['', '股息持平']};
+const monthsOf = d => d.months && d.months.length ? d.months.join('、') + ' 月' : '';
+
+function divHtml(s){
+  const d = s.dividend, st = divStatus(s);
+  if(!st) return '';
+  const f = s.fundamentals || {};
+  const P = v => px(v, false, s.dp);
+  const unit = isReit(s) ? '每單位' : '每股';
+  const rows = [];
+
+  rows.push(['現在', `<b class="dv-big">股息率 ${st.y.toFixed(2)}%</b>　近 12 個月${unit}派 <b>${sen(s, d.ttm)}</b>，` +
+    `以現價 ${P(s.price)} 計。投入 <b>RM10,000</b>，一年約領 <b>RM${anInt(st.income)}</b>（每月平均約 RM${anInt(st.income / 12)}，稅前）。`]);
+
+  const ex = f.ex_div_date && f.ex_div_date >= mytToday() ? f.ex_div_date : null;
+  rows.push(['次數', `近 12 個月派 ${d.n12} 次` + (monthsOf(d) ? `，近兩年在 ${monthsOf(d)}除息` : '') + '。' +
+    (ex ? `<b>下次除息 ${ex}</b>：除息日之前買進才領得到這一次。` : '') +
+    '除息當天股價會自動扣掉股息，那不是下跌。']);
+
+  if(d.trend){
+    const t = d.trend === 'up' ? `多 ${d.chg.toFixed(1)}%，<span class="bz-hit">股息在成長</span>`
+            : d.trend === 'down' ? `少 ${Math.abs(d.chg).toFixed(1)}%，<span class="bz-bad">股息在減少</span>，要去查原因（空置率、利息成本、賣掉資產…）`
+            : `差不多（${pc1(d.chg)}），股息持平`;
+    rows.push(['趨勢', `近三年平均每年派 ${sen(s, d.avg3)}，比再前三年的 ${sen(s, d.prev3)} ${t}。` +
+      // 再前三年那一段蓋到 2020–2021：銀行被央行限制派息、REIT 給租戶減租，基期特別低，成長會被放大
+      (Date.parse(mytToday()) - 6 * 365 * 864e5 < Date.parse('2022-01-01') && d.trend === 'up'
+        ? '（再前三年包含 2020–2021 疫情期間，銀行被限制派息、REIT 減租，基期偏低，成長幅度會看起來特別大。）' : '')]);
+  }
+
+  const max = Math.max(...d.years.map(y => y.amt), 1e-9);
+  rows.push(['歷年', '<div class="dv-bars">' + d.years.map(y =>
+    `<div class="dv-bar"><span class="yy">${y.y}${y.ytd ? ' 至今' : ''}</span>` +
+    `<span class="tr"><i style="width:${(y.amt / max * 100).toFixed(1)}%"${y.ytd ? ' class="ytd"' : ''}></i></span>` +
+    `<span class="am">${sen(s, y.amt)}</span><span class="nn">${y.n} 次</span></div>`).join('') +
+    '</div><div class="dv-fn">某一年多一次、下一年少一次，通常是除息日剛好跨年，不是加減息；看上面的三年平均比較準。</div>']);
+
+  const b = d.band;
+  if(b){
+    const where = st.pos === 'trap' ? `<span class="bz-bad">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都高，但股息本身在減少：股息率高是因為股價先跌了，不是便宜，小心高息陷阱</span>`
+                : st.pos === 'high' ? `<span class="bz-hit">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都高：以股息看，現在相對便宜</span>`
+                : st.pos === 'low' ? `<span class="bz-bad">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都低：以股息看，現在相對貴</span>`
+                : `現在 ${st.y.toFixed(2)}% 在中間`;
+    rows.push(['區間', `過去五年，股息率大多在 <b>${b.lo.toFixed(2)}%–${b.hi.toFixed(2)}%</b> 之間（中位數 ${b.med.toFixed(2)}%）。${where}。` +
+      `<br>股息不變的話，股息率回到偏高的 ${b.hi.toFixed(2)}% 時價格約 <b>${P(st.pHi)}</b>` +
+      (s.price <= st.pHi ? '（<span class="bz-hit">現價已經到了</span>）' : `（比現價低 ${Math.abs((st.pHi / s.price - 1) * 100).toFixed(1)}%）`) +
+      `；回到中位數 ${b.med.toFixed(2)}% 時約 ${P(st.pMed)}。`]);
+  }
+
+  const pay = num(f.payout_ratio);
+  if(pay != null)
+    rows.push(['派息率', `${Math.round(pay)}%。` + (isReit(s)
+      ? (pay > 100 ? '<span class="bz-bad">派得比帳面盈利多。</span>REIT 很常見（盈利扣了建築物折舊與重估，現金其實還在），但要去季報查「每單位可分派收入」夠不夠付股息。'
+                   : 'REIT 派息看的是「可分派收入」，帳面盈利只是參考。')
+      : (pay > 90 ? '<span class="bz-bad">超過 90%，幾乎把賺的全發出去，盈利一變差就可能減息。</span>'
+                  : pay <= 60 ? '還有餘裕，盈利小幅下滑也不必減息。' : '在正常範圍。'))]);
+
+  rows.push(['說明', '股息率＝近 12 個月除息加總 ÷ 現價，所以股價跌、股息不變，股息率就會升。' +
+    (isReit(s) ? 'REIT 依法要把大部分收入派出來（派 90% 以上可免公司稅），所以股息率高、成長慢。' : '') +
+    '金額為稅前、未扣券商費用；REIT 派息的稅務安排近年有調整，實拿以券商入帳為準。過去的股息不保證未來照派。']);
+
+  return `<div class="dg dv"><div class="dg-h">股息體檢</div>` +
+    rows.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div><div class="dg-v">${v}</div></div>`).join('') + '</div>';
+}
+
 function buyZoneHtml(s){
   const z = s.buy_zone, st = bzStatus(s);
   if(!st) return '';
@@ -1714,11 +1817,14 @@ function buyZoneHtml(s){
 
   if(st.ok){
     const names = ['第一批', '第二批', '第三批'];
+    const ttm = s.ttm_dividend;
     rows.push(['分批', z.tiers.map((t, i) => {
       const o = off(t.p);
       return `<div class="bz-tier"><span class="t">${names[i]}</span><span class="n">${P(t.p)}</span>` +
         `<span>${t.k}${t.d ? '，' + t.d : ''}</span>` +
-        (o >= 0 ? '<span class="bz-hit">現價已到</span>' : `<span>${pc1(o)}</span>`) + '</div>';
+        (o >= 0 ? '<span class="bz-hit">現價已到</span>' : `<span>${pc1(o)}</span>`) +
+        // 收息族最在意的是「這個價位買，股息率多少」：每一批都標出來
+        (ttm ? `<span class="bz-y">股息率 ${(ttm / t.p * 100).toFixed(1)}%</span>` : '') + '</div>';
     }).join('')]);
   }
 
@@ -1772,6 +1878,7 @@ function detailRow(s){
       s.market_time ? `<span> · 最後成交 ${s.market_time}</span>` : ''}${
       s.live && s.live_ts ? `<span> · 即時報價 ${hhmm(s.live_ts)}</span>` : ''}</div>
     <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
+    ${divHtml(s)}
     ${(s.digest && s.digest.length) ? `<div class="dg">
       <div class="dg-h">重點報導</div>
       ${s.digest.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div>
@@ -2455,12 +2562,37 @@ function renderAnalysis(){
       legend + banks.map((s, i) => anRow(s, tiers[i], true)).join(''));
   } else clearCard('an-bank');
 
-  // ---- 4. REIT：收租型看的是股息，股息率高的在前
-  const reits = of('REIT').sort((a, b) => nv(num((b.fundamentals || {}).div_yield), -1) - nv(num((a.fundamentals || {}).div_yield), -1));
-  if(reits.length) mcard('an-reit', 'REIT 體檢', `${reits.length} 檔 · 依股息率排序`,
-    reits.map(s => anRow(s, reitTier(s), false)).join('') +
-    '<div class="an-note">REIT 的帳面盈利扣了建築物折舊，派息高於盈利很常見，不一定是警訊；要看的是「可分派收入」撐不撐得住。' +
-    '利率上升時 REIT 兩面受壓：借款利息變貴，股息相對公債也變得沒那麼吸引人。</div>');
+  // ---- 4. REIT 股息體檢：買 REIT 就是為了股息，所以右邊放「現價股息率」、整列講股息，股息率高的在前。
+  // 數字來自 dividend.py 的十年派息；沒有派息資料的退回原本的 P/B、派息率那一行
+  const reits = of('REIT').sort((a, b) => nv((divStatus(b) || {}).y, nv(num((b.fundamentals || {}).div_yield), -1)) -
+                                          nv((divStatus(a) || {}).y, nv(num((a.fundamentals || {}).div_yield), -1)));
+  const reitRow = s => {
+    const st = divStatus(s), d = s.dividend, f = s.fundamentals || {};
+    if(!st) return anRow(s, reitTier(s), false);
+    const y = ytdOf(s), pay = num(f.payout_ratio);
+    const chips = [reitTier(s), DIV_POS[st.pos], d.trend && !st.trap ? DIV_TREND[d.trend] : null].filter(c => c && c[1]);
+    const meta = [`每單位一年派 ${sen(s, d.ttm)}`,
+      `一年 ${d.n12} 次` + (monthsOf(d) ? `（${monthsOf(d)}）` : ''),
+      d.trend ? `近三年股息 ${pc1(d.chg)}` : '',
+      d.band ? `五年股息率 ${d.band.lo.toFixed(1)}–${d.band.hi.toFixed(1)}%` : '',
+      `RM10,000 一年約領 RM${anInt(st.income)}`,
+      '派息率 ' + (pay == null ? '—' : Math.round(pay) + '%'),
+      y ? `今年股價 ${pc1(y.ytd)}` : ''].filter(Boolean);
+    return `<div class="anr" data-go="${esc(s.symbol)}">
+      <div class="n">${esc(nameEn(s.name))}</div>
+      <div class="r"><span class="k">股息率</span><span class="up">${st.y.toFixed(2)}%</span></div>
+      <div class="s">${chips.map(c => `<span class="chip ${c[0]}">${c[1]}</span>`).join('')}${meta.map(m => `<span>${esc(m)}</span>`).join('')}</div></div>`;
+  };
+  if(reits.length) mcard('an-reit', 'REIT 股息體檢', `${reits.length} 檔 · 依現價股息率排序`,
+    reits.map(reitRow).join('') +
+    `<div class="an-txt an-dv"><b>REIT 股息怎麼看</b><ul class="an-ol">
+      <li><span>股息率＝近 12 個月派息 ÷ 現價。股價跌、派息不變，股息率就升；所以要同時看「派息本身有沒有變少」（近三年股息那一欄：近三年平均每年派息，跟再前三年比；再前三年包含 2020–2021 疫情減租期，成長會看起來比較大）。</span></li>
+      <li><span>REIT 依法要把大部分收入派出來（派 90% 以上可免公司稅），所以股息率高、但成長慢。它是收息工具，不是讓股價翻倍的東西。</span></li>
+      <li><span>「五年股息率」是過去五年每週的股息率，大多落在的範圍。現在高於這個範圍，代表以股息看比平常便宜；但如果是因為大家擔心派息會減（例如辦公樓空置），高股息率反而是警訊。</span></li>
+      <li><span>派息率超過 100% 在 REIT 很常見（帳面盈利扣了建築物折舊與重估），不一定是警訊；真正要看的是季報裡「每單位可分派收入」夠不夠付股息。</span></li>
+      <li><span>股息率要跟 10 年期大馬公債（MGS）殖利率和定存比：多出來的那幾個百分點，是承擔股價波動的補償。利率上升時 REIT 兩面受壓：借款利息變貴、股息也相對沒那麼吸引人。</span></li>
+      <li><span>除息日之前買進才領得到那一次股息；除息當天股價會扣掉股息，不是下跌。金額都是稅前，REIT 派息的稅務安排近年有調整，實拿以券商入帳為準。</span></li>
+    </ul></div>`);
   else clearCard('an-reit');
 
   // ---- 4b. 歷史低點參考價：銀行與 REIT（收息股才適合用低點分批買；題材股的歷年低點離現價太遠）。
@@ -2476,6 +2608,8 @@ function renderAnalysis(){
       // 體檢標籤一起放：Bank Islam 這類「便宜有原因」的，跌到參考價以下也只是更便宜，不代表比較值得買
       const tier = s.sector === '銀行' ? bankTier(s) : reitTier(s);
       const meta = [`現價 ${P(s.price)}`, `一年低點 ${P(z.tiers[0].p)}`, `五年最低 ${P(z.tiers[2].p)}`];
+      const ds = divStatus(s);
+      if(ds) meta.push(`現價股息率 ${ds.y.toFixed(1)}%`);
       if(st.ok && st.yld) meta.push(`參考價股息率 ${st.yld.toFixed(1)}%`);
       return `<div class="anr" data-go="${esc(s.symbol)}">
         <div class="n">${esc(nameEn(s.name))}</div>
