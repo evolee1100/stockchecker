@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-10-28 09:37:23 (MYT)",
+ "updated_at": "2026-10-28 15:19:46 (MYT)",
  "stocks": [
   {
    "symbol": "^KLSE",
@@ -17,28 +17,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 1614.17,
-   "prev_close": 1604.36,
-   "change_pct_1d": 0.61,
-   "change_pct_5d": 0.91,
-   "change_pct_1m": -3.34,
-   "change_pct_3m": -5.77,
-   "change_pct_1y": 0.04,
+   "price": 1611.95,
+   "prev_close": 1611.85,
+   "change_pct_1d": 0.01,
+   "change_pct_5d": 0.6,
+   "change_pct_1m": -1.95,
+   "change_pct_3m": -5.87,
+   "change_pct_1y": -0.1,
    "day_high": 1615.87,
-   "day_low": 1613.48,
+   "day_low": 1609.44,
    "volume": 0,
-   "avg_volume_20d": 214278830,
+   "avg_volume_20d": 216579190,
    "volume_ratio": 0.0,
    "high_52w": 1771.25,
    "low_52w": 1592.57,
-   "off_52w_high": -8.87,
+   "off_52w_high": -8.99,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 11.69,
-   "change_pct_5y": 5.38,
+   "market_time": "2026-10-28 14:55",
+   "change_pct_3y": 11.54,
+   "change_pct_5y": 5.24,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -1082,11 +1082,11 @@
     },
     {
      "date": "2026-10-26",
-     "close": 1604.36
+     "close": 1611.85
     },
     {
      "date": "2026-10-28",
-     "close": 1614.17
+     "close": 1611.95
     }
    ],
    "buy_zone": null,
@@ -1095,11 +1095,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 1,614、單日 +0.61%。一個月 -3.34%，三個月 -5.77%。"
+     "2026-10-28 收 1,612、單日 +0.01%。一個月 -1.95%，三個月 -5.87%。"
     ],
     [
      "報導",
-     "近三個月 6 則（Traders Union、BusinessToday Malaysia、The Star、NST）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（The Edge Malaysia、The Star、BusinessToday Malaysia、Malay Mail）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -1148,24 +1148,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 10.0,
+   "price": 9.98,
    "prev_close": 9.99,
-   "change_pct_1d": 0.1,
-   "change_pct_5d": 0.5,
-   "change_pct_1m": 0.1,
-   "change_pct_3m": -8.26,
-   "change_pct_1y": 1.21,
+   "change_pct_1d": -0.1,
+   "change_pct_5d": 0.3,
+   "change_pct_1m": -0.1,
+   "change_pct_3m": -8.44,
+   "change_pct_1y": 1.01,
    "day_high": 10.02,
-   "day_low": 9.98,
-   "volume": 282300,
+   "day_low": 9.97,
+   "volume": 3872100,
    "avg_volume_20d": 12149295,
-   "volume_ratio": 0.02,
+   "volume_ratio": 0.32,
    "high_52w": 12.42,
    "low_52w": 9.78,
-   "off_52w_high": -19.48,
+   "off_52w_high": -19.65,
    "at_52w_low": false,
    "ttm_dividend": 0.64,
-   "yield_pct": 6.4,
+   "yield_pct": 6.41,
    "dividends": [
     {
      "date": "2026-03-12",
@@ -1176,9 +1176,9 @@
      "amount": 0.31
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 10.13,
-   "change_pct_5y": 24.84,
+   "market_time": "2026-10-28 14:56",
+   "change_pct_3y": 9.91,
+   "change_pct_5y": 24.59,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -2226,7 +2226,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 10.0
+     "close": 9.98
     }
    ],
    "buy_zone": {
@@ -2378,7 +2378,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -19.5%"
+     "text": "距 52 週高點 -19.6%"
     },
     {
      "level": "good",
@@ -2388,7 +2388,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 10.00、單日 +0.10%。一個月 +0.10%，三個月 -8.26%。距 52 週高點 12.42 還有 19.5%。"
+     "2026-10-28 收 9.98、單日 -0.10%。一個月 -0.10%，三個月 -8.44%。距 52 週高點 12.42 還有 19.6%。"
     ],
     [
      "公告",
@@ -2396,7 +2396,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（The Star、Golf Channel、LPGA、Women's Golf Journal）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（NST、BusinessToday Malaysia、Fintech News Malaysia、Women's Golf Journal）。標題見下方清單。"
     ],
     [
      "數字",
@@ -2452,24 +2452,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 4.73,
+   "price": 4.71,
    "prev_close": 4.75,
-   "change_pct_1d": -0.42,
-   "change_pct_5d": 0.0,
-   "change_pct_1m": 0.21,
-   "change_pct_3m": -8.86,
-   "change_pct_1y": 12.35,
+   "change_pct_1d": -0.84,
+   "change_pct_5d": -0.42,
+   "change_pct_1m": -0.21,
+   "change_pct_3m": -9.25,
+   "change_pct_1y": 11.88,
    "day_high": 4.76,
-   "day_low": 4.73,
-   "volume": 169800,
+   "day_low": 4.7,
+   "volume": 3753900,
    "avg_volume_20d": 22005395,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.17,
    "high_52w": 5.29,
    "low_52w": 4.18,
-   "off_52w_high": -10.59,
+   "off_52w_high": -10.96,
    "at_52w_low": false,
    "ttm_dividend": 0.225,
-   "yield_pct": 4.76,
+   "yield_pct": 4.78,
    "dividends": [
     {
      "date": "2026-03-11",
@@ -2480,9 +2480,9 @@
      "amount": 0.105
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 13.7,
-   "change_pct_5y": 17.37,
+   "market_time": "2026-10-28 14:55",
+   "change_pct_3y": 13.22,
+   "change_pct_5y": 16.87,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -3530,7 +3530,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 4.73
+     "close": 4.71
     }
    ],
    "buy_zone": {
@@ -3688,7 +3688,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 4.73、單日 -0.42%。一個月 +0.21%，三個月 -8.86%。距 52 週高點 5.29 還有 10.6%。"
+     "2026-10-28 收 4.71、單日 -0.84%。一個月 -0.21%，三個月 -9.25%。距 52 週高點 5.29 還有 11.0%。"
     ],
     [
      "公告",
@@ -3751,24 +3751,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 7.13,
+   "price": 7.12,
    "prev_close": 7.11,
-   "change_pct_1d": 0.28,
-   "change_pct_5d": -0.14,
-   "change_pct_1m": -8.35,
-   "change_pct_3m": -8.12,
-   "change_pct_1y": -3.52,
+   "change_pct_1d": 0.14,
+   "change_pct_5d": -0.28,
+   "change_pct_1m": -8.48,
+   "change_pct_3m": -8.25,
+   "change_pct_1y": -3.65,
    "day_high": 7.13,
-   "day_low": 7.1,
-   "volume": 153500,
+   "day_low": 7.09,
+   "volume": 3594400,
    "avg_volume_20d": 16628020,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.22,
    "high_52w": 8.95,
    "low_52w": 7.09,
-   "off_52w_high": -20.34,
+   "off_52w_high": -20.45,
    "at_52w_low": false,
    "ttm_dividend": 0.47,
-   "yield_pct": 6.59,
+   "yield_pct": 6.6,
    "dividends": [
     {
      "date": "2025-12-12",
@@ -3783,9 +3783,9 @@
      "amount": 0.1965
     }
    ],
-   "market_time": "2026-10-28 09:11",
-   "change_pct_3y": 24.0,
-   "change_pct_5y": 40.63,
+   "market_time": "2026-10-28 14:55",
+   "change_pct_3y": 23.83,
+   "change_pct_5y": 40.43,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -4833,7 +4833,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 7.13
+     "close": 7.12
     }
    ],
    "buy_zone": {
@@ -4986,7 +4986,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -20.3%"
+     "text": "距 52 週高點 -20.4%"
     },
     {
      "level": "good",
@@ -4996,7 +4996,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 7.13、單日 +0.28%。一個月 -8.35%，三個月 -8.12%。距 52 週高點 8.95 還有 20.3%。"
+     "2026-10-28 收 7.12、單日 +0.14%。一個月 -8.48%，三個月 -8.25%。距 52 週高點 8.95 還有 20.4%。"
     ],
     [
      "公告",
@@ -5004,7 +5004,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購（The Star、The Edge Malaysia、BusinessToday Malaysia、Tempo.co English）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購（InvestorTrust、The Malaysian Reserve、Magzter、The Star）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -5061,21 +5061,21 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 21.36,
+   "price": 21.34,
    "prev_close": 21.2,
-   "change_pct_1d": 0.75,
-   "change_pct_5d": -0.74,
-   "change_pct_1m": -8.25,
-   "change_pct_3m": -4.22,
-   "change_pct_1y": 3.19,
-   "day_high": 21.36,
-   "day_low": 21.36,
-   "volume": 200,
+   "change_pct_1d": 0.66,
+   "change_pct_5d": -0.84,
+   "change_pct_1m": -8.33,
+   "change_pct_3m": -4.3,
+   "change_pct_1y": 3.09,
+   "day_high": 21.38,
+   "day_low": 21.18,
+   "volume": 384500,
    "avg_volume_20d": 1133920,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.34,
    "high_52w": 25.8,
    "low_52w": 20.56,
-   "off_52w_high": -17.21,
+   "off_52w_high": -17.29,
    "at_52w_low": false,
    "ttm_dividend": 1.1,
    "yield_pct": 5.15,
@@ -5089,9 +5089,9 @@
      "amount": 0.8
     }
    ],
-   "market_time": "2026-10-28 09:00",
-   "change_pct_3y": 11.95,
-   "change_pct_5y": 18.53,
+   "market_time": "2026-10-28 14:54",
+   "change_pct_3y": 11.84,
+   "change_pct_5y": 18.42,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -6139,7 +6139,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 21.36
+     "close": 21.34
     }
    ],
    "buy_zone": {
@@ -6291,7 +6291,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -17.2%"
+     "text": "距 52 週高點 -17.3%"
     },
     {
      "level": "good",
@@ -6305,7 +6305,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 21.36、單日 +0.75%。一個月 -8.25%，其中 2026-10-07 除息 0.8 佔約 3.7 個百分點，不是實際下跌，三個月 -4.22%。距 52 週高點 25.80 還有 17.2%。"
+     "2026-10-28 收 21.34、單日 +0.66%。一個月 -8.33%，其中 2026-10-07 除息 0.8 佔約 3.7 個百分點，不是實際下跌，三個月 -4.30%。距 52 週高點 25.80 還有 17.3%。"
     ],
     [
      "公告",
@@ -6313,7 +6313,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則（NST、Fintech News Malaysia、TradingView、BusinessToday Malaysia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（Utusan Malaysia、NST、BusinessToday Malaysia、Lokmat Times）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -6376,10 +6376,10 @@
    "change_pct_3m": -12.8,
    "change_pct_1y": 8.55,
    "day_high": 7.36,
-   "day_low": 7.35,
-   "volume": 66300,
+   "day_low": 7.34,
+   "volume": 1725700,
    "avg_volume_20d": 11254155,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.15,
    "high_52w": 8.94,
    "low_52w": 6.76,
    "off_52w_high": -17.67,
@@ -6396,7 +6396,7 @@
      "amount": 0.15
     }
    ],
-   "market_time": "2026-10-28 09:15",
+   "market_time": "2026-10-28 14:57",
    "change_pct_3y": 30.5,
    "change_pct_5y": 36.55,
    "series_w": [
@@ -7671,24 +7671,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 17.36,
-   "prev_close": 17.5,
-   "change_pct_1d": -0.8,
-   "change_pct_5d": -1.36,
-   "change_pct_1m": -8.15,
-   "change_pct_3m": -6.06,
-   "change_pct_1y": 2.0,
-   "day_high": 17.36,
-   "day_low": 17.36,
-   "volume": 53400,
-   "avg_volume_20d": 107825,
-   "volume_ratio": 0.5,
+   "price": 17.52,
+   "prev_close": 17.36,
+   "change_pct_1d": 0.92,
+   "change_pct_5d": -1.24,
+   "change_pct_1m": -6.81,
+   "change_pct_3m": -5.3,
+   "change_pct_1y": 2.94,
+   "day_high": 17.58,
+   "day_low": 17.44,
+   "volume": 58100,
+   "avg_volume_20d": 107255,
+   "volume_ratio": 0.54,
    "high_52w": 23.1,
    "low_52w": 16.9,
-   "off_52w_high": -24.85,
+   "off_52w_high": -24.16,
    "at_52w_low": false,
    "ttm_dividend": 0.79,
-   "yield_pct": 4.55,
+   "yield_pct": 4.51,
    "dividends": [
     {
      "date": "2026-03-13",
@@ -7699,9 +7699,9 @@
      "amount": 0.57
     }
    ],
-   "market_time": "2026-10-27 16:52",
-   "change_pct_3y": 1.28,
-   "change_pct_5y": -0.8,
+   "market_time": "2026-10-28 14:57",
+   "change_pct_3y": 2.22,
+   "change_pct_5y": 0.11,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -8748,8 +8748,8 @@
      "close": 17.36
     },
     {
-     "date": "2026-10-27",
-     "close": 17.36
+     "date": "2026-10-28",
+     "close": 17.52
     }
    ],
    "buy_zone": {
@@ -8835,7 +8835,7 @@
       "ytd": true
      }
     ],
-    "as_of": "2026-10-27"
+    "as_of": "2026-10-28"
    },
    "dividend": {
     "ttm": 0.79,
@@ -8901,7 +8901,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -24.9%"
+     "text": "距 52 週高點 -24.2%"
     },
     {
      "level": "good",
@@ -8915,7 +8915,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-27 收 17.36、單日 -0.80%。一個月 -8.15%，其中 2026-10-09 除息 0.57 佔約 3.3 個百分點，不是實際下跌，三個月 -6.06%。距 52 週高點 23.10 還有 24.9%。"
+     "2026-10-28 收 17.52、單日 +0.92%。一個月 -6.81%，其中 2026-10-09 除息 0.57 佔約 3.3 個百分點，不是實際下跌，三個月 -5.30%。距 52 週高點 23.10 還有 24.2%。"
     ],
     [
      "公告",
@@ -8988,9 +8988,9 @@
    "change_pct_1y": 10.33,
    "day_high": 6.31,
    "day_low": 6.28,
-   "volume": 11200,
+   "volume": 1672700,
    "avg_volume_20d": 7689480,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.22,
    "high_52w": 7.37,
    "low_52w": 5.65,
    "off_52w_high": -14.52,
@@ -9007,7 +9007,7 @@
      "amount": 0.225
     }
    ],
-   "market_time": "2026-10-28 09:11",
+   "market_time": "2026-10-28 14:57",
    "change_pct_3y": 62.79,
    "change_pct_5y": 95.65,
    "series_w": [
@@ -10223,7 +10223,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在營運（YouTube、The Star、Minichart、The Edge Malaysia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、併購、評等（YouTube、The Edge Malaysia、The Star、Minichart）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -10278,24 +10278,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 4.58,
-   "prev_close": 4.55,
-   "change_pct_1d": 0.66,
-   "change_pct_5d": 1.55,
-   "change_pct_1m": -4.58,
-   "change_pct_3m": -3.78,
-   "change_pct_1y": 4.09,
+   "price": 4.57,
+   "prev_close": 4.58,
+   "change_pct_1d": -0.22,
+   "change_pct_5d": 0.22,
+   "change_pct_1m": -3.18,
+   "change_pct_3m": -4.79,
+   "change_pct_1y": 3.86,
    "day_high": 4.6,
-   "day_low": 4.6,
-   "volume": 516400,
-   "avg_volume_20d": 1106870,
-   "volume_ratio": 0.47,
+   "day_low": 4.56,
+   "volume": 76500,
+   "avg_volume_20d": 920845,
+   "volume_ratio": 0.08,
    "high_52w": 5.59,
    "low_52w": 4.37,
-   "off_52w_high": -18.07,
+   "off_52w_high": -18.25,
    "at_52w_low": false,
    "ttm_dividend": 0.1911,
-   "yield_pct": 4.17,
+   "yield_pct": 4.18,
    "dividends": [
     {
      "date": "2025-12-11",
@@ -10306,9 +10306,9 @@
      "amount": 0.0974
     }
    ],
-   "market_time": "2026-10-28 09:00",
-   "change_pct_3y": 35.5,
-   "change_pct_5y": 65.94,
+   "market_time": "2026-10-28 14:53",
+   "change_pct_3y": 35.21,
+   "change_pct_5y": 65.58,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -11356,7 +11356,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 4.6
+     "close": 4.57
     }
    ],
    "buy_zone": {
@@ -11442,7 +11442,7 @@
       "ytd": true
      }
     ],
-    "as_of": "2026-10-27"
+    "as_of": "2026-10-28"
    },
    "dividend": {
     "ttm": 0.1911,
@@ -11508,7 +11508,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -18.1%"
+     "text": "距 52 週高點 -18.2%"
     },
     {
      "level": "good",
@@ -11518,7 +11518,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 4.58、單日 +0.66%。一個月 -4.58%，三個月 -3.78%。距 52 週高點 5.59 還有 18.1%。"
+     "2026-10-28 收 4.57、單日 -0.22%。一個月 -3.18%，三個月 -4.79%。距 52 週高點 5.59 還有 18.2%。"
     ],
     [
      "公告",
@@ -11582,24 +11582,24 @@
     "analyst_rating_zh": "中立"
    },
    "currency": "MYR",
-   "price": 2.0,
+   "price": 1.99,
    "prev_close": 1.99,
-   "change_pct_1d": 0.5,
-   "change_pct_5d": 1.01,
-   "change_pct_1m": -2.91,
-   "change_pct_3m": -6.1,
-   "change_pct_1y": -9.5,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": 0.51,
+   "change_pct_1m": -3.4,
+   "change_pct_3m": -6.57,
+   "change_pct_1y": -9.95,
    "day_high": 2.0,
    "day_low": 1.99,
-   "volume": 2000,
+   "volume": 196300,
    "avg_volume_20d": 786395,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.25,
    "high_52w": 2.55,
    "low_52w": 1.97,
-   "off_52w_high": -21.57,
+   "off_52w_high": -21.96,
    "at_52w_low": false,
    "ttm_dividend": 0.1445,
-   "yield_pct": 7.22,
+   "yield_pct": 7.26,
    "dividends": [
     {
      "date": "2025-12-12",
@@ -11610,9 +11610,9 @@
      "amount": 0.0445
     }
    ],
-   "market_time": "2026-10-28 09:00",
-   "change_pct_3y": -9.5,
-   "change_pct_5y": -31.97,
+   "market_time": "2026-10-28 14:56",
+   "change_pct_3y": -9.95,
+   "change_pct_5y": -32.31,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -12660,7 +12660,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 2.0
+     "close": 1.99
     }
    ],
    "buy_zone": {
@@ -12812,7 +12812,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -21.6%"
+     "text": "距 52 週高點 -22.0%"
     },
     {
      "level": "good",
@@ -12826,7 +12826,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 2.00、單日 +0.50%。一個月 -2.91%，三個月 -6.10%。距 52 週高點 2.55 還有 21.6%。"
+     "2026-10-28 收 1.99、單日 +0.00%。一個月 -3.40%，三個月 -6.57%。距 52 週高點 2.55 還有 22.0%。"
     ],
     [
      "公告",
@@ -12888,33 +12888,33 @@
     "analyst_rating_zh": "中立"
    },
    "currency": "MYR",
-   "price": 2.0,
+   "price": 1.99,
    "prev_close": 2.03,
-   "change_pct_1d": -1.48,
-   "change_pct_5d": 2.56,
-   "change_pct_1m": -0.99,
-   "change_pct_3m": -10.31,
-   "change_pct_1y": -14.16,
+   "change_pct_1d": -1.97,
+   "change_pct_5d": 2.05,
+   "change_pct_1m": -1.49,
+   "change_pct_3m": -10.76,
+   "change_pct_1y": -14.59,
    "day_high": 2.01,
    "day_low": 1.98,
-   "volume": 177600,
+   "volume": 596200,
    "avg_volume_20d": 740935,
-   "volume_ratio": 0.24,
+   "volume_ratio": 0.8,
    "high_52w": 2.82,
    "low_52w": 1.91,
-   "off_52w_high": -29.08,
+   "off_52w_high": -29.43,
    "at_52w_low": false,
    "ttm_dividend": 0.0853,
-   "yield_pct": 4.26,
+   "yield_pct": 4.29,
    "dividends": [
     {
      "date": "2026-05-11",
      "amount": 0.0853
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 2.46,
-   "change_pct_5y": 26.42,
+   "market_time": "2026-10-28 14:43",
+   "change_pct_3y": 1.95,
+   "change_pct_5y": 25.79,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -13962,7 +13962,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 2.0
+     "close": 1.99
     }
    ],
    "buy_zone": {
@@ -14113,7 +14113,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -29.1%"
+     "text": "距 52 週高點 -29.4%"
     },
     {
      "level": "good",
@@ -14127,7 +14127,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 2.00、單日 -1.48%。一個月 -0.99%，三個月 -10.31%。距 52 週高點 2.82 還有 29.1%。"
+     "2026-10-28 收 1.99、單日 -1.97%。一個月 -1.49%，三個月 -10.76%。距 52 週高點 2.82 還有 29.4%。"
     ],
     [
      "公告",
@@ -14189,24 +14189,24 @@
     "analyst_rating_zh": "中立"
    },
    "currency": "MYR",
-   "price": 0.51,
+   "price": 0.505,
    "prev_close": 0.495,
-   "change_pct_1d": 3.03,
-   "change_pct_5d": 0.0,
-   "change_pct_1m": -10.53,
-   "change_pct_3m": -18.4,
-   "change_pct_1y": -29.66,
+   "change_pct_1d": 2.02,
+   "change_pct_5d": -0.98,
+   "change_pct_1m": -11.4,
+   "change_pct_3m": -19.2,
+   "change_pct_1y": -30.34,
    "day_high": 0.515,
    "day_low": 0.495,
-   "volume": 1742800,
+   "volume": 4167300,
    "avg_volume_20d": 3657645,
-   "volume_ratio": 0.48,
+   "volume_ratio": 1.14,
    "high_52w": 0.785,
    "low_52w": 0.495,
-   "off_52w_high": -35.03,
+   "off_52w_high": -35.67,
    "at_52w_low": false,
    "ttm_dividend": 0.0208,
-   "yield_pct": 4.08,
+   "yield_pct": 4.12,
    "dividends": [
     {
      "date": "2026-03-11",
@@ -14217,9 +14217,9 @@
      "amount": 0.0086
     }
    ],
-   "market_time": "2026-10-28 09:16",
-   "change_pct_3y": -30.61,
-   "change_pct_5y": -17.74,
+   "market_time": "2026-10-28 14:57",
+   "change_pct_3y": -31.29,
+   "change_pct_5y": -18.55,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -15267,7 +15267,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 0.51
+     "close": 0.505
     }
    ],
    "buy_zone": {
@@ -15420,11 +15420,11 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -35.0%"
+     "text": "距 52 週高點 -35.7%"
     },
     {
      "level": "good",
-     "text": "單日 +3.03%"
+     "text": "單日 +2.02%"
     },
     {
      "level": "good",
@@ -15442,7 +15442,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.510、單日 +3.03%。一個月 -10.53%，三個月 -18.40%。距 52 週高點 0.785 還有 35.0%。"
+     "2026-10-28 收 0.505、單日 +2.02%。一個月 -11.40%，三個月 -19.20%。距 52 週高點 0.785 還有 35.7%。"
     ],
     [
      "公告",
@@ -15450,7 +15450,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等（BusinessToday Malaysia、NST、Bernama、The Star）。標題見下方清單。"
+     "近三個月 6 則，主題集中在評等（NST、BusinessToday Malaysia、Bernama、The Star）。標題見下方清單。"
     ],
     [
      "數字",
@@ -15505,24 +15505,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 0.62,
+   "price": 0.615,
    "prev_close": 0.615,
-   "change_pct_1d": 0.81,
-   "change_pct_5d": -0.8,
-   "change_pct_1m": -5.34,
-   "change_pct_3m": -15.07,
-   "change_pct_1y": -20.0,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": -1.6,
+   "change_pct_1m": -6.11,
+   "change_pct_3m": -15.75,
+   "change_pct_1y": -20.65,
    "day_high": 0.62,
-   "day_low": 0.62,
-   "volume": 300,
+   "day_low": 0.61,
+   "volume": 1182500,
    "avg_volume_20d": 411015,
-   "volume_ratio": 0.0,
+   "volume_ratio": 2.88,
    "high_52w": 0.815,
-   "low_52w": 0.615,
-   "off_52w_high": -23.93,
+   "low_52w": 0.61,
+   "off_52w_high": -24.54,
    "at_52w_low": false,
    "ttm_dividend": 0.0616,
-   "yield_pct": 9.94,
+   "yield_pct": 10.02,
    "dividends": [
     {
      "date": "2026-02-09",
@@ -15533,9 +15533,9 @@
      "amount": 0.0317
     }
    ],
-   "market_time": "2026-10-28 09:08",
-   "change_pct_3y": -26.19,
-   "change_pct_5y": -30.73,
+   "market_time": "2026-10-28 14:44",
+   "change_pct_3y": -26.79,
+   "change_pct_5y": -31.28,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -16583,7 +16583,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 0.62
+     "close": 0.615
     }
    ],
    "buy_zone": {
@@ -16735,7 +16735,11 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -23.9%"
+     "text": "距 52 週高點 -24.5%"
+    },
+    {
+     "level": "warn",
+     "text": "成交量放大 2.9x"
     },
     {
      "level": "good",
@@ -16753,7 +16757,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.620、單日 +0.81%。一個月 -5.34%，三個月 -15.07%。距 52 週高點 0.815 還有 23.9%。"
+     "2026-10-28 收 0.615、單日 +0.00%、成交量是均量的 2.9 倍。一個月 -6.11%，三個月 -15.75%。距 52 週高點 0.815 還有 24.5%。"
     ],
     [
      "公告",
@@ -16816,24 +16820,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 2.74,
+   "price": 2.71,
    "prev_close": 2.72,
-   "change_pct_1d": 0.74,
-   "change_pct_5d": 0.0,
-   "change_pct_1m": -1.79,
-   "change_pct_3m": -0.36,
-   "change_pct_1y": 0.74,
+   "change_pct_1d": -0.37,
+   "change_pct_5d": -1.09,
+   "change_pct_1m": -2.87,
+   "change_pct_3m": -1.45,
+   "change_pct_1y": -0.37,
    "day_high": 2.74,
-   "day_low": 2.73,
-   "volume": 15200,
+   "day_low": 2.71,
+   "volume": 229700,
    "avg_volume_20d": 1234070,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.19,
    "high_52w": 3.16,
    "low_52w": 2.51,
-   "off_52w_high": -13.29,
+   "off_52w_high": -14.24,
    "at_52w_low": false,
    "ttm_dividend": 0.1318,
-   "yield_pct": 4.81,
+   "yield_pct": 4.86,
    "dividends": [
     {
      "date": "2025-11-04",
@@ -16852,9 +16856,9 @@
      "amount": 0.0344
     }
    ],
-   "market_time": "2026-10-28 09:15",
-   "change_pct_3y": 60.23,
-   "change_pct_5y": 64.07,
+   "market_time": "2026-10-28 14:57",
+   "change_pct_3y": 58.48,
+   "change_pct_5y": 62.28,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -17902,7 +17906,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 2.74
+     "close": 2.71
     }
    ],
    "buy_zone": {
@@ -18048,7 +18052,7 @@
     "chg": 17.0,
     "band": {
      "lo": 4.14,
-     "med": 4.83,
+     "med": 4.85,
      "hi": 5.84,
      "weeks": 262
     }
@@ -18062,7 +18066,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 2.74、單日 +0.74%。一個月 -1.79%，三個月 -0.36%。距 52 週高點 3.16 還有 13.3%。"
+     "2026-10-28 收 2.71、單日 -0.37%。一個月 -2.87%，三個月 -1.45%。距 52 週高點 3.16 還有 14.2%。"
     ],
     [
      "公告",
@@ -18070,7 +18074,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事、營運、政策（The Edge Malaysia、NST、BusinessToday Malaysia、EdgeProp）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在人事、營運、政策（The Edge Malaysia、NST、BusinessToday Malaysia）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -18132,11 +18136,11 @@
    "change_pct_1m": -1.92,
    "change_pct_3m": -14.53,
    "change_pct_1y": -18.18,
-   "day_high": 1.53,
-   "day_low": 1.53,
-   "volume": 8000,
+   "day_high": 1.54,
+   "day_low": 1.52,
+   "volume": 341500,
    "avg_volume_20d": 1946925,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.18,
    "high_52w": 2.03,
    "low_52w": 1.51,
    "off_52w_high": -24.63,
@@ -18153,7 +18157,7 @@
      "amount": 0.0517
     }
    ],
-   "market_time": "2026-10-28 09:15",
+   "market_time": "2026-10-28 14:58",
    "change_pct_3y": 25.41,
    "change_pct_5y": 9.29,
    "series_w": [
@@ -19370,7 +19374,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在評等、業績、併購（Varnam Malaysia、Minichart、BusinessToday Malaysia、Serrari Group）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在評等、業績、併購（Varnam Malaysia、Minichart、NST、BusinessToday Malaysia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -19425,17 +19429,17 @@
    },
    "currency": "MYR",
    "price": 1.79,
-   "prev_close": 1.8,
-   "change_pct_1d": -0.56,
-   "change_pct_5d": -1.65,
-   "change_pct_1m": -0.56,
+   "prev_close": 1.79,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": -2.72,
+   "change_pct_1m": -1.65,
    "change_pct_3m": -8.21,
    "change_pct_1y": -15.96,
-   "day_high": 1.79,
+   "day_high": 1.81,
    "day_low": 1.79,
-   "volume": 1140100,
-   "avg_volume_20d": 811415,
-   "volume_ratio": 1.41,
+   "volume": 106500,
+   "avg_volume_20d": 758870,
+   "volume_ratio": 0.14,
    "high_52w": 2.24,
    "low_52w": 1.73,
    "off_52w_high": -20.09,
@@ -19460,7 +19464,7 @@
      "amount": 0.023
     }
    ],
-   "market_time": "2026-10-28 09:00",
+   "market_time": "2026-10-28 14:55",
    "change_pct_3y": 0.56,
    "change_pct_5y": -6.28,
    "series_w": [
@@ -20596,7 +20600,7 @@
       "ytd": true
      }
     ],
-    "as_of": "2026-10-27"
+    "as_of": "2026-10-28"
    },
    "dividend": {
     "ttm": 0.102,
@@ -20670,7 +20674,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 1.79、單日 -0.56%。一個月 -0.56%，三個月 -8.21%。距 52 週高點 2.24 還有 20.1%。"
+     "2026-10-28 收 1.79、單日 +0.00%。一個月 -1.65%，三個月 -8.21%。距 52 週高點 2.24 還有 20.1%。"
     ],
     [
      "公告",
@@ -20678,7 +20682,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、評等、併購（The Edge Malaysia、EdgeProp、NST）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等、業績（The Edge Malaysia、EdgeProp、NST）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -20734,24 +20738,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 8.3,
-   "prev_close": 8.2,
-   "change_pct_1d": 1.22,
-   "change_pct_5d": 0.61,
-   "change_pct_1m": -0.6,
-   "change_pct_3m": -4.49,
-   "change_pct_1y": -4.49,
+   "price": 8.26,
+   "prev_close": 8.3,
+   "change_pct_1d": -0.48,
+   "change_pct_5d": -0.36,
+   "change_pct_1m": -3.17,
+   "change_pct_3m": -6.56,
+   "change_pct_1y": -4.95,
    "day_high": 8.3,
-   "day_low": 8.3,
-   "volume": 137700,
-   "avg_volume_20d": 174475,
-   "volume_ratio": 0.79,
+   "day_low": 8.25,
+   "volume": 12900,
+   "avg_volume_20d": 148985,
+   "volume_ratio": 0.09,
    "high_52w": 9.57,
    "low_52w": 8.09,
-   "off_52w_high": -13.27,
+   "off_52w_high": -13.69,
    "at_52w_low": false,
    "ttm_dividend": 0.472,
-   "yield_pct": 5.69,
+   "yield_pct": 5.71,
    "dividends": [
     {
      "date": "2025-12-03",
@@ -20770,9 +20774,9 @@
      "amount": 0.093
     }
    ],
-   "market_time": "2026-10-28 09:00",
-   "change_pct_3y": 17.9,
-   "change_pct_5y": 23.88,
+   "market_time": "2026-10-28 14:57",
+   "change_pct_3y": 17.33,
+   "change_pct_5y": 23.28,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -21820,7 +21824,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 8.3
+     "close": 8.26
     }
    ],
    "buy_zone": {
@@ -21906,7 +21910,7 @@
       "ytd": true
      }
     ],
-    "as_of": "2026-10-27"
+    "as_of": "2026-10-28"
    },
    "dividend": {
     "ttm": 0.472,
@@ -21975,7 +21979,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 8.30、單日 +1.22%。一個月 -0.60%，三個月 -4.49%。距 52 週高點 9.57 還有 13.3%。"
+     "2026-10-28 收 8.26、單日 -0.48%。一個月 -3.17%，三個月 -6.56%。距 52 週高點 9.57 還有 13.7%。"
     ],
     [
      "公告",
@@ -22036,33 +22040,33 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 0.265,
+   "price": 0.26,
    "prev_close": 0.26,
-   "change_pct_1d": 1.92,
-   "change_pct_5d": 1.92,
-   "change_pct_1m": -8.62,
-   "change_pct_3m": -11.67,
-   "change_pct_1y": -45.36,
+   "change_pct_1d": 0.0,
+   "change_pct_5d": 0.0,
+   "change_pct_1m": -10.34,
+   "change_pct_3m": -13.33,
+   "change_pct_1y": -46.39,
    "day_high": 0.265,
-   "day_low": 0.265,
-   "volume": 190600,
+   "day_low": 0.26,
+   "volume": 1204500,
    "avg_volume_20d": 8382775,
-   "volume_ratio": 0.02,
+   "volume_ratio": 0.14,
    "high_52w": 0.49,
    "low_52w": 0.25,
-   "off_52w_high": -45.92,
+   "off_52w_high": -46.94,
    "at_52w_low": false,
    "ttm_dividend": 0.01,
-   "yield_pct": 3.77,
+   "yield_pct": 3.85,
    "dividends": [
     {
      "date": "2026-05-04",
      "amount": 0.01
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": -41.11,
-   "change_pct_5y": -31.17,
+   "market_time": "2026-10-28 14:50",
+   "change_pct_3y": -42.22,
+   "change_pct_5y": -32.47,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -23110,7 +23114,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 0.265
+     "close": 0.26
     }
    ],
    "buy_zone": null,
@@ -23118,7 +23122,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -45.9%"
+     "text": "距 52 週高點 -46.9%"
     },
     {
      "level": "good",
@@ -23136,7 +23140,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.265、單日 +1.92%。一個月 -8.62%，三個月 -11.67%。距 52 週高點 0.490 還有 45.9%。"
+     "2026-10-28 收 0.260、單日 +0.00%。一個月 -10.34%，三個月 -13.33%。距 52 週高點 0.490 還有 46.9%。"
     ],
     [
      "公告",
@@ -23178,9 +23182,9 @@
    "change_pct_1y": 11.12,
    "day_high": 26540.814,
    "day_low": 26219.312,
-   "volume": 7116359000,
+   "volume": 7914230000,
    "avg_volume_20d": 7907185000,
-   "volume_ratio": 0.9,
+   "volume_ratio": 1.0,
    "high_52w": 27722.75,
    "low_52w": 20690.25,
    "off_52w_high": -4.49,
@@ -24234,7 +24238,7 @@
     },
     {
      "date": "2026-10-26",
-     "close": 26169.38
+     "close": 26477.81
     },
     {
      "date": "2026-10-28",
@@ -24251,7 +24255,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策、人事、業績（조선일보、Yahoo Finance、TradingView、Action Forex）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策（Vietnam.vn、조선일보、Yahoo Finance、TradingView）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -24268,7 +24272,7 @@
    "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 11482.5049,
+   "price": 11482.5,
    "prev_close": 11083.4697,
    "change_pct_1d": 3.6,
    "change_pct_5d": 1.76,
@@ -25333,7 +25337,7 @@
     },
     {
      "date": "2026-10-26",
-     "close": 11083.47
+     "close": 11482.5
     },
     {
      "date": "2026-10-28",
@@ -25355,11 +25359,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 11,483、單日 +3.60%。一個月 -7.88%，三個月 +9.91%。"
+     "2026-10-28 收 11,482、單日 +3.60%。一個月 -7.88%，三個月 +9.91%。"
     ],
     [
      "報導",
-     "近三個月 6 則（헤럴드경제、TradingKey、BigGo Finance、富途牛牛）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（BigGo Finance、TradingKey、富途牛牛）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -25385,9 +25389,9 @@
    "change_pct_1y": 12.07,
    "day_high": 7736.24,
    "day_low": 7677.16,
-   "volume": 2810939000,
+   "volume": 5160120000,
    "avg_volume_20d": 5254773000,
-   "volume_ratio": 0.53,
+   "volume_ratio": 0.98,
    "high_52w": 7844.52,
    "low_52w": 6316.91,
    "off_52w_high": -1.55,
@@ -25395,7 +25399,7 @@
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 04:48",
+   "market_time": "2026-10-28 04:00",
    "change_pct_3y": 74.91,
    "change_pct_5y": 64.4,
    "series_w": [
@@ -26441,7 +26445,7 @@
     },
     {
      "date": "2026-10-26",
-     "close": 7676.77
+     "close": 7722.6
     },
     {
      "date": "2026-10-28",
@@ -26458,7 +26462,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（ChartMill、Yahoo Finance、StoneX、www.tokenpost）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（ChartMill、Yahoo Finance、www.marketscreener、StoneX）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -26475,28 +26479,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "TWD",
-   "price": 46769.2383,
-   "prev_close": 46096.2305,
-   "change_pct_1d": 1.46,
-   "change_pct_5d": -0.11,
-   "change_pct_1m": -2.16,
-   "change_pct_3m": 7.13,
-   "change_pct_1y": 67.34,
-   "day_high": 46876.45,
+   "price": 46096.2305,
+   "prev_close": 46041.4297,
+   "change_pct_1d": 0.12,
+   "change_pct_5d": -2.15,
+   "change_pct_1m": -3.4,
+   "change_pct_3m": 2.78,
+   "change_pct_1y": 64.93,
+   "day_high": 47060.46,
    "day_low": 46402.79,
-   "volume": 0,
-   "avg_volume_20d": 4622965,
-   "volume_ratio": 0.0,
+   "volume": 4543200,
+   "avg_volume_20d": 4692050,
+   "volume_ratio": 0.97,
    "high_52w": 49968.92,
    "low_52w": 26395.98,
-   "off_52w_high": -6.4,
+   "off_52w_high": -7.75,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:13",
-   "change_pct_3y": 189.87,
-   "change_pct_5y": 170.39,
+   "market_time": "2026-10-27 13:30",
+   "change_pct_3y": 185.7,
+   "change_pct_5y": 166.5,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -27527,8 +27531,8 @@
      "close": 46096.23
     },
     {
-     "date": "2026-10-28",
-     "close": 46769.24
+     "date": "2026-10-27",
+     "close": 46096.2
     }
    ],
    "buy_zone": null,
@@ -27537,7 +27541,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 46,769、單日 +1.46%。一個月 -2.16%，三個月 +7.13%。"
+     "2026-10-27 收 46,096、單日 +0.12%。一個月 -3.40%，三個月 +2.78%。"
     ],
     [
      "報導",
@@ -27558,28 +27562,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "HKD",
-   "price": 23041.3203,
-   "prev_close": 23211.8105,
-   "change_pct_1d": -0.73,
-   "change_pct_5d": -3.46,
-   "change_pct_1m": -6.95,
-   "change_pct_3m": -8.97,
-   "change_pct_1y": -12.54,
-   "day_high": 23313.92,
-   "day_low": 22983.99,
-   "volume": 2842500000,
-   "avg_volume_20d": 2485835000,
-   "volume_ratio": 1.14,
+   "price": 23076.5,
+   "prev_close": 23041.3203,
+   "change_pct_1d": 0.15,
+   "change_pct_5d": -2.43,
+   "change_pct_1m": -5.85,
+   "change_pct_3m": -10.58,
+   "change_pct_1y": -12.41,
+   "day_high": 23157.4,
+   "day_low": 23023.04,
+   "volume": 0,
+   "avg_volume_20d": 2560770000,
+   "volume_ratio": 0.0,
    "high_52w": 28056.1,
    "low_52w": 22518.0,
-   "off_52w_high": -17.87,
+   "off_52w_high": -17.75,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-27 16:08",
-   "change_pct_3y": 33.94,
-   "change_pct_5y": -7.35,
+   "market_time": "2026-10-28 14:59",
+   "change_pct_3y": 34.14,
+   "change_pct_5y": -7.21,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -28626,8 +28630,8 @@
      "close": 23041.32
     },
     {
-     "date": "2026-10-27",
-     "close": 23041.32
+     "date": "2026-10-28",
+     "close": 23076.5
     }
    ],
    "buy_zone": null,
@@ -28635,17 +28639,17 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -17.9%"
+     "text": "距 52 週高點 -17.8%"
     }
    ],
    "digest": [
     [
      "價格",
-     "2026-10-27 收 23,041、單日 -0.73%。一個月 -6.95%，三個月 -8.97%。"
+     "2026-10-28 收 23,076、單日 +0.15%。一個月 -5.85%，三個月 -10.58%。"
     ],
     [
      "報導",
-     "近三個月 6 則（BBN Times、The Standard (HK)、富途牛牛、Yahoo Finance UK）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（BBN Times、The Standard (HK)、chinadailyhk、富途牛牛）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -28662,28 +28666,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "JPY",
-   "price": 63972.25,
+   "price": 63954.1914,
    "prev_close": 63268.3711,
-   "change_pct_1d": 1.11,
-   "change_pct_5d": -1.0,
-   "change_pct_1m": -2.89,
-   "change_pct_3m": -0.99,
-   "change_pct_1y": 27.39,
-   "day_high": 64196.68,
+   "change_pct_1d": 1.08,
+   "change_pct_5d": -1.03,
+   "change_pct_1m": -2.92,
+   "change_pct_3m": -1.02,
+   "change_pct_1y": 27.35,
+   "day_high": 64308.71,
    "day_low": 63660.3,
    "volume": 0,
    "avg_volume_20d": 167720000,
    "volume_ratio": 0.0,
    "high_52w": 72831.73,
    "low_52w": 48235.3,
-   "off_52w_high": -12.16,
+   "off_52w_high": -12.19,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:18",
-   "change_pct_3y": 96.43,
-   "change_pct_5y": 116.04,
+   "market_time": "2026-10-28 14:45",
+   "change_pct_3y": 96.37,
+   "change_pct_5y": 115.98,
    "series_w": [
     {
      "date": "2021-10-31",
@@ -29731,7 +29735,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 63972.25
+     "close": 63954.19
     }
    ],
    "buy_zone": null,
@@ -29740,11 +29744,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 63,972、單日 +1.11%。一個月 -2.89%，三個月 -0.99%。"
+     "2026-10-28 收 63,954、單日 +1.08%。一個月 -2.92%，三個月 -1.02%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績（NDTV Profit、International Business Times Australia、BigGo Finance、marketscreener）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等（The Economic Times、International Business Times Australia、Investing、finance.biggo）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -29761,28 +29765,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "SGD",
-   "price": 5416.1201,
+   "price": 5401.2798,
    "prev_close": 5397.0298,
-   "change_pct_1d": 0.35,
-   "change_pct_5d": -0.4,
-   "change_pct_1m": -5.23,
-   "change_pct_3m": -4.54,
-   "change_pct_1y": 21.7,
+   "change_pct_1d": 0.08,
+   "change_pct_5d": -0.68,
+   "change_pct_1m": -5.49,
+   "change_pct_3m": -4.8,
+   "change_pct_1y": 21.37,
    "day_high": 5425.37,
-   "day_low": 5402.32,
+   "day_low": 5382.96,
    "volume": 0,
    "avg_volume_20d": 301156870,
    "volume_ratio": 0.0,
    "high_52w": 5828.5,
    "low_52w": 4372.64,
-   "off_52w_high": -7.08,
+   "off_52w_high": -7.33,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:18",
-   "change_pct_3y": 74.34,
-   "change_pct_5y": 67.04,
+   "market_time": "2026-10-28 15:00",
+   "change_pct_3y": 73.86,
+   "change_pct_5y": 66.59,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -30830,7 +30834,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 5416.12
+     "close": 5401.28
     }
    ],
    "buy_zone": null,
@@ -30839,11 +30843,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 5,416、單日 +0.35%。一個月 -5.23%，三個月 -4.54%。"
+     "2026-10-28 收 5,401、單日 +0.08%。一個月 -5.49%，三個月 -4.80%。"
     ],
     [
      "報導",
-     "近三個月 6 則（Beansprout - Singapore’s Leading Financial Insights Platform - Growbeansprout、The Business Times、LSEG、BusinessToday Malaysia）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在派息（Beansprout、The Business Times、LSEG、PetroTimes）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -30867,13 +30871,13 @@
    "change_pct_1m": -4.71,
    "change_pct_3m": 8.03,
    "change_pct_1y": 24.92,
-   "day_high": 5.007,
-   "day_low": 4.972,
+   "day_high": 0.0,
+   "day_low": 0.0,
    "volume": 0,
    "avg_volume_20d": null,
    "volume_ratio": null,
    "high_52w": 5.364,
-   "low_52w": 3.956,
+   "low_52w": 0.0,
    "off_52w_high": -6.92,
    "at_52w_low": false,
    "ttm_dividend": 0,
@@ -31942,7 +31946,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策（NewsBytes、TradingView、GuruFocus）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策（NewsBytes、Economies、TradingView、GuruFocus）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -31959,28 +31963,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 4.082,
+   "price": 4.076,
    "prev_close": 4.0836,
-   "change_pct_1d": -0.04,
-   "change_pct_5d": 0.06,
-   "change_pct_1m": 0.01,
-   "change_pct_3m": 0.27,
-   "change_pct_1y": -2.96,
+   "change_pct_1d": -0.19,
+   "change_pct_5d": -0.09,
+   "change_pct_1m": -0.13,
+   "change_pct_3m": 0.12,
+   "change_pct_1y": -3.1,
    "day_high": 4.087,
-   "day_low": 4.082,
+   "day_low": 4.073,
    "volume": 0,
    "avg_volume_20d": null,
    "volume_ratio": null,
    "high_52w": 4.2055,
    "low_52w": 3.8805,
-   "off_52w_high": -2.94,
+   "off_52w_high": -3.08,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:27",
-   "change_pct_3y": -12.96,
-   "change_pct_5y": -1.69,
+   "market_time": "2026-10-28 15:07",
+   "change_pct_3y": -13.09,
+   "change_pct_5y": -1.83,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -33028,7 +33032,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 4.082
+     "close": 4.076
     }
    ],
    "buy_zone": null,
@@ -33037,7 +33041,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 4.08、單日 -0.04%。一個月 +0.01%，三個月 +0.27%。"
+     "2026-10-28 收 4.08、單日 -0.19%。一個月 -0.13%，三個月 +0.12%。"
     ],
     [
      "報導",
@@ -33058,28 +33062,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 3.1867,
+   "price": 3.1802,
    "prev_close": 3.1882,
-   "change_pct_1d": -0.05,
-   "change_pct_5d": -0.17,
-   "change_pct_1m": -0.27,
-   "change_pct_3m": 0.34,
-   "change_pct_1y": -1.81,
+   "change_pct_1d": -0.25,
+   "change_pct_5d": -0.37,
+   "change_pct_1m": -0.47,
+   "change_pct_3m": 0.14,
+   "change_pct_1y": -2.01,
    "day_high": 3.191,
-   "day_low": 3.1864,
+   "day_low": 3.1794,
    "volume": 0,
    "avg_volume_20d": null,
    "volume_ratio": null,
    "high_52w": 3.246,
    "low_52w": 3.0478,
-   "off_52w_high": -1.83,
+   "off_52w_high": -2.03,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:31",
-   "change_pct_3y": -7.55,
-   "change_pct_5y": 3.73,
+   "market_time": "2026-10-28 15:11",
+   "change_pct_3y": -7.74,
+   "change_pct_5y": 3.52,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -34127,7 +34131,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 3.187
+     "close": 3.18
     }
    ],
    "buy_zone": null,
@@ -34136,11 +34140,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 3.19、單日 -0.05%。一個月 -0.27%，三個月 +0.34%。"
+     "2026-10-28 收 3.18、單日 -0.25%。一個月 -0.47%，三個月 +0.14%。"
     ],
     [
      "報導",
-     "近三個月 4 則（The Business Times、NST、The Star、VnExpress International）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 3 則（The Business Times、The Star、VnExpress International）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -34159,28 +34163,28 @@
    "dp": null,
    "fundamentals": {},
    "currency": "USD",
-   "price": 80715.5781,
-   "prev_close": 80006.6562,
-   "change_pct_1d": 0.89,
-   "change_pct_5d": -0.73,
-   "change_pct_1m": -5.66,
-   "change_pct_3m": 2.74,
-   "change_pct_1y": -28.54,
-   "day_high": 80800.42,
+   "price": 80782.9922,
+   "prev_close": 80805.0781,
+   "change_pct_1d": -0.03,
+   "change_pct_5d": -0.36,
+   "change_pct_1m": -2.99,
+   "change_pct_3m": 2.22,
+   "change_pct_1y": -28.48,
+   "day_high": 81078.49,
    "day_low": 80538.88,
-   "volume": 22810075136,
-   "avg_volume_20d": 26183621223,
-   "volume_ratio": 0.87,
+   "volume": 21517318144,
+   "avg_volume_20d": 25385234237,
+   "volume_ratio": 0.85,
    "high_52w": 116078.984,
    "low_52w": 57747.766,
-   "off_52w_high": -30.46,
+   "off_52w_high": -30.41,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:33",
-   "change_pct_3y": 117.83,
-   "change_pct_5y": 27.46,
+   "market_time": "2026-10-28 15:15",
+   "change_pct_3y": 118.01,
+   "change_pct_5y": 27.56,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -35224,11 +35228,11 @@
     },
     {
      "date": "2026-10-26",
-     "close": 80006.66
+     "close": 80805.08
     },
     {
      "date": "2026-10-28",
-     "close": 80715.58
+     "close": 80782.99
     }
    ],
    "buy_zone": null,
@@ -35236,19 +35240,19 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -30.5%"
+     "text": "距 52 週高點 -30.4%"
     }
    ],
-   "myr": 329480.99,
-   "myr_rate": 4.082,
+   "myr": 329271.48,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 80,716 USD、單日 +0.89%。一個月 -5.66%，三個月 +2.74%。換算馬幣約 RM 329,480.99（匯率 4.0820）。"
+     "2026-10-28 收 80,783 USD、單日 -0.03%。一個月 -2.99%，三個月 +2.22%。換算馬幣約 RM 329,271.48（匯率 4.0760）。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、政策（The Defiant、24/7 Wall St.、bloomingbit、MarketForces Africa）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（CoinDesk、24/7 Wall St.、Yahoo Finance、KuCoin）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -35265,28 +35269,28 @@
    "dp": 4,
    "fundamentals": {},
    "currency": "USD",
-   "price": 0.9986,
-   "prev_close": 0.9983,
-   "change_pct_1d": 0.03,
-   "change_pct_5d": -0.01,
-   "change_pct_1m": -0.12,
-   "change_pct_3m": -0.14,
-   "change_pct_1y": -0.17,
+   "price": 0.9985,
+   "prev_close": 0.9987,
+   "change_pct_1d": -0.02,
+   "change_pct_5d": -0.02,
+   "change_pct_1m": -0.09,
+   "change_pct_3m": -0.15,
+   "change_pct_1y": -0.18,
    "day_high": 0.9986767,
-   "day_low": 0.9985435,
-   "volume": 50717478912,
-   "avg_volume_20d": 60014595344,
-   "volume_ratio": 0.85,
+   "day_low": 0.9984392,
+   "volume": 50020024320,
+   "avg_volume_20d": 58115938421,
+   "volume_ratio": 0.86,
    "high_52w": 1.003483,
    "low_52w": 0.989577,
-   "off_52w_high": -0.49,
+   "off_52w_high": -0.5,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "market_time": "2026-10-28 09:33",
-   "change_pct_3y": -0.14,
-   "change_pct_5y": -0.34,
+   "market_time": "2026-10-28 15:15",
+   "change_pct_3y": -0.15,
+   "change_pct_5y": -0.35,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -36330,26 +36334,26 @@
     },
     {
      "date": "2026-10-26",
-     "close": 0.9983
+     "close": 0.9987
     },
     {
      "date": "2026-10-28",
-     "close": 0.9986
+     "close": 0.9985
     }
    ],
    "buy_zone": null,
    "dividend": null,
    "flags": [],
-   "myr": 4.08,
-   "myr_rate": 4.082,
+   "myr": 4.07,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.9986 USD、單日 +0.03%。一個月 -0.12%，三個月 -0.14%。換算馬幣約 RM 4.08（匯率 4.0820）。"
+     "2026-10-28 收 0.9985 USD、單日 -0.02%。一個月 -0.09%，三個月 -0.15%。換算馬幣約 RM 4.07（匯率 4.0760）。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在政策、人事（Ledger Insights、CoinLaw、OneSafe、Analytics Insight）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策、人事（Stocktwits、Ledger Insights、CoinLaw、OneSafe）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ]
    ]
   },
@@ -37488,16 +37492,16 @@
      "text": "ROE 117.2%"
     }
    ],
-   "myr": 889.63,
-   "myr_rate": 4.082,
+   "myr": 888.32,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 217.94 USD、單日 +0.90%。一個月 -4.77%，三個月 +14.70%。換算馬幣約 RM 889.63（匯率 4.0820）。距 52 週高點 243.37 還有 10.4%。"
+     "2026-10-28 收 217.94 USD、單日 +0.90%。一個月 -4.77%，三個月 +14.70%。換算馬幣約 RM 888.32（匯率 4.0760）。距 52 週高點 243.37 還有 10.4%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運（The Motley Fool、ABC News - Breaking News, Latest News and Videos、BGR、조선일보）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、營運（코리아스타트업포스트、The Motley Fool、ABC News - Breaking News, Latest News and Videos、Transform magazine）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -38650,16 +38654,16 @@
      "text": "ROE 44.2%"
     }
    ],
-   "myr": 1397.39,
-   "myr_rate": 4.082,
+   "myr": 1395.34,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 342.33 USD、單日 +4.00%。一個月 -2.07%，三個月 -7.56%。換算馬幣約 RM 1,397.39（匯率 4.0820）。距 52 週高點 495.00 還有 30.8%。"
+     "2026-10-28 收 342.33 USD、單日 +4.00%。一個月 -2.07%，三個月 -7.56%。換算馬幣約 RM 1,395.34（匯率 4.0760）。距 52 週高點 495.00 還有 30.8%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等、人事（Yahoo Finance Singapore、TechTarget、BBN Times、TheStreet）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等（Yahoo Finance Singapore、TechTarget、www.tokenpost、digitimes）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -39786,16 +39790,16 @@
      "text": "單日 +5.45%"
     }
    ],
-   "myr": 2286.98,
-   "myr_rate": 4.082,
+   "myr": 2283.62,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 560.26 USD、單日 +5.45%。一個月 -7.83%，三個月 +30.43%。換算馬幣約 RM 2,286.98（匯率 4.0820）。距 52 週高點 658.52 還有 14.9%。"
+     "2026-10-28 收 560.26 USD、單日 +5.45%。一個月 -7.83%，三個月 +30.43%。換算馬幣約 RM 2,283.62（匯率 4.0760）。距 52 週高點 658.52 還有 14.9%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運、併購（GuruFocus、富途牛牛、Investing、LiteFinance）。標題見下方清單。"
+     "近三個月 6 則，主題集中在業績、營運（GuruFocus、富途牛牛、Inven Global、Kalkine）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -39821,7 +39825,7 @@
    "unit": "USD",
    "dp": null,
    "fundamentals": {
-    "market_cap": "1.92T",
+    "market_cap": "1.94T",
     "pe_ratio": "29.07",
     "forward_pe": "20.27",
     "eps": "15.03",
@@ -39829,9 +39833,9 @@
     "analyst_rating": "Strong Buy",
     "analyst_target": "584.39 (+33.77%)",
     "beta": "1.24",
-    "pb_ratio": "8.68",
-    "ptbv_ratio": "8.68",
-    "ps_ratio": "12.37",
+    "pb_ratio": "8.78",
+    "ptbv_ratio": "8.78",
+    "ps_ratio": "12.50",
     "book_value": "221.00B",
     "bvps": "8.52",
     "roe": "41.85%",
@@ -40944,20 +40948,20 @@
      "text": "ROE 41.9%"
     }
    ],
-   "myr": 1783.3,
-   "myr_rate": 4.082,
+   "myr": 1780.68,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 436.87 USD、單日 +2.95%。一個月 -3.54%，三個月 +16.60%。換算馬幣約 RM 1,783.30（匯率 4.0820）。距 52 週高點 487.47 還有 10.4%。"
+     "2026-10-28 收 436.87 USD、單日 +2.95%。一個月 -3.54%，三個月 +16.60%。換算馬幣約 RM 1,780.68（匯率 4.0760）。距 52 週高點 487.47 還有 10.4%。"
     ],
     [
      "報導",
-     "近三個月 6 則（TradingView）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則（TradingView、Taipei Times）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
-     "P/B 8.68、P/E 29.07、ROE 41.85%、每股淨值 8.52、分析師目標價 584.39 (+33.77%)。"
+     "P/B 8.78、P/E 29.07、ROE 41.85%、每股淨值 8.52、分析師目標價 584.39 (+33.77%)。"
     ],
     [
      "留意",
@@ -42099,16 +42103,16 @@
      "text": "ROE 34.0%"
     }
    ],
-   "myr": 2168.89,
-   "myr_rate": 4.082,
+   "myr": 2165.7,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 531.33 USD、單日 -0.24%。一個月 +4.34%，三個月 +36.05%。換算馬幣約 RM 2,168.89（匯率 4.0820）。距 52 週高點 553.72 還有 4.0%。"
+     "2026-10-28 收 531.33 USD、單日 -0.24%。一個月 +4.34%，三個月 +36.05%。換算馬幣約 RM 2,165.70（匯率 4.0760）。距 52 週高點 553.72 還有 4.0%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運、併購（36Kr、Human Resources Online、Investor's Business Daily、digitimes）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、營運、併購（Benzinga、gHacks、Traders Union、Engineering and Technology Magazine）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -42136,16 +42140,16 @@
    "fundamentals": {
     "market_cap": "3.92T",
     "pe_ratio": "16.08",
-    "forward_pe": "23.96",
+    "forward_pe": "23.95",
     "eps": "19.93",
     "earnings_date": "2026-10-28",
     "analyst_rating": "Strong Buy",
-    "analyst_target": "429.12 (+33.86%)",
+    "analyst_target": "429.68 (+34.03%)",
     "beta": "1.21",
     "pb_ratio": "6.30",
     "ptbv_ratio": "7.06",
     "ps_ratio": "8.79",
-    "peg_ratio": "1.81",
+    "peg_ratio": "1.80",
     "book_value": "640.48B",
     "bvps": "50.90",
     "roe": "48.68%",
@@ -43258,20 +43262,20 @@
      "text": "ROE 48.7%"
     }
    ],
-   "myr": 1308.61,
-   "myr_rate": 4.082,
+   "myr": 1306.68,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 320.58 USD、單日 +1.19%。一個月 -6.47%，三個月 -4.79%。換算馬幣約 RM 1,308.61（匯率 4.0820）。距 52 週高點 408.61 還有 21.5%。"
+     "2026-10-28 收 320.58 USD、單日 +1.19%。一個月 -6.47%，三個月 -4.79%。換算馬幣約 RM 1,306.68（匯率 4.0760）。距 52 週高點 408.61 還有 21.5%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、人事（Howl.Link、Yahoo Finance、TradingKey、StreetInsider）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、人事、營運（Yahoo Finance、TradingKey、TradingView、Investing）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
-     "P/B 6.30、P/E 16.08、ROE 48.68%、每股淨值 50.90、分析師目標價 429.12 (+33.86%)。"
+     "P/B 6.30、P/E 16.08、ROE 48.68%、每股淨值 50.90、分析師目標價 429.68 (+34.03%)。"
     ],
     [
      "留意",
@@ -43301,9 +43305,9 @@
     "analyst_rating": "Buy",
     "analyst_target": "208.97 (+5.15%)",
     "beta": "1.60",
-    "pb_ratio": "48.88",
-    "ptbv_ratio": "49.06",
-    "ps_ratio": "77.89",
+    "pb_ratio": "48.86",
+    "ptbv_ratio": "48.86",
+    "ps_ratio": "77.58",
     "peg_ratio": "1.96",
     "book_value": "9.88B",
     "bvps": "4.07",
@@ -44394,20 +44398,20 @@
      "text": "ROE 38.1%"
     }
    ],
-   "myr": 811.22,
-   "myr_rate": 4.082,
+   "myr": 810.02,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 198.73 USD、單日 -0.06%。一個月 +6.00%，三個月 +61.57%。換算馬幣約 RM 811.22（匯率 4.0820）。距 52 週高點 212.94 還有 6.7%。"
+     "2026-10-28 收 198.73 USD、單日 -0.06%。一個月 +6.00%，三個月 +61.57%。換算馬幣約 RM 810.02（匯率 4.0760）。距 52 週高點 212.94 還有 6.7%。"
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、併購、評等（Crikey、tovima、TradingView、Investor's Business Daily）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在營運（Yahoo Finance、Financial Times、Investing UK、Kalkine Media）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
-     "P/B 48.88、P/E 169.97、ROE 38.10%、每股淨值 4.07、分析師目標價 208.97 (+5.15%)。"
+     "P/B 48.86、P/E 169.97、ROE 38.10%、每股淨值 4.07、分析師目標價 208.97 (+5.15%)。"
     ],
     [
      "留意",
@@ -45144,16 +45148,16 @@
      "text": "ROE 13.3%"
     }
    ],
-   "myr": 924.98,
-   "myr_rate": 4.082,
+   "myr": 923.62,
+   "myr_rate": 4.076,
    "digest": [
     [
      "價格",
-     "2026-10-28 收 226.60 USD、單日 +1.46%。一個月 -20.02%，三個月 +0.76%。換算馬幣約 RM 924.98（匯率 4.0820）。距 52 週高點 452.70 還有 49.9%。"
+     "2026-10-28 收 226.60 USD、單日 +1.46%。一個月 -20.02%，三個月 +0.76%。換算馬幣約 RM 923.62（匯率 4.0760）。距 52 週高點 452.70 還有 49.9%。"
     ],
     [
      "報導",
-     "近三個月 6 則（Financial News London、Medical Xpress、MediaPost、Tech Edition）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在政策、業績（Rediff、Fortune、Fortune India、Livemint）。其中 3 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -45206,24 +45210,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 5.15,
+   "price": 5.25,
    "prev_close": 5.1,
-   "change_pct_1d": 0.98,
-   "change_pct_5d": -3.56,
-   "change_pct_1m": -11.36,
-   "change_pct_3m": 23.5,
-   "change_pct_1y": 32.05,
-   "day_high": 5.18,
+   "change_pct_1d": 2.94,
+   "change_pct_5d": -1.69,
+   "change_pct_1m": -9.64,
+   "change_pct_3m": 25.9,
+   "change_pct_1y": 34.62,
+   "day_high": 5.25,
    "day_low": 5.12,
-   "volume": 608800,
+   "volume": 5801900,
    "avg_volume_20d": 16333240,
-   "volume_ratio": 0.04,
+   "volume_ratio": 0.36,
    "high_52w": 6.02,
    "low_52w": 2.51,
-   "off_52w_high": -14.45,
+   "off_52w_high": -12.79,
    "at_52w_low": false,
    "ttm_dividend": 0.08,
-   "yield_pct": 1.55,
+   "yield_pct": 1.52,
    "dividends": [
     {
      "date": "2026-06-24",
@@ -45234,9 +45238,9 @@
      "amount": 0.04
     }
    ],
-   "market_time": "2026-10-28 09:20",
-   "change_pct_3y": 134.09,
-   "change_pct_5y": 646.38,
+   "market_time": "2026-10-28 15:02",
+   "change_pct_3y": 138.64,
+   "change_pct_5y": 660.87,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -46284,12 +46288,16 @@
     },
     {
      "date": "2026-10-28",
-     "close": 5.15
+     "close": 5.25
     }
    ],
    "buy_zone": null,
    "dividend": null,
    "flags": [
+    {
+     "level": "good",
+     "text": "單日 +2.94%"
+    },
     {
      "level": "info",
      "text": "2026-10-01 除息 0.04"
@@ -46298,11 +46306,11 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 5.15、單日 +0.98%。一個月 -11.36%，其中 2026-10-01 除息 0.04 佔約 0.8 個百分點，不是實際下跌，三個月 +23.50%。距 52 週高點 6.02 還有 14.4%。"
+     "2026-10-28 收 5.25、單日 +2.94%。一個月 -9.64%，其中 2026-10-01 除息 0.04 佔約 0.8 個百分點，不是實際下跌，三個月 +25.90%。距 52 週高點 6.02 還有 12.8%。"
     ],
     [
      "公告",
-     "10/19–10/27 EPF 申報 7 次，共增持 16,417,500 股，持股 12.465% → 12.715%。"
+     "10/20–10/28 EPF 申報 7 次，共增持 18,034,600 股，持股 12.531% → 12.68%。"
     ],
     [
      "報導",
@@ -46360,24 +46368,24 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 4.91,
+   "price": 4.95,
    "prev_close": 4.91,
-   "change_pct_1d": 0.0,
-   "change_pct_5d": 1.66,
-   "change_pct_1m": -1.41,
-   "change_pct_3m": 16.08,
-   "change_pct_1y": -3.73,
-   "day_high": 4.95,
+   "change_pct_1d": 0.81,
+   "change_pct_5d": 2.48,
+   "change_pct_1m": -0.6,
+   "change_pct_3m": 17.02,
+   "change_pct_1y": -2.94,
+   "day_high": 4.97,
    "day_low": 4.9,
-   "volume": 847800,
+   "volume": 8232600,
    "avg_volume_20d": 23336540,
-   "volume_ratio": 0.04,
+   "volume_ratio": 0.35,
    "high_52w": 5.5,
    "low_52w": 3.7,
-   "off_52w_high": -10.73,
+   "off_52w_high": -10.0,
    "at_52w_low": false,
    "ttm_dividend": 0.1,
-   "yield_pct": 2.04,
+   "yield_pct": 2.02,
    "dividends": [
     {
      "date": "2026-02-04",
@@ -46388,9 +46396,9 @@
      "amount": 0.05
     }
    ],
-   "market_time": "2026-10-28 09:20",
-   "change_pct_3y": 113.94,
-   "change_pct_5y": 216.77,
+   "market_time": "2026-10-28 15:03",
+   "change_pct_3y": 115.69,
+   "change_pct_5y": 219.35,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -47438,7 +47446,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 4.91
+     "close": 4.95
     }
    ],
    "buy_zone": null,
@@ -47447,7 +47455,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 4.91、單日 +0.00%。一個月 -1.41%，三個月 +16.08%。距 52 週高點 5.50 還有 10.7%。"
+     "2026-10-28 收 4.95、單日 +0.81%。一個月 -0.60%，三個月 +17.02%。距 52 週高點 5.50 還有 10.0%。"
     ],
     [
      "公告",
@@ -47455,7 +47463,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在併購、評等（EdgeProp、The Star、NST、BusinessToday Malaysia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在併購、評等（EdgeProp、The Star、BusinessToday Malaysia、ad-hoc-news.de）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -47510,24 +47518,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 7.63,
+   "price": 7.64,
    "prev_close": 7.66,
-   "change_pct_1d": -0.39,
-   "change_pct_5d": 1.33,
-   "change_pct_1m": -0.26,
-   "change_pct_3m": 0.13,
-   "change_pct_1y": 28.67,
+   "change_pct_1d": -0.26,
+   "change_pct_5d": 1.46,
+   "change_pct_1m": -0.13,
+   "change_pct_3m": 0.26,
+   "change_pct_1y": 28.84,
    "day_high": 7.66,
-   "day_low": 7.63,
-   "volume": 600,
+   "day_low": 7.57,
+   "volume": 568100,
    "avg_volume_20d": 2959840,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.19,
    "high_52w": 8.4,
    "low_52w": 5.49,
-   "off_52w_high": -9.17,
+   "off_52w_high": -9.05,
    "at_52w_low": false,
    "ttm_dividend": 0.6505,
-   "yield_pct": 8.53,
+   "yield_pct": 8.51,
    "dividends": [
     {
      "date": "2025-12-09",
@@ -47550,9 +47558,9 @@
      "amount": 0.04
     }
    ],
-   "market_time": "2026-10-28 09:08",
-   "change_pct_3y": 303.7,
-   "change_pct_5y": 368.1,
+   "market_time": "2026-10-28 15:03",
+   "change_pct_3y": 304.23,
+   "change_pct_5y": 368.71,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -48600,7 +48608,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 7.63
+     "close": 7.64
     }
    ],
    "buy_zone": null,
@@ -48618,7 +48626,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 7.63、單日 -0.39%。一個月 -0.26%，三個月 +0.13%。距 52 週高點 8.40 還有 9.2%。"
+     "2026-10-28 收 7.64、單日 -0.26%。一個月 -0.13%，三個月 +0.26%。距 52 週高點 8.40 還有 9.1%。"
     ],
     [
      "公告",
@@ -48681,33 +48689,33 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 0.085,
+   "price": 0.09,
    "prev_close": 0.085,
-   "change_pct_1d": 0.0,
-   "change_pct_5d": 70.0,
-   "change_pct_1m": -48.48,
-   "change_pct_3m": -87.68,
-   "change_pct_1y": -89.82,
+   "change_pct_1d": 5.88,
+   "change_pct_5d": 80.0,
+   "change_pct_1m": -45.45,
+   "change_pct_3m": -86.96,
+   "change_pct_1y": -89.22,
    "day_high": 0.095,
    "day_low": 0.08,
-   "volume": 80457400,
+   "volume": 248922500,
    "avg_volume_20d": 361035705,
-   "volume_ratio": 0.22,
+   "volume_ratio": 0.69,
    "high_52w": 0.91,
    "low_52w": 0.05,
-   "off_52w_high": -90.66,
+   "off_52w_high": -90.11,
    "at_52w_low": false,
    "ttm_dividend": 0.0289,
-   "yield_pct": 34.0,
+   "yield_pct": 32.11,
    "dividends": [
     {
      "date": "2026-08-18",
      "amount": 0.0289
     }
    ],
-   "market_time": "2026-10-28 09:20",
-   "change_pct_3y": -89.1,
-   "change_pct_5y": -91.74,
+   "market_time": "2026-10-28 15:02",
+   "change_pct_3y": -88.46,
+   "change_pct_5y": -91.25,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -49755,7 +49763,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 0.085
+     "close": 0.09
     }
    ],
    "buy_zone": null,
@@ -49763,7 +49771,11 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -90.7%"
+     "text": "距 52 週高點 -90.1%"
+    },
+    {
+     "level": "good",
+     "text": "單日 +5.88%"
     },
     {
      "level": "good",
@@ -49777,7 +49789,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.085、單日 +0.00%。一個月 -48.48%，三個月 -87.68%。距 52 週高點 0.910 還有 90.7%。"
+     "2026-10-28 收 0.090、單日 +5.88%。一個月 -45.45%，三個月 -86.96%。距 52 週高點 0.910 還有 90.1%。"
     ],
     [
      "公告",
@@ -49785,7 +49797,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在人事、業績（BusinessToday Malaysia、NST、The Sun Malaysia、Sinar Daily）。標題見下方清單。"
+     "近三個月 6 則，主題集中在人事、業績（NST、The Sun Malaysia、Utusan Malaysia、Sinar Daily）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -49839,21 +49851,21 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 2.59,
+   "price": 2.6,
    "prev_close": 2.56,
-   "change_pct_1d": 1.17,
-   "change_pct_5d": 0.39,
-   "change_pct_1m": 3.19,
-   "change_pct_3m": 19.35,
-   "change_pct_1y": -1.89,
-   "day_high": 2.59,
-   "day_low": 2.57,
-   "volume": 779500,
+   "change_pct_1d": 1.56,
+   "change_pct_5d": 0.78,
+   "change_pct_1m": 3.59,
+   "change_pct_3m": 19.82,
+   "change_pct_1y": -1.52,
+   "day_high": 2.63,
+   "day_low": 2.55,
+   "volume": 5965700,
    "avg_volume_20d": 17105105,
-   "volume_ratio": 0.05,
+   "volume_ratio": 0.35,
    "high_52w": 2.88,
    "low_52w": 1.21,
-   "off_52w_high": -10.07,
+   "off_52w_high": -9.72,
    "at_52w_low": false,
    "ttm_dividend": 0.047,
    "yield_pct": 1.81,
@@ -49875,9 +49887,9 @@
      "amount": 0.0137
     }
    ],
-   "market_time": "2026-10-28 09:20",
-   "change_pct_3y": -11.3,
-   "change_pct_5y": -34.43,
+   "market_time": "2026-10-28 15:02",
+   "change_pct_3y": -10.96,
+   "change_pct_5y": -34.18,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -50925,7 +50937,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 2.59
+     "close": 2.6
     }
    ],
    "buy_zone": null,
@@ -50943,7 +50955,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 2.59、單日 +1.17%。一個月 +3.19%，三個月 +19.35%。距 52 週高點 2.88 還有 10.1%。"
+     "2026-10-28 收 2.60、單日 +1.56%。一個月 +3.59%，三個月 +19.82%。距 52 週高點 2.88 還有 9.7%。"
     ],
     [
      "公告",
@@ -51004,24 +51016,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 10.86,
+   "price": 11.08,
    "prev_close": 10.82,
-   "change_pct_1d": 0.37,
-   "change_pct_5d": 1.69,
-   "change_pct_1m": 8.6,
-   "change_pct_3m": 38.17,
-   "change_pct_1y": 131.56,
-   "day_high": 11.06,
+   "change_pct_1d": 2.4,
+   "change_pct_5d": 3.75,
+   "change_pct_1m": 10.8,
+   "change_pct_3m": 40.97,
+   "change_pct_1y": 136.25,
+   "day_high": 11.12,
    "day_low": 10.84,
-   "volume": 43400,
+   "volume": 1430900,
    "avg_volume_20d": 3770490,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.38,
    "high_52w": 11.3,
    "low_52w": 3.94,
-   "off_52w_high": -3.89,
+   "off_52w_high": -1.95,
    "at_52w_low": false,
    "ttm_dividend": 0.0181,
-   "yield_pct": 0.17,
+   "yield_pct": 0.16,
    "dividends": [
     {
      "date": "2025-12-30",
@@ -51032,9 +51044,9 @@
      "amount": 0.0118
     }
    ],
-   "market_time": "2026-10-28 09:20",
-   "change_pct_3y": 59.71,
-   "change_pct_5y": 8.6,
+   "market_time": "2026-10-28 15:03",
+   "change_pct_3y": 62.94,
+   "change_pct_5y": 10.8,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -52082,12 +52094,16 @@
     },
     {
      "date": "2026-10-28",
-     "close": 10.86
+     "close": 11.08
     }
    ],
    "buy_zone": null,
    "dividend": null,
    "flags": [
+    {
+     "level": "good",
+     "text": "單日 +2.40%"
+    },
     {
      "level": "good",
      "text": "ROE 18.7%"
@@ -52096,7 +52112,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 10.86、單日 +0.37%。一個月 +8.60%，三個月 +38.17%。距 52 週高點 11.30 還有 3.9%。"
+     "2026-10-28 收 11.08、單日 +2.40%。一個月 +10.80%，三個月 +40.97%。距 52 週高點 11.30 還有 1.9%。"
     ],
     [
      "公告",
@@ -52104,7 +52120,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、營運、評等（BusinessToday Malaysia、Electronics Media、The Edge Malaysia、www.marketscreener）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績、營運、評等（Electronics Media、The Edge Malaysia、www.marketscreener、Digital News Asia）。其中 2 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -52158,21 +52174,21 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 5.1,
+   "price": 5.18,
    "prev_close": 5.06,
-   "change_pct_1d": 0.79,
-   "change_pct_5d": -1.73,
-   "change_pct_1m": 2.41,
-   "change_pct_3m": 2.41,
-   "change_pct_1y": 12.33,
-   "day_high": 5.11,
+   "change_pct_1d": 2.37,
+   "change_pct_5d": -0.19,
+   "change_pct_1m": 4.02,
+   "change_pct_3m": 4.02,
+   "change_pct_1y": 14.1,
+   "day_high": 5.23,
    "day_low": 5.08,
-   "volume": 9600,
+   "volume": 1865700,
    "avg_volume_20d": 3994395,
-   "volume_ratio": 0.0,
+   "volume_ratio": 0.47,
    "high_52w": 5.4,
    "low_52w": 3.61,
-   "off_52w_high": -5.56,
+   "off_52w_high": -4.07,
    "at_52w_low": false,
    "ttm_dividend": 0.02,
    "yield_pct": 0.39,
@@ -52182,9 +52198,9 @@
      "amount": 0.02
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 59.37,
-   "change_pct_5y": 28.14,
+   "market_time": "2026-10-28 15:02",
+   "change_pct_3y": 61.87,
+   "change_pct_5y": 30.15,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -53232,12 +53248,16 @@
     },
     {
      "date": "2026-10-28",
-     "close": 5.1
+     "close": 5.18
     }
    ],
    "buy_zone": null,
    "dividend": null,
    "flags": [
+    {
+     "level": "good",
+     "text": "單日 +2.37%"
+    },
     {
      "level": "good",
      "text": "ROE 14.9%"
@@ -53246,7 +53266,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 5.10、單日 +0.79%。一個月 +2.41%，三個月 +2.41%。距 52 週高點 5.40 還有 5.6%。"
+     "2026-10-28 收 5.18、單日 +2.37%。一個月 +4.02%，三個月 +4.02%。距 52 週高點 5.40 還有 4.1%。"
     ],
     [
      "公告",
@@ -53308,21 +53328,21 @@
     "analyst_rating_zh": "中立"
    },
    "currency": "MYR",
-   "price": 41.6,
+   "price": 41.88,
    "prev_close": 41.3,
-   "change_pct_1d": 0.73,
-   "change_pct_5d": 3.48,
-   "change_pct_1m": 1.96,
-   "change_pct_3m": -5.45,
-   "change_pct_1y": 31.56,
-   "day_high": 41.6,
+   "change_pct_1d": 1.4,
+   "change_pct_5d": 4.18,
+   "change_pct_1m": 2.65,
+   "change_pct_3m": -4.82,
+   "change_pct_1y": 32.45,
+   "day_high": 42.46,
    "day_low": 41.3,
-   "volume": 1100,
+   "volume": 159000,
    "avg_volume_20d": 198070,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.8,
    "high_52w": 50.8,
    "low_52w": 28.0,
-   "off_52w_high": -18.11,
+   "off_52w_high": -17.56,
    "at_52w_low": false,
    "ttm_dividend": 0.4,
    "yield_pct": 0.96,
@@ -53336,9 +53356,9 @@
      "amount": 0.3
     }
    ],
-   "market_time": "2026-10-28 09:07",
-   "change_pct_3y": 55.22,
-   "change_pct_5y": -14.93,
+   "market_time": "2026-10-28 15:03",
+   "change_pct_3y": 56.27,
+   "change_pct_5y": -14.36,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -54386,7 +54406,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 41.6
+     "close": 41.88
     }
    ],
    "buy_zone": null,
@@ -54394,13 +54414,13 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -18.1%"
+     "text": "距 52 週高點 -17.6%"
     }
    ],
    "digest": [
     [
      "價格",
-     "2026-10-28 收 41.60、單日 +0.73%。一個月 +1.96%，三個月 -5.45%。距 52 週高點 50.80 還有 18.1%。"
+     "2026-10-28 收 41.88、單日 +1.40%。一個月 +2.65%，三個月 -4.82%。距 52 週高點 50.80 還有 17.6%。"
     ],
     [
      "公告",
@@ -54462,24 +54482,24 @@
     "analyst_rating_zh": "買進"
    },
    "currency": "MYR",
-   "price": 5.29,
+   "price": 5.26,
    "prev_close": 5.3,
-   "change_pct_1d": -0.19,
-   "change_pct_5d": -0.19,
-   "change_pct_1m": -8.95,
-   "change_pct_3m": -11.09,
-   "change_pct_1y": 12.79,
+   "change_pct_1d": -0.75,
+   "change_pct_5d": -0.75,
+   "change_pct_1m": -9.47,
+   "change_pct_3m": -11.6,
+   "change_pct_1y": 12.15,
    "day_high": 5.31,
-   "day_low": 5.29,
-   "volume": 17100,
+   "day_low": 5.21,
+   "volume": 336100,
    "avg_volume_20d": 2949880,
-   "volume_ratio": 0.01,
+   "volume_ratio": 0.11,
    "high_52w": 6.46,
    "low_52w": 4.63,
-   "off_52w_high": -18.11,
+   "off_52w_high": -18.58,
    "at_52w_low": false,
    "ttm_dividend": 0.541,
-   "yield_pct": 10.23,
+   "yield_pct": 10.29,
    "dividends": [
     {
      "date": "2025-12-10",
@@ -54494,9 +54514,9 @@
      "amount": 0.0541
     }
    ],
-   "market_time": "2026-10-28 09:14",
-   "change_pct_3y": 2.52,
-   "change_pct_5y": 22.45,
+   "market_time": "2026-10-28 15:02",
+   "change_pct_3y": 1.94,
+   "change_pct_5y": 21.76,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -55544,7 +55564,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 5.29
+     "close": 5.26
     }
    ],
    "buy_zone": null,
@@ -55552,7 +55572,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -18.1%"
+     "text": "距 52 週高點 -18.6%"
     },
     {
      "level": "good",
@@ -55566,7 +55586,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 5.29、單日 -0.19%。一個月 -8.95%，三個月 -11.09%。距 52 週高點 6.46 還有 18.1%。"
+     "2026-10-28 收 5.26、單日 -0.75%。一個月 -9.47%，三個月 -11.60%。距 52 週高點 6.46 還有 18.6%。"
     ],
     [
      "公告",
@@ -55629,33 +55649,33 @@
     "analyst_rating_zh": "強力買進"
    },
    "currency": "MYR",
-   "price": 0.94,
+   "price": 0.95,
    "prev_close": 0.94,
-   "change_pct_1d": 0.0,
-   "change_pct_5d": 2.17,
-   "change_pct_1m": -3.59,
-   "change_pct_3m": -6.0,
-   "change_pct_1y": -10.48,
-   "day_high": 0.945,
+   "change_pct_1d": 1.06,
+   "change_pct_5d": 3.26,
+   "change_pct_1m": -2.56,
+   "change_pct_3m": -5.0,
+   "change_pct_1y": -9.52,
+   "day_high": 0.95,
    "day_low": 0.94,
-   "volume": 81700,
+   "volume": 630500,
    "avg_volume_20d": 4763655,
-   "volume_ratio": 0.02,
+   "volume_ratio": 0.13,
    "high_52w": 1.24,
    "low_52w": 0.91,
-   "off_52w_high": -24.19,
+   "off_52w_high": -23.39,
    "at_52w_low": false,
    "ttm_dividend": 0.05,
-   "yield_pct": 5.32,
+   "yield_pct": 5.26,
    "dividends": [
     {
      "date": "2026-05-12",
      "amount": 0.05
     }
    ],
-   "market_time": "2026-10-28 09:17",
-   "change_pct_3y": 11.24,
-   "change_pct_5y": 26.17,
+   "market_time": "2026-10-28 15:03",
+   "change_pct_3y": 12.43,
+   "change_pct_5y": 27.52,
    "series_w": [
     {
      "date": "2021-11-01",
@@ -56703,7 +56723,7 @@
     },
     {
      "date": "2026-10-28",
-     "close": 0.94
+     "close": 0.95
     }
    ],
    "buy_zone": null,
@@ -56711,7 +56731,7 @@
    "flags": [
     {
      "level": "warn",
-     "text": "距 52 週高點 -24.2%"
+     "text": "距 52 週高點 -23.4%"
     },
     {
      "level": "good",
@@ -56725,7 +56745,7 @@
    "digest": [
     [
      "價格",
-     "2026-10-28 收 0.940、單日 +0.00%。一個月 -3.59%，三個月 -6.00%。距 52 週高點 1.24 還有 24.2%。"
+     "2026-10-28 收 0.950、單日 +1.06%。一個月 -2.56%，三個月 -5.00%。距 52 週高點 1.24 還有 23.4%。"
     ],
     [
      "公告",
@@ -56733,7 +56753,7 @@
     ],
     [
      "報導",
-     "近三個月 6 則，主題集中在業績、政策（The Malaysian Reserve、The Star、NST、TradingView）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
+     "近三個月 6 則，主題集中在業績（The Malaysian Reserve、The Star、NST、TradingView）。其中 1 則可在站內讀全文中譯，其餘點連結看原文。"
     ],
     [
      "數字",
@@ -56756,12 +56776,12 @@
    "calculator": true,
    "fundamentals": {},
    "currency": "MYR",
-   "price": 4394.5,
+   "price": 4387.5,
    "prev_close": 4457.0,
-   "change_pct_1d": -1.4,
-   "change_pct_5d": -0.94,
-   "change_pct_1m": -1.78,
-   "change_pct_3m": -4.54,
+   "change_pct_1d": -1.56,
+   "change_pct_5d": -1.09,
+   "change_pct_1m": -1.93,
+   "change_pct_3m": -4.69,
    "change_pct_1y": null,
    "day_high": null,
    "day_low": null,
@@ -56770,19 +56790,19 @@
    "volume_ratio": null,
    "high_52w": 4687.5,
    "low_52w": 4332.0,
-   "off_52w_high": -6.25,
+   "off_52w_high": -6.4,
    "at_52w_low": false,
    "ttm_dividend": 0,
    "yield_pct": null,
    "dividends": [],
-   "avg30": 4463.0,
+   "avg30": 4462.77,
    "avg30_days": 30,
    "market_time": "2026-10-27",
    "flags": [],
    "digest": [
     [
      "價格",
-     "2026-10-27 收 4,394 RM/噸、單日 -1.40%。一個月 -1.78%，三個月 -4.54%。距 52 週高點 4,688 還有 6.2%。"
+     "2026-10-27 收 4,388 RM/噸、單日 -1.56%。一個月 -1.93%，三個月 -4.69%。距 52 週高點 4,688 還有 6.4%。"
     ],
     [
      "報導",
