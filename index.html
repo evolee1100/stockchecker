@@ -781,7 +781,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .q-buy.good{color:var(--good);font-weight:600}
 .q-buy.bad{color:var(--down);font-weight:600}
 .q-grp{display:flex;align-items:center;gap:8px;padding:12px 14px 4px;border-top:1px solid var(--line);font-size:12px;color:var(--read)}
-.q-grp .chip{font-size:12px;font-weight:700;border-radius:6px}
+.q-grp .chip{font-size:12px;font-weight:700;border-radius:6px;white-space:nowrap;flex:none}
 .q-head + .q-grp{border-top:none}
 .q-now{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
 .q-now .chip{border-radius:6px;font-weight:600}
@@ -3312,13 +3312,14 @@ async function btSearch(kw, ms){
    切回「中文」直接重新載入：畫面上的字已經是英文，沒有英→中的字典可以轉回去。 */
 const LANG_KEY = 'lang';
 // 舊版存的是 zh-Hant／zh-Hans（繁簡切換，已拿掉）：除了 en 一律當中文，
-// 而且順手改寫成 zh——同一個網域的舊分頁或舊版頁面讀到舊值才不會各自解讀
+// 而且順手改寫成 zh——同一個網域的舊分頁或舊版頁面讀到舊值才不會各自解讀。
+// 沒選過語言的人（第一次打開）預設英文；按過「中文」的會記住，照舊顯示中文
 let lang = (() => {
   try {
     const v = localStorage.getItem(LANG_KEY);
     if(v && v !== 'en' && v !== 'zh') localStorage.setItem(LANG_KEY, 'zh');
-    return v === 'en' ? 'en' : 'zh';
-  } catch(e) { return 'zh'; }
+    return !v || v === 'en' ? 'en' : 'zh';
+  } catch(e) { return 'en'; }
 })();
 const isEn = () => lang === 'en';
 const EN_TITLE = 'Bursa Daily Tracker';
