@@ -763,6 +763,69 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .an-txt .an-foot{font-size:11.5px;color:var(--read)}
 .an-dv{border-top:1px solid var(--hair);padding-top:8px}
 .an-dv > b{color:var(--good)}
+
+/* ---------- 速覽：一檔一列，左邊名稱＋判斷＋參考買價，右邊大字股息率 ---------- */
+.q-head{display:flex;justify-content:space-between;padding:7px 14px 5px;font-size:11px;color:var(--ink-2);
+        background:var(--tint);border-bottom:1px solid var(--hair)}
+.q-row{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:center;
+       padding:10px 14px;border-top:1px solid var(--hair);cursor:pointer}
+.q-head + .q-row,.q-grp + .q-row{border-top:none}
+.q-row:hover{background:var(--tint)}
+.q-n{font-size:14px;font-weight:650;line-height:1.35}
+.q-y{grid-row:span 2;font-size:22px;font-weight:750;color:var(--good);font-variant-numeric:tabular-nums;text-align:right}
+.q-y small{font-size:.6em;font-weight:650;margin-left:1px}
+.q-y.weak{color:var(--ink-3)}
+.q-m{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-top:3px;font-size:12px;color:var(--read)}
+.q-m .chip{border-radius:6px;font-weight:600}
+.q-buy b{color:var(--ink);font-variant-numeric:tabular-nums}
+.q-buy.good{color:var(--good);font-weight:600}
+.q-buy.bad{color:var(--down);font-weight:600}
+.q-grp{display:flex;align-items:center;gap:8px;padding:12px 14px 4px;border-top:1px solid var(--line);font-size:12px;color:var(--read)}
+.q-grp .chip{font-size:12px;font-weight:700;border-radius:6px}
+.q-head + .q-grp{border-top:none}
+.q-now{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
+.q-now .chip{border-radius:6px;font-weight:600}
+.q-gl p{margin:9px 0 0}
+.q-rules > li{margin-top:7px}
+
+/* 個股面板的速覽四格 */
+.q-box{margin:12px 0 6px}
+.q-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.q-tiles > div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.q-tiles .k{font-size:11px;color:var(--ink-2)}
+.q-tiles .v{font-size:20px;font-weight:750;color:var(--ink);font-variant-numeric:tabular-nums;margin-top:2px}
+.q-tiles > div:first-child .v{color:var(--good)}
+.q-tiles .v .chip{font-size:12.5px;font-weight:650;border-radius:6px;vertical-align:4px}
+.q-tiles .s{font-size:11px;color:var(--read);margin-top:2px}
+.q-say{font-size:13.5px;line-height:1.7;color:var(--ink);margin:10px 2px 4px}
+.q-bars{display:flex;align-items:flex-end;gap:6px;height:84px;margin:8px 2px 0;max-width:420px}
+.q-bars > div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.q-bars i{display:block;width:70%;background:#3aa76d;border-radius:3px 3px 0 0;order:2}
+.q-bars i.ytd{background:#a8d8bd}
+.q-bars b{font-size:11px;font-weight:650;color:var(--ink);order:1;margin-bottom:2px;font-variant-numeric:tabular-nums}
+.q-bars span{font-size:10.5px;color:var(--ink-2);order:3;margin-top:3px}
+.q-bars-k{font-size:11px;color:var(--read);margin:3px 2px 0}
+.q-more{margin-top:10px}
+.q-more > summary{cursor:pointer;font-size:12.5px;font-weight:650;color:#0b57d0;padding:6px 2px;list-style-position:inside}
+.q-more[open] > summary{margin-bottom:4px}
+.q-dg{margin-top:2px}
+@media(max-width:700px){
+  .q-head{font-size:13px}
+  .q-n{font-size:17px}
+  .q-y{font-size:26px}
+  .q-m{font-size:14.5px}
+  .q-grp{font-size:14.5px}
+  .q-grp .chip{font-size:14.5px}
+  .q-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .q-tiles .k,.q-tiles .s{font-size:13.5px}
+  .q-tiles .v{font-size:25px}
+  .q-tiles .v .chip{font-size:15px}
+  .q-say{font-size:17px}
+  .q-bars b{font-size:13px} .q-bars span{font-size:13px}
+  .q-bars-k{font-size:13.5px}
+  .q-more > summary{font-size:16px;padding:10px 2px}
+  .q-row:active{opacity:.55}
+}
 @media(max-width:700px){
   .an-head{font-size:13.5px}
   .anb{font-size:16px}
@@ -889,9 +952,6 @@ html,body{background:var(--bg)}
 #an-now{--c:#2563EB;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h4l3-7 4 14 3-7h4'/%3E%3C/svg%3E")}
 #an-bank{--c:#08834A;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9.5 12 4l9 5.5'/%3E%3Cpath d='M5.5 10v7.5M10 10v7.5M14 10v7.5M18.5 10v7.5'/%3E%3Cpath d='M3 20.5h18'/%3E%3C/svg%3E")}
 #an-reit{--c:#4F46E5;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3' width='14' height='18' rx='1.5'/%3E%3Cpath d='M9 7.5h2M13 7.5h2M9 11.5h2M13 11.5h2M10 21v-4h4v4'/%3E%3C/svg%3E")}
-/* 歷史低點參考價：一條往下走的線落在一條水平的「價位」上 */
-#an-buy{--c:#0E7490;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 5l5 5 4-3 6 8'/%3E%3Cpath d='M3 19h18' stroke-dasharray='2.5 2.5'/%3E%3C/svg%3E")}
-#an-risk{--c:#D92D20;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3.5 2.5 20h19z'/%3E%3Cpath d='M12 10v4.5M12 17.2v.1'/%3E%3C/svg%3E")}
 #an-howto{--c:#475569;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5V5a2 2 0 0 1 2-2h13.5v14H6a2 2 0 0 0-2 2.5z'/%3E%3Cpath d='M19.5 17v4H6a2 2 0 0 1-2-1.5'/%3E%3Cpath d='M9 7.5h6'/%3E%3C/svg%3E")}
 #an-rules{--c:#B45309;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.5l1.6 1.6L8.5 5M4 12.5l1.6 1.6 2.9-3.1M4 18.5l1.6 1.6 2.9-3.1'/%3E%3Cpath d='M12 7h8M12 13h8M12 19h8'/%3E%3C/svg%3E")}
 #an-view{--c:#0E7490;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'/%3E%3C/svg%3E")}
@@ -1221,15 +1281,15 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
   .tabs{width:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:5px;margin:4px 0 14px;border-radius:18px}
   .tab{font-size:17px;padding:11px 2px;border-radius:13px}
   .tab .n{font-size:14px}
-  /* 七個分頁排 4＋3 時，最後的「分析」佔兩格補滿第二列；有「最愛」時剛好 8 個，不用補 */
-  .tab:nth-child(7):last-child{grid-column:span 2}
+  /* 「速覽」排第一個。沒有「最愛」時共 7 個分頁，速覽佔兩格，剛好排成 4＋4；有最愛時 8 個，不用補 */
+  .tab[data-t="分析"]:first-child:nth-last-child(7){grid-column:span 2}
   /* 英文分頁也維持等寬四欄（375 寬每格 80px）。以前讓欄寬跟著最長的名字走，四欄寬窄不一，
      選中的白色膠囊左右只剩 1px，檔數還縮到 12.5px。改成讓名字放得進格子：
      「最愛」英文用 Starred（Favourites 太長，見 JS 的 tabName），字 15px、左右各留 3px；
      有「最愛」時「分析」只佔一格，「◔ Analysis」放不下，圖示拿掉；沒有最愛時它佔兩格，圖示照留 */
   html[lang="en"] .tab{font-size:15px;padding:11px 3px}
   html[lang="en"] .tab .n{font-size:13px;margin-left:3px}
-  html[lang="en"] .tab[data-t="分析"]:nth-child(8)::before{display:none}
+  html[lang="en"] .tab[data-t="分析"]:first-child:nth-last-child(8)::before{display:none}
 
   /* 股票列表 */
   .scroll{padding:2px 14px 6px;border-radius:20px}
@@ -1343,8 +1403,8 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
   <div class="scroll" id="tablewrap"><table><thead id="head"></thead><tbody id="body"></tbody></table></div>
   <!-- 「分析」分頁：選到它時取代上面的表格。每張卡片一個固定的容器，mcard 才比得出內容有沒有變、不必每次重畫 -->
   <div id="analysis" hidden>
-    <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-howto"></div><div id="an-reit"></div><div id="an-bank"></div>
-    <div id="an-buy"></div><div id="an-risk"></div><div id="an-rules"></div><div id="an-view"></div>
+    <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-reit"></div><div id="an-bank"></div>
+    <div id="an-howto"></div><div id="an-rules"></div><div id="an-view"></div><div id="an-foot" class="an-head"></div>
   </div>
 
 
@@ -1591,6 +1651,9 @@ const ORDER = ['大盤','銀行','REIT','油棕','其他','AI 馬股','AI 美股
 
 /* 分頁：把相關的分類併在一起，一次只看一組 */
 const TABS = [
+  // 「分析」畫面上叫「速覽」：銀行股＋REIT 一頁看完，放第一個、也是第一次打開時的預設分頁。
+  // 內部的鍵維持「分析」：CSS、英文字典、localStorage 存的分頁都認這個字
+  {t:'分析', secs:[], view:'analysis'},
   {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
   // 指數這頁其實是「非個股的市場指標」——匯率、公債殖利率本來就不是指數，
   // 加密同理，放一起比單開一個兩檔的分頁合理
@@ -1602,13 +1665,11 @@ const TABS = [
   // 它在分頁內有自己的「其他」小標題，不會被誤讀成油棕相關
   {t:'油棕', secs:['油棕','其他']},
   {t:'全部', secs:ORDER},
-  // 特例：不是股票清單，是一頁從資料現算的整理（見 renderAnalysis）。放最後，不影響原本分頁的位置
-  {t:'分析', secs:[], view:'analysis'},
 ];
 // 分頁、分類標題上顯示的名字。英文的「最愛」直接寫 Starred，不經字典的 Favourites：
 // 手機上分頁是等寬四欄（375 寬每格 80px），「Favourites 1」要 88px 放不下；加最愛本來就是按星號，Starred 一看就懂。
 // 分類標題（最愛分頁、全部分頁最上面那組）跟著寫一樣的字，分頁和清單才對得起來
-const tabName = t => isEn() && t === '最愛' ? 'Starred' : t;
+const tabName = t => t === '分析' ? (isEn() ? 'Overview' : '速覽') : isEn() && t === '最愛' ? 'Starred' : t;
 const TAB_KEY = 'tab';
 let activeTab = (() => {
   try { return localStorage.getItem(TAB_KEY) || ''; } catch(e) { return ''; }
@@ -1732,6 +1793,79 @@ const DIV_POS = {high: ['good', '股息率偏高（以股息看便宜）'], low:
 const DIV_TREND = {up: ['good', '股息成長'], down: ['bad', '股息減少'], flat: ['', '股息持平']};
 const monthsOf = d => d.months && d.months.length ? d.months.join('、') + ' 月' : '';
 
+/* ---------- 速覽用的小零件：一檔一列、只放三樣東西（股息率、一個判斷、參考買價） ----------
+   使用者要的是「10 分鐘看懂銀行股和 REIT」。以前一列塞了七、八個數字，每個都對，但讀完一頁要很久；
+   細節全部還在，點進個股的「詳細說明」裡 */
+const qYield = s => { const d = divStatus(s); return d ? d.y : num((s.fundamentals || {}).div_yield); };
+// REIT 一個判斷：壞消息優先（股息在減少、跌破歷年低點、派息高於盈利），再來才是便宜／偏貴
+function qSignal(s){
+  const d = divStatus(s), b = bzStatus(s);
+  if(!isReit(s)) return bankTier(s) || ['', '普通'];
+  if(d && d.trap) return ['bad', '股息在減少'];
+  if(b && b.kind === 'broken') return ['bad', '跌破歷年低點'];
+  if(reitTier(s)) return ['warn', '派息高於盈利'];
+  if(d && d.pos === 'high') return ['good', '以股息看便宜'];
+  if(d && d.pos === 'low') return ['warn', '以股息看偏貴'];
+  return ['', '價格普通'];
+}
+// 體質差的（股息在減少、跌破低點、便宜有原因、股息撐不住）：股息率和「已低於參考買價」不用綠色，免得看起來像好消息
+const qWeak = s => { const c = qSignal(s)[0]; return c === 'bad' || (!isReit(s) && c === 'warn'); };
+function qBuy(s){
+  const b = bzStatus(s), z = s.buy_zone;
+  if(!b) return '';
+  const P = v => px(v, false, s.dp);
+  if(!b.ok) return '<span class="q-buy bad">歷年低點已跌破，先觀望</span>';
+  if(b.kind === 'below') return `<span class="q-buy${qWeak(s) ? '' : ' good'}">已低於參考買價 ${P(z.ref)}</span>`;
+  return `<span class="q-buy">參考買價 <b>${P(z.ref)}</b>，再跌 ${Math.abs(b.gap).toFixed(0)}%</span>`;
+}
+const Q_HEAD = '<div class="q-head"><span>名稱・參考買價</span><span>股息率</span></div>';
+function quickRow(s, chip){
+  const y = qYield(s);
+  return `<div class="q-row" data-go="${esc(s.symbol)}">
+    <div class="q-n">${esc(nameEn(s.name))}</div>
+    <div class="q-y${qWeak(s) ? ' weak' : ''}">${y == null ? '—' : y.toFixed(1) + '<small>%</small>'}</div>
+    <div class="q-m">${chip ? `<span class="chip ${chip[0]}">${chip[1]}</span>` : ''}${qBuy(s)}</div></div>`;
+}
+
+// 個股面板最上面：四格大字＋一句話＋每年派息小圖；長的說明收進「詳細說明」
+function quickHtml(s){
+  if(!['銀行', 'REIT'].includes(s.sector)) return '';
+  const ds = divStatus(s), bz = bzStatus(s), z = s.buy_zone, d = s.dividend;
+  const P = v => px(v, false, s.dp);
+  const y = qYield(s), sig = qSignal(s);
+  const tiles = [
+    ['股息率', y == null ? '—' : y.toFixed(1) + '%', ds ? '一年派 ' + sen(s, d.ttm) : ''],
+    ['投入 RM10,000', y == null ? '—' : 'RM' + anInt(y * 100), '一年約領（稅前）'],
+    ['參考買價', bz && bz.ok ? P(z.ref) : '—',
+      !bz ? '' : !bz.ok ? '歷年低點已跌破' : bz.kind === 'below' ? '現價已低於它' : `比現價低 ${Math.abs(bz.gap).toFixed(1)}%`],
+    ['判斷', `<span class="chip ${sig[0]}">${sig[1]}</span>`, ''],
+  ];
+  // 一句話：先講股息（REIT 最在意），再講要不要等
+  const say = [];
+  if(ds && ds.trap) say.push('股息在減少，股息率高是因為股價跌了，先別急著買。');
+  else if(ds && ds.pos === 'high') say.push('股息率比過去五年大部分時間高，以股息看相對便宜。');
+  else if(ds && ds.pos === 'low') say.push('股息率比平常低，以股息看偏貴，可以等。');
+  if(d && d.trend === 'down' && !(ds && ds.trap)) say.push('近三年股息在減少，要留意。');
+  else if(d && d.trend === 'up') say.push('近三年股息在增加。');
+  if(!isReit(s)){ const t = TIER_LEGEND.find(x => x[1] === sig[1]); if(t) say.push(t[1] + '：' + t[2] + '。'); }
+  if(bz && bz.ok) say.push(`想分批買：${z.tiers.map(t => P(t.p)).join(' → ')}。`);
+  else if(bz) say.push('股價已跌破近五年每一年的低點，歷史低點不再是支撐，先觀望。');
+
+  const yrs = d ? d.years.slice(-6) : [];
+  const max = Math.max(...yrs.map(y => y.amt), 1e-9);
+  const bars = yrs.length ? `<div class="q-bars">${yrs.map(y =>
+    `<div><i style="height:${Math.max(4, y.amt / max * 100).toFixed(0)}%"${y.ytd ? ' class="ytd"' : ''}></i>` +
+    `<b>${sen(s, y.amt).replace(' 仙', '')}</b><span>${String(y.y).slice(2)}${y.ytd ? '*' : ''}</span></div>`).join('')}</div>
+    <div class="q-bars-k">每年派息（仙）${yrs.some(y => y.ytd) ? '，* 今年到目前為止' : ''}</div>` : '';
+
+  return `<div class="q-box">
+    <div class="q-tiles">${tiles.map(([k, v, sub]) => `<div><div class="k">${k}</div><div class="v">${v}</div>${sub ? `<div class="s">${sub}</div>` : ''}</div>`).join('')}</div>
+    ${say.length ? `<div class="q-say">${say.join('')}</div>` : ''}
+    ${bars}
+    <details class="q-more"><summary>詳細說明（股息紀錄、參考價怎麼算）</summary>${divHtml(s)}${buyZoneHtml(s)}</details>
+  </div>`;
+}
+
 function divHtml(s){
   const d = s.dividend, st = divStatus(s);
   if(!st) return '';
@@ -1851,6 +1985,8 @@ function buyZoneHtml(s){
 
 function detailRow(s){
   const f = s.fundamentals || {};
+  // 銀行股與 REIT：最上面是速覽四格，重點報導（長篇文字）收起來，要看再點
+  const BR = ['銀行', 'REIT'].includes(s.sector);
   const cells = [
     ['前收', px(s.prev_close,s.is_index,s.dp)], ['當日高', px(s.day_high,s.is_index,s.dp)], ['當日低', px(s.day_low,s.is_index,s.dp)],
     ['5 日', pc(s.change_pct_5d)], ['3 個月', pc(s.change_pct_3m)], ['1 年', pc(s.change_pct_1y)],
@@ -1878,13 +2014,12 @@ function detailRow(s){
       s.market_time ? `<span> · 最後成交 ${s.market_time}</span>` : ''}${
       s.live && s.live_ts ? `<span> · 即時報價 ${hhmm(s.live_ts)}</span>` : ''}</div>
     <div class="chips">${(s.flags||[]).map(f=>`<span class="chip ${f.level}">${f.text}</span>`).join('')}</div>
-    ${divHtml(s)}
-    ${(s.digest && s.digest.length) ? `<div class="dg">
+    ${quickHtml(s)}
+    ${(s.digest && s.digest.length) ? (BR ? '<details class="q-more q-dg"><summary>新聞與公告摘要</summary>' : '') + `<div class="dg">
       <div class="dg-h">重點報導</div>
       ${s.digest.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div>
         <div class="dg-v">${v}</div></div>`).join('')}
-    </div>` : ''}
-    ${buyZoneHtml(s)}
+    </div>` + (BR ? '</details>' : '') : ''}
     <div class="ranges">${RANGES.filter(r => !r.w || (s.series_w || []).length > 30)
       .map(r => `<span class="rng ${r.t===chartRange?'on':''}" data-d="${r.t}">${r.t}</span>`).join('')}</div>
     <div class="chartslot"></div>
@@ -2488,200 +2623,85 @@ function renderAnalysis(){
   const en = isEn();
   const of = sec => D.stocks.filter(s => s.sector === sec);
   const bySym = sym => D.stocks.find(s => s.symbol === sym);
-  const md = iso => +iso.slice(5, 7) + '/' + +iso.slice(8, 10);
-  // 英文副標裡的日期換成不折行的連字號（U+2011），跟「重點」同一招：不然手機上會在連字號處斷成兩截
   const nb = t => en ? t.replace(/-/g, '‑') : t;
 
-  // ---- 0. 資料時間、免責：固定兩行字，不能收起（見 CSS .an-head）
-  const head = `<div>資料時間 ${esc(nb(D.updated_at || ''))}</div><div>僅為資訊整理，不構成投資建議；買賣請自己判斷。</div>`;
+  // ---- 0. 一行：資料時間＋免責（不能收起，見 CSS .an-head）
+  const head = `<div>資料 ${esc(nb((D.updated_at || '').replace(/:\d\d \(MYT\)$/, '')))} · 僅供參考，不構成投資建議</div>`;
   const top = document.getElementById('an-top');
   if(top._html !== head){ top._html = head; top.innerHTML = head; }
 
-  // ---- 1. 現在發生什麼事：[屬性（data-go 開那一檔／data-to 捲到卡片／空字串不能點）, 標籤, 一句話]
+  // ---- 1. 今天 30 秒：大盤、銀行股、REIT 各一句。點銀行股／REIT 捲到下面那張卡
+  // 類股一句話自己算（每檔截在 ±15% 再平均，跟 analyze.py 同一套），不搬「重點」那句長的
+  const mood = avg => avg <= -3 ? ['bad', '跌勢中'] : avg >= 3 ? ['good', '漲勢中'] : ['', '平穩'];
   const now = [];
   const k = bySym('^KLSE'), ky = k && ytdOf(k);
-  if(ky) now.push([`data-go="${esc(k.symbol)}"`, '綜指', `${anInt(ky.now)}，今年 ${pc1(ky.ytd)}` +
-    (ky.peak == null ? '' : !ky.peakDate ? '，今年新高'
-      : `，比今年高點 ${anInt(ky.peak)}（${md(ky.peakDate)}）低 ${Math.abs(ky.off).toFixed(1)}%`)]);
-  // 類股：「重點」裡已經有這個類股的趨勢就直接用那一句（同一件事兩處說法要一樣）；
-  // 沒有（類股沒在跌，重點不會報）才自己算，算法和句型都跟 analyze.py 一樣：每檔截在 ±15% 再平均，
-  // 一檔暴跌不會把整個類股拉下去；句型一樣，英文字典的類股規則也就共用
-  const sector = (sec, label, card) => {
-    const h = (D.highlights || []).find(h => h.sector === sec && /^類股/.test(h.kind || '') && h.what);
-    if(h) return [`data-to="${card}"`, label, h.what];
+  if(ky) now.push([`data-go="${esc(k.symbol)}"`, '大盤', mood(k.change_pct_1m || 0), `${anInt(ky.now)} 點，今年 ${pc1(ky.ytd)}`]);
+  [['銀行', '銀行股', 'an-bank'], ['REIT', 'REIT', 'an-reit']].forEach(([sec, label, card]) => {
     const list = of(sec).filter(s => s.change_pct_1m != null);
-    if(list.length < 2) return null;
+    if(list.length < 2) return;
     const avg = list.reduce((a, s) => a + Math.max(-15, Math.min(15, s.change_pct_1m)), 0) / list.length;
     const down = list.filter(s => s.change_pct_1m < 0).length;
-    return [`data-to="${card}"`, label, `一個月平均 ${pc1(avg)}，${list.length} 檔` +
-      (down === list.length ? '全數下跌' : `中 ${down} 檔下跌`)];
-  };
-  [sector('銀行', '銀行股', 'an-bank'), sector('REIT', 'REIT', 'an-reit')].forEach(x => x && now.push(x));
-  const c = bySym('MPOB-CPO');
-  if(c && c.price){
-    const oer = anOer(), ffb = anInt(c.price * oer / 100);
-    now.push([`data-go="${esc(c.symbol)}"`, '毛棕油', `RM${anInt(c.price)}/噸` +
-      (c.avg30 ? `，${c.avg30_days || 30} 日均價 RM${anInt(c.avg30)}` : '') + `；鮮果串約 RM${ffb}/噸（出油率 ${oer}%）`]);
-  }
-  // 最近上市（market.py 只留 90 天內的）：上市幾檔就寫幾檔；沒有現價的（LEAP 板常見）判斷不了有沒有跌破，
-  // 另外註明「幾檔有報價」——以前直接濾掉，10 檔被說成 9 檔
-  const recent = (D.market && D.market.ipo && D.market.ipo.recent) || [];
-  const ipoSay = (list, board) => {
-    if(!list.length) return '';
-    const q = list.filter(i => i.since_ipo != null);
-    return `最近 3 個月${board}上市 ${list.length} 檔` + (q.length < list.length ? `（${q.length} 檔有報價）` : '') +
-      `，${q.filter(i => i.since_ipo < 0).length} 檔跌破發行價`;
-  };
-  const ipoLine = ipoSay(recent, '');
-  // 「三種先不要碰」講的是創業板（ACE）新股，那裡只數 ACE 的：主板一檔漲了兩倍多，混進去會把話說反
-  const aceLine = ipoSay(recent.filter(i => /ACE/i.test(i.board || '')), '創業板');
-  if(ipoLine) now.push(['', '新股', ipoLine]);
-  mcard('an-now', '現在發生什麼事', '從最新資料自動算', now.map(([attr, label, text]) =>
-    `<div class="anb"${attr ? ' ' + attr : ''}><b>${label}</b><span>${esc(text)}</span></div>`).join(''));
+    now.push([`data-to="${card}"`, label, mood(avg), `近一個月平均 ${pc1(avg)}，${list.length} 檔中 ${down} 檔跌`]);
+  });
+  mcard('an-now', '今天 30 秒', '大盤、銀行股、REIT', now.map(([attr, label, m, text]) =>
+    `<div class="anb q-now" ${attr}><b>${label}</b><span class="chip ${m[0]}">${m[1]}</span><span>${esc(text)}</span></div>`).join(''));
 
-  // ---- 2. 怎麼看數字（固定說明，預設收起）。排在銀行股前面：下面每一列的 P/B、ROE、派息率，先在這裡講過
-  mcard('an-howto', '怎麼看數字', 'P/B、ROE、派息率、股息率', `<div class="an-txt">
-    <p><b>P/B（股價 ÷ 每股淨值）</b><span>1.0 代表用帳面價值買。銀行股 P/B 低於 1 是打折，但要搭配 ROE 一起看。</span></p>
-    <p><b>ROE（股東權益報酬率）</b><span>銀行拿股東的錢一年賺幾 %。ROE 愈高，值得的 P/B 愈高：ROE 高、P/B 低才是便宜；ROE 低、P/B 低是便宜有原因。</span></p>
-    <p><b>派息率（股息 ÷ 盈利）</b><span>超過 90% 等於把賺的幾乎全發出去，盈利一變差就可能減息；每股股息比每股盈利還多，就是發的比賺的多。</span></p>
-    <p><b>股息率 vs 公債殖利率</b><span>股息率要跟 10 年期大馬公債（MGS）殖利率比，差距就是承擔股價波動的補償。公債殖利率往上，補償就縮水，股價往往要再跌一點才平衡。</span></p>
-    </div>`, true);
-
-  // ---- 3. 銀行股：ROE 高的在前，ROE 一樣時 P/B 低的在前（同樣的賺錢能力，買得比較便宜）
-  const banks = of('銀行').map(s => ({s, roe: num((s.fundamentals || {}).roe), pb: num((s.fundamentals || {}).pb_ratio)}))
-    .sort((a, b) => nv(b.roe, -1e9) - nv(a.roe, -1e9) || nv(a.pb, 1e9) - nv(b.pb, 1e9)).map(x => x.s);
-  const tiers = banks.map(bankTier);
-  if(banks.length){
-    // 圖例放在列表上面：第一個標籤出現之前就先看得到意思（以前放在 11 列底下，要往下捲一千多 px）
-    const has = new Set(tiers.filter(Boolean).map(t => t[1]));
-    const legend = '<div class="an-note an-lg">' +
-      TIER_LEGEND.filter(x => has.has(x[1])).map(([c, t, d]) => `<div><span class="chip ${c}">${t}</span><span>${d}</span></div>`).join('') +
-      '<div><span class="k0">沒有標籤</span><span>沒有特別要注意的</span></div>' +
-      '<div><span class="k0">距52週高</span><span>比過去一年的最高收盤低多少</span></div></div>';
-    mcard('an-bank', '銀行股體檢', `${banks.length} 檔 · 依 ROE 排序`,
-      legend + banks.map((s, i) => anRow(s, tiers[i], true)).join(''));
-  } else clearCard('an-bank');
-
-  // ---- 4. REIT 股息體檢：買 REIT 就是為了股息，所以右邊放「現價股息率」、整列講股息，股息率高的在前。
-  // 數字來自 dividend.py 的十年派息；沒有派息資料的退回原本的 P/B、派息率那一行
-  const reits = of('REIT').sort((a, b) => nv((divStatus(b) || {}).y, nv(num((b.fundamentals || {}).div_yield), -1)) -
-                                          nv((divStatus(a) || {}).y, nv(num((a.fundamentals || {}).div_yield), -1)));
-  const reitRow = s => {
-    const st = divStatus(s), d = s.dividend, f = s.fundamentals || {};
-    if(!st) return anRow(s, reitTier(s), false);
-    const y = ytdOf(s), pay = num(f.payout_ratio);
-    const chips = [reitTier(s), DIV_POS[st.pos], d.trend && !st.trap ? DIV_TREND[d.trend] : null].filter(c => c && c[1]);
-    const meta = [`每單位一年派 ${sen(s, d.ttm)}`,
-      `一年 ${d.n12} 次` + (monthsOf(d) ? `（${monthsOf(d)}）` : ''),
-      d.trend ? `近三年股息 ${pc1(d.chg)}` : '',
-      d.band ? `五年股息率 ${d.band.lo.toFixed(1)}–${d.band.hi.toFixed(1)}%` : '',
-      `RM10,000 一年約領 RM${anInt(st.income)}`,
-      '派息率 ' + (pay == null ? '—' : Math.round(pay) + '%'),
-      y ? `今年股價 ${pc1(y.ytd)}` : ''].filter(Boolean);
-    return `<div class="anr" data-go="${esc(s.symbol)}">
-      <div class="n">${esc(nameEn(s.name))}</div>
-      <div class="r"><span class="k">股息率</span><span class="up">${st.y.toFixed(2)}%</span></div>
-      <div class="s">${chips.map(c => `<span class="chip ${c[0]}">${c[1]}</span>`).join('')}${meta.map(m => `<span>${esc(m)}</span>`).join('')}</div></div>`;
-  };
-  if(reits.length) mcard('an-reit', 'REIT 股息體檢', `${reits.length} 檔 · 依現價股息率排序`,
-    reits.map(reitRow).join('') +
-    `<div class="an-txt an-dv"><b>REIT 股息怎麼看</b><ul class="an-ol">
-      <li><span>股息率＝近 12 個月派息 ÷ 現價。股價跌、派息不變，股息率就升；所以要同時看「派息本身有沒有變少」（近三年股息那一欄：近三年平均每年派息，跟再前三年比；再前三年包含 2020–2021 疫情減租期，成長會看起來比較大）。</span></li>
-      <li><span>REIT 依法要把大部分收入派出來（派 90% 以上可免公司稅），所以股息率高、但成長慢。它是收息工具，不是讓股價翻倍的東西。</span></li>
-      <li><span>「五年股息率」是過去五年每週的股息率，大多落在的範圍。現在高於這個範圍，代表以股息看比平常便宜；但如果是因為大家擔心派息會減（例如辦公樓空置），高股息率反而是警訊。</span></li>
-      <li><span>派息率超過 100% 在 REIT 很常見（帳面盈利扣了建築物折舊與重估），不一定是警訊；真正要看的是季報裡「每單位可分派收入」夠不夠付股息。</span></li>
-      <li><span>股息率要跟 10 年期大馬公債（MGS）殖利率和定存比：多出來的那幾個百分點，是承擔股價波動的補償。利率上升時 REIT 兩面受壓：借款利息變貴、股息也相對沒那麼吸引人。</span></li>
-      <li><span>除息日之前買進才領得到那一次股息；除息當天股價會扣掉股息，不是下跌。金額都是稅前，REIT 派息的稅務安排近年有調整，實拿以券商入帳為準。</span></li>
-    </ul></div>`);
+  // ---- 2. REIT：股息率高的在前。一列只放三樣東西：股息率（右邊大字）、一個判斷、參考買價
+  const reits = of('REIT').sort((a, b) => nv(qYield(b), -1) - nv(qYield(a), -1));
+  if(reits.length) mcard('an-reit', 'REIT', `${reits.length} 檔 · 收租、領股息`,
+    Q_HEAD + reits.map(s => quickRow(s, qSignal(s))).join('') +
+    '<div class="an-note">股息率 5% ＝ 投入 RM10,000，一年約領 RM500。點一檔看每年派息和三批買價。</div>');
   else clearCard('an-reit');
 
-  // ---- 4b. 歷史低點參考價：銀行與 REIT（收息股才適合用低點分批買；題材股的歷年低點離現價太遠）。
-  // 能用的排前面、離參考價近的在前（已經低於參考價的最前）；低點法不適用的排最後，不給價位
-  const bzList = [...banks, ...reits].map(s => ({s, st: bzStatus(s)})).filter(x => x.st)
-    .sort((a, b) => (b.st.ok - a.st.ok) || (b.st.gap - a.st.gap));
-  if(bzList.length) mcard('an-buy', '歷史低點參考價', '銀行與 REIT · 依歷年低點',
-    '<div class="an-note">參考買價＝「前兩年＋今年」三個年度最低收盤價的中位數。點進個股可以看分三批的價位、每年的最低價和回檔幅度。' +
-    '跌破近五年每一年低點、或低點一年比一年低的，用低點推算不適用，不給價位。這是歷史統計，不構成投資建議。</div>' +
-    bzList.map(({s, st}) => {
-      const z = s.buy_zone, P = v => px(v, false, s.dp);
-      const chip = BZ_CHIP[st.kind];
-      // 體檢標籤一起放：Bank Islam 這類「便宜有原因」的，跌到參考價以下也只是更便宜，不代表比較值得買
-      const tier = s.sector === '銀行' ? bankTier(s) : reitTier(s);
-      const meta = [`現價 ${P(s.price)}`, `一年低點 ${P(z.tiers[0].p)}`, `五年最低 ${P(z.tiers[2].p)}`];
-      const ds = divStatus(s);
-      if(ds) meta.push(`現價股息率 ${ds.y.toFixed(1)}%`);
-      if(st.ok && st.yld) meta.push(`參考價股息率 ${st.yld.toFixed(1)}%`);
-      return `<div class="anr" data-go="${esc(s.symbol)}">
-        <div class="n">${esc(nameEn(s.name))}</div>
-        <div class="r"><span class="k">參考</span>${st.ok ? `${P(z.ref)} <span class="${st.kind === 'below' ? 'up' : 'flat'}">${pc1(st.gap)}</span>` : '—'}</div>
-        <div class="s">${[chip, tier && tier[0] !== 'good' ? tier : null].filter(Boolean)
-          .map(c => `<span class="chip ${c[0]}">${c[1]}</span>`).join('')}${meta.map(m => `<span>${esc(m)}</span>`).join('')}</div></div>`;
-    }).join('') +
-    '<div class="an-note">右邊的百分比是參考價相對現價：負數是還要再跌多少才到；綠色的正數代表現價已經比參考價低。</div>');
-  else clearCard('an-buy');
+  // ---- 3. 銀行股：照體質分組（分組標題就是判斷），組內股息率高的在前
+  const banks = of('銀行');
+  const GROUPS = [
+    ['穩健', 'good', '獲利最好（ROE 11% 以上）', t => t && t[1] === '穩健'],
+    ['打折中', 'info', '股價低於帳面，獲利還可以', t => t && t[1] === '低於帳面'],
+    ['便宜有原因', 'warn', '賺得少，所以便宜', t => t && (t[1] === '便宜有原因' || t[1] === 'ROE 偏低')],
+    ['先避開', 'bad', '股息比賺的還多，撐不久', t => t && t[1] === '股息撐不住'],
+    ['其他', '', '', t => !t],
+  ];
+  if(banks.length) mcard('an-bank', '銀行股', `${banks.length} 檔 · 依體質分組`,
+    Q_HEAD + GROUPS.map(([name, c, desc, test]) => {
+      const list = banks.filter(s => test(bankTier(s))).sort((a, b) => nv(qYield(b), -1) - nv(qYield(a), -1));
+      return list.length ? `<div class="q-grp"><span class="chip ${c}">${name}</span><span>${desc}</span></div>` +
+        list.map(s => quickRow(s, null)).join('') : '';
+    }).join(''));
+  else clearCard('an-bank');
 
-  // ---- 5. 題材股風險：只看題材類股（「AI」分頁那兩類）。以前是「指數、匯率、加密、油價以外全部」，
-  // 一年跌掉一半的建築地產股也會被叫成題材股、列在「通常是公司出了結構性問題」底下——在公開網頁上點名一家公司，說法要準
-  const THEME = (TABS.find(t => t.t === 'AI') || {}).secs || [];
-  const risk = D.stocks.filter(s => THEME.includes(s.sector)).map(s => {
-    const f = s.fundamentals || {};
-    const y1 = s.change_pct_1y, pe = num(f.pe_ratio);
-    // 目標價「1.55 (+1,723.53%)」：股價崩了、分析師沒更新，算出來的上漲空間就離譜。錯的數字比沒數字危險
-    const m = /\(([-+]?[\d,.]+)%\)/.exec(f.analyst_target || '');
-    const up = m ? parseFloat(m[1].replace(/,/g, '')) : null;
-    const why = [];
-    if(y1 != null && y1 <= -50) why.push(`一年 ${y1 < 0 ? '' : '+'}${anInt(y1)}%`);
-    // 門檻是「過 80」：四捨五入成整數會把 80.3 寫成「80 倍」，看起來像沒過門檻。
-    // 100 倍以下留一位小數、無條件進位（減一點點是抵掉 80.1 × 10 = 801.0000000001 這種浮點誤差）
-    if(pe != null && pe > 80) why.push(`本益比 ${pe < 100 ? (Math.ceil(pe * 10 - 1e-9) / 10).toFixed(1) : anInt(pe)} 倍`);
-    if(up != null && Math.abs(up) > 100) why.push(`分析師目標價 ${up < 0 ? '' : '+'}${anInt(up)}%，已過時`);
-    return {s, why, y1: nv(y1, 0), pe: nv(pe, 0), crash: y1 != null && y1 <= -50};
-  }).filter(x => x.why.length)
-    // 一年腰斬的排前面（跌最多的最前），其餘照本益比由高到低
-    .sort((a, b) => (b.crash - a.crash) || (a.crash ? a.y1 - b.y1 : b.pe - a.pe));
-  mcard('an-risk', '題材股風險', '一年腰斬、本益比過 80、目標價過時',
-    (risk.length ? risk.map(({s, why}) => `<div class="anr" data-go="${esc(s.symbol)}">
-      <div class="n">${esc(nameEn(s.name))}</div>
-      <div class="s">${why.map(w => `<span>${esc(w)}</span>`).join('')}</div></div>`).join('')
-      : '<div class="anb">目前沒有符合條件的股票。</div>') +
-    '<div class="an-note">題材股漲的時候本益比不重要，跌的時候什麼都不重要；本益比很高的股票，一個壞消息就能腰斬。</div>');
+  // ---- 4. 看不懂的詞（預設收起）：一個詞一行
+  mcard('an-howto', '看不懂？5 個詞就夠', '股息率、參考買價、ROE、P/B', `<div class="an-txt q-gl">
+    <p><b>股息率</b><span>一年股息 ÷ 股價。5% 就是投入 RM10,000，一年領約 RM500。</span></p>
+    <p><b>參考買價</b><span>近三年每年最低價的中間值。跌到這附近，再分批慢慢買。</span></p>
+    <p><b>以股息看便宜／偏貴</b><span>現在的股息率，比過去五年大部分時間高（便宜）或低（偏貴）。</span></p>
+    <p><b>ROE</b><span>銀行一年幫股東賺幾 %。11% 以上算好。</span></p>
+    <p><b>P/B</b><span>股價 ÷ 帳面價值。低於 1 是打折買，但要配合 ROE 看。</span></p>
+  </div>`, true);
 
-  // ---- 6. 給新手的原則（固定說明，預設收起）。「三種先不要碰」不寫死股票名：描述類型，後面接現在符合的。
-  // 這是公開網頁：原則只講通用的方法，不寫任何人自己的買賣計畫，也不寫成叫人買哪一類股票
-  const names = list => list.length ? '目前符合：' + list.map(shortName).join('、') : '目前沒有';
-  const payBad = banks.filter((s, i) => (tiers[i] || [])[0] === 'bad');
-  const reitOver = reits.filter(s => reitTier(s));
-  const crashed = risk.filter(x => x.crash).map(x => x.s);
-  const live = t => `<span class="an-live">${esc(t)}</span>`;
-  mcard('an-rules', '給新手的原則', '不是叫你買哪一檔', `<div class="an-txt"><ol class="an-ol">
-    <li><b>先弄懂三個數字</b><span>P/B、ROE、派息率，個股詳細資料裡都有。看不懂這三個數字，就還不到買的時候。</span></li>
-    <li><b>收息股不是致富工具</b><span>銀行股、REIT 這類股票的報酬主要來自股息，股價一年跌 20% 也不奇怪；承受不了這種波動，就不要買個股。</span></li>
-    <li><b>不要一次買完</b><span>價格接下來往哪走沒人知道。分幾次、每次固定金額買，比一次買完不容易後悔。</span></li>
-    <li><b>不要只買一檔</b><span>分散到不同產業、不同類型的資產，一家公司出事才不會拖垮全部。</span></li>
-    <li><b>買之前查兩個日期</b><span>除息日（除息前買才拿得到這次股息）和財報日（財報前後波動大），個股詳細資料裡都有。</span></li>
-    <li><b>三種先不要碰</b><ul>
-      <li><span>股息撐不住的：派息率超過 90%，或每股股息比每股盈利多。</span>${live(names(payBad))}${
-        reitOver.length ? live('REIT 要先查可分派收入：' + reitOver.map(shortName).join('、')) : ''}</li>
-      <li><span>剛上市的創業板（ACE）新股：超額認購幾倍也不代表上市後會漲。</span>${aceLine ? live(aceLine) : ''}</li>
-      <li><span>一年跌掉一半以上的題材股：通常是公司出了結構性問題，不是「跌夠了可以撿」。</span>${live(names(crashed))}</li>
-    </ul></li>
-    <li><b>算清楚成本</b><span>買賣各收券商佣金（線上多為 0.1%–0.42%）、印花稅 0.1%、清算費 0.03%，一買一賣約 0.5%–1%，頻繁進出會把股息吃掉。個人股息所得每年超過 RM10 萬的部分要繳 2% 股息稅（2025 課稅年起，細節請向券商或稅務人員確認）。</span></li>
-    <li><b>事先寫好計畫</b><span>買進條件、分幾次買，先寫下來，照計畫執行，不要臨時決定。</span></li>
-    <li><b>先留 6 個月生活費，再談投資</b><span>收入不固定的人要留更多。</span></li>
-    </ol></div>`, true);
+  // ---- 5. 新手 5 原則（預設收起）。「先避開」後面接現在符合的股票，不寫死
+  const avoid = [...banks.filter(s => (bankTier(s) || [])[1] === '股息撐不住'),
+                 ...reits.filter(s => { const d = divStatus(s), b = bzStatus(s); return (d && d.trap) || (b && b.kind === 'broken'); })];
+  mcard('an-rules', '新手 5 原則', '買之前看一次', `<div class="an-txt"><ol class="an-ol q-rules">
+    <li>分 3 次買，不要一次買完。</li>
+    <li>至少買 2–3 檔，不要只押一檔。</li>
+    <li>股息率高不一定好，先看股息有沒有在減少。${avoid.length ? `<span class="an-live">現在先避開：${avoid.map(shortName).join('、')}</span>` : ''}</li>
+    <li>除息日之前買，才領得到那一次股息。</li>
+    <li>先留 6 個月生活費，再拿多的錢投資。</li>
+  </ol></div>`, true);
 
-  // ---- 7. 大環境觀點（人工整理、帶日期）。日期用馬來西亞當地日期算，不看手機時區。
-  // 過期了：警告寫在卡片裡，副標也寫「已 N 天」（卡片收起時只看得到標題列），而且預設收起，不讓過時的看法佔掉一整屏。
-  // 使用者自己按過展開／收起的，照使用者按的
+  // ---- 6. 大環境觀點（人工整理、帶日期）。預設收起；過期了副標寫「已 N 天」
   const age = Math.round((Date.parse(mytToday()) - Date.parse(COMMENTARY.date)) / 864e5);
   const stale = age > COMMENTARY_STALE;
-  mcard('an-view', '大環境觀點', esc(nb(COMMENTARY.date)) + (stale ? ` · 已 ${age} 天` : ''),
-    (stale ? `<div class="an-warn">這段觀點已超過 ${age} 天，數字可能過時</div>` : '') +
+  mcard('an-view', '大環境觀點', esc(nb(COMMENTARY.date)) + (stale ? ` · 已 ${age} 天，可能過時` : ''),
     `<div class="an-txt"><ul class="an-ol">${COMMENTARY.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
       <details class="an-srch"><summary>來源（${COMMENTARY.sources.length}）</summary>
       <ul class="an-src">${COMMENTARY.sources.map(x =>
-        `<li><a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join('')}</ul></details>
-      <p class="an-foot">這段是人工整理的看法，不會自動更新。</p></div>`, stale);
+        `<li><a href="${esc(x.u)}" target="_blank" rel="noopener">${esc(x.t)}</a></li>`).join('')}</ul></details></div>`, true);
+
+  const foot = document.getElementById('an-foot');
+  const fh = '<div>想看大盤新聞、漲跌排行、新股 IPO，點上面其他分頁（例如「全部」）。</div>';
+  if(foot._html !== fh){ foot._html = fh; foot.innerHTML = fh; }
 }
 
 function render(){
@@ -2711,7 +2731,7 @@ function render(){
 
   // 分頁列：沒有最愛就不顯示那一頁
   const tabs = TABS.filter(t => t.t !== '最愛' || pinned.length);
-  if(!tabs.some(t => t.t === activeTab)) activeTab = pinned.length ? '最愛' : '銀行';
+  if(!tabs.some(t => t.t === activeTab)) activeTab = '分析';
   const countOf = t => t.secs === null ? pinned.length
                      : D.stocks.filter(s => t.secs.includes(s.sector)).length;
   // 「分析」不是清單，不標檔數
@@ -2732,6 +2752,8 @@ function render(){
   const an = tab.view === 'analysis';
   $('#tablewrap').hidden = an;
   $('#analysis').hidden = !an;
+  // 速覽只講銀行股與 REIT：市場快訊、重點、漲跌排行、新股這些長區塊先藏起來，其他分頁照常顯示
+  ['#headlines', '#brief', '#watchnews', '#movers', '#ipo'].forEach(id => { const el = $(id); if(el) el.style.display = an ? 'none' : ''; });
   if(an){ renderAnalysis(); return; }
   const groups = [];
   if(tab.secs === null){
