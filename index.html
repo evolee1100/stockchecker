@@ -1866,64 +1866,100 @@ function quickHtml(s){
   </div>`;
 }
 
+// 中英各寫一份：這兩塊的句子都帶好幾個數字，交給機器翻譯常被「數字對不上」的檢查擋下來，
+// 結果英文模式裡留下整段中文。直接寫英文最可靠（英文沒有中文字，字典與機器翻譯都不會再碰它）
+const L = (zh, en) => isEn() ? en : zh;
+const MON = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const monthsTxt = d => !d.months || !d.months.length ? '' : isEn() ? d.months.map(m => MON[m]).join(', ') : d.months.join('、') + ' 月';
+const senTxt = (s, v) => isEn() ? sen(s, v).replace(' 仙', ' sen') : sen(s, v);
+
 function divHtml(s){
   const d = s.dividend, st = divStatus(s);
   if(!st) return '';
   const f = s.fundamentals || {};
   const P = v => px(v, false, s.dp);
-  const unit = isReit(s) ? '每單位' : '每股';
+  const reit = isReit(s);
   const rows = [];
 
-  rows.push(['現在', `<b class="dv-big">股息率 ${st.y.toFixed(2)}%</b>　近 12 個月${unit}派 <b>${sen(s, d.ttm)}</b>，` +
-    `以現價 ${P(s.price)} 計。投入 <b>RM10,000</b>，一年約領 <b>RM${anInt(st.income)}</b>（每月平均約 RM${anInt(st.income / 12)}，稅前）。`]);
+  rows.push([L('現在', 'Now'), L(
+    `<b class="dv-big">股息率 ${st.y.toFixed(2)}%</b>　近 12 個月${reit ? '每單位' : '每股'}派 <b>${senTxt(s, d.ttm)}</b>，` +
+    `以現價 ${P(s.price)} 計。投入 <b>RM10,000</b>，一年約領 <b>RM${anInt(st.income)}</b>（每月平均約 RM${anInt(st.income / 12)}，稅前）。`,
+    `<b class="dv-big">Yield ${st.y.toFixed(2)}%</b>　Paid <b>${senTxt(s, d.ttm)}</b> per ${reit ? 'unit' : 'share'} in the last 12 months, ` +
+    `at today's price of ${P(s.price)}. <b>RM10,000</b> invested earns about <b>RM${anInt(st.income)}</b> a year (about RM${anInt(st.income / 12)} a month, before tax).`)]);
 
   const ex = f.ex_div_date && f.ex_div_date >= mytToday() ? f.ex_div_date : null;
-  rows.push(['次數', `近 12 個月派 ${d.n12} 次` + (monthsOf(d) ? `，近兩年在 ${monthsOf(d)}除息` : '') + '。' +
-    (ex ? `<b>下次除息 ${ex}</b>：除息日之前買進才領得到這一次。` : '') +
-    '除息當天股價會自動扣掉股息，那不是下跌。']);
+  rows.push([L('次數', 'Payments'), L(
+    `近 12 個月派 ${d.n12} 次` + (monthsTxt(d) ? `，近兩年在 ${monthsTxt(d)}除息` : '') + '。' +
+      (ex ? `<b>下次除息 ${ex}</b>：除息日之前買進才領得到這一次。` : '') + '除息當天股價會自動扣掉股息，那不是下跌。',
+    `${d.n12} payment${d.n12 === 1 ? '' : 's'} in the last 12 months` + (monthsTxt(d) ? `; ex-dates in ${monthsTxt(d)} over the last two years` : '') + '. ' +
+      (ex ? `<b>Next ex-date ${ex}</b>: buy before it to get this payment. ` : '') + 'On the ex-date the price drops by the dividend; that is not a loss.')]);
 
   if(d.trend){
-    const t = d.trend === 'up' ? `多 ${d.chg.toFixed(1)}%，<span class="bz-hit">股息在成長</span>`
-            : d.trend === 'down' ? `少 ${Math.abs(d.chg).toFixed(1)}%，<span class="bz-bad">股息在減少</span>，要去查原因（空置率、利息成本、賣掉資產…）`
-            : `差不多（${pc1(d.chg)}），股息持平`;
-    rows.push(['趨勢', `近三年平均每年派 ${sen(s, d.avg3)}，比再前三年的 ${sen(s, d.prev3)} ${t}。` +
-      // 再前三年那一段蓋到 2020–2021：銀行被央行限制派息、REIT 給租戶減租，基期特別低，成長會被放大
-      (Date.parse(mytToday()) - 6 * 365 * 864e5 < Date.parse('2022-01-01') && d.trend === 'up'
-        ? '（再前三年包含 2020–2021 疫情期間，銀行被限制派息、REIT 減租，基期偏低，成長幅度會看起來特別大。）' : '')]);
+    const covid = Date.parse(mytToday()) - 6 * 365 * 864e5 < Date.parse('2022-01-01') && d.trend === 'up';
+    const t = L(
+      d.trend === 'up' ? `多 ${d.chg.toFixed(1)}%，<span class="bz-hit">股息在成長</span>`
+      : d.trend === 'down' ? `少 ${Math.abs(d.chg).toFixed(1)}%，<span class="bz-bad">股息在減少</span>，要去查原因（空置率、利息成本、賣掉資產…）`
+      : `差不多（${pc1(d.chg)}），股息持平`,
+      d.trend === 'up' ? `${d.chg.toFixed(1)}% more: <span class="bz-hit">the dividend is growing</span>`
+      : d.trend === 'down' ? `${Math.abs(d.chg).toFixed(1)}% less: <span class="bz-bad">the dividend is shrinking</span>. Find out why (vacancies, interest costs, asset sales…)`
+      : `about the same (${pc1(d.chg)}): the dividend is flat`);
+    rows.push([L('趨勢', 'Trend'), L(
+      `近三年平均每年派 ${senTxt(s, d.avg3)}，比再前三年的 ${senTxt(s, d.prev3)} ${t}。` +
+        // 再前三年那一段蓋到 2020–2021：銀行被央行限制派息、REIT 給租戶減租，基期特別低，成長會被放大
+        (covid ? '（再前三年包含 2020–2021 疫情期間，銀行被限制派息、REIT 減租，基期偏低，成長幅度會看起來特別大。）' : ''),
+      `Average ${senTxt(s, d.avg3)} a year over the last three years vs ${senTxt(s, d.prev3)} in the three before: ${t}.` +
+        (covid ? ' (The earlier period includes 2020–2021, when banks were limited on dividends and REITs gave rent relief, so growth looks bigger than usual.)' : ''))]);
   }
 
   const max = Math.max(...d.years.map(y => y.amt), 1e-9);
-  rows.push(['歷年', '<div class="dv-bars">' + d.years.map(y =>
-    `<div class="dv-bar"><span class="yy">${y.y}${y.ytd ? ' 至今' : ''}</span>` +
+  rows.push([L('歷年', 'By year'), '<div class="dv-bars">' + d.years.map(y =>
+    `<div class="dv-bar"><span class="yy">${y.y}${y.ytd ? L(' 至今', ' YTD') : ''}</span>` +
     `<span class="tr"><i style="width:${(y.amt / max * 100).toFixed(1)}%"${y.ytd ? ' class="ytd"' : ''}></i></span>` +
-    `<span class="am">${sen(s, y.amt)}</span><span class="nn">${y.n} 次</span></div>`).join('') +
-    '</div><div class="dv-fn">某一年多一次、下一年少一次，通常是除息日剛好跨年，不是加減息；看上面的三年平均比較準。</div>']);
+    `<span class="am">${senTxt(s, y.amt)}</span><span class="nn">${L(y.n + ' 次', y.n + '×')}</span></div>`).join('') +
+    `</div><div class="dv-fn">${L('某一年多一次、下一年少一次，通常是除息日剛好跨年，不是加減息；看上面的三年平均比較準。',
+      'One extra payment one year and one fewer the next usually means an ex-date crossed the new year, not a dividend change. The three-year average above is more reliable.')}</div>`]);
 
   const b = d.band;
   if(b){
-    const where = st.pos === 'trap' ? `<span class="bz-bad">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都高，但股息本身在減少：股息率高是因為股價先跌了，不是便宜，小心高息陷阱</span>`
-                : st.pos === 'high' ? `<span class="bz-hit">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都高：以股息看，現在相對便宜</span>`
-                : st.pos === 'low' ? `<span class="bz-bad">現在 ${st.y.toFixed(2)}% 比過去五年八成的時間都低：以股息看，現在相對貴</span>`
-                : `現在 ${st.y.toFixed(2)}% 在中間`;
-    rows.push(['區間', `過去五年，股息率大多在 <b>${b.lo.toFixed(2)}%–${b.hi.toFixed(2)}%</b> 之間（中位數 ${b.med.toFixed(2)}%）。${where}。` +
-      `<br>股息不變的話，股息率回到偏高的 ${b.hi.toFixed(2)}% 時價格約 <b>${P(st.pHi)}</b>` +
-      (s.price <= st.pHi ? '（<span class="bz-hit">現價已經到了</span>）' : `（比現價低 ${Math.abs((st.pHi / s.price - 1) * 100).toFixed(1)}%）`) +
-      `；回到中位數 ${b.med.toFixed(2)}% 時約 ${P(st.pMed)}。`]);
+    const y2 = st.y.toFixed(2);
+    const where = st.pos === 'trap' ? L(`<span class="bz-bad">現在 ${y2}% 比過去五年八成的時間都高，但股息本身在減少：股息率高是因為股價先跌了，不是便宜，小心高息陷阱</span>`,
+                                        `<span class="bz-bad">Today's ${y2}% is higher than 80% of the last five years, but the dividend itself is shrinking: the yield is high because the price fell first. Not cheap — beware the yield trap</span>`)
+                : st.pos === 'high' ? L(`<span class="bz-hit">現在 ${y2}% 比過去五年八成的時間都高：以股息看，現在相對便宜</span>`,
+                                        `<span class="bz-hit">Today's ${y2}% is higher than 80% of the last five years: relatively cheap by yield</span>`)
+                : st.pos === 'low' ? L(`<span class="bz-bad">現在 ${y2}% 比過去五年八成的時間都低：以股息看，現在相對貴</span>`,
+                                       `<span class="bz-bad">Today's ${y2}% is lower than 80% of the last five years: relatively pricey by yield</span>`)
+                : L(`現在 ${y2}% 在中間`, `Today's ${y2}% is in the middle`);
+    const gapHi = Math.abs((st.pHi / s.price - 1) * 100).toFixed(1);
+    rows.push([L('區間', 'Range'), L(
+      `過去五年，股息率大多在 <b>${b.lo.toFixed(2)}%–${b.hi.toFixed(2)}%</b> 之間（中位數 ${b.med.toFixed(2)}%）。${where}。` +
+        `<br>股息不變的話，股息率回到偏高的 ${b.hi.toFixed(2)}% 時價格約 <b>${P(st.pHi)}</b>` +
+        (s.price <= st.pHi ? '（<span class="bz-hit">現價已經到了</span>）' : `（比現價低 ${gapHi}%）`) +
+        `；回到中位數 ${b.med.toFixed(2)}% 時約 ${P(st.pMed)}。`,
+      `Over the last five years the yield was mostly <b>${b.lo.toFixed(2)}%–${b.hi.toFixed(2)}%</b> (median ${b.med.toFixed(2)}%). ${where}.` +
+        `<br>If the dividend holds, a yield back at the high end of ${b.hi.toFixed(2)}% means a price of about <b>${P(st.pHi)}</b>` +
+        (s.price <= st.pHi ? ' (<span class="bz-hit">already there</span>)' : ` (${gapHi}% below today)`) +
+        `; at the median ${b.med.toFixed(2)}%, about ${P(st.pMed)}.`)]);
   }
 
   const pay = num(f.payout_ratio);
   if(pay != null)
-    rows.push(['派息率', `${Math.round(pay)}%。` + (isReit(s)
-      ? (pay > 100 ? '<span class="bz-bad">派得比帳面盈利多。</span>REIT 很常見（盈利扣了建築物折舊與重估，現金其實還在），但要去季報查「每單位可分派收入」夠不夠付股息。'
-                   : 'REIT 派息看的是「可分派收入」，帳面盈利只是參考。')
-      : (pay > 90 ? '<span class="bz-bad">超過 90%，幾乎把賺的全發出去，盈利一變差就可能減息。</span>'
-                  : pay <= 60 ? '還有餘裕，盈利小幅下滑也不必減息。' : '在正常範圍。'))]);
+    rows.push([L('派息率', 'Payout'), `${Math.round(pay)}%. ` + (reit
+      ? (pay > 100 ? L('<span class="bz-bad">派得比帳面盈利多。</span>REIT 很常見（盈利扣了建築物折舊與重估，現金其實還在），但要去季報查「每單位可分派收入」夠不夠付股息。',
+                       '<span class="bz-bad">Pays more than book profit.</span> Common for REITs (profit is after depreciation and revaluation; the cash is still there), but check the quarterly report: does distributable income per unit cover the payout?')
+                   : L('REIT 派息看的是「可分派收入」，帳面盈利只是參考。', 'REIT payouts depend on distributable income; book profit is only a guide.'))
+      : (pay > 90 ? L('<span class="bz-bad">超過 90%，幾乎把賺的全發出去，盈利一變差就可能減息。</span>', '<span class="bz-bad">Over 90%: almost all profit is paid out, so a weaker year could mean a cut.</span>')
+                  : pay <= 60 ? L('還有餘裕，盈利小幅下滑也不必減息。', 'Room to spare: a small dip in profit need not mean a cut.')
+                  : L('在正常範圍。', 'Normal range.')))]);
 
-  rows.push(['說明', '股息率＝近 12 個月除息加總 ÷ 現價，所以股價跌、股息不變，股息率就會升。' +
-    (isReit(s) ? 'REIT 依法要把大部分收入派出來（派 90% 以上可免公司稅），所以股息率高、成長慢。' : '') +
-    '金額為稅前、未扣券商費用；REIT 派息的稅務安排近年有調整，實拿以券商入帳為準。過去的股息不保證未來照派。']);
+  rows.push([L('說明', 'Notes'), L(
+    '股息率＝近 12 個月除息加總 ÷ 現價，所以股價跌、股息不變，股息率就會升。' +
+      (reit ? 'REIT 依法要把大部分收入派出來（派 90% 以上可免公司稅），所以股息率高、成長慢。' : '') +
+      '金額為稅前、未扣券商費用；REIT 派息的稅務安排近年有調整，實拿以券商入帳為準。過去的股息不保證未來照派。',
+    'Yield = dividends with ex-dates in the last 12 months ÷ today\'s price, so if the price falls and the dividend holds, the yield rises. ' +
+      (reit ? 'REITs must pay out most of their income (90% or more to avoid corporate tax), so yields are high and growth is slow. ' : '') +
+      'Amounts are before tax and broker fees; REIT tax rules have changed recently, so go by what your broker credits. Past dividends are no guarantee of future ones.')]);
 
-  return `<div class="dg dv"><div class="dg-h">股息體檢</div>` +
+  return `<div class="dg dv"><div class="dg-h">${L('股息體檢', 'Dividend check')}</div>` +
     rows.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div><div class="dg-v">${v}</div></div>`).join('') + '</div>';
 }
 
@@ -1934,52 +1970,63 @@ function buyZoneHtml(s){
   const off = v => (v / s.price - 1) * 100;
   const done = z.years.filter(y => !y.ytd);
   const rows = [];
+  const nYrs = Math.min(5, done.length);
 
   let head;
   if(st.kind === 'broken')
-    head = `<span class="bz-bad">現價 ${P(s.price)} 已跌破近 ${Math.min(5, done.length)} 個完整年度每一年的最低價（最低 ${P(z.floor_done)}）。</span>` +
-      '過去的低點沒有守住，用低點推算買價在這裡不適用，所以不提供參考價。';
+    head = L(`<span class="bz-bad">現價 ${P(s.price)} 已跌破近 ${nYrs} 個完整年度每一年的最低價（最低 ${P(z.floor_done)}）。</span>` +
+               '過去的低點沒有守住，用低點推算買價在這裡不適用，所以不提供參考價。',
+             `<span class="bz-bad">Today's ${P(s.price)} is below the low of every one of the last ${nYrs} full years (lowest ${P(z.floor_done)}).</span> ` +
+               'Past lows did not hold, so a buy price based on them does not apply here. No target given.');
   else if(st.kind === 'falling')
-    head = '<span class="bz-bad">年度最低價一年比一年低。</span>過去的低點一路被跌破，用低點推算買價在這裡不適用，所以不提供參考價。';
+    head = L('<span class="bz-bad">年度最低價一年比一年低。</span>過去的低點一路被跌破，用低點推算買價在這裡不適用，所以不提供參考價。',
+             '<span class="bz-bad">Each year\'s low is lower than the last.</span> Past lows keep breaking, so a buy price based on them does not apply here. No target given.');
   else
-    head = `<b>參考買價 ${P(z.ref)}</b>` + (st.kind === 'below'
-      ? `，<span class="bz-hit">現價 ${P(s.price)} 已比它低 ${Math.abs(st.gap).toFixed(1)}%</span>。`
-      : `，比現價 ${P(s.price)} 低 ${Math.abs(st.gap).toFixed(1)}%。`) +
-      (st.yld ? `用這個價位買，以近 12 個月股息算，股息率約 ${st.yld.toFixed(1)}%` +
-                (st.pb ? `、P/B 約 ${st.pb.toFixed(2)}` : '') + '。' : '');
-  rows.push(['結論', head]);
+    head = L(`<b>參考買價 ${P(z.ref)}</b>` + (st.kind === 'below'
+        ? `，<span class="bz-hit">現價 ${P(s.price)} 已比它低 ${Math.abs(st.gap).toFixed(1)}%</span>。`
+        : `，比現價 ${P(s.price)} 低 ${Math.abs(st.gap).toFixed(1)}%。`) +
+        (st.yld ? `用這個價位買，以近 12 個月股息算，股息率約 ${st.yld.toFixed(1)}%` + (st.pb ? `、P/B 約 ${st.pb.toFixed(2)}` : '') + '。' : ''),
+      `<b>Target buy ${P(z.ref)}</b>` + (st.kind === 'below'
+        ? `: <span class="bz-hit">today's ${P(s.price)} is already ${Math.abs(st.gap).toFixed(1)}% below it</span>. `
+        : `, ${Math.abs(st.gap).toFixed(1)}% below today's ${P(s.price)}. `) +
+        (st.yld ? `Buying there gives a yield of about ${st.yld.toFixed(1)}% on the last 12 months' dividends` + (st.pb ? ` and a P/B of about ${st.pb.toFixed(2)}` : '') + '.' : ''));
+  rows.push([L('結論', 'Summary'), head]);
 
   if(st.ok){
-    const names = ['第一批', '第二批', '第三批'];
+    const names = L(['第一批', '第二批', '第三批'], ['Batch 1', 'Batch 2', 'Batch 3']);
+    const TK = {'一年低點': '1-year low', '近三年低點中位數': 'median of 3 yearly lows', '五年最低': '5-year low'};
     const ttm = s.ttm_dividend;
-    rows.push(['分批', z.tiers.map((t, i) => {
+    rows.push([L('分批', 'Batches'), z.tiers.map((t, i) => {
       const o = off(t.p);
       return `<div class="bz-tier"><span class="t">${names[i]}</span><span class="n">${P(t.p)}</span>` +
-        `<span>${t.k}${t.d ? '，' + t.d : ''}</span>` +
-        (o >= 0 ? '<span class="bz-hit">現價已到</span>' : `<span>${pc1(o)}</span>`) +
+        `<span>${L(t.k, TK[t.k] || t.k)}${t.d ? L('，', ', ') + t.d : ''}</span>` +
+        (o >= 0 ? `<span class="bz-hit">${L('現價已到', 'reached')}</span>` : `<span>${pc1(o)}</span>`) +
         // 收息族最在意的是「這個價位買，股息率多少」：每一批都標出來
-        (ttm ? `<span class="bz-y">股息率 ${(ttm / t.p * 100).toFixed(1)}%</span>` : '') + '</div>';
+        (ttm ? `<span class="bz-y">${L('股息率', 'yield')} ${(ttm / t.p * 100).toFixed(1)}%</span>` : '') + '</div>';
     }).join('')]);
   }
 
   const pb = z.pullback;
   if(pb && st.ok){
-    const now = (s.price / pb.high - 1) * 100;
-    rows.push(['回檔', `過去 ${pb.years} 年，每年從年內高點最深跌掉的幅度，中位數是 ${pb.pct.toFixed(1)}%；` +
-      `以一年高點 ${P(pb.high)} 計，是 ${P(pb.p)}。` +
-      (s.price <= pb.p ? `現價已比一年高點低 ${Math.abs(now).toFixed(1)}%，跌得比一般年份深。`
-                       : `現價比一年高點低 ${Math.abs(now).toFixed(1)}%，還在一般年份的回檔範圍內。`)]);
+    const now = Math.abs((s.price / pb.high - 1) * 100).toFixed(1);
+    rows.push([L('回檔', 'Pullback'), L(
+      `過去 ${pb.years} 年，每年從年內高點最深跌掉的幅度，中位數是 ${pb.pct.toFixed(1)}%；以一年高點 ${P(pb.high)} 計，是 ${P(pb.p)}。` +
+        (s.price <= pb.p ? `現價已比一年高點低 ${now}%，跌得比一般年份深。` : `現價比一年高點低 ${now}%，還在一般年份的回檔範圍內。`),
+      `Over the last ${pb.years} years, the median biggest drop from each year's high was ${pb.pct.toFixed(1)}%; from the 1-year high of ${P(pb.high)}, that is ${P(pb.p)}. ` +
+        (s.price <= pb.p ? `Today's price is ${now}% below the 1-year high — a deeper drop than a normal year.` : `Today's price is ${now}% below the 1-year high, within a normal year's pullback.`))]);
   }
   if(z.trend === 'up' && st.ok)
-    rows.push(['趨勢', '年度最低價一年比一年高：愈舊的低點離現價愈遠，第二、三批不一定等得到。這種股票看上面的「回檔」比較實際。']);
+    rows.push([L('趨勢', 'Trend'), L('年度最低價一年比一年高：愈舊的低點離現價愈遠，第二、三批不一定等得到。這種股票看上面的「回檔」比較實際。',
+      'Each year\'s low is higher than the last, so older lows are further from today and batches 2–3 may never come. For stocks like this, the pullback above is more realistic.')]);
 
   const lowest = Math.min(...z.years.map(y => y.p));
-  rows.push(['歷年', '<div class="bz-yrs">' + z.years.map(y =>
-    `<span${y.p === lowest ? ' class="lo"' : ''}>${y.y}${y.ytd ? '（今年）' : ''} ${P(y.p)}</span>`).join('') + '</div>']);
-  rows.push(['說明', '用收盤價計算（不含盤中最低）。參考買價是「前兩年＋今年」三個年度最低價的中位數。' +
-    '這只是歷史統計：不代表會跌到這裡，也不代表跌到就不會再跌。買之前先看派息率撐不撐得住股息，分批買。不構成投資建議。']);
+  rows.push([L('歷年', 'By year'), '<div class="bz-yrs">' + z.years.map(y =>
+    `<span${y.p === lowest ? ' class="lo"' : ''}>${y.y}${y.ytd ? L('（今年）', ' (YTD)') : ''} ${P(y.p)}</span>`).join('') + '</div>']);
+  rows.push([L('說明', 'Notes'), L(
+    '用收盤價計算（不含盤中最低）。參考買價是「前兩年＋今年」三個年度最低價的中位數。這只是歷史統計：不代表會跌到這裡，也不代表跌到就不會再跌。買之前先看派息率撐不撐得住股息，分批買。不構成投資建議。',
+    'Based on closing prices (not intraday lows). The target buy is the median of the yearly lows of the last two years and this year. This is history only: the price may never get there, and may keep falling if it does. Check that the payout can support the dividend, and buy in batches. Not investment advice.')]);
 
-  return `<div class="dg bz"><div class="dg-h">歷史低點參考價</div>` +
+  return `<div class="dg bz"><div class="dg-h">${L('歷史低點參考價', 'Target buy price from yearly lows')}</div>` +
     rows.map(([k, v]) => `<div class="dg-r"><div class="dg-k">${k}</div><div class="dg-v">${v}</div></div>`).join('') + '</div>';
 }
 
@@ -3449,13 +3496,16 @@ const NUMS = t => [...halfWidth(t).matchAll(NUM_RE)].map(m => {
 // 不然機器翻譯憑空捏一個小數字進來也混得過去
 const ZH_COUNT = /[一二三四五六七八九十兩半](?=[個月年日天週季檔次倍成則筆家位項度])/;
 function numsOk(zh, en){
+  // 「1億3853萬5000股」「4850萬令吉」這種中文大數，英文一定改寫成 138,535,000 或 48.5 million，數字本來就對不上，
+  // 以前整段因此被擋下、英文模式留下一大段中文（新股 IPO 的業務簡介）。帶億／萬的那串不比，其餘的數字照樣要對得上
+  const big = /[億亿萬万]/.test(zh);
   const left = NUMS(en);
-  for(const n of NUMS(zh)){
+  for(const n of NUMS(big ? zh.replace(/[\d.,億亿萬万]*[億亿萬万][\d.,億亿萬万]*/g, ' ') : zh)){
     const i = left.indexOf(n);
     if(i < 0) return false;                      // 中文裡的數字在英文裡不見了或被改了（例如 2026-09-30 改寫成英文日期）
     left.splice(i, 1);
   }
-  return !left.length || (ZH_COUNT.test(zh) && left.every(n => /^\d{1,2}$/.test(n)));
+  return !left.length || big || (ZH_COUNT.test(zh) && left.every(n => /^\d{1,2}$/.test(n)));
 }
 // 大馬中文報寫「3.96億」「2500元」指的都是令吉，機器翻譯常擅自寫成 RMB／yuan（人民幣）：
 // 原文沒提人民幣的一律改回 RM／ringgit。量沒變，數字核對照樣過得了，所以得另外擋
