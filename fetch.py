@@ -116,10 +116,6 @@ def fetch_one(stock):
             }
         )
     divs.sort(key=lambda d: d["date"])
-    ttm_div = round(sum(d["amount"] for d in divs[-4:]), 4) if divs else 0.0
-    # 只計最近 12 個月的派息
-    cutoff = (datetime.now(MYT) - timedelta(days=365)).strftime("%Y-%m-%d")
-    ttm_div = round(sum(d["amount"] for d in divs if d["date"] >= cutoff), 4)
 
     hi52 = meta.get("fiftyTwoWeekHigh")
     lo52 = meta.get("fiftyTwoWeekLow")
@@ -142,6 +138,12 @@ def fetch_one(stock):
                            "amount": ev["amount"]})
     except Exception:
         pass
+
+    # 近 12 個月派息：跟股息體檢同一個算法，除息日每年差幾天也不會跳（見 dividend.ttm）。
+    # 要往回看 12 個月多一點，所以用十年紀錄；抓不到才用一年日線附帶的派息
+    merged = {d["date"]: d for d in divs10}
+    merged.update({d["date"]: d for d in divs})
+    ttm_div = round(dividend.ttm(list(merged.values()), datetime.now(MYT).date())[0], 4)
 
     # 歷史低點參考價用完整十年；圖表與 3 年／5 年漲跌幅只用近五年（跟以前抓 range=5y 一樣）
     buy_zone = div_info = None
@@ -337,6 +339,11 @@ def flags(s):
             return None
 
     pb, roe = num(f.get("pb_ratio")), num(f.get("roe"))
+    if digest.fund_stale(s):
+        # 崩跌股：舊數據算出的低 P/B、高 ROE、高殖利率是假象，不給綠燈
+        out.append({"level": "warn", "text": digest.STALE_TEXT})
+        pb = None
+        roe = roe if roe is not None and roe < 7 else None
     if pb is not None and pb < 1:
         out.append({"level": "good", "text": "P/B {:.2f}（低於帳面淨值）".format(pb)})
     if roe is not None and roe >= 11:
@@ -428,10 +435,24 @@ def main():
         mk["movers"] = {"up": [slim(q) for q in mv["up"]],
                         "down": [slim(q) for q in mv["down"]],
                         "universe": mv["universe"], "total": mv["total"]}
+        reset = market.board_reset(qs)
+        if reset:
+            # 開盤前報價表被歸零：排行會是空的。沿用上一份 data.json 的排行（上一個交易日收盤）
+            mk.pop("movers")
+            try:
+                with open(os.path.join(DATA_DIR, "data.json"), encoding="utf-8") as fh:
+                    pm = (json.load(fh).get("market") or {}).get("movers")
+                if pm and isinstance(pm.get("up"), list):
+                    pm = dict(pm, live=False)
+                    pm.pop("time", None)
+                    mk["movers"] = pm
+            except Exception:  # noqa: BLE001
+                pass
+            print("  開盤前報價表已歸零，漲跌排行沿用上一份", flush=True)
         # 標明這份排行是哪一天的、收盤了沒。每 3 小時更新一次，半夜、清晨、
         # 週末那幾次拿到的是上一個交易日的收盤，不能寫成「今日」
         klse = next((s for s in stocks if s.get("symbol") == "^KLSE"), None)
-        if klse and klse.get("market_time"):
+        if klse and klse.get("market_time") and not reset:
             now = datetime.now(MYT)
             mt = datetime.strptime(klse["market_time"], "%Y-%m-%d %H:%M")
             mk["movers"]["as_of"] = mt.strftime("%Y-%m-%d")

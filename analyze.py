@@ -179,8 +179,10 @@ def _sector_trends(stocks, add):
              "AI 美股": "美股 AI 概念股"}
 
     def short(nm):
+        full = nm
         nm = re.sub(r"[（(].*?[）)]", "", nm)
-        return re.sub(r"\s*[一-鿿].*$", "", nm).strip()
+        # 「台積電 ADR」這種中文開頭的名字整段會被去掉，空的就用原名（跟網頁的 shortName 一樣）
+        return re.sub(r"\s*[一-鿿].*$", "", nm).strip() or full.strip()
 
     named = set()
     for sec, members in groups.items():

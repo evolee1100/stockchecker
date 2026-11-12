@@ -107,6 +107,18 @@ def quotes():
     return out
 
 
+def board_reset(qs):
+    """開盤前（約早上 5–9 點）klsescreener 會把漲跌和成交量歸零，股價還是昨天收盤。
+    這時候的表不能用：每檔都變 0.00%、漲跌排行是空的，還會被標成「即時報價」，
+    蓋掉昨天真正的漲跌。普通股裡幾乎沒有成交、或沒有一檔有漲跌，就當成歸零了。"""
+    xs = [q for q in qs if re.fullmatch(r"\d{4}", q.get("code") or "")]
+    if not xs:
+        return True
+    traded = sum(1 for q in xs if q.get("volume"))
+    moved = sum(1 for q in xs if q.get("pct"))
+    return traded * 100 < len(xs) or moved == 0
+
+
 def movers(qs, n=5):
     """全市場漲跌前 n 名。
 

@@ -642,12 +642,14 @@ def main():
     now = datetime.now(MYT)
     mt = res.get("klci") or _last_session(now)
     movers, quotes = None, {}
-    if qs:
+    reset = bool(qs) and market.board_reset(qs)
+    if qs and not reset:
         movers = movers_board(qs, mt, now)
         quotes = quote_map(qs, targets, int(now.timestamp() if movers["live"] else mt.timestamp()))
     else:
-        if qs is not None:
+        if qs is not None and not reset:
             warn.append("報價：全市場報價抓到 0 筆")
+        # reset：開盤前報價表被歸零（每天早上都會，不是錯誤），一樣沿用上一輪
         # 報價抓不到：沿用上一輪的報價和漲跌排行。報價帶著自己的 ts，
         # 網頁會跟 data.js 比，比較舊的不會蓋上去
         movers = _fresh_movers(prev.get("movers"), now)

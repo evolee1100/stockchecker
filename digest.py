@@ -78,6 +78,16 @@ def _holder(name):
                   "", name or "").strip()[:30] or (name or "")[:30]
 
 
+STALE_TEXT = "股價大跌，基本面數字可能過時"
+
+
+def fund_stale(s):
+    """股價崩了，P/B、ROE、殖利率都還是用舊的分母算的（Zetrix 跌 94% 還顯示 P/B 0.10、
+    殖利率 52%），看起來「便宜」其實是假象。三個月跌超過一半，或殖利率高到不合理，就不給好評。"""
+    c3, y = s.get("change_pct_3m"), s.get("yield_pct")
+    return (c3 is not None and c3 <= -50) or (y is not None and y > 20)
+
+
 def build(stock):
     s = stock
     f = s.get("fundamentals") or {}
@@ -215,7 +225,9 @@ def build(stock):
         watch.append("派息率 {:.0f}%，高於當年盈餘".format(payout))
     if roe is not None and roe < 7 and not s.get("is_index"):
         watch.append("ROE 僅 {:.1f}%，賺錢效率偏低".format(roe))
-    if pb is not None and roe is not None and pb < 1 and roe >= 10:
+    if fund_stale(s):
+        watch.append(STALE_TEXT)
+    elif pb is not None and roe is not None and pb < 1 and roe >= 10:
         watch.append("P/B 低於 1 但 ROE 有雙位數，估值與獲利不同步")
     if f.get("earnings_date"):
         watch.append("下次財報 {}".format(f["earnings_date"]))

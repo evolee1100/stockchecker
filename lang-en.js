@@ -644,6 +644,7 @@ window.UI_EN = {
     // ---- 訊號籤（fetch.py flags）（5 條）
     ["^距 52 週高點 ([-+]?[\\d.]+%)$", "$1 from 52-week high"],
     ["^P/B ([\\d.]+)（低於帳面淨值）$", "P/B $1 (below book value)"],
+    ["^股價大跌，基本面數字可能過時$", "Price has collapsed; fundamentals may be out of date"],
     ["^ROE 偏低 ([\\d.]+%)$", "Low ROE $1"],
     ["^派息率 (\\d+%)（高於盈餘）$", "Payout $1 (exceeds earnings)"],
     ["^(\\S+) 除息 (\\S+)$", "Ex-dividend $2 on $1"],
@@ -687,6 +688,8 @@ window.UI_EN = {
     ["^ROE 僅 ([\\d.]+)%，賺錢效率偏低；下次財報 (\\S+)。$", "ROE only $1%, weak profitability; next results $2."],
     ["^P/B 低於 1 但 ROE 有雙位數，估值與獲利不同步。$", "P/B below 1 but ROE in double digits: valuation and earnings out of step."],
     ["^P/B 低於 1 但 ROE 有雙位數，估值與獲利不同步；下次財報 (\\S+)。$", "P/B below 1 but ROE in double digits: valuation and earnings out of step; next results $1."],
+    ["^股價大跌，基本面數字可能過時。$", "Price has collapsed; fundamentals may be out of date."],
+    ["^股價大跌，基本面數字可能過時；下次財報 (\\S+)。$", "Price has collapsed; fundamentals may be out of date; next results $1."],
     ["^派息率 (\\d+)%，高於當年盈餘。$", "Payout $1% exceeds this year's earnings."],
     ["^派息率 (\\d+)%，高於當年盈餘；下次財報 (\\S+)。$", "Payout $1% exceeds this year's earnings; next results $2."],
     ["^派息率 (\\d+)%，高於當年盈餘；ROE 僅 ([\\d.]+)%，賺錢效率偏低。$", "Payout $1% exceeds this year's earnings; ROE only $2%, weak profitability."],
