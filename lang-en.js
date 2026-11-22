@@ -745,6 +745,7 @@ window.UI_EN = {
     ["^來源（(\\d+)）$", "Sources ($1)"],
     ["^(\\d{4}[-‑]\\d\\d[-‑]\\d\\d) · 已 (\\d+) 天$", "$1 · $2 days old"],
     // ---- 速覽的樣板（手寫）
+    ["^資料未更新（沿用 (\\S+)）$", "Not updated (showing $1)"],
     ["^資料 (\\S+ \\S+) · 僅供參考，不構成投資建議$", "Data $1 · For information only, not investment advice"],
     ["^([\\d,]+) 點，今年 ([-+][\\d.]+%)$", "$1 pts, $2 this year"],
     ["^近一個月平均 ([-+][\\d.]+%)，(\\d+) 檔中 (\\d+) 檔跌$", "1-month average $1; $3 of $2 down"],

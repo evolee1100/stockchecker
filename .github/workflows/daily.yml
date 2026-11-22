@@ -27,6 +27,8 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
+    # 平常 8–28 分鐘。卡住時不能一直佔著，會擋住下一次排程（concurrency 同一組只跑一個）
+    timeout-minutes: 40
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -57,11 +59,22 @@ jobs:
           # 原本的 sed/grep 找不到東西會讓整個步驟失敗，所以移除。
           cp icon.svg icon-192.png icon-512.png apple-touch-icon.png \
              favicon-32.png favicon-16.png _site/
-          cp -r data _site/
+          # 網頁只讀 data/data.js。以前整個 data 資料夾（約 90MB：每日快照、翻譯快取）都放上網站，
+          # 部署慢、比較容易失敗，快取也全部公開可下載
+          mkdir -p _site/data
+          cp data/data.js _site/data/
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
       - id: deploy
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+      # 部署偶爾失敗（約 2%，都是 GitHub 那邊暫時性的錯），以前網站就停在舊資料 3 小時。等一分鐘再試一次
+      - name: 部署失敗，等 60 秒再試一次
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 60
+      - id: deploy2
+        if: steps.deploy.outcome == 'failure'
         uses: actions/deploy-pages@v4

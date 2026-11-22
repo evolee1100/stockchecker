@@ -366,9 +366,46 @@ def flags(s):
     return out
 
 
+# 上一份已發布的資料在哪：雲端每次都是乾淨的 checkout（data.json 不進版控），所以抓線上網站那份
+PAGES_DATA = "https://{}.github.io/{}/data/data.js".format(
+    *(os.environ.get("GITHUB_REPOSITORY") or "evolee1100/stockchecker").split("/", 1))
+MAX_FAIL = 0.25        # 超過這個比例抓不到就整次放棄，不發布、不存快照，網站維持上一份
+
+
+def previous_stocks():
+    """上一份已發布的資料，{symbol: stock}。拿不到回傳空 dict（照常更新，只是失敗的那幾檔沒得沿用）。"""
+    try:
+        with open(os.path.join(DATA_DIR, "data.json"), encoding="utf-8") as fh:
+            prev = json.load(fh)
+    except Exception:  # noqa: BLE001
+        try:
+            req = urllib.request.Request(PAGES_DATA + "?t={}".format(int(time.time())),
+                                         headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=30, context=ssl.create_default_context()) as r:
+                txt = r.read().decode("utf-8")
+            prev = json.loads(txt[txt.index("{"):txt.rindex(";")])
+        except Exception as exc:  # noqa: BLE001
+            print("  （拿不到上一份資料，失敗的股票沒得沿用：{}）".format(exc), flush=True)
+            return {}
+    return {x["symbol"]: x for x in prev.get("stocks", []) if x.get("symbol")}
+
+
+def stale_copy(old, err):
+    """抓不到的股票沿用上一份，並標明「資料未更新」。
+    以前直接從清單消失，使用者看不出是抓不到還是被拿掉了。"""
+    s = dict(old)
+    since = old.get("stale_since") or (old.get("market_time") or "")[:10]
+    s["stale_since"] = since
+    s["flags"] = [{"level": "warn", "text": "資料未更新（沿用 {}）".format(since)}] + [
+        f for f in (old.get("flags") or []) if not f.get("text", "").startswith("資料未更新")]
+    print("    → 沿用上一份（{}）：{}".format(since, err), flush=True)
+    return s
+
+
 def main():
     with open(os.path.join(HERE, "watchlist.json"), encoding="utf-8") as fh:
         cfg = json.load(fh)
+    prev = previous_stocks()
 
     # 市場快訊最先做：它在首頁最上面，翻譯額度要先給它，
     # 放在最後的話，額度常在逐檔抓新聞時就被用光
@@ -406,6 +443,8 @@ def main():
         except Exception as exc:  # noqa: BLE001
             print("  [{:2d}/{}] ✗ {}: {}".format(i, total, stock["symbol"], exc), flush=True)
             errors.append({"symbol": stock["symbol"], "error": str(exc)})
+            if stock["symbol"] in prev:
+                stocks.append(stale_copy(prev[stock["symbol"]], exc))
 
     try:
         po = palm_oil()
@@ -416,6 +455,14 @@ def main():
     except Exception as exc:  # noqa: BLE001
         print("  [--/{}] ✗ 棕櫚油: {}".format(total, exc), flush=True)
         errors.append({"symbol": "MPOB-CPO", "error": str(exc)})
+        if "MPOB-CPO" in prev:
+            stocks.append(stale_copy(prev["MPOB-CPO"], exc))
+
+    # 資料來源整個掛掉時，以前照樣「成功」並發布一個 0 檔的空白網站，還蓋掉當天的快照。
+    # 失敗太多就直接結束（exit 1）：後面的存檔、提交、部署都不會跑，網站維持上一份
+    if len(errors) > MAX_FAIL * (total + 1):
+        raise SystemExit("✗ {} / {} 檔抓不到，超過 {:.0%}，這次不發布，網站維持上一份".format(
+            len(errors), total + 1, MAX_FAIL))
 
     # 加密與美股報的是美元，換算成馬幣才是使用者實際會用到的數字
     fx = next((x["price"] for x in stocks if x["symbol"] == "MYR=X"), None)
@@ -521,7 +568,8 @@ def main():
         json.dump(
             {"updated_at": payload["updated_at"],
              "stocks": [{k: v for k, v in s.items()
-                         if k not in ("series", "articles", "filings")} for s in stocks]},
+                         # series_w（5 年週線）佔了快照 87%，每天都一樣，不存
+                         if k not in ("series", "series_w", "articles", "filings")} for s in stocks]},
             fh, ensure_ascii=False, indent=1,
         )
 

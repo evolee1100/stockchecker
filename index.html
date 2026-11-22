@@ -761,6 +761,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .an-src a{display:block;padding:7px 0;color:#0b57d0;text-decoration:none}
 .an-src a:hover{text-decoration:underline}
 .an-txt .an-foot{font-size:11.5px;color:var(--read)}
+.an-old{margin-top:6px;padding:6px 10px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-weight:600}
 .an-dv{border-top:1px solid var(--hair);padding-top:8px}
 .an-dv > b{color:var(--good)}
 
@@ -1824,7 +1825,7 @@ function quickRow(s, chip){
   return `<div class="q-row" data-go="${esc(s.symbol)}">
     <div class="q-n">${esc(nameEn(s.name))}</div>
     <div class="q-y${qWeak(s) ? ' weak' : ''}">${y == null ? '—' : y.toFixed(1) + '<small>%</small>'}</div>
-    <div class="q-m">${chip ? `<span class="chip ${chip[0]}">${chip[1]}</span>` : ''}${qBuy(s)}</div></div>`;
+    <div class="q-m">${s.stale_since ? `<span class="chip warn">${L('資料未更新', 'Not updated')}</span>` : ''}${chip ? `<span class="chip ${chip[0]}">${chip[1]}</span>` : ''}${qBuy(s)}</div></div>`;
 }
 
 // 個股面板最上面：四格大字＋一句話＋每年派息小圖；長的說明收進「詳細說明」
@@ -2673,7 +2674,11 @@ function renderAnalysis(){
   const nb = t => en ? t.replace(/-/g, '‑') : t;
 
   // ---- 0. 一行：資料時間＋免責（不能收起，見 CSS .an-head）
-  const head = `<div>資料 ${esc(nb((D.updated_at || '').replace(/:\d\d \(MYT\)$/, '')))} · 僅供參考，不構成投資建議</div>`;
+  // 資料超過 6 小時沒更新要講出來（自動更新偶爾會延遲好幾個小時），不然看不出數字是舊的
+  const ageH = (Date.now() - Date.parse((D.updated_at || '').replace(' (MYT)', '').replace(' ', 'T') + '+08:00')) / 3600e3;
+  const head = `<div>資料 ${esc(nb((D.updated_at || '').replace(/:\d\d \(MYT\)$/, '')))} · 僅供參考，不構成投資建議</div>` +
+    (ageH >= 6 ? `<div class="an-old">${L(`資料已 ${Math.floor(ageH)} 小時沒更新，數字可能不是最新的`,
+                                          `Data is ${Math.floor(ageH)} hours old and may not be current`)}</div>` : '');
   const top = document.getElementById('an-top');
   if(top._html !== head){ top._html = head; top.innerHTML = head; }
 
@@ -2682,7 +2687,10 @@ function renderAnalysis(){
   const mood = avg => avg <= -3 ? ['bad', '跌勢中'] : avg >= 3 ? ['good', '漲勢中'] : ['', '平穩'];
   const now = [];
   const k = bySym('^KLSE'), ky = k && ytdOf(k);
-  if(ky) now.push([`data-go="${esc(k.symbol)}"`, '大盤', mood(k.change_pct_1m || 0), `${anInt(ky.now)} 點，今年 ${pc1(ky.ytd)}`]);
+  // 標籤看的是近一個月，文字也寫一個月：以前只寫「今年 -7.4%」，旁邊卻標「平穩」，看起來自相矛盾
+  if(ky) now.push([`data-go="${esc(k.symbol)}"`, '大盤', mood(k.change_pct_1m || 0),
+    L(`${anInt(ky.now)} 點，近一個月 ${pc1(k.change_pct_1m || 0)}，今年 ${pc1(ky.ytd)}`,
+      `${anInt(ky.now)} pts · 1 month ${pc1(k.change_pct_1m || 0)} · this year ${pc1(ky.ytd)}`)]);
   [['銀行', '銀行股', 'an-bank'], ['REIT', 'REIT', 'an-reit']].forEach(([sec, label, card]) => {
     const list = of(sec).filter(s => s.change_pct_1m != null);
     if(list.length < 2) return;
@@ -2690,11 +2698,19 @@ function renderAnalysis(){
     const down = list.filter(s => s.change_pct_1m < 0).length;
     now.push([`data-to="${card}"`, label, mood(avg), `近一個月平均 ${pc1(avg)}，${list.length} 檔中 ${down} 檔跌`]);
   });
+  // 現在哪幾檔值得看：體質沒問題（不是紅、黃標籤）、有參考買價的，離參考買價最近的 3 檔（已經低於的排最前）
+  const near = [...of('銀行'), ...of('REIT')].filter(s => { const b = bzStatus(s); return b && b.ok && !qWeak(s) && qSignal(s)[0] !== 'warn'; })
+    .sort((a, b) => bzStatus(b).gap - bzStatus(a).gap).slice(0, 3);
+  if(near.length) now.push(['', L('接近參考買價', 'Near target buy'), ['info', L('可以留意', 'Worth a look')],
+    near.map(s => { const g = bzStatus(s).gap;
+      return L(`${shortName(s)}（${g >= 0 ? '已低於' : '差 ' + Math.abs(g).toFixed(0) + '%'}）`,
+               `${nameEn(shortName(s))} (${g >= 0 ? 'below it' : Math.abs(g).toFixed(0) + '% away'})`); }).join(L('、', ', '))]);
   mcard('an-now', '今天 30 秒', '大盤、銀行股、REIT', now.map(([attr, label, m, text]) =>
     `<div class="anb q-now" ${attr}><b>${label}</b><span class="chip ${m[0]}">${m[1]}</span><span>${esc(text)}</span></div>`).join(''));
 
   // ---- 2. REIT：股息率高的在前。一列只放三樣東西：股息率（右邊大字）、一個判斷、參考買價
-  const reits = of('REIT').sort((a, b) => nv(qYield(b), -1) - nv(qYield(a), -1));
+  // 有問題的（紅色：股息在減少、跌破歷年低點）排最後：以前純依股息率排，高息陷阱永遠排第一個
+  const reits = of('REIT').sort((a, b) => (qSignal(a)[0] === 'bad') - (qSignal(b)[0] === 'bad') || nv(qYield(b), -1) - nv(qYield(a), -1));
   if(reits.length) mcard('an-reit', 'REIT', `${reits.length} 檔 · 收租、領股息`,
     Q_HEAD + reits.map(s => quickRow(s, qSignal(s))).join('') +
     '<div class="an-note">股息率 5% ＝ 投入 RM10,000，一年約領 RM500。點一檔看每年派息和三批買價。</div>');
@@ -3173,12 +3189,23 @@ function toast(title, sub = '', ms = 5000){
   el._t = setTimeout(() => el.classList.remove('on'), ms);
 }
 
-document.getElementById('reload').onclick = ev => {
-  ev.currentTarget.classList.add('busy');    // 重載有延遲，先轉起來讓人知道按到了
-  try { sessionStorage.setItem('reload_from', (D && D.updated_at) || ''); } catch(e) {}
-  const u = new URL(location.href);
-  u.searchParams.set('t', Date.now());
-  location.replace(u.toString());
+// 「更新」只重抓資料，不重新載入整個網頁（以前每按一次約 0.5MB）。資料沒變就照實說；
+// 新聞與盤中報價順便重抓一次
+document.getElementById('reload').onclick = async ev => {
+  const btn = ev.currentTarget;
+  if(btn.classList.contains('busy')) return;
+  btn.classList.add('busy');
+  const before = D && D.updated_at;
+  try {
+    const nd = await loadData();
+    const changed = nd.updated_at !== before;
+    if(changed){ D = nd; render(); }
+    liveBusy = 0;
+    refreshLive();
+    toast(changed ? '已更新到最新資料' : '已經是最新資料', '資料時間 ' + (D.updated_at || '').replace(' (MYT)', ''));
+  } catch(e) {
+    toast('資料載入失敗', String(e && e.message || e));
+  } finally { btn.classList.remove('busy'); }
 };
 
 /* ---------- 即時新聞 ----------
@@ -4180,8 +4207,15 @@ async function refreshLive(){
 }
 // 只在看得到頁面時抓：背景分頁不浪費流量，也不吃 GitHub 每小時 60 次的額度。
 // 每 30 秒看一次「距離上次是否滿 3 分鐘」，比直接 setInterval(3 分鐘) 耐得住背景節流
+// 馬股交易時段（週一到五 9:00–17:00 馬來西亞時間）3 分鐘一次，其他時間 15 分鐘：
+// 半夜、週末沒有新報價也很少新聞，以前照樣每 3 分鐘抓，開著不關一小時約 1MB
+const liveGap = () => {
+  const m = new Date(Date.now() + 8 * 3600e3);              // 換成馬來西亞時間再取星期、小時
+  const d = m.getUTCDay(), h = m.getUTCHours();
+  return d >= 1 && d <= 5 && h >= 9 && h < 17 ? LIVE_MS : 15 * 60e3;
+};
 setInterval(() => {
-  if(document.visibilityState === 'visible' && Date.now() - liveLast >= LIVE_MS - 10e3) refreshLive();
+  if(document.visibilityState === 'visible' && Date.now() - liveLast >= liveGap() - 10e3) refreshLive();
 }, 30e3);
 // 從別的 App 切回來（超過 1 分鐘）馬上抓一次
 document.addEventListener('visibilitychange', () => {
@@ -4192,8 +4226,11 @@ document.addEventListener('visibilitychange', () => {
    用 fetch 而不是 <script src>：固定網址的 script 會被瀏覽器快取住，
    而且一旦快取條目建立，之後就算伺服器改送 no-store 它也不會回頭問，
    於是出現「資料明明更新了、畫面卻是舊的」。fetch 可以明確指定不用快取。 */
+// 改用 cache:'no-cache'、固定網址：每次都會問伺服器，但資料沒變時伺服器回 304、直接用手機裡那份，
+// 不再每次重下載整份（約 400KB）。跟上面說的 <script src> 不同，no-cache 一定會回頭問，不會拿到舊資料
 async function loadData(){
-  const res = await fetch('data/data.js?t=' + Date.now(), {cache: 'no-store'});
+  const res = await fetch('data/data.js', {cache: 'no-cache'});
+  if(!res.ok) throw new Error('HTTP ' + res.status);
   const txt = await res.text();
   return JSON.parse(txt.slice(txt.indexOf('{'), txt.lastIndexOf(';')));
 }
