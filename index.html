@@ -3522,14 +3522,26 @@ const NUMS = t => [...halfWidth(t).matchAll(NUM_RE)].map(m => {
 // 國字數字後面要接量詞（一個月、半年、十日、三次）才算數量詞；「十分嚴重」的「十」不是，
 // 不然機器翻譯憑空捏一個小數字進來也混得過去
 const ZH_COUNT = /[一二三四五六七八九十兩半](?=[個月年日天週季檔次倍成則筆家位項度])/;
+// 日期兩邊寫法一定不同（「11月25日」「2026-11-20」「11/16–11/20」↔ “November 25”“Nov 20, 2026”），
+// 以前因此整段被擋下、英文模式留一大段中文。日期不拿來比，價格、股數、百分比照樣要對得上
+const ZH_DATE = /\d{4}\s*[-/年]\s*\d{1,2}\s*[-/月]\s*\d{1,2}\s*日?|\d{1,2}\s*月\s*\d{1,2}\s*日|\d{1,2}\/\d{1,2}(?:\s*[–-]\s*\d{1,2}\/\d{1,2})?|\d{4}\s*年|\d{1,2}\s*月(?!份?\s*[\d])/g;
+const EN_MON = '(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\\.?';
+const EN_DATE = new RegExp(`\\d{4}-\\d{1,2}-\\d{1,2}|${EN_MON}\\s+\\d{1,2}(?:st|nd|rd|th)?(?:\\s*[–-]\\s*\\d{1,2})?(?:,?\\s*\\d{4})?|\\d{1,2}(?:st|nd|rd|th)?\\s+${EN_MON}(?:,?\\s*\\d{4})?|\\d{1,2}\\/\\d{1,2}(?:\\s*[–-]\\s*\\d{1,2}\\/\\d{1,2})?|${EN_MON}(?:\\s+\\d{4})?|\\b20\\d\\d\\b`, 'g');
+const EN_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 function numsOk(zh, en){
   // 「1億3853萬5000股」「4850萬令吉」這種中文大數，英文一定改寫成 138,535,000 或 48.5 million，數字本來就對不上，
   // 以前整段因此被擋下、英文模式留下一大段中文（新股 IPO 的業務簡介）。帶億／萬的那串不比，其餘的數字照樣要對得上
   const big = /[億亿萬万]/.test(zh);
+  zh = zh.replace(ZH_DATE, ' ');
+  en = en.replace(EN_DATE, ' ');
   const left = NUMS(en);
   for(const n of NUMS(big ? zh.replace(/[\d.,億亿萬万]*[億亿萬万][\d.,億亿萬万]*/g, ' ') : zh)){
     const i = left.indexOf(n);
-    if(i < 0) return false;                      // 中文裡的數字在英文裡不見了或被改了（例如 2026-09-30 改寫成英文日期）
+    if(i < 0){
+      // 「3銀行」→ “three banks”：10 以下的整數常被寫成英文字
+      if(/^\d$|^10$/.test(n) && new RegExp('\\b' + EN_WORDS[+n] + '\\b', 'i').test(en)) continue;
+      return false;                              // 中文裡的數字在英文裡不見了或被改了
+    }
     left.splice(i, 1);
   }
   return !left.length || big || (ZH_COUNT.test(zh) && left.every(n => /^\d{1,2}$/.test(n)));
