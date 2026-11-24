@@ -18,6 +18,7 @@ from datetime import datetime, timedelta, timezone
 import analyze
 import buyzone
 import digest
+import epf
 import dividend
 import fundamentals
 import market
@@ -472,6 +473,7 @@ def main():
             st["myr_rate"] = fx
         st["digest"] = digest.build(st)
 
+    qs = None
     # ---- 全市場：漲跌排行、IPO（大盤快訊在最前面已經抓好）----
     # 追蹤清單只有 49 檔，看不到自己沒追的股票；這裡補上「整個市場今天怎麼了」
     try:
@@ -531,6 +533,19 @@ def main():
     except Exception as exc:  # noqa: BLE001 - 全市場資料掛了不能拖垮整份更新
         print("  ✗ 全市場資料: {}".format(exc), flush=True)
 
+    # ---- EPF 每天的買賣（epf.py）。抓不到就用 data/epf.json 裡已經存的，不能拖垮整份更新
+    epf_sum = None
+    try:
+        try:
+            est = epf.update(log=lambda m: print(m, flush=True))
+        except Exception as exc:  # noqa: BLE001
+            print("  ✗ EPF 公告抓不到，用上次存的：{}".format(exc), flush=True)
+            est = epf.load()
+        epf_sum = epf.summary(est, qs)
+        print("  EPF：{} 檔有買賣（近 30 天）".format(len(epf_sum["stocks"])), flush=True)
+    except Exception as exc:  # noqa: BLE001
+        print("  ✗ EPF 摘要: {}".format(exc), flush=True)
+
     highlights = analyze.analyse(stocks, datetime.now(MYT).date())
     print("\n重點 {} 條：".format(len(highlights)), flush=True)
     for h in highlights[:5]:
@@ -543,6 +558,7 @@ def main():
         "highlights": highlights,
         "market": mk,
         "errors": errors,
+        "epf": epf_sum,
     }
 
     news.save_url_cache()           # 解析過的網址存起來，隔天不用重算

@@ -24,6 +24,20 @@ json.dump(m, open('data/translations.json','w'), ensure_ascii=False, indent=0, s
 print('  翻譯快取合併 → %d 筆' % len(m))
 PY
         ;;
+      data/epf.json)
+        # EPF 公告是累積的（公告編號 → 內容），兩邊聯集
+        python3 - <<'PY'
+import json, subprocess
+def side(st):
+    o = subprocess.run(['git','show',st+':data/epf.json'], capture_output=True)
+    return json.loads(o.stdout.decode()) if o.returncode == 0 else {"filings": {}}
+a, b = side(':2'), side(':3')
+a["filings"].update(b.get("filings", {}))
+a["updated_at"] = max(a.get("updated_at") or "", b.get("updated_at") or "")
+json.dump(a, open('data/epf.json','w'), ensure_ascii=False, indent=0, sort_keys=True)
+print('  EPF 公告合併 → %d 則' % len(a["filings"]))
+PY
+        ;;
       *) git checkout --theirs "$f" 2>/dev/null || true; echo "  取本機版本：$f" ;;
     esac
     git add "$f"

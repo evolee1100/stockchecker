@@ -699,7 +699,7 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
    不是把一份寫死的報告貼上來：數字每次開頁都從 data.js 現算，資料一更新就跟著變；
    只有「大環境觀點」是人工整理的，所以標日期、放最後，過期了會自己說。
    卡片沿用首頁的 .mcard，列的排法比照漲跌排行（.mvr）：左邊名稱＋小字，右邊數字。 */
-#analysis[hidden],.scroll[hidden]{display:none}
+#analysis[hidden],#epf[hidden],.scroll[hidden]{display:none}
 /* 最上面：資料時間＋免責，兩行字，不做成卡片。做成可收起的卡片時，按一次「收起」就永遠看不到
    「不構成投資建議」，而且卡片標題「分析」只是把剛點的分頁名稱再寫一次 */
 .an-head{font-size:12px;color:var(--read);line-height:1.6;margin:0 2px 12px}
@@ -708,8 +708,8 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .anb{padding:10px 14px;border-top:1px solid var(--hair);font-size:13.5px;line-height:1.55}
 .anb:first-child{border-top:none}
 .anb b{font-weight:650;margin-right:6px}
-.anb[data-go],.anb[data-to]{cursor:pointer;position:relative;padding-right:30px}
-.anb[data-go]::after,.anb[data-to]::after{content:"›";position:absolute;right:14px;top:50%;
+.anb[data-go],.anb[data-to],.anb[data-tab]{cursor:pointer;position:relative;padding-right:30px}
+.anb[data-go]::after,.anb[data-to]::after,.anb[data-tab]::after{content:"›";position:absolute;right:14px;top:50%;
   transform:translateY(-50%);font-size:20px;line-height:1;color:var(--ink-3)}
 .anb[data-go]:hover,.anb[data-to]:hover,.anr:hover{background:var(--tint)}
 /* 銀行／REIT／題材股的列。第一行：名稱（可以折行，不要省略成「Hong Leong…」），右邊只放「今年」一個數字；
@@ -761,6 +761,36 @@ tr.detail td{padding:0;background:var(--tint);border-bottom:1px solid var(--line
 .an-src a{display:block;padding:7px 0;color:#0b57d0;text-decoration:none}
 .an-src a:hover{text-decoration:underline}
 .an-txt .an-foot{font-size:11.5px;color:var(--read)}
+/* EPF 分頁 */
+.ep-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:0 2px 12px;font-size:12.5px;color:var(--read)}
+.ep-sw{display:inline-flex;background:#e5eaf1;border-radius:10px;padding:3px;gap:2px}
+.ep-w{font:inherit;font-size:12.5px;font-weight:600;border:none;background:transparent;color:var(--ink-2);padding:5px 12px;border-radius:8px;cursor:pointer}
+.ep-w.on{background:#fff;color:var(--brand);box-shadow:0 1px 2px rgba(14,26,43,.08)}
+.ep-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.ep-tiles > div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.ep-tiles .k{font-size:11px;color:var(--ink-2)}
+.ep-tiles .v{font-size:18px;font-weight:750;font-variant-numeric:tabular-nums;margin-top:2px}
+.ep-tiles .s{font-size:11px;color:var(--read)}
+.ep-v{font-size:17px}
+.q-y.ep-v.up{color:var(--up)} .q-y.ep-v.down{color:var(--down)}
+.ep-tiles .v{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ep-full{display:block;font-size:11px;font-weight:500;color:var(--read);margin-top:1px}
+.ep-star{color:#e0a100;margin-right:4px}
+.ep-row.on{background:var(--tint)}
+.ep-det{grid-column:1 / -1;margin-top:8px;font-size:12px;font-variant-numeric:tabular-nums}
+.ep-det > div{display:grid;grid-template-columns:96px 1fr auto;gap:8px;padding:4px 0;border-top:1px dashed var(--hair)}
+.ep-go{margin-top:8px;font:inherit;font-size:12.5px;font-weight:650;color:#0b57d0;background:none;border:none;padding:4px 0;cursor:pointer}
+@media(max-width:700px){
+  .ep-bar,.ep-w{font-size:15px}
+  .ep-tiles .k,.ep-tiles .s{font-size:13px}
+  .ep-tiles{gap:6px} .ep-tiles > div{padding:8px 9px}
+  .ep-tiles .v{font-size:16.5px}
+  .ep-v{font-size:19px}
+  .ep-full{font-size:13px}
+  .ep-det{font-size:14.5px}
+  .ep-det > div{grid-template-columns:100px 1fr auto}
+  .ep-go{font-size:15.5px}
+}
 .an-old{margin-top:6px;padding:6px 10px;border-radius:8px;background:var(--warn-bg);color:var(--warn);font-weight:600}
 .an-dv{border-top:1px solid var(--hair);padding-top:8px}
 .an-dv > b{color:var(--good)}
@@ -953,6 +983,10 @@ html,body{background:var(--bg)}
 #an-now{--c:#2563EB;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 12h4l3-7 4 14 3-7h4'/%3E%3C/svg%3E")}
 #an-bank{--c:#08834A;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9.5 12 4l9 5.5'/%3E%3Cpath d='M5.5 10v7.5M10 10v7.5M14 10v7.5M18.5 10v7.5'/%3E%3Cpath d='M3 20.5h18'/%3E%3C/svg%3E")}
 #an-reit{--c:#4F46E5;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3' width='14' height='18' rx='1.5'/%3E%3Cpath d='M9 7.5h2M13 7.5h2M9 11.5h2M13 11.5h2M10 21v-4h4v4'/%3E%3C/svg%3E")}
+#ep-buy{--c:#0F8A4F;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19V5M5 12l7-7 7 7'/%3E%3C/svg%3E")}
+#ep-sell{--c:#C8261E;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12l7 7 7-7'/%3E%3C/svg%3E")}
+#ep-watch{--c:#D99100;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z'/%3E%3C/svg%3E")}
+#ep-moved{--c:#4F46E5;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 7h11l-3-3M17 17H6l3 3'/%3E%3C/svg%3E")}
 #an-howto{--c:#475569;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 19.5V5a2 2 0 0 1 2-2h13.5v14H6a2 2 0 0 0-2 2.5z'/%3E%3Cpath d='M19.5 17v4H6a2 2 0 0 1-2-1.5'/%3E%3Cpath d='M9 7.5h6'/%3E%3C/svg%3E")}
 #an-rules{--c:#B45309;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6.5l1.6 1.6L8.5 5M4 12.5l1.6 1.6 2.9-3.1M4 18.5l1.6 1.6 2.9-3.1'/%3E%3Cpath d='M12 7h8M12 13h8M12 19h8'/%3E%3C/svg%3E")}
 #an-view{--c:#0E7490;--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z'/%3E%3C/svg%3E")}
@@ -1283,7 +1317,8 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
   .tab{font-size:17px;padding:11px 2px;border-radius:13px}
   .tab .n{font-size:14px}
   /* 「速覽」排第一個。沒有「最愛」時共 7 個分頁，速覽佔兩格，剛好排成 4＋4；有最愛時 8 個，不用補 */
-  .tab[data-t="分析"]:first-child:nth-last-child(7){grid-column:span 2}
+  /* 加了「EPF」之後沒有最愛時是 8 個（4＋4）；有最愛時 9 個，速覽獨佔第一列 */
+  .tab[data-t="分析"]:first-child:nth-last-child(9){grid-column:span 4}
   /* 英文分頁也維持等寬四欄（375 寬每格 80px）。以前讓欄寬跟著最長的名字走，四欄寬窄不一，
      選中的白色膠囊左右只剩 1px，檔數還縮到 12.5px。改成讓名字放得進格子：
      「最愛」英文用 Starred（Favourites 太長，見 JS 的 tabName），字 15px、左右各留 3px；
@@ -1407,6 +1442,8 @@ tr.row .star.on svg{stroke:#a87400;stroke-width:1.3px}
     <div id="an-top" class="an-head"></div><div id="an-now"></div><div id="an-reit"></div><div id="an-bank"></div>
     <div id="an-howto"></div><div id="an-rules"></div><div id="an-view"></div><div id="an-foot" class="an-head"></div>
   </div>
+  <!-- 「EPF」分頁：EPF 每天在 Bursa 公告的買賣（epf.py 整理） -->
+  <div id="epf" hidden></div>
 
 
 </div>
@@ -1655,6 +1692,8 @@ const TABS = [
   // 「分析」畫面上叫「速覽」：銀行股＋REIT 一頁看完，放第一個、也是第一次打開時的預設分頁。
   // 內部的鍵維持「分析」：CSS、英文字典、localStorage 存的分頁都認這個字
   {t:'分析', secs:[], view:'analysis'},
+  // EPF 動向：不是股票清單，是 EPF 公告的買賣排行（renderEPF）
+  {t:'EPF', secs:[], view:'epf'},
   {t:'最愛', secs:null},                      // 特例：看的是最愛清單不是分類
   // 指數這頁其實是「非個股的市場指標」——匯率、公債殖利率本來就不是指數，
   // 加密同理，放一起比單開一個兩檔的分頁合理
@@ -1849,6 +1888,8 @@ function quickHtml(s){
   if(d && d.trend === 'down' && !(ds && ds.trap)) say.push('近三年股息在減少，要留意。');
   else if(d && d.trend === 'up') say.push('近三年股息在增加。');
   if(!isReit(s)){ const t = TIER_LEGEND.find(x => x[1] === sig[1]); if(t) say.push(t[1] + '：' + t[2] + '。'); }
+  const ef = epfOf(s);
+  if(ef) say.push(ef);
   if(bz && bz.ok) say.push(`想分批買：${z.tiers.map(t => P(t.p)).join(' → ')}。`);
   else if(bz) say.push('股價已跌破近五年每一年的低點，歷史低點不再是支撐，先觀望。');
 
@@ -2656,6 +2697,8 @@ function openStock(sym, block = 'start'){
 // 事件委派：卡片內容沒變時 mcard 不重畫，綁在外層就不必每次重綁。
 // data-go 開那一檔；data-to 捲到這一頁下面的卡片（「現在發生什麼事」的銀行股、REIT 那兩條）
 document.getElementById('analysis').addEventListener('click', e => {
+  const tb = e.target.closest('[data-tab]');
+  if(tb){ activeTab = tb.dataset.tab; openSym = null; render(); window.scrollTo({top: document.getElementById('tabs').offsetTop - 10, behavior: 'smooth'}); return; }
   const to = e.target.closest('[data-to]');
   if(to){
     const card = document.getElementById(to.dataset.to);
@@ -2665,6 +2708,128 @@ document.getElementById('analysis').addEventListener('click', e => {
   const el = e.target.closest('[data-go]');
   if(el) openStock(el.dataset.go);
 });
+
+/* ---------- EPF 動向（epf.py 整理 Bursa 公告；這裡只做加總與排行）----------
+   D.epf = {dates: [有 EPF 交易的日子], stocks: [{code, short, name, ev: [[交易日, 淨股數, 估計金額]], pct: [[公告日, 持股%]], kinds: [[公告日, new|ceased]]}]}
+   「近 N 日」用的是「EPF 有交易的日子」往回數 N 天：公告晚 2–3 天，用日曆天會把最近幾天算成沒交易 */
+const EPF_WIN_KEY = 'epf_win';
+let epfWin = (() => { try { return +localStorage.getItem(EPF_WIN_KEY) || 5; } catch(e) { return 5; } })();
+let epfOpen = null;                                // 展開明細的那一檔
+
+// tight：上面三格用的短寫法（「+RM10.9億」），手機一格不到 100px
+const epfMoney = (v, tight) => {
+  if(v == null) return '—';
+  const a = Math.abs(v), sg = v < 0 ? '−' : '+';
+  if(tight && !isEn()) return sg + 'RM' + (a >= 1e8 ? (a / 1e8).toFixed(a >= 1e9 ? 0 : 1) + '億' : Math.round(a / 1e4).toLocaleString('en-US') + '萬');
+  if(isEn()) return sg + 'RM' + (a >= 1e9 ? (a / 1e9).toFixed(2) + 'bn' : a >= 1e8 ? Math.round(a / 1e6) + 'm' : a >= 1e6 ? (a / 1e6).toFixed(1) + 'm' : Math.round(a / 1e3) + 'k');
+  return sg + 'RM ' + (a >= 1e8 ? (a / 1e8).toFixed(2) + ' 億' : a >= 1e4 ? Math.round(a / 1e4).toLocaleString('en-US') + ' 萬' : Math.round(a).toLocaleString('en-US'));
+};
+const epfShares = v => {
+  const a = Math.abs(v), sg = v < 0 ? '−' : '+';
+  if(isEn()) return sg + (a >= 1e9 ? (a / 1e9).toFixed(2) + 'bn' : a >= 1e6 ? (a / 1e6).toFixed(2) + 'm' : a >= 1e3 ? Math.round(a / 1e3) + 'k' : a) + ' sh';
+  return sg + (a >= 1e8 ? (a / 1e8).toFixed(2) + ' 億' : a >= 1e4 ? (a / 1e4).toFixed(a >= 1e6 ? 0 : 1) + ' 萬' : a.toLocaleString('en-US')) + ' 股';
+};
+const epfWatched = x => x.code && D.stocks.find(s => s.symbol === x.code + '.KL');
+
+function epfAgg(win){
+  const E = D && D.epf;
+  if(!E || !E.stocks || !E.stocks.length || !E.dates.length) return null;
+  const dates = E.dates.slice(-win), from = dates[0], to = dates[dates.length - 1];
+  const rows = E.stocks.map(x => {
+    const ev = x.ev.filter(e => e[0] >= from);
+    if(!ev.length) return null;
+    const sh = ev.reduce((a, e) => a + e[1], 0);
+    const v = ev.some(e => e[2] != null) ? ev.reduce((a, e) => a + (e[2] || 0), 0) : null;
+    // 持股%：視窗開始前最後一次公告的 % → 最新一次。公告日比交易日晚，前後差幾天，看趨勢夠用
+    const pc = x.pct || [];
+    const before = pc.filter(p => p[0] < from).pop() || pc[0];
+    const now = pc[pc.length - 1];
+    const kind = (x.kinds || []).filter(k => k[0] >= from).map(k => k[1]).pop() || '';
+    return {x, ev, sh, v, kind, pctPrev: before && before[1], pctNow: now && now[1], w: epfWatched(x)};
+  }).filter(r => r && r.sh);
+  const val = r => r.v != null ? r.v : r.sh;       // 沒有價格（對不到代碼）的用股數排，至少方向對
+  return {rows, from, to, n: dates.length,
+          buy: rows.filter(r => r.sh > 0).sort((a, b) => val(b) - val(a)),
+          sell: rows.filter(r => r.sh < 0).sort((a, b) => val(a) - val(b))};
+}
+
+// 函式而不是常數：載入時語言設定還沒讀（lang 在後面才宣告），要在畫的時候才決定中英文
+const EPF_KIND = k => k === 'new' ? ['good', L('新進 5%', 'New 5%+')] : k === 'ceased' ? ['bad', L('降到 5% 以下', 'Below 5%')] : null;
+function epfRow(r){
+  const name = r.x.short || r.x.name || r.x.code;
+  const full = r.x.name && r.x.name !== name ? r.x.name.replace(/\s+(BERHAD|BHD\.?)$/i, '') : '';
+  const pct = r.pctNow != null ? (r.pctPrev != null && Math.abs(r.pctNow - r.pctPrev) >= 0.005
+    ? `${L('持股', 'stake')} ${r.pctPrev.toFixed(2)}% → ${r.pctNow.toFixed(2)}%` : `${L('持股', 'stake')} ${r.pctNow.toFixed(2)}%`) : '';
+  const k = EPF_KIND(r.kind);
+  const open = epfOpen === (r.x.code || name);
+  const detail = !open ? '' : `<div class="ep-det">${r.ev.slice().reverse().map(e =>
+    `<div><span>${e[0]}</span><span class="${e[1] > 0 ? 'up' : 'down'}">${epfShares(e[1])}</span><span>${e[2] == null ? '' : epfMoney(e[2])}</span></div>`).join('')}
+    ${r.w ? `<button type="button" class="ep-go" data-go="${esc(r.w.symbol)}">${L('看這檔的詳細資料', 'Open this stock')} ›</button>` : ''}</div>`;
+  return `<div class="q-row ep-row${open ? ' on' : ''}" data-ep="${esc(r.x.code || name)}">
+    <div class="q-n">${r.w ? '<span class="ep-star">★</span>' : ''}${esc(name)}${full ? `<span class="ep-full">${esc(full)}</span>` : ''}</div>
+    <div class="q-y ep-v ${r.sh > 0 ? 'up' : 'down'}">${r.v == null ? epfShares(r.sh) : epfMoney(r.v)}</div>
+    <div class="q-m">${k ? `<span class="chip ${k[0]}">${k[1]}</span>` : ''}<span>${epfShares(r.sh)}</span>${pct ? `<span>${pct}</span>` : ''}</div>
+    ${detail}</div>`;
+}
+
+function renderEPF(){
+  const host = document.getElementById('epf');
+  const a = epfAgg(epfWin);
+  const md = iso => isEn() ? iso.slice(5).replace('-', '/') : +iso.slice(5, 7) + '/' + +iso.slice(8, 10);
+  if(!a){
+    host.innerHTML = `<div class="an-head"><div>${L('還沒有 EPF 資料，下一次自動更新後就會出現。', 'No EPF data yet; it will appear after the next update.')}</div></div>`;
+    return;
+  }
+  const sw = [1, 5, 30].map(n => `<button type="button" class="ep-w${n === epfWin ? ' on' : ''}" data-win="${n}">${L(n + ' 日', n + 'D')}</button>`).join('');
+  const tot = (list) => list.reduce((s, r) => s + (r.v || 0), 0);
+  const watch = a.rows.filter(r => r.w).sort((x, y) => (y.v || 0) - (x.v || 0));
+  const moved = a.rows.filter(r => r.kind);
+  const TOP = 10;
+  host.innerHTML =
+    `<div class="an-head"><div>${L('EPF 持有一家公司 5% 以上時，每次買賣都要在 Bursa 公告，通常晚 2–3 個交易日。金額＝股數 × 交易日收盤價，是估算。僅供參考，不構成投資建議。',
+      'EPF must disclose every trade on Bursa once it holds 5%+ of a company, usually 2–3 trading days later. Value = shares × that day\'s close (estimate). For information only, not investment advice.')}</div></div>` +
+    `<div class="ep-bar"><div class="ep-sw">${sw}</div><span>${a.n === 1 ? md(a.to) : md(a.from) + ' – ' + md(a.to)}${L('（交易日）', ' (trade dates)')}</span></div>` +
+    `<div class="ep-tiles">
+      <div><div class="k">${L('買進', 'Bought')}</div><div class="v up">${epfMoney(tot(a.buy), 1)}</div><div class="s">${a.buy.length} ${L('檔', 'stocks')}</div></div>
+      <div><div class="k">${L('賣出', 'Sold')}</div><div class="v down">${epfMoney(tot(a.sell), 1)}</div><div class="s">${a.sell.length} ${L('檔', 'stocks')}</div></div>
+      <div><div class="k">${L('淨額', 'Net')}</div><div class="v ${tot(a.buy) + tot(a.sell) >= 0 ? 'up' : 'down'}">${epfMoney(tot(a.buy) + tot(a.sell), 1)}</div><div class="s">${L('估算', 'estimate')}</div></div>
+    </div>` +
+    `<div id="ep-buy"></div><div id="ep-sell"></div><div id="ep-watch"></div><div id="ep-moved"></div>`;
+  const head = `<div class="q-head"><span>${L('股票・股數・持股', 'Stock · shares · stake')}</span><span>${L('金額（約）', 'Value (est.)')}</span></div>`;
+  mcard('ep-buy', L('淨買入最多', 'Top net buys'), `${Math.min(TOP, a.buy.length)} / ${a.buy.length}`, head + a.buy.slice(0, TOP).map(epfRow).join(''));
+  mcard('ep-sell', L('淨賣出最多', 'Top net sells'), `${Math.min(TOP, a.sell.length)} / ${a.sell.length}`, head + a.sell.slice(0, TOP).map(epfRow).join(''));
+  if(watch.length) mcard('ep-watch', L('你追蹤的股票', 'Your watchlist'), L(`${watch.length} 檔`, `${watch.length} stocks`), head + watch.map(epfRow).join(''));
+  else clearCard('ep-watch');
+  if(moved.length) mcard('ep-moved', L('新進 5% ／ 降到 5% 以下', 'Crossed the 5% line'), L(`${moved.length} 檔`, `${moved.length} stocks`), head + moved.map(epfRow).join(''));
+  else clearCard('ep-moved');
+}
+
+document.getElementById('epf').addEventListener('click', e => {
+  const w = e.target.closest('[data-win]');
+  if(w){ epfWin = +w.dataset.win; epfOpen = null; try { localStorage.setItem(EPF_WIN_KEY, epfWin); } catch(_) {} renderEPF(); return; }
+  const go = e.target.closest('[data-go]');
+  if(go){ openStock(go.dataset.go); return; }
+  const row = e.target.closest('[data-ep]');
+  if(row){ epfOpen = epfOpen === row.dataset.ep ? null : row.dataset.ep; renderEPF(); }
+});
+
+// 速覽與個股面板用的一句話
+function epfLine(win = 5){
+  const a = epfAgg(win);
+  if(!a || (!a.buy.length && !a.sell.length)) return '';
+  const nm = r => r.x.short || r.x.code;
+  return L(`淨買最多 ${a.buy.slice(0, 3).map(nm).join('、') || '—'}；淨賣最多 ${a.sell.slice(0, 3).map(nm).join('、') || '—'}`,
+           `Top buys ${a.buy.slice(0, 3).map(nm).join(', ') || '—'}; top sells ${a.sell.slice(0, 3).map(nm).join(', ') || '—'}`);
+}
+function epfOf(s){
+  const a = epfAgg(30);
+  const r = a && a.rows.find(r => r.w && r.w.symbol === s.symbol);
+  if(!r) return '';
+  return L(`EPF 近 30 個交易日${r.sh > 0 ? '淨買進' : '淨賣出'} ${epfShares(r.sh).replace(/^[+−]/, '')}（約 ${epfMoney(r.v).replace(/^[+−]/, '')}）` +
+             (r.pctNow != null && r.pctPrev != null ? `，持股 ${r.pctPrev.toFixed(2)}% → ${r.pctNow.toFixed(2)}%。` : '。'),
+           `EPF net ${r.sh > 0 ? 'bought' : 'sold'} ${epfShares(r.sh).replace(/^[+−]/, '')} (about ${epfMoney(r.v).replace(/^[+−]/, '')}) over the last 30 trading days` +
+             (r.pctNow != null && r.pctPrev != null ? `; stake ${r.pctPrev.toFixed(2)}% → ${r.pctNow.toFixed(2)}%.` : '.'));
+}
 
 function renderAnalysis(){
   if(!D) return;
@@ -2705,6 +2870,8 @@ function renderAnalysis(){
     near.map(s => { const g = bzStatus(s).gap;
       return L(`${shortName(s)}（${g >= 0 ? '已低於' : '差 ' + Math.abs(g).toFixed(0) + '%'}）`,
                `${nameEn(shortName(s))} (${g >= 0 ? 'below it' : Math.abs(g).toFixed(0) + '% away'})`); }).join(L('、', ', '))]);
+  const el = epfLine(5);
+  if(el) now.push(['data-tab="EPF"', 'EPF', ['info', L('近 5 日', '5 days')], el]);
   mcard('an-now', '今天 30 秒', '大盤、銀行股、REIT', now.map(([attr, label, m, text]) =>
     `<div class="anb q-now" ${attr}><b>${label}</b><span class="chip ${m[0]}">${m[1]}</span><span>${esc(text)}</span></div>`).join(''));
 
@@ -2812,12 +2979,14 @@ function render(){
 
   const tab = tabs.find(t => t.t === activeTab);
   // 分析分頁：藏起表格、畫分析。表格內容上面已經清空，不必再排一次
-  const an = tab.view === 'analysis';
-  $('#tablewrap').hidden = an;
+  const an = tab.view === 'analysis', ep = tab.view === 'epf';
+  $('#tablewrap').hidden = an || ep;
   $('#analysis').hidden = !an;
+  $('#epf').hidden = !ep;
   // 速覽只講銀行股與 REIT：市場快訊、重點、漲跌排行、新股這些長區塊先藏起來，其他分頁照常顯示
-  ['#headlines', '#brief', '#watchnews', '#movers', '#ipo'].forEach(id => { const el = $(id); if(el) el.style.display = an ? 'none' : ''; });
+  ['#headlines', '#brief', '#watchnews', '#movers', '#ipo'].forEach(id => { const el = $(id); if(el) el.style.display = an || ep ? 'none' : ''; });
   if(an){ renderAnalysis(); return; }
+  if(ep){ renderEPF(); return; }
   const groups = [];
   if(tab.secs === null){
     groups.push(['最愛', pinned]);
