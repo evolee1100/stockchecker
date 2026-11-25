@@ -15434,6 +15434,20 @@
 ],
 "short": "PENTA"
 },
+"11709845": {
+"after": 639441647.0,
+"announced": "2026-11-25",
+"company": "99 SPEED MART RETAIL HOLDINGS BERHAD",
+"kind": "change",
+"pct": 7.612,
+"rows": [
+{
+"d": "2026-11-20",
+"sh": 169800.0
+}
+],
+"short": "99SMART"
+},
 "11709907": {
 "after": 72241658.0,
 "announced": "2026-11-25",
@@ -15447,7 +15461,49 @@
 }
 ],
 "short": "BAUTO"
+},
+"11710101": {
+"after": 259295428.0,
+"announced": "2026-11-25",
+"company": "PETRONAS GAS BERHAD",
+"kind": "change",
+"pct": 13.104,
+"rows": [
+{
+"d": "2026-11-20",
+"sh": -2600.0
+}
+],
+"short": "PETGAS"
+},
+"11710107": {
+"after": 103326639.0,
+"announced": "2026-11-25",
+"company": "AL-'AQAR HEALTHCARE REIT",
+"kind": "change",
+"pct": null,
+"rows": [
+{
+"d": "2026-11-13",
+"sh": -2429800.0
+}
+],
+"short": "ALAQAR"
+},
+"11710109": {
+"after": 105756439.0,
+"announced": "2026-11-25",
+"company": "AL-'AQAR HEALTHCARE REIT",
+"kind": "change",
+"pct": null,
+"rows": [
+{
+"d": "2026-11-12",
+"sh": -200.0
+}
+],
+"short": "ALAQAR"
 }
 },
-"updated_at": "2026-11-25 18:31"
+"updated_at": "2026-11-25 22:57"
 }
